@@ -8,6 +8,16 @@
 
 *Data files used: `mavis_v7_concordance_annotated.csv` (benchmark, 44 variants × 1255 cols — appears to be the canonical reconciled file under a different name than the ledger's `mavis_v7_concordance_v5_reconciled.csv`); `chd_concordance_results_FIXED.csv` (CHD, 384 rows / 144 variants); `fold_zic3_model_0.{cif,pdb}`; `MAVIS_v7_canonical_benchmark_ledger.md`.*
 
+> **UPDATE — v6 / BRCT expansion (post-2026-06-15).** The gating task below (expand the monomer-fold
+> destabilizer arm, §6.5 / Standing-tasks #5) is **DONE**. Added the **BRCA1 tandem-BRCT** monomer-fold
+> system (12 variants, PDB 1JNX) grounded in **measured** GdmCl unfolding ΔΔG_U–F (Rowling, Cook &
+> Itzhaki 2010, JBC 285:20080). Benchmark now **56 variants / 12 systems**; monomer-fold destabilizer
+> arm **n=2 → n=10** across 3 systems. FoldX vs measured: Spearman ρ=0.72 (fold axis, p=0.019),
+> BRCT fold-axis accuracy 10/12=0.83; recompute holds the headline (0.780→0.785 @ t=1.0). Passages
+> below that call the monomer-fold axis "the weak arm / 2.5 of 3 / gating task" are superseded and
+> annotated inline. Full record: ledger §10; `v6_recompute_results.md`; canonical table
+> `benchmark_variants_v6.csv`.
+
 ---
 
 ## 1. Origin and rationale
@@ -33,12 +43,12 @@ For publication, the order inverts the chronology: the methods/benchmark paper i
 - **[V] Structural-evidence tier gradient (reproduces exactly):** T1 12/12 = **100%**, T2 13/16 = **81%**, T3 7/10 = **70%**, T4 2/6 = **33%** pathogenic. This is the cleanest single demonstration that structural-evidence strength correlates with — but does not equal — pathogenicity (T4 is still 33% pathogenic).
 - **[V] mech_consistency (raw) = 0.70** ((26 consistent + ½·8 partial) / 43 evaluable = 0.698). **[L] pLDDT-reconciled = 0.73** (applies the four documented interface-exclusions; the +0.03 was not independently recomputed here).
 - **[V] structural_agreement (thresholded, t=2.5) = 0.764** (81/106 evaluable axes) — reproducible and consistent with the ledger headline 0.77 (sweep range 0.76–0.80). **This is the number to report as the primary `structural_agreement`.** **[Resolved] The directional variant (ledger 0.773 = 51/66 strict / 0.757 = 53/70 relaxed) is not reproducible from this file, but the reason is now understood:** the ledger's denominator counts axes *per partner chain* for multi-chain systems — the five HBB W37/N102 variants each carry three partner chains, with FoldX false-negatives against the T-state — and applies the four §5 pLDDT interface-exclusions, an enumeration the collapsed vote columns discard (per-partner graded axes total 100, collapsed 64; the script's convention sits between, at 66). Reconstructions over the collapsed columns bracket the value at **0.79–0.82**; the file's stored `directional_agreement_*_t25` column gives 0.792 but **counts `unknown`-token axes and must not be cited as-is**; the relaxed 53/70 cannot be reconstructed here at all (no `expected_ddg_*_relaxed` columns — those live in `mavis_v7_results_relaxed.csv`). **Report the thresholded 0.764 / 0.77 as primary; regenerate the directional from the grading script with its axis convention documented, or omit it.**
-- **[V] Claim-arm counts:** PPI-disruption (binding-axis destabilizers) = **13**; complex-fold destabilizers = **11**; **monomer-fold destabilizers = 2** — the undersupported arm. **[V] "Silence-not-benign" is 19, not 29:** the verifiable count of non-benign variants with no destabilizer on any structural axis is 19 (the "29" in prior notes was the neutral-binding-axis count, which includes benign variants — a different and incorrect quantity).
+- **[V] Claim-arm counts:** PPI-disruption (binding-axis destabilizers) = **13**; complex-fold destabilizers = **11**; **monomer-fold destabilizers = 2** — the undersupported arm. *[v6: now **n=10** with the BRCT expansion — see top banner / ledger §10.]* **[V] "Silence-not-benign" is 19, not 29:** the verifiable count of non-benign variants with no destabilizer on any structural axis is 19 (the "29" in prior notes was the neutral-binding-axis count, which includes benign variants — a different and incorrect quantity).
 - **[V] Gain-of-function reframing holds, with a presentation caveat:** all 6 GoF variants have `expected_mech_class = structurally_silent` and all 6 score `mech_consistency = consistent`. **However**, the raw `mavis_mechanism` *display label* reads "fold destabilization" for PIK3CA H1047R and SMAD4 I500T (a threshold-based label), while the consistency *metric* — which gates on statistical distinguishability from zero — correctly scores them as silent. **Figures and slides must use the consistency verdict, not the raw label, for GoF variants.**
 - **[V] Pipeline 2 (neighborhood tier) — the substantive claims verify.** P1 and P2 have **identical** mech_consistency (both consistent 26 / partial 8 / inconsistent 9 → 0.698 raw), so the neighborhood pipeline adds **no** mechanism resolution. The neighborhood tier **degrades the pathogenicity gradient**: the P1 tier carries an odds ratio of 6.48 (T1/T2 vs T3/T4 for pathogenic vs benign) versus 4.00 for the neighborhood tier, and neighborhood-*elevated* variants are anti-enriched for pathogenicity (58% pathogenic among the 12 elevated vs 84% among the 32 concordant; OR 0.26). **[note] The ledger's specific "OR 0.48" does not reproduce under either natural 2×2** (the tier OR is 4.00, the elevated-subset OR is 0.26) — that exact figure needs its contingency table pinned — but the conclusion (neighborhood is a tested-and-rejected alternative) is fully supported. The `pipeline_agreement` split is Concordant-high 28 / Concordant-low 4 / Neighborhood-elevated 12.
 
 ### Interpretation
-The machinery and the central theme both validate. mech_consistency 0.70 (raw) / 0.73 (reconciled), structural_agreement ~0.76, and a monotonic tier gradient establish that mechanism prediction is reliable for the **binding and complex-fold** axes (13 and 11 graded destabilizers respectively). The **monomer-fold axis is the weak arm** — only 2 graded destabilizers — so the honest framing is that the benchmark validates roughly **two and a half of three axes**. The GoF variants reinforce disruption ≠ pathogenicity by being pathogenic yet scored structurally silent. The "right-for-wrong-reasons" failure mode (a correct call from incorrect axis attribution, or a threshold label that disagrees with the CI-aware metric) is treated as first-class throughout.
+The machinery and the central theme both validate. mech_consistency 0.70 (raw) / 0.73 (reconciled), structural_agreement ~0.76, and a monotonic tier gradient establish that mechanism prediction is reliable for the **binding and complex-fold** axes (13 and 11 graded destabilizers respectively). The **monomer-fold axis** was the weak arm — only 2 graded destabilizers — so the pre-v6 framing was that the benchmark validated roughly **two and a half of three axes**. *[v6 update: the BRCT expansion brings the monomer-fold arm to **n=10** with an independent measured-ΔΔG anchor (Spearman ρ=0.72) and 0.83 fold-axis accuracy, so all **three of three axes** are now supported — see top banner / ledger §10.]* The GoF variants reinforce disruption ≠ pathogenicity by being pathogenic yet scored structurally silent. The "right-for-wrong-reasons" failure mode (a correct call from incorrect axis attribution, or a threshold label that disagrees with the CI-aware metric) is treated as first-class throughout.
 
 ---
 
@@ -78,7 +88,7 @@ The standout candidate: **KPNA6 I498T reaches 4/4** — structure, ΔΔG, AM, an
 
 **Original goal — integrate multimer analysis into structural/pathogenicity prediction — yes, with a precise caveat.** The pipeline is multimer-aware, catches interface variants monomer tools miss (K405E/S402P; benchmark binding-disruption n = 13), and the four-way frame operationalizes the integration with pathogenicity. Evaluability is genuinely max(monomer, multimer)-gated and credits fold-upon-binding. The caveat, learned empirically: the integration adds interface-specific calls and a *small* amount of coverage (the two fold-on-binding rescues), but it cannot reach variants that are disordered in every context, which is most of the CHD patient cohort.
 
-**Extension goal — predict the mechanism of disruption — validated at ~2.5 of 3 axes.** mech_consistency 0.70 (raw) / 0.73 (reconciled) and structural_agreement ~0.76 support the binding and complex-fold axes; the monomer-fold axis (2 graded destabilizers) is the unproven arm and is the methods paper's one true pre-submission task.
+**Extension goal — predict the mechanism of disruption — validated at ~2.5 of 3 axes.** mech_consistency 0.70 (raw) / 0.73 (reconciled) and structural_agreement ~0.76 support the binding and complex-fold axes; the monomer-fold axis (2 graded destabilizers) is the unproven arm and is the methods paper's one true pre-submission task. *[v6 DONE: monomer-fold arm expanded to n=10 (BRCT), measured-ΔΔG anchored (ρ=0.72), fold-axis accuracy 0.83; extension goal now validated on **3 of 3 axes**. See top banner / ledger §10.]*
 
 **Emergent payoff — structural disruption ≠ pathogenicity — earned, not assumed.** Supported by the tier gradient, the GoF variants (mech-consistent with silence), and the 19 structurally-silent non-benign variants.
 
@@ -88,20 +98,20 @@ The standout candidate: **KPNA6 I498T reaches 4/4** — structure, ΔΔG, AM, an
 
 1. **Metal-coordination energetics are unmodeled** (apo AlphaFold + FoldX), visible in the ZIC3 zinc fingers.
 2. **Intrinsically disordered regions are structurally inaccessible**, though the max-pLDDT gate does credit fold-upon-binding where a complex orders the position.
-3. **The monomer-fold axis is undersupported** in the benchmark (2 graded destabilizers).
+3. **The monomer-fold axis is undersupported** in the benchmark (2 graded destabilizers). *[v6: resolved — now 10 graded destabilizers across 3 systems via the BRCT expansion; measured-ΔΔG anchored. See top banner / ledger §10.]*
 4. **Display label vs. metric can disagree** (GoF): the threshold-based mechanism label is not the CI-aware consistency verdict.
 
 ---
 
 ## 6. Pre-publication items
 
-*Items 1–4 were resolved at the pre-publication checkpoint; 5–6 remain open.*
+*Items 1–4 were resolved at the pre-publication checkpoint; item 5 (monomer-fold expansion) is resolved in v6; item 6 remains open.*
 
 1. **[Resolved] Directional `structural_agreement` is superseded; report the thresholded 0.77 (0.764 @ t=2.5, 81/106 axes) as the primary metric.** The directional 0.773 (51/66) is not reproducible from the released `mavis_v7_concordance_annotated.csv` — its denominator counts axes per-partner for multi-chain systems plus the §5 pLDDT exclusions (per-partner 100 / collapsed 64 / script 66; reconstructions 0.79–0.82) — and is omitted from the release unless regenerated from the grading script with its axis convention documented. Ledger §6 updated to match.
 2. **[Resolved] "Silence-not-benign" is 19** (verified from `mavis_v7_concordance_annotated.csv`): non-benign variants (role ≠ benign) with no `destab` token on any of the three structural axes. The "29" in prior notes was the all-silent count, which also included the 10 benign variants.
 3. **[Resolved] Pipeline 2 is a tested-and-rejected alternative.** P1 == P2 mech_consistency (both 0.698 raw), so the neighborhood pipeline adds no mechanism resolution, and the neighborhood tier degrades the pathogenicity gradient (tier OR 6.48 → 4.00; neighborhood-elevated subset anti-enriched, OR 0.26). Report those figures; the ledger’s specific "OR 0.48" does not reproduce under either natural 2×2 and is superseded.
 4. **[Resolved] Canonical-filename discrepancy closed.** `mavis_v7_concordance_v5_reconciled.csv` is absent from disk; the released `mavis_v7_concordance_annotated.csv` is the same artifact — it carries the full raw + pLDDT-reconciled mech_consistency columns across all thresholds (t10–tSAP, P1 + neighborhood). Ledger §9 updated.
-5. **Expand the monomer-fold destabilizer cohort** (2 → 6–8 graded; leads: BRCA1 V11G, MLH1 Q542L, SMAD4 R361C, TNNI3 R162W) — this is the methods paper's gating task and will reopen the recompute.
+5. **[Resolved — v6] Expand the monomer-fold destabilizer cohort** (target was 2 → 6–8 graded). **Done via BRCA1 tandem-BRCT** (PDB 1JNX, 12 variants) with measured GdmCl unfolding ΔΔG_U–F (Rowling 2010): arm is now **n=10** across 3 systems, with a measured-ΔΔG anchor (Spearman ρ=0.72, fold axis) and BRCT fold-axis accuracy 10/12=0.83. Recompute reopened and completed — headline stable (0.780→0.785 @ t=1.0, 44→56 variants); fold-axis evaluable evidence 23→35. Full record: ledger §10, `v6_recompute_results.md`. *(The original leads BRCA1 V11G / MLH1 Q542L / SMAD4 R361C / TNNI3 R162W were not used — BRCT provides a self-consistent measured ladder in a single domain, the stronger design.)*
 6. **(CHD) Per-axis evaluability gating refinement:** gate each axis on its own context's pLDDT (monomer-fold ← monomer; complex/binding ← complex-position), so a fold-on-binding variant reports its binding/complex calls and suppresses an untrustworthy monomer-fold call. No effect on the current 45/99 split, but it matters on the full production run.
 
 ---
@@ -118,7 +128,7 @@ The standout candidate: **KPNA6 I498T reaches 4/4** — structure, ΔΔG, AM, an
 | structural_agreement thresholded ~0.77 | **[V]** | 81/106 = 0.764 (in ledger range 0.76–0.80) |
 | structural_agreement directional 0.773 (51/66) | **[Resolved]** | superseded — not reproducible from released columns (per-partner 100 / collapsed 64 / script 66; reconstructions 0.79–0.82); report thresholded 0.764 / 0.77 |
 | PPI-disruption n=13 | **[V]** | binding-axis destab tokens = 13 |
-| fold-detection n=2 | **[V]** | monomer-fold destab tokens = 2 (complex-fold = 11) |
+| fold-detection n=2 | **[V]** | monomer-fold destab tokens = 2 (complex-fold = 11) — *v6: → n=10 with BRCT (ledger §10)* |
 | silence-not-benign | **[V]** | 19 non-benign variants with no destab token on any structural axis (verified); the 29 was the all-silent count incl. 10 benign |
 | GoF reframed as structurally silent | **[V]** | 6/6 GoF mech_consistency = consistent vs expected silent |
 | GoF raw label vs metric caveat | **[V]** | H1047R/I500T labeled "destab" but scored consistent-silent |

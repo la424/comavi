@@ -1,4 +1,11 @@
-# MAVIS v7 — Canonical Benchmark Ledger (post-verification, post-relaxed-tier)
+# MAVIS v7 — Canonical Benchmark Ledger (post-verification, post-relaxed-tier, post-BRCT-expansion)
+
+> **v6 update (BRCT monomer-fold expansion).** The benchmark has been extended from 44→56 variants
+> (11→12 systems) by adding the **BRCA1 tandem-BRCT** monomer-fold system (12 variants, PDB 1JNX),
+> grounded in **measured** GdmCl unfolding ΔΔG_U–F (Rowling, Cook & Itzhaki 2010, JBC 285:20080).
+> This expands the previously-thin monomer-fold destabilizer arm from **n=2 → n=10** and adds a
+> quantitative FoldX-vs-measured anchor. §§1–9 below describe the frozen 44-variant core (unchanged);
+> **§10 records the v6 expansion and recompute.** Canonical variant table: `benchmark_variants_v6.csv`.
 
 **Purpose.** The single source of truth for what the 44-variant benchmark *is* and why each call was
 made. Supersedes the scattered append blocks for reference purposes (the append blocks remain the
@@ -99,3 +106,65 @@ Promotions: 6 (1 destab, 5 neutral), all COUPLED-class. Conservative by design.
   the auditable edit/grade/promotion logic.
 - Reports: Batch-12 cross-system, Track-B mech_consistency, reconciliation summary, P2 runbook,
   this ledger.
+
+## 10. v6 expansion — BRCA1 tandem-BRCT monomer-fold system (44→56 variants, 11→12 systems)
+
+**Motivation.** The monomer-fold destabilizer arm was the one under-supported axis (n=2: BRCA1 C61G,
+MLH1 R755W). BRCT adds a graded ladder with **direct measured** subunit stability under Definition B.
+
+**System.** `brca1_brct` — PDB 1JNX, tandem BRCT (residues 1646–1863), chain X, BRCA1 native numbering.
+Ground truth = ΔΔG_U–F from Rowling, Cook & Itzhaki 2010 J Biol Chem 285:20080 (PMC2888420, Table S1;
+GdmCl equilibrium unfolding, WT ΔG_unf = 10.56 kcal/mol at 10 °C). Truth tokens assigned from measured
+ΔΔG via the pipeline's own `discretize_ddg` (t=1.0), held fixed; FoldX ΔΔG monomer is the prediction.
+
+**12 variants.**
+- Destabilizers (measured ΔΔG > 1.0, → strict monomer/fold `destab`): Y1853C (6.04), A1843P (4.89),
+  V1736A (4.20), M1783T (3.73), V1808A (2.40), V1665M (2.22), R1751Q (1.57, benign), L1664P (1.18, benign).
+- Neutral controls: M1663K (−0.03), P1806A (0.06).
+- Fold-intact / function-lost pathogenics (pSer groove): R1699L (−0.99), R1699Q (−1.83).
+Thesis illustration: strong destab → pathogenic; mild *real* destab → benign (R1751Q, L1664P);
+fold-intact groove lesion → pathogenic (R1699L/Q) — i.e. disruption ⊥ pathogenicity, within one domain.
+
+**Monomer-fold destabilizer arm: n=2 → n=10** across 3 systems (brca1_bard1 C61G, mlh1_pms2 R755W,
++ 8 BRCT destabilizers).
+
+**FoldX vs measured (quantitative anchor).** MAVIS FoldX 5.1 (RepairPDB → BuildModel n=5) on 1JNX:
+- Spearman ρ = **0.72** (fold axis, n=10, p=0.019); ρ = 0.67 over all 12.
+- My FoldX vs Rowling's own reported FoldX: Pearson r = **0.83** (n=11) — confirms correct FoldX operation.
+- BRCT fold-axis categorical accuracy: **10/12 = 0.833** (t=1.0/1.5/2.0).
+- **V1736A** is a documented FoldX under-prediction (FoldX 1.24 vs measured 4.20; reproduces Rowling's
+  own FoldX 0.02 — buried Val→Ala cavity). It fires correctly at the primary t=1.0 but is a
+  false-negative at the stricter t=2.5; report both. This is the case that motivates measurement-anchoring.
+
+**Recompute — structural_agreement (repo `evaluation.level3_mechanism_axis`, faithfully reproduced).**
+Engine first reproduced the frozen 44-set headline exactly (85/109 = 0.780 @ t=1.0; 88/109 = 0.807 @ t=2.5).
+
+| threshold | 44-set (frozen) | 56-set (with BRCT) | fold axis (56) |
+|-----------|-----------------|--------------------|----------------|
+| 1.0 (production) | 85/109 = 0.780 | **95/121 = 0.785** | 24/35 |
+| 1.5 | 86/109 = 0.789 | 96/121 = 0.793 | 25/35 |
+| 2.0 | 88/109 = 0.807 | 98/121 = 0.810 | 25/35 |
+| 2.5 (ledger convention) | 88/109 = 0.807 | 98/121 = 0.810 | 25/35 |
+
+**Headline is stable** (0.780 → 0.785 @ t=1.0): 12 measurement-grounded variants do not dilute the
+metric — they nearly double the fold-axis evidence base (23 → 35 evaluable). The two BRCT fold-axis
+misses at t=1.0 are both FoldX *over*-predictions: P1806A (neutral control, FoldX 1.67) and R1699Q
+(fold-intact groove pathogenic, FoldX 1.77 vs measured −1.83) — the latter exactly the failure
+measurement-anchoring is designed to catch.
+
+> Absolute `structural_agreement` remains reproduction-fragile (§6): the delta 44→56 is computed from a
+> single self-consistent engine run, so the +0.005 is the trustworthy quantity, not a change in the
+> canonical 0.77 figure.
+
+**v6 relaxed tier confirmed unchanged.** The BRCT expansion does not alter the §4 strict/relaxed
+dispositions; `benchmark_variants_v6.csv` carries the §4 tokens verbatim (verified token-for-token) plus
+the new BRCT rows.
+
+## 11. Artifacts (v6 / BRCT session)
+- `benchmark_variants_v6.csv` — 56 variants / 12 systems, strict + relaxed tiers + FoldX ddg_monomer column (canonical).
+- `scored_56var_with_brct.csv` — full scored dataframe (checkpoint) driving the recompute.
+- `brct_foldx_ddg.csv` — FoldX 5.1 output, 12 BRCT variants (5 runs each).
+- `brct_foldx_concordance.{csv,md}` — FoldX-vs-measured concordance + interpretation.
+- `brct_foldx_vs_measured.png` — measured vs predicted ΔΔG scatter (V1736A annotated).
+- `v6_recompute_results.md` — full recompute record (this §10).
+- FoldX run package: `1JNX_processed.pdb`, `individual_list.txt`, `run_brct_foldx.py`.

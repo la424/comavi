@@ -1,0 +1,13 @@
+variant,truth_role,clinvar_germline,role_in_cohort,site_class,measured_ddG_UF_kcal_mol,foldx_ddg_monomer_mean,foldx_ddg_sd,rowling_FoldX_ddG,measured_destab,foldx_call_destab,agreement
+Y1853C,pathogenic,Pathogenic/Likely pathogenic,monomer_fold_destabilizer,core/fold,6.04,3.3869,0.1766,3.45,True,True,agree
+A1843P,pathogenic,Likely pathogenic,monomer_fold_destabilizer,core/fold,4.89,6.4287,0.0165,8.43,True,True,agree
+V1736A,pathogenic,Pathogenic,monomer_fold_destabilizer,core/fold,4.2,1.2414,0.001,0.02,True,False,DISAGREE
+M1783T,conflicting,Conflicting classifications of pathogenicity,monomer_fold_destabilizer,core/fold,3.73,2.8551,0.0656,4.41,True,True,agree
+V1808A,vus,Uncertain significance,monomer_fold_destabilizer,core/fold,2.4,3.5669,0.0258,3.44,False,True,DISAGREE
+V1665M,conflicting,Conflicting classifications of pathogenicity,monomer_fold_destabilizer,core/fold,2.22,2.979,0.3602,8.59,False,True,DISAGREE
+R1751Q,benign,Benign,monomer_fold_destabilizer,core/fold,1.57,0.7285,0.0783,,False,False,agree
+L1664P,benign,Benign,monomer_fold_destabilizer,core/fold,1.18,0.5333,0.0744,1.85,False,False,agree
+M1663K,vus,Uncertain significance,measured_neutral_control,core/fold,-0.03,0.4458,0.0449,0.17,False,False,agree
+P1806A,conflicting,Conflicting classifications of pathogenicity,measured_neutral_control,core/fold,0.06,1.6691,0.0185,2.12,False,False,agree
+R1699L,pathogenic,Likely pathogenic,fold_intact_function_lost,binding_groove/surface,-0.99,0.387,0.5647,-0.2,False,False,agree
+R1699Q,pathogenic,Pathogenic,fold_intact_function_lost,binding_groove/surface,-1.83,1.768,0.782,1.34,False,False,agree
