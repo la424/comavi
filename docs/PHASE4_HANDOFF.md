@@ -15,7 +15,7 @@
 
 ### Pipeline scripts
 - `scripts/run_live.py` — full Phase 1–3 runner (8 stages: preprocessing → variant loading → metrics → FoldX → P1 scoring → baseline correction → neighborhood)
-- `scripts/mavis_v7_neighborhood.py` — Pipeline 2 (±3 neighborhood)
+- `archive/derivation/mavis_v7_neighborhood.py` — Pipeline 2 (±3 neighborhood; tested and rejected, retained under `archive/`)
 - `scripts/apply_concordance_v5.py` — Track B v5 concordance assembly with all v5 features:
   - 5-threshold mechanism sweep including Sapozhnikov per-axis
   - Symmetric internal CI95 gating
@@ -62,7 +62,7 @@ python scripts/run_live.py \
   --output-dir outputs/track_b/
 
 # Stage 7b: neighborhood scoring (Pipeline 2)
-python scripts/mavis_v7_neighborhood.py \
+python archive/derivation/mavis_v7_neighborhood.py \
   --input outputs/track_b/mavis_v7_results_corrected.csv \
   --output outputs/track_b/mavis_v7_results_with_nbhd.csv
 

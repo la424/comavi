@@ -16,7 +16,7 @@ foldx_[0-9]*
 rotabase.txt
 *.fxout
 
-# AlphaFold structures — large; obtain from AlphaFold DB / Server (see docs/input_formats.md)
+# AlphaFold structures — large; obtain from AlphaFold DB / Server (see docs/adding_your_own_genes.md)
 structures/
 **/structures/
 

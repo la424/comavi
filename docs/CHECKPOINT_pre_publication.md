@@ -17,7 +17,7 @@ submission — one substantive (the monomer-fold cohort), one production-only.
 
 ## 2. Pipeline — works as intended, with known limits
 The `mavis_v7` engine is byte-identical across the working and release trees; the concordance engine
-round-trips byte-for-byte on the canonical CHD file; `scripts/apply_chd_concordance.py` is idempotent on
+round-trips byte-for-byte on the canonical CHD file; `archive/derivation/apply_chd_concordance.py` is idempotent on
 already-correct input.
 
 Remaining limits:

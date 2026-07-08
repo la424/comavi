@@ -16,7 +16,8 @@ verification. A fresh `run_live.py` execution overwrites them.
 ## How they're regenerated
 1. Stage 1-6: `python3 scripts/run_live.py` (~24-48h with FoldX)
 2. Stage 7:   `python3 scripts/mavis_v7_baseline_correct.py` (~5 sec)
-3. Stage 8:   `python3 scripts/mavis_v7_neighborhood.py` (~30 sec, needs structures)
+3. Stage 8:   `python3 archive/derivation/mavis_v7_neighborhood.py` (~30 sec, needs structures)
+   *(Pipeline 2, the ±3 neighborhood tier — tested and rejected; retained under `archive/` and only needed to regenerate the `_with_nbhd` intermediate.)*
 
 ## Cached versions provenance
 - These cached files were last regenerated on Apr 22 2026 by Luke

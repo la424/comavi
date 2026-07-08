@@ -1,6 +1,6 @@
 # MAVIS v7 — Methods Paper Metrics Outline (v4 — implementation-verified)
 
-**Status:** All numbers verified by `verification/verify_v5.py` against the v5 implementation. The v5 framework is fully implemented in `apply_concordance_v5.py`, `mavis_v7/mechanism.py`, `mavis_v7/pipeline.py`, `mavis_v7_baseline_correct.py`, and `mavis_v7/evaluation.py`. Locked.
+**Status:** All numbers verified by `archive/derivation/verify_v5.py` against the v5 implementation (superseded by `verification/verify_stage6.py`; retained for the audit trail). The v5 framework is fully implemented in `scripts/apply_concordance_v5.py`, `mavis_v7/mechanism.py`, `mavis_v7/pipeline.py`, `mavis_v7_baseline_correct.py`, and `mavis_v7/evaluation.py`. Locked.
 
 **v3 → v4 update:** mech_consistency numbers reflect the actual Rubric B implementation (per-axis fold subtype checks via `grade_mechanism_consistency` in `apply_concordance_v5.py`), which is more permissive than the standalone-compute sketch numbers — fold subtypes are checked against per-axis annotations, but the rubric retains the existing axis-presence framework rather than imposing a coarser axis-alignment rule.
 
