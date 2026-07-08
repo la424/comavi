@@ -47,14 +47,15 @@ scripts/                 core engine + drivers
   run_live.py            benchmark driver (live FoldX run)
   apply_concordance_v5.py   four-way concordance (external tools)
   build_report.py        spreadsheet report
-  mavis_v7_baseline_correct.py, *_patch.py, relaxed_regrounding_walk.py
-                          post-processing / grading steps (see docs/)
+  mavis_v7_baseline_correct.py   baseline-correction step (see docs/)
 run.py                   generic runner — score ANY genes from a YAML config
 new_system.py            scaffold a YAML systems block for new genes
 run_chd.py               CHD pipeline driver
 prepare_chd_input.py     builds CHD variant input
 configs/                 YAML systems configs (chd + benchmark worked examples)
-benchmark_variants_v5.csv, chd_input_final.csv   variant inputs
+benchmark_variants_v5.csv   44-variant PPI benchmark input (run_live.py)
+benchmark_variants_v6.csv   56-variant set = the 44 PPI + 12 BRCA1-BRCT supplement
+chd_input_final.csv      CHD variant input
 inputs/                  cached intermediates for the no-FoldX self-test + AM table
 reference_outputs/       canonical result files: comprehensive CSVs, collapsed CHD,
                           plus MAVIS_results_summary.xlsx (11-sheet overview) + .docx narrative
@@ -62,7 +63,8 @@ data/                    reference inputs (UniProt domain ranges, variant–doma
 docs/                    benchmark ledger, results synthesis, methods, design notes,
                           CHECKPOINT_pre_publication.md
 verification/            self-test that reproduces the headline metrics
-examples/                getting started
+archive/                 development history — one-off derivation/grading scripts
+                          and superseded data; NOT part of the operating pipeline
 ```
 
 ## Installation
@@ -149,8 +151,8 @@ On the 44-variant / 11-PPI-system benchmark (Pipeline 1, t = 2.5, pLDDT-reconcil
 Pipeline 1 (Grantham severity × contact count, **no ΔΔG term**) is a calibrated
 structural-evidence-**strength** gradient that complements — rather than competes
 with — the ΔΔG mechanism call. The neighborhood/Pipeline-2 variant was tested and
-**rejected** (it degraded the gradient); it is retained only as a tested
-alternative. The canonical derivation lives in `docs/MAVIS_v7_canonical_benchmark_ledger.md`.
+**rejected** (it degraded the gradient); it is retained as a tested alternative under
+`archive/derivation/`. The canonical derivation lives in `docs/MAVIS_v7_canonical_benchmark_ledger.md`.
 
 ## Inputs
 
