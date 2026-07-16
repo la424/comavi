@@ -55,6 +55,9 @@ prepare_chd_input.py     builds CHD variant input
 configs/                 YAML systems configs (chd + benchmark worked examples)
 benchmark_variants_v5.csv   44-variant PPI benchmark input (run_live.py)
 benchmark_variants_v6.csv   56-variant set = the 44 PPI + 12 BRCA1-BRCT supplement
+reference_outputs/scored_61var_canonical.csv
+                         61-variant canonical set = v6 (56) + VWF A1-GPIba and
+                          CFH FH1-4-C3b fold-neutral interface disruptors (see ledger §12)
 chd_input_final.csv      CHD variant input
 inputs/                  cached intermediates for the no-FoldX self-test + AM table
 reference_outputs/       canonical result files: comprehensive CSVs, collapsed CHD,
@@ -141,12 +144,17 @@ runs `verification/verify_stage6.py` against `inputs/intermediate/`.
 
 ## Benchmark results
 
-On the 44-variant / 11-PPI-system benchmark (Pipeline 1, t = 2.5, pLDDT-reconciled):
+On the 61-variant benchmark spanning 14 systems (49 PPI variants across 13 complexes
+plus the 12-variant BRCA1-BRCT monomer-fold supplement; Pipeline 1, t = 2.5):
 
 | Metric | Value |
 |---|---|
-| structural_agreement | **0.77** (threshold sweep 0.76–0.80) |
-| mech_consistency | **0.73** (pLDDT-reconciled; 0.70 raw) |
+| structural_agreement | **0.76** (92/121; threshold sweep 0.72–0.77) |
+| mech_consistency | **0.71** |
+
+The structural-evidence tier is a monotonic pathogenicity gradient with no ΔΔG term:
+Tier 1 100% → Tier 2 72% → Tier 3 70% → Tier 4 43% pathogenic (Spearman ρ = −0.40,
+p = 0.0044). See `docs/MAVIS_v7_canonical_benchmark_ledger.md` §12 for the full 61-set recompute.
 
 Pipeline 1 (Grantham severity × contact count, **no ΔΔG term**) is a calibrated
 structural-evidence-**strength** gradient that complements — rather than competes

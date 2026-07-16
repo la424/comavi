@@ -18,8 +18,9 @@ authors:
     affiliation: "Indiana University School of Medicine"
 license: MIT
 repository-code: "https://github.com/la424/mavis"
-version: "0.1.0"
-date-released: "2026-06-22"
+doi: "10.5281/zenodo.17123062"
+version: "1.1-methods"
+date-released: "2026-07-16"
 keywords:
   - variant interpretation
   - FoldX

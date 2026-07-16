@@ -1,11 +1,19 @@
-# MAVIS v7 — Canonical Benchmark Ledger (post-verification, post-relaxed-tier, post-BRCT-expansion)
+# MAVIS v7 — Canonical Benchmark Ledger (post-verification, post-relaxed-tier, post-BRCT-expansion, post-interface-expansion)
 
-> **v6 update (BRCT monomer-fold expansion).** The benchmark has been extended from 44→56 variants
+> **v7 update (fold-neutral interface disruptors).** The benchmark has been extended from 56→61 variants
+> (12→14 systems) by adding two interface systems whose pathogenic variants disrupt a protein–protein
+> interface with the **monomer fold intact** — **VWF A1–GPIbα** (PDB 1SQ0) and **CFH FH1-4–C3b** (PDB 2WII) —
+> plus matched retained-binding and benign controls. This supplies the first within-benchmark proof point
+> for the interface-resolution claim. Canonical 61-set headline (t=2.5): mechanism-consistency **0.71**,
+> structural agreement **0.76** (92/121). **§12–13 record the v7 expansion and recompute.**
+> Canonical dataset: `scored_61var_canonical.csv`.
+>
+> **v6 update (BRCT monomer-fold expansion).** The benchmark was extended from 44→56 variants
 > (11→12 systems) by adding the **BRCA1 tandem-BRCT** monomer-fold system (12 variants, PDB 1JNX),
 > grounded in **measured** GdmCl unfolding ΔΔG_U–F (Rowling, Cook & Itzhaki 2010, JBC 285:20080).
 > This expands the previously-thin monomer-fold destabilizer arm from **n=2 → n=10** and adds a
 > quantitative FoldX-vs-measured anchor. §§1–9 below describe the frozen 44-variant core (unchanged);
-> **§10 records the v6 expansion and recompute.** Canonical variant table: `benchmark_variants_v6.csv`.
+> **§10 records the v6 expansion and recompute.** v6 variant table: `benchmark_variants_v6.csv`.
 
 **Purpose.** The single source of truth for what the 44-variant benchmark *is* and why each call was
 made. Supersedes the scattered append blocks for reference purposes (the append blocks remain the
@@ -168,3 +176,69 @@ the new BRCT rows.
 - `brct_foldx_vs_measured.png` — measured vs predicted ΔΔG scatter (V1736A annotated).
 - `v6_recompute_results.md` — full recompute record (this §10).
 - FoldX run package: `1JNX_processed.pdb`, `individual_list.txt`, `run_brct_foldx.py`.
+
+## 12. v7 expansion — fold-neutral interface disruptors (56→61 variants, 12→14 systems)
+
+**Motivation.** The v6 benchmark could demonstrate the binding axis only on variants that *co-destabilize
+the fold* (all 6 v6 binding-axis hits had median Grantham 113 with concurrent fold ΔΔG). This left the
+central interface claim — that MAVIS resolves binding-interface disruption where a monomer-only tool
+cannot — as an architecture argument without a within-benchmark proof point. v7 adds two systems whose
+pathogenic variants disrupt a protein–protein interface **with the monomer fold left intact**, plus
+matched retained-binding / benign controls.
+
+**Two systems (+5 variants, all with a binding-axis structure).**
+- **VWF A1–GPIbα** — PDB **1SQ0** (von Willebrand factor A1 domain × platelet GPIbα).
+  Numbering offset **VWF prepro −763** (mature = prepro − 763). K_D ground truth from
+  Tischer / Moon-Tasson / Auton 2025 *J Thromb Haemost* 23(4):1215–1228, **PMID 39756657**.
+  - **R1334Q** (pathogenic type-2M): mono **0.0051**, fold **4.7285**, bind **4.1078** — the
+    signature pure-interface disruptor (fold-neutral monomer, fired binding axis).
+  - **A1381T** (benign polymorphism): mono **−0.0984**, fold **−0.1061**, bind **−0.0015** — flat on
+    all three axes (specificity control).
+- **CFH FH1-4–C3b** — PDB **2WII** (complement factor H domains 1–4 × C3b).
+  Numbering offset **CFH prepro −18**. K_D ground truth from Pechtl 2011 *J Biol Chem* 286(13):11082–90,
+  **PMID 21270465**.
+  - **R78G** (pathogenic aHUS): mono **0.9297**, fold **4.8753**, bind **6.1211**; measured K_D **>35 µM** —
+    pure-interface disruptor, fold-neutral by the monomer axis, binding axis fired.
+  - **R53H** (pathogenic aHUS, retained binding): mono **0.4688**, fold **1.3156**, bind **0.0075**;
+    measured K_D **~12 µM** — pathogenic but binding-competent → correct binding-axis *negative*.
+  - **I62V** (benign polymorphism): mono **0.7140**, fold **0.3759**, bind **0.0052**; measured
+    K_D **10–14 µM** — benign, binding-competent control.
+
+**Structural deviation (documented for methods).** 2WII is 14,081 atoms and stalled RepairPDB under
+host memory pressure; C3b was trimmed to residues within **15 Å of chain C** (FH kept whole),
+5,144 atoms (37%), running in ~9 min. AnalyseComplex on the partner split across ≥2 chains sums all
+interface pairs. FoldX 5.1, MAVIS-faithful recipe (RepairPDB → BuildModel n=5 fold ΔΔG →
+AnalyseComplex WT+5 mut binding ΔΔG; DDG_DESTAB=1.0).
+
+**Named exclusion — applicability domain (5 VWF type-2M variants).** Five additional VWF type-2M
+candidates — **L1282R, D1302G, V1360A, V1439M, I1425T** — were excluded *before scoring*, from
+mechanism + ground truth (not from any MAVIS output): their loss-of-function is conformational /
+mechanotransductive (shear-gated A1 exposure), a mode not reachable from a static A1–GPIbα interface
+model. This is the benchmark's one principled exclusion; structurally-silent out-of-scope variants are
+**retained** as specificity controls.
+
+**61-set recompute (canonical basis: frozen 44-annotated sweep + 5-new operative-ΔΔG sweep, reconciled
+with the tier axis).** Headline at the canonical calling threshold t=2.5:
+- **mechanism-consistency 0.71** (0.7083; graded n=48), **structural agreement 0.76** (92/121 = 0.7603).
+- Threshold sweep (MC / SA): t1.0 0.542 / 0.719 (87/121); t1.5 0.646 / 0.769 (93/121);
+  t2.0 0.667 / 0.760 (92/121); **t2.5 0.708 / 0.760 (92/121)**; tSAP 0.719 / 0.752 (91/121).
+
+**Four-way structural-agreement decomposition (t=2.5, canonical basis):**
+monomer **14/16** + complex-fold **20/25** + binding **24/32** + tier **34/48** = **92/121 = 0.760**.
+
+**Tier gradient (authoritative, 61-set):** T1 **14/14 (100%)**, T2 **13/18 (72%)**, T3 **7/10 (70%)**,
+T4 **3/7 (43%)**; Fisher **OR = 3.78, p = 0.080**; Spearman **ρ = −0.400, p = 0.0044**
+(strong tiers 1–2: 27/32; weak tiers 3–4: 10/17). The rank-correlation gradient survives the
+expansion while the binary strong-vs-weak dichotomy loses Fisher significance — the ρ framing is
+reported as primary, consistent with the tier being an orthogonal structural-disruption evidence
+axis rather than a pathogenicity classifier.
+
+**Physical validation unchanged** (independent of the expansion): BRCT fold ρ = 0.72 (n=10, p=0.019);
+Hb binding ρ = 0.90 (n=7, p=0.037).
+
+## 13. Artifacts (v7 / interface-disruptor session)
+- `scored_61var_canonical.csv` — 61 variants / 14 systems, canonical basis (released canonical dataset).
+- `vwf_axes_results.csv`, `cfh_axes_results.csv` — FoldX 5.1 three-axis output, new-5 variants.
+- FoldX run packages: `1SQ0` (VWF A1–GPIbα), `2WII` trimmed (CFH FH1-4–C3b, 15 Å of chain C).
+- Regenerated main figures on the 61-set: F2 (headline SA/MC sweep + tier gradient),
+  F3 (per-axis competency + mechanism-class), F5 (AlphaMissense vs tier).
