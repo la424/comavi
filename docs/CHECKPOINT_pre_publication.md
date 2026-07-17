@@ -7,10 +7,11 @@ moved with the AlphaMissense parse fix (§5); benchmark takeaways are unchanged.
 submission — one substantive (the monomer-fold cohort), one production-only.
 
 ## 1. Inputs — complete
-- **Benchmark:** `benchmark_variants_v5.csv` (44 variants / 11 PPI systems).
-- **CHD:** `chd_input_final.csv`, `chd_input_per_system.csv` (bidirectional per-system),
+_(Paths updated to the current repo layout; the v1.2 reorg moved the benchmark input to `inputs/raw/` and the CHD inputs to `inputs/chd/`. Content otherwise as of the checkpoint date.)_
+- **Benchmark:** `inputs/raw/benchmark_variants_v5.csv` (44 variants / 11 PPI systems).
+- **CHD:** `inputs/chd/chd_input_final.csv`, `inputs/chd/chd_input_per_system.csv` (bidirectional per-system),
   `data/MAVIS_CHD_variant_domain_interface_map.csv`.
-- **Annotations:** `variants_with_alphamissense_and_franklin_expanded.csv` (AlphaMissense + Franklin,
+- **Annotations:** `inputs/chd/variants_with_alphamissense_and_franklin_expanded.csv` (AlphaMissense + Franklin,
   transposition-corrected), `inputs/AM_variants_mavis_mechanism_test.xlsx`.
 - **Structures:** AlphaFold-3 Server (multimers); experimental PDBs where AF2 confidence is insufficient
   (2HHB / HBB, 6XI7 / KRAS-RAF1, 1JM7 / BRCA1-BARD1). `structures/` is gitignored (obtain per docs).
