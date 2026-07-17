@@ -1,5 +1,34 @@
 # MAVIS — Results Synthesis for the Two Papers
 
+> ## ⚑ CURRENT STATE — v7 / 61-variant canonical benchmark (supersedes the tagged body below)
+>
+> The tagged synthesis that follows was a v6-era verification pass against the **44/56-variant**
+> files. The benchmark was subsequently expanded to the **61-variant canonical set** (added the
+> fold-neutral interface systems VWF A1–GPIbα [PDB 1SQ0] and CFH FH1-4–C3b [PDB 2WII], +5 variants;
+> 5 VWF type-2M variants excluded before scoring). **All current numbers below are recomputed from
+> the canonical CSV (`reference_outputs/scored_61var_canonical.csv`) and are authoritative; where the
+> tagged body disagrees, this block wins.** Full record: ledger §12.
+>
+> - **Composition:** 61 variants — 49 PPI (13 complexes) + 12 BRCA1-BRCT; 14 systems.
+> - **Mechanism-consistency:** 0.71 (0.7083 at canonical t=2.5; graded n=48). Sweep (MC): 0.542 /
+>   0.646 / 0.667 / 0.708 / 0.719 across t=1.0/1.5/2.0/2.5/SAP.
+> - **Structural agreement:** 0.76 (92/121 at canonical). Sweep (SA): 0.719 / 0.769 / 0.760 / 0.760 /
+>   0.752. Four-way decomposition: monomer 14/16 + complex-fold 20/25 + binding 24/32 + tier 34/48 =
+>   92/121.
+> - **Tier gradient (49 labeled PPI):** T1 14/14 (100%), T2 13/18 (72%), T3 7/10 (70%), T4 3/7 (43%);
+>   Fisher OR = 3.78 (p = 0.080); Spearman ρ = −0.40 (p = 0.0044). The rank-correlation framing is
+>   preferred; the binary strong-vs-weak Fisher test loses significance on the expanded set. **The
+>   old 100/81/70/33, OR 6.48, ρ=−0.46 figures in the tagged body are superseded.**
+> - **Physical validation (unchanged by the expansion):** BRCT fold ρ = 0.72 (n=10, p=0.019); Hb
+>   binding ρ = 0.90 (n=7, p=0.037).
+> - **AlphaMissense concordance:** n=47 PPI with an AM score (36 pathogenic / 11 benign); the two VWF
+>   variants lack AM scores (mature protein exceeds the AM length limit).
+> - **Grantham skew (measured-biophysics panel):** structurally-active disruptors (n=17) median
+>   Grantham 109 vs structurally-silent (n=31) median 58.
+> - **Exploratory tier×FoldX:** partially independent signal, Spearman ρ = 0.60. The earlier
+>   "AUC 0.81→0.87 combination" observation does **not** reproduce on the 61-set (FoldX-alone 0.85 ≥
+>   combined 0.85) and has been dropped from the manuscript; no combination-improvement claim is made.
+
 *Prepared 2026-06-15. This document was written **after** a verification pass against the raw data files, not from memory. Every quantitative claim is tagged:*
 
 - **[V]** = recomputed from the data files in this session and matches.

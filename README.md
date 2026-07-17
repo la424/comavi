@@ -91,10 +91,11 @@ Two external dependencies are **not** bundled (see "Inputs"):
 All three share one engine; they differ only in input and in whether external
 tools are layered on.
 
-**1. Benchmark** (44 variants / 11 PPI systems)
+**1. Benchmark** (61-variant canonical set: 49 PPI across 13 complexes + 12 BRCA1-BRCT)
 ```bash
 export FOLDX_BINARY=/path/to/foldx
-python scripts/run_live.py          # -> results/mavis_v7_results.csv
+python scripts/run_live.py          # -> results/mavis_v7_results.csv (PPI systems)
+# BRCT supplement + VWF/CFH fold-neutral interface additions: see ledger §10, §12
 # then concordance + evaluation (see scripts/apply_concordance_v5.py --help and docs/)
 ```
 
