@@ -7,7 +7,7 @@ Usage:
 
     results = run_pipeline(
         configs=build_benchmark_config(),
-        variants_csv="benchmark_variants_v5.csv",
+        variants_csv="inputs/raw/benchmark_variants_v5.csv",
         structure_dir="structures/",
         preprocessed_dir="processed/",
         foldx_binary="/path/to/foldx",

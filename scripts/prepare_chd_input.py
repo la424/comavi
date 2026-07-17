@@ -21,8 +21,8 @@ further dedup is applied here. (If you ever start from the 165 pre-dedup file, d
 
 Usage:
     python3 prepare_chd_input.py \
-        --in  variants_with_alphamissense_and_franklin_expanded.csv \
-        --out chd_input_per_system.csv
+        --in  inputs/chd/variants_with_alphamissense_and_franklin_expanded.csv \
+        --out inputs/chd/chd_input_per_system.csv
 """
 
 import argparse
@@ -115,8 +115,8 @@ def prepare(in_path, out_path, configs):
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--in", dest="in_path",
-                    default="variants_with_alphamissense_and_franklin_expanded.csv")
-    ap.add_argument("--out", dest="out_path", default="chd_input_per_system.csv")
+                    default="inputs/chd/variants_with_alphamissense_and_franklin_expanded.csv")
+    ap.add_argument("--out", dest="out_path", default="inputs/chd/chd_input_per_system.csv")
     args = ap.parse_args()
 
     # import the package config (adjust path/import as needed in your env)

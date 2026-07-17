@@ -13,15 +13,17 @@ import os
 import sys
 from pathlib import Path
 
-# Make the bundled mavis_v7 package importable when run from the repo root.
-sys.path.insert(0, str(Path(__file__).resolve().parent / "scripts"))
+# Make the bundled mavis_v7 package importable. This script lives in scripts/,
+# alongside the mavis_v7 package. Run it from the repository root:
+#   python scripts/run_chd.py
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from mavis_v7.build_chd_config import build_chd_config
 from mavis_v7.pipeline import run_pipeline
 
 res = run_pipeline(
     configs=build_chd_config(),
-    variants_csv=Path('chd_input_final.csv'),
+    variants_csv=Path('inputs/chd/chd_input_final.csv'),
     structure_dir=Path('structures'),
     preprocessed_dir=Path('processed'),
     output_dir=Path('results/chd_rerun'),

@@ -26,7 +26,7 @@ FOLDX = Path(os.environ.get("FOLDX_BINARY", "foldx"))
 
 results = run_pipeline(
     configs=build_benchmark_config(),
-    variants_csv=Path('benchmark_variants_v5.csv'),
+    variants_csv=Path('inputs/raw/benchmark_variants_v5.csv'),
     structure_dir=Path('structures'),
     preprocessed_dir=Path('processed'),
     output_dir=Path('results'),

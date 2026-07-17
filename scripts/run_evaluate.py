@@ -18,6 +18,13 @@ from pathlib import Path
 import sys
 import pandas as pd
 
+# Make the bundled mavis_v7 package importable regardless of the caller's cwd
+# (e.g. when invoked as a subprocess by verification/verify_stage6.py). This
+# script lives in scripts/, alongside the mavis_v7 package.
+_THIS_DIR = Path(__file__).resolve().parent
+if str(_THIS_DIR) not in sys.path:
+    sys.path.insert(0, str(_THIS_DIR))
+
 from mavis_v7.evaluation import run_full_evaluation
 
 

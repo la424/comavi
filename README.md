@@ -14,6 +14,23 @@ structures, runs MAVIS, and shows per-variant mechanism cards.
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/la424/mavis/blob/main/notebooks/MAVIS_colab.ipynb)
 
+## Start here
+
+New to this repository? You don't need to run anything to see what MAVIS produces.
+
+1. **See the results at a glance** — open [`reference_outputs/MAVIS_results_summary.xlsx`](reference_outputs/MAVIS_results_summary.xlsx),
+   an 11-sheet workbook with the per-variant calls, the benchmark metrics, and the
+   tier gradient. A narrative version is in `reference_outputs/MAVIS_results_summary.docx`.
+2. **See the figures** — the five manuscript figures are in [`figures/`](figures/),
+   with a one-line description of each in [`figures/README.md`](figures/README.md).
+3. **See the underlying data** — every scored variant is in
+   [`reference_outputs/scored_61var_canonical.csv`](reference_outputs/scored_61var_canonical.csv)
+   (the canonical 61-variant benchmark).
+4. **Want the full method and provenance?** — `docs/MAVIS_v7_canonical_benchmark_ledger.md`
+   is the authoritative record; `docs/MAVIS_results_synthesis.md` is the plain-language walkthrough.
+5. **Want to run it?** — jump to [Installation](#installation) and [The three pipelines](#the-three-pipelines),
+   or try the browser Colab above (no install).
+
 ## What it does
 
 For each missense variant, MAVIS computes a **three-axis ΔΔG** profile against
@@ -41,6 +58,7 @@ with literature-grounded structural expectations.
 ## Repository layout
 
 ```
+run.py                   generic runner — score ANY genes from a YAML config (main entry point)
 scripts/                 core engine + drivers
   mavis_v7/              the MAVIS package (config, foldx_runner, mechanism,
                           evaluation, metrics, concordance, pipeline, ...)
@@ -48,23 +66,27 @@ scripts/                 core engine + drivers
   apply_concordance_v5.py   four-way concordance (external tools)
   build_report.py        spreadsheet report
   mavis_v7_baseline_correct.py   baseline-correction step (see docs/)
-run.py                   generic runner — score ANY genes from a YAML config
-new_system.py            scaffold a YAML systems block for new genes
-run_chd.py               CHD pipeline driver
-prepare_chd_input.py     builds CHD variant input
+  new_system.py          scaffold a YAML systems block for new genes
+  run_chd.py             CHD pipeline driver (Paper 2)
+  prepare_chd_input.py   builds CHD variant input (Paper 2)
 configs/                 YAML systems configs (chd + benchmark worked examples)
-benchmark_variants_v5.csv   44-variant PPI benchmark input (run_live.py)
-benchmark_variants_v6.csv   56-variant set = the 44 PPI + 12 BRCA1-BRCT supplement
-reference_outputs/scored_61var_canonical.csv
-                         61-variant canonical set = v6 (56) + VWF A1-GPIba and
-                          CFH FH1-4-C3b fold-neutral interface disruptors (see ledger §12)
-chd_input_final.csv      CHD variant input
-inputs/                  cached intermediates for the no-FoldX self-test + AM table
-reference_outputs/       canonical result files: comprehensive CSVs, collapsed CHD,
-                          plus MAVIS_results_summary.xlsx (11-sheet overview) + .docx narrative
+figures/                 the five manuscript figures + figures/README.md index
+inputs/
+  raw/                   benchmark variant inputs:
+                           benchmark_variants_v5.csv  (44-variant PPI set; run_live.py)
+                           benchmark_variants_v6.csv  (56-variant set = 44 PPI + 12 BRCA1-BRCT)
+  intermediate/          cached intermediates for the no-FoldX self-test
+  chd/                   CHD variant inputs (Paper 2)
+reference_outputs/       canonical result files:
+                           scored_61var_canonical.csv  (61-variant canonical benchmark =
+                             v6's 56 + VWF A1-GPIbα and CFH FH1-4-C3b fold-neutral
+                             interface disruptors; see ledger §12)
+                           MAVIS_results_summary.xlsx  (11-sheet overview) + .docx narrative
+                           concordance CSVs, collapsed CHD outputs
 data/                    reference inputs (UniProt domain ranges, variant–domain map)
 docs/                    benchmark ledger, results synthesis, methods, design notes,
                           CHECKPOINT_pre_publication.md
+supplement/              BRCA1-BRCT monomer-fold supplement (measured ΔG data + scoring)
 verification/            self-test that reproduces the headline metrics
 archive/                 development history — one-off derivation/grading scripts
                           and superseded data; NOT part of the operating pipeline
@@ -102,19 +124,19 @@ python scripts/run_live.py          # -> results/mavis_v7_results.csv (PPI syste
 **2. CHD — full (with external concordance)**
 ```bash
 export FOLDX_BINARY=/path/to/foldx
-python run_chd.py                                   # structural results
+python scripts/run_chd.py                            # structural results
 python scripts/apply_concordance_v5.py --help       # then fold in AlphaMissense + Franklin
 ```
 
 **3. CHD — structural only (multimer structural results, no external tools)**
 
-This is simply the structural stage on its own — run `run_chd.py` and stop. The
+This is simply the structural stage on its own — run `scripts/run_chd.py` and stop. The
 output `results/chd_rerun/chd_structural_results.csv` contains the three ΔΔG axes,
 the structural tier, and pLDDT gating, with **no** AlphaMissense / Franklin / ClinVar
 columns. Do not run `apply_concordance_v5.py`.
 ```bash
 export FOLDX_BINARY=/path/to/foldx
-python run_chd.py
+python scripts/run_chd.py
 ```
 
 ## Run it on your own genes
@@ -125,7 +147,7 @@ editing required.
 
 ```bash
 # scaffold a config block (prints the YAML + the structure files you need)
-python new_system.py --hub MYGENE --partner PARTNERA --partner PARTNERB
+python scripts/new_system.py --hub MYGENE --partner PARTNERA --partner PARTNERB
 
 # then run — auto-expands a simple gene,ref_aa,position,alt_aa CSV across systems
 export FOLDX_BINARY=/path/to/foldx

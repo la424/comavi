@@ -9,7 +9,7 @@ import argparse
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent / "scripts"))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from mavis_v7.config_io import scaffold_system_yaml
 
 
