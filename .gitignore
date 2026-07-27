@@ -32,3 +32,6 @@ _work/
 # Logs and archives
 *.log
 *.tar.gz
+
+# self-test / example run byproducts
+verification_output/

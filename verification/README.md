@@ -6,12 +6,20 @@ re-running the ~24–48 h structural stage.
 
 ## Run it
 
+From the repository root:
+
 ```bash
-python verify_stage6.py
+python verification/verify_stage6.py \
+  --intermediate inputs/intermediate/mavis_v7_results_with_nbhd.csv \
+  --am inputs/AM_variants_mavis_mechanism_test.xlsx \
+  --scripts-dir scripts
 ```
 
-`verify_stage6.py` consumes a cached intermediate in `../inputs/intermediate/`
-(`mavis_v7_results_with_nbhd.csv`; pass a different one with `--intermediate`),
+All three arguments are **required** — the script has no defaults and will exit with a
+usage error if invoked bare. Expected result: `11/11` checks `[ OK ]`.
+
+`verify_stage6.py` consumes the cached intermediate passed via `--intermediate`
+(`inputs/intermediate/mavis_v7_results_with_nbhd.csv`),
 subprocess-calls the operating concordance + evaluation scripts
 (`scripts/apply_concordance_v5.py`, `scripts/run_evaluate.py`), and checks the
 reproduced `structural_agreement` and `mech_consistency` at all five thresholds

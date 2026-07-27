@@ -242,3 +242,64 @@ Hb binding ρ = 0.90 (n=7, p=0.037).
 - FoldX run packages: `1SQ0` (VWF A1–GPIbα), `2WII` trimmed (CFH FH1-4–C3b, 15 Å of chain C).
 - Regenerated main figures on the 61-set: F2 (headline SA/MC sweep + tier gradient),
   F3 (per-axis competency + mechanism-class), F5 (AlphaMissense vs tier).
+
+## 14. Per-axis count definitions — reconciliation (authoritative)
+
+Three different per-axis triples circulate in the project documents and drafts. **All three are
+arithmetically correct; they count different things.** This section fixes the definitions and gives
+the canonical values, each reproduced by loading `scripts/apply_concordance_v5.py` and calling its
+own `_operative_axis` / `_axis_check` on `reference_outputs/scored_61var_canonical.csv` (t = 2.5).
+
+| # | Quantity | mono | cx-fold | binding | Definition |
+|---|---|---|---|---|---|
+| A | **Annotated destabilizers** | **10** | **19** | **15** | Rows whose `expected_ddg_*` ground-truth token is `destab`. No prediction-side gating. This is a property of the *curated benchmark*, not of any pipeline run. |
+| B | **Gradeable axes** | **16** | **25** | **32** | Axes that enter the structural-agreement denominator: prediction present, axis-evaluability gate passed, and the prediction's internal CI95 excludes 0. Includes neutral and stabilizing controls. Sums with the tier axis (48) to the headline denominator **121**. |
+| C | **Graded disruptors** | **2** | **10** | **13** | Intersection of A and B — annotated destabilizers that are *also* gradeable at t = 2.5. |
+
+### Which to quote where
+
+- **§2.2 / Methods, describing benchmark composition** → **A (10 / 19 / 15)**. The claim is "the
+  curated set contains this many disruptors per axis," which is threshold-independent.
+- **§3.3 / per-axis agreement table** → **B (16 / 25 / 32)**, already correct in the manuscript, with
+  the existing prose explaining that B exceeds C because the denominator includes controls.
+- **C is not a headline quantity** and should not appear as "the axis is supported by n disruptors" —
+  it is threshold-dependent and, on the monomer axis, misleadingly small for a reason that is an
+  artifact of file layout, not of the science (below).
+
+### The monomer-axis trap
+
+Column `ddg_monomer_distinguishable_internal_from_0` is **NaN for all 12 BRCT rows** in the canonical
+CSV: BRCT monomer ΔΔG was computed in the v6 supplement run
+(`supplement/brct/brct_foldx_ddg.csv`, n = 5 replicates with per-run values and SD) and merged in
+without that derived CI column. Two consequences:
+
+1. **`bool(NaN)` is `True` in Python.** A naive gate check written as `bool(row.get(col, False))`
+   silently *admits* all 12 BRCT rows, giving monomer gradeable = 28 and disruptors = 10. The shipped
+   `compute_structural_agreement` reads the value with a `False` default, so a genuinely missing
+   column is excluded and monomer gradeable = **16** — which is what the manuscript table reports and
+   what the headline 92/121 decomposition uses. Any reimplementation of the gating must reproduce the
+   `False`-default semantics; a plain truthiness test does not.
+2. **Definition C therefore reads 2 on the monomer axis**, i.e. the pre-BRCT count — not because the
+   BRCT expansion failed, but because the CI column those rows would need is absent from the canonical
+   file. The expansion's evidentiary weight is carried by the measured-ΔΔG anchor (ρ = 0.72, n = 10
+   core/fold sites, p = 0.019) and the 0.83 categorical accuracy, both computed in the supplement,
+   not by C. **This is the reason C must not be quoted as arm support.**
+
+Optional cleanup (not required for the paper, and it would touch a frozen number): backfill
+`ddg_monomer_distinguishable_internal_from_0` for the BRCT rows from the per-replicate SDs already in
+`brct_foldx_ddg.csv`, which would move monomer gradeable 16 → 28 and shift the headline denominator.
+**Do not do this before submission** — the frozen 92/121 = 0.760 is computed on the current file.
+
+### BRCT destabilizer-count double-threshold (verified, not a defect)
+
+`supplement/brct/brct_foldx_concordance.csv` has `measured_destab` **True for 4** rows while the
+canonical CSV annotates **8** BRCT rows `destab`. Both are correct at their own documented cut:
+
+- `measured_destab` uses the **2.5 kcal/mol** cut of the standalone classification table
+  (sensitivity/specificity 0.75, TP 3 / FN 1 / FP 2 / TN 6) — 4 of 12 measured ΔΔG_U–F values exceed 2.5.
+- `expected_ddg_monomer` uses the pipeline's **primary 1.0 kcal/mol** operating point — 8 of 12 exceed 1.0.
+
+Verified: applying `destab if measured > 1.0, stab if < −1.0, else neutral` reproduces all 12
+canonical `expected_ddg_monomer` tokens **exactly** (8 destab / 3 neutral / 1 stab, no mismatches).
+The four rows that differ (V1808A 2.40, V1665M 2.22, R1751Q 1.57, L1664P 1.18) are the
+threshold-borderline band already discussed in `brct_foldx_concordance.md`.

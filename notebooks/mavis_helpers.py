@@ -13,6 +13,11 @@ from pathlib import Path
 
 AA1 = set("ACDEFGHIKLMNPQRSTVWY")
 
+# Bound out of the f-string on line ~408: an escape inside an f-string expression
+# is a SyntaxError before Python 3.12, and this module is meant to import on any
+# supported interpreter, not only Colab's.
+_EMDASH = "\u2014"
+
 # --------------------------------------------------------------------------
 # 1. Variant parsing
 # --------------------------------------------------------------------------
@@ -405,7 +410,7 @@ def render_cards_html(df):
                            f'<td style="padding:3px 8px">{_fmt(r["ddg_fold"], r["ddg_fold_sd"])}</td>'
                            f'<td style="padding:3px 8px">{_fmt(r["ddg_binding"], r["ddg_binding_sd"])}</td>'
                            f'<td style="padding:3px 8px">{_plddt_note(r["interface_plddt"])}</td>'
-                           f'<td style="padding:3px 8px">{r["mechanism"] or "\u2014"}</td></tr>')
+                           f'<td style="padding:3px 8px">{r["mechanism"] or _EMDASH}</td></tr>')
             out.append('</table>')
         out.append('</div>')
     out.append('</div>')
@@ -440,3 +445,178 @@ def run_concordance(structural_csv, annotations_df, outdir, scripts_dir, python_
     proc = subprocess.run(cmd, capture_output=True, text=True)
     master = outdir / "mavis_v7_concordance.csv"
     return (master if master.exists() else None), proc
+
+# --------------------------------------------------------------------------
+# 12. RCSB PDB search — find an EXPERIMENTAL complex before predicting one
+# --------------------------------------------------------------------------
+# An experimental multimer, where one exists, is strictly better input than a
+# predicted one: no pLDDT gating needed on the interface, and the benchmark's
+# strongest systems (2HHB, 6XI7, 1JM7, 1JNX) are all experimental. This block
+# queries the RCSB Search + Data APIs so users check for one first.
+
+RCSB_SEARCH_URL = "https://search.rcsb.org/rcsbsearch/v2/query"
+RCSB_DATA_URL   = "https://data.rcsb.org/rest/v1/core/entry"
+RCSB_FILE_URL   = "https://files.rcsb.org/download"
+
+
+def _rcsb_post(query, timeout=30):
+    """POST a search query. Returns {} when RCSB reports no hits.
+
+    RCSB answers a zero-hit query with HTTP 204 and an EMPTY body, which makes
+    json.load raise JSONDecodeError rather than signalling "no results" — so the
+    body is read first and an empty one is normalised to {}.
+    """
+    req = urllib.request.Request(
+        RCSB_SEARCH_URL,
+        data=json.dumps(query).encode(),
+        headers={"Content-Type": "application/json"},
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as fh:
+            body = fh.read()
+    except urllib.error.HTTPError as exc:
+        if exc.code in (204, 404):
+            return {}
+        raise
+    if not body or not body.strip():
+        return {}
+    return json.loads(body)
+
+
+def rcsb_search_complex(genes, organism_id=9606, max_hits=25, timeout=30):
+    """PDB entries whose polymer entities cover EVERY gene in `genes`.
+
+    Each gene contributes a full-text clause ANDed together, so a hit must
+    mention all of them; entity-level gene-name matching in RCSB is not
+    reliable enough across synonyms to use alone. Returns a list of PDB IDs
+    ranked by RCSB relevance score. Network access to search.rcsb.org required.
+    """
+    genes = [g for g in (genes or []) if str(g).strip()]
+    if not genes:
+        return []
+    nodes = [{"type": "terminal", "service": "full_text",
+              "parameters": {"value": str(g).strip()}} for g in genes]
+    nodes.append({"type": "terminal", "service": "text", "parameters": {
+        "attribute": "rcsb_entry_info.polymer_entity_count_protein",
+        "operator": "greater_or_equal", "value": max(2, len(genes))}})
+    if organism_id:
+        nodes.append({"type": "terminal", "service": "text", "parameters": {
+            "attribute": "rcsb_entity_source_organism.taxonomy_lineage.id",
+            "operator": "exact_match", "value": str(organism_id)}})
+    query = {"query": {"type": "group", "logical_operator": "and", "nodes": nodes},
+             "return_type": "entry",
+             "request_options": {"paginate": {"start": 0, "rows": max_hits},
+                                 "results_verbosity": "compact"}}
+    out = _rcsb_post(query, timeout=timeout)
+    ids = out.get("result_set", [])
+    return [i if isinstance(i, str) else i.get("identifier") for i in ids]
+
+
+def rcsb_entry_summary(pdb_id, timeout=30):
+    """Method / resolution / chain composition for one PDB entry."""
+    url = f"{RCSB_DATA_URL}/{pdb_id.upper()}"
+    with urllib.request.urlopen(url, timeout=timeout) as fh:
+        d = json.load(fh)
+    info = d.get("rcsb_entry_info", {}) or {}
+    res = info.get("resolution_combined") or []
+    return {
+        "pdb_id": pdb_id.upper(),
+        "title": (d.get("struct", {}) or {}).get("title", ""),
+        "method": ", ".join(m.get("method", "") for m in (d.get("exptl") or [])),
+        "resolution_A": (res[0] if res else None),
+        "n_protein_entities": info.get("polymer_entity_count_protein"),
+        "n_chains": info.get("deposited_polymer_entity_instance_count"),
+        "year": (d.get("rcsb_accession_info", {}) or {}).get("initial_release_date", "")[:4],
+    }
+
+
+def rcsb_entry_genes(pdb_id, timeout=30):
+    """Gene names actually present as polymer entities in a PDB entry.
+
+    The full-text search clause in rcsb_search_complex matches anywhere in the
+    entry record — including the citation title — so an entry can be returned
+    for a gene it does not contain. This reads the entry's polymer entities and
+    returns the union of their gene names and descriptions, uppercased, so
+    coverage can be verified rather than assumed.
+    """
+    url = f"{RCSB_DATA_URL}/{pdb_id.upper()}"
+    with urllib.request.urlopen(url, timeout=timeout) as fh:
+        entry = json.load(fh)
+    ids = (entry.get("rcsb_entry_container_identifiers", {}) or {}).get(
+        "polymer_entity_ids", []) or []
+    names = set()
+    for eid in ids:
+        eurl = f"https://data.rcsb.org/rest/v1/core/polymer_entity/{pdb_id.upper()}/{eid}"
+        try:
+            with urllib.request.urlopen(eurl, timeout=timeout) as fh:
+                ent = json.load(fh)
+        except Exception:
+            continue
+        for g in (ent.get("rcsb_entity_source_organism") or []):
+            for nm in (g.get("rcsb_gene_name") or []):
+                if nm.get("value"):
+                    names.add(str(nm["value"]).upper())
+        desc = ((ent.get("rcsb_polymer_entity", {}) or {}).get("pdbx_description") or "")
+        if desc:
+            names.add(desc.upper())
+    return names
+
+
+def _covers_genes(entry_names, genes):
+    """True when every gene appears in the entry's own entity names."""
+    blob = " | ".join(sorted(entry_names))
+    return all(str(g).strip().upper() in blob for g in genes if str(g).strip())
+
+
+def rcsb_find_and_rank(genes, organism_id=9606, max_hits=25, inspect=8, timeout=30,
+                       verify_entities=True):
+    """Search RCSB for a complex covering `genes`, then rank candidates.
+
+    Ranking favours X-ray/cryo-EM over NMR/predicted, better resolution, and
+    the smallest chain count that still covers the genes (fewer extraneous
+    chains = cheaper FoldX and a cleaner interface). Returns list of dicts.
+    """
+    hits = rcsb_search_complex(genes, organism_id=organism_id,
+                               max_hits=max_hits, timeout=timeout)
+    rows = []
+    for n, pid in enumerate(hits[:inspect], start=1):
+        try:
+            r = rcsb_entry_summary(pid, timeout=timeout)
+        except Exception:
+            continue
+        r["rcsb_relevance_rank"] = n
+        if verify_entities:
+            try:
+                r["entity_genes_verified"] = _covers_genes(
+                    rcsb_entry_genes(pid, timeout=timeout), genes)
+            except Exception:
+                r["entity_genes_verified"] = None
+        rows.append(r)
+    if verify_entities:
+        confirmed = [r for r in rows if r.get("entity_genes_verified")]
+        if confirmed:
+            rows = confirmed
+
+    def _key(r):
+        # Chain count leads: every extraneous chain costs FoldX runtime and
+        # dilutes the interface of interest, so the SMALLEST entry that still
+        # covers the genes is the better pipeline input even at worse
+        # resolution. A 2-chain heterodimer beats the same pair embedded in a
+        # 13-chain assembly. Method and resolution break ties.
+        meth = (r.get("method") or "").upper()
+        m_rank = 0 if ("X-RAY" in meth or "ELECTRON MICROSCOPY" in meth) else 1
+        return (r.get("n_chains") or 99, m_rank, r.get("resolution_A") or 99.0)
+
+    rows.sort(key=_key)
+    return rows
+
+
+def fetch_pdb_entry(pdb_id, out_dir, fmt="pdb", timeout=120):
+    """Download a PDB entry coordinate file from RCSB. Returns local Path."""
+    out_dir = Path(out_dir); out_dir.mkdir(parents=True, exist_ok=True)
+    ext = "cif" if fmt == "cif" else "pdb"
+    dest = out_dir / f"{pdb_id.upper()}.{ext}"
+    urllib.request.urlretrieve(f"{RCSB_FILE_URL}/{pdb_id.upper()}.{ext}", dest)
+    if dest.stat().st_size == 0:
+        raise RuntimeError(f"empty download for {pdb_id}")
+    return dest

@@ -28,7 +28,10 @@ New to this repository? You don't need to run anything to see what MAVIS produce
    (the canonical 61-variant benchmark).
 4. **Want the full method and provenance?** — `docs/MAVIS_v7_canonical_benchmark_ledger.md`
    is the authoritative record; `docs/MAVIS_results_synthesis.md` is the plain-language walkthrough.
-5. **Want to run it?** — jump to [Installation](#installation) and [The three pipelines](#the-three-pipelines),
+5. **Want to run it?** — start with [`examples/`](examples/README.md): a complete
+   worked input set (KRAS–RAF1, experimental structure 6XI7) that validates end to
+   end **without a FoldX licence**, plus the frozen values it should reproduce.
+   Then see [Installation](#installation) and [The three pipelines](#the-three-pipelines),
    or try the browser Colab above (no install).
 
 ## What it does
@@ -70,6 +73,9 @@ scripts/                 core engine + drivers
   run_chd.py             CHD pipeline driver (Paper 2)
   prepare_chd_input.py   builds CHD variant input (Paper 2)
 configs/                 YAML systems configs (chd + benchmark worked examples)
+examples/                runnable worked example + its frozen expected output
+  kras_craf/               config, variants, RCSB fetch script, reference_output.csv,
+                           compare_to_reference.py (see examples/README.md)
 figures/                 the five manuscript figures + figures/README.md index
 inputs/
   raw/                   benchmark variant inputs:
@@ -142,8 +148,17 @@ python scripts/run_chd.py
 ## Run it on your own genes
 
 MAVIS isn't limited to the genes above — it's config-driven. To score variants in your own
-proteins, describe your complexes in a YAML file and supply AlphaFold structures; no Python
+proteins, describe your complexes in a YAML file and supply structures; no Python
 editing required.
+
+**Check the PDB before you predict.** Where an experimental multimer of your hub and
+partner exists it is the better input: the interface is measured rather than predicted,
+so no pLDDT confidence gating applies to the binding axis. Several benchmark systems
+run on experimental structures for exactly this reason (2HHB, 6XI7, 1JM7, 1SQ0). The
+Colab notebook's *Step 2b-0* searches RCSB for you and verifies that candidate entries
+actually contain both genes as polymer entities; the same logic is importable as
+`notebooks/mavis_helpers.rcsb_find_and_rank(["HUB", "PARTNER"])`. If nothing is
+deposited — common for transcription-factor complexes — predict one with AlphaFold.
 
 ```bash
 # scaffold a config block (prints the YAML + the structure files you need)
@@ -162,8 +177,18 @@ walkthrough: **docs/adding_your_own_genes.md**.
 ## Quick self-test (no FoldX required)
 
 The framework's headline metrics can be reproduced from cached intermediates
-without running FoldX. See **`verification/README.md`** for the exact command; it
-runs `verification/verify_stage6.py` against `inputs/intermediate/`.
+without running FoldX, AlphaFold structures, or network access. From the
+repository root:
+
+```bash
+python verification/verify_stage6.py \
+  --intermediate inputs/intermediate/mavis_v7_results_with_nbhd.csv \
+  --am inputs/AM_variants_mavis_mechanism_test.xlsx \
+  --scripts-dir scripts
+```
+
+All three arguments are required. Expected result: `11/11` checks `[ OK ]`.
+See **`verification/README.md`** for what each check covers.
 
 ## Benchmark results
 
@@ -214,9 +239,16 @@ by a Kids First / dbGaP Data Use Certification. Only distinct-variant-level,
 de-identified data are included in this repository - no per-individual genotypes,
 allele counts, or sample identifiers.
 
-> dbGaP study accession: _to be added_ - insert the phs###### for the specific
-> Kids First CHD dataset, and verify the exact acknowledgment wording your Data
-> Use Certification requires.
+**dbGaP study accession: `phs001138`** — "Kids First Pediatric Research Program in
+Congenital Heart Disease," the Kids First subset of the Pediatric Cardiac Genomics
+Consortium (PCGC) study `phs001194`.
+
+> **Verify before submission.** Confirm `phs001138` (and its version suffix) is the
+> accession named on your own Data Use Certification, and confirm the acknowledgment
+> wording the DUC requires. PCGC publishes dataset-specific acknowledgment templates;
+> the Kids First CHD template requires the phs accession number to be inserted
+> explicitly, and manuscripts not prepared in collaboration with PCGC investigators
+> must carry the PCGC non-endorsement sentence in addition to the Kids First statement.
 
 ## Reproducing the full study
 

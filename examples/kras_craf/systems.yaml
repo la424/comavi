@@ -1,0 +1,30 @@
+# Minimal single-system MAVIS config, extracted verbatim from
+# configs/benchmark_systems.yaml (system `kras_craf`) so this example scores
+# identically to the benchmark row it reproduces.
+#
+# Structure provenance: 6XI7 is an EXPERIMENTAL x-ray structure (1.95 A) of
+# wild-type KRAS bound to the RAF1 RBD-CRD, so the interface geometry is
+# measured, not predicted, and no pLDDT gating applies to the binding axis.
+# Fetch it with fetch_structures.py (RCSB, no license required).
+systems:
+  kras_craf:
+    structure_type: xray
+    pdb_file: 6XI7_processed.pdb
+    source_file: 6XI7.pdb
+    hetatm_keep_per_chain:
+      B:
+      - ZN
+    hetatm_strip_all:
+    - GNP
+    - MG
+    - SO4
+    - CL
+    - HOH
+    preprocessing_notes: GNP removed (FoldX cannot handle). KRAS G12 monomer DDG low-reliability.
+    genes:
+      kras:
+        chain: A
+        monomer_pdb: fold_kras_model_0.pdb
+      raf1:
+        chain: B
+        monomer_pdb: fold_raf1_model_0.pdb
