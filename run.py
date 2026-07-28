@@ -20,6 +20,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent / "scripts"))
 import pandas as pd
 from mavis_v7.config import validate_config
 from mavis_v7.config_io import load_config, autofanout
+from mavis_v7.numbering import (check_variant_numbering, format_report,
+                                check_structure_provenance)
 
 
 def main():
@@ -35,6 +37,9 @@ def main():
                     help="CSV already has a 'system' column; do not auto-expand")
     ap.add_argument("--dry-run", action="store_true",
                     help="Load config, validate structures, fan out variants - but do not run FoldX")
+    ap.add_argument("--skip-numbering-check", action="store_true",
+                    help="Do not verify that each variant's ref_aa sits where the configured "
+                         "offsets say it does. Not recommended: a wrong offset is silent.")
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args()
 
@@ -84,6 +89,50 @@ def main():
     expanded_path = out / "variants_expanded.csv"
     expanded.to_csv(expanded_path, index=False)
     print(f"Wrote expanded variants -> {expanded_path}")
+
+    # Residue-identity check: is each variant's ref_aa actually at the position the
+    # configured offsets resolve to? A wrong offset does not raise on its own -- FoldX
+    # mutates whatever residue it is handed -- so this is checked before any FoldX time
+    # is spent, on the dry-run path too.
+    if args.skip_numbering_check:
+        print("\nResidue-identity check SKIPPED (--skip-numbering-check).")
+    else:
+        # Load through the pipeline's own loader, not the raw expanded frame: it
+        # lowercases gene names, uppercases ref_aa, and derives position_mono /
+        # position_multi. Checking the raw frame would compare uppercase CSV gene
+        # names against lowercase config keys, resolve nothing, and report a
+        # vacuous pass.
+        from mavis_v7.variant_loading import load_variants
+        num_ok, num_issues, num_counts = check_variant_numbering(
+            configs, load_variants(expanded_path, configs, verbose=False),
+            structures, out / "_preprocessed")
+        print("\n" + format_report(num_ok, num_issues, num_counts))
+        if not num_ok:
+            print("\nEvery mismatch above is one of: wrong monomer_offset, wrong "
+                  "multimer_offset, wrong chain, or a structure that does not span "
+                  "the position. Fix the config, or re-run with "
+                  "--skip-numbering-check to score anyway.")
+            sys.exit(3)
+
+        # Residue identity alone cannot catch a predicted/experimental mix-up: the
+        # position a wrong offset lands on often holds the same amino acid, which is
+        # exactly why that failure is silent. The B-factor column separates the two
+        # sources unambiguously (pLDDT is per-residue, temperature factors are
+        # per-atom), and it is also the column the pLDDT gate reads.
+        prov_ok, prov_msgs = check_structure_provenance(configs, structures)
+        if prov_msgs:
+            print("\nStructure-provenance check:")
+            for m in prov_msgs:
+                print("  " + m)
+        if not prov_ok:
+            print("\nA structure's source does not match what its spec declares. "
+                  "Both the numbering offsets and the pLDDT gate depend on that "
+                  "being right. Fix the config or the structure files, or re-run "
+                  "with --skip-numbering-check to score anyway.")
+            sys.exit(3)
+        if prov_ok and not prov_msgs:
+            print("Structure-provenance check passed: all structure sources match "
+                  "their declared structure_type.")
 
     if args.dry_run:
         print("\n[dry-run] Config valid and variants expanded. Stopping before FoldX.")
