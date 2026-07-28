@@ -29,7 +29,7 @@ New to this repository? You don't need to run anything to see what MAVIS produce
 4. **Want the full method and provenance?** — `docs/MAVIS_v7_canonical_benchmark_ledger.md`
    is the authoritative record; `docs/MAVIS_results_synthesis.md` is the plain-language walkthrough.
 5. **Want to run it?** — start with [`examples/`](examples/README.md): a complete
-   worked input set (KRAS–RAF1, experimental structure 6XI7) that validates end to
+   worked input set (HBB–HBA1 sickle-cell E6V, x-ray 2HHB) that validates end to
    end **without a FoldX licence**, plus the frozen values it should reproduce.
    Then see [Installation](#installation) and [The three pipelines](#the-three-pipelines),
    or try the browser Colab above (no install).
@@ -74,7 +74,7 @@ scripts/                 core engine + drivers
   prepare_chd_input.py   builds CHD variant input (Paper 2)
 configs/                 YAML systems configs (chd + benchmark worked examples)
 examples/                runnable worked example + its frozen expected output
-  kras_craf/               config, variants, RCSB fetch script, reference_output.csv,
+  hemoglobin_dimer/        config, variants, structure-fetch script, reference_output.csv,
                            compare_to_reference.py (see examples/README.md)
 figures/                 the five manuscript figures + figures/README.md index
 inputs/

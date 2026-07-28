@@ -1,0 +1,34 @@
+# Minimal single-system MAVIS config, extracted verbatim from
+# configs/benchmark_systems.yaml (system `hemoglobin_dimer`) so this example
+# scores identically to the benchmark row it reproduces.
+#
+# Structure provenance -- note the two axes use DIFFERENT sources, deliberately:
+#   complex axis : chains A+B of 2HHB (experimental x-ray, 1.74 A). Measured
+#                  interface, so no pLDDT gating applies to the binding axis.
+#   monomer axis : AlphaFold DB models of HBB (P68871) and HBA1 (P69905).
+#
+# `monomer_offset: -1` is calibrated to the AlphaFold numbering, which retains
+# the initiator Met that mature HBB numbering drops. CSV position 6 therefore
+# maps to model residue 7 = Glu. Do NOT substitute crystal chains for the
+# monomer models: crystal chain B residue 7 is ALSO a glutamate, so the run
+# would silently score Glu7 instead of Glu6 and still look plausible.
+# fetch_structures.py gets both sources correctly; neither needs a licence.
+systems:
+  hemoglobin_dimer:
+    structure_type: xray
+    pdb_file: 2HHB_dimer_AB_processed.pdb
+    source_file: 2HHB_dimer_AB.pdb
+    hetatm_strip_all:
+    - HEM
+    - HOH
+    - PO4
+    preprocessing_notes: HEM removed. E6V >8A from HEM — geometry unaffected.
+    genes:
+      hbb:
+        chain: B
+        monomer_pdb: fold_hbb_model_0.pdb
+        monomer_offset: -1
+      hba1:
+        chain: A
+        monomer_pdb: fold_hba1_model_0.pdb
+        monomer_offset: -1
