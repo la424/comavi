@@ -35,3 +35,6 @@ _work/
 
 # self-test / example run byproducts
 verification_output/
+
+# Release archives staged for Zenodo upload (not tracked)
+dist/
