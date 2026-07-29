@@ -26,7 +26,7 @@ Usage:
       --full      /tmp/chd_FIXED_regen.csv \
       --collapsed reference_outputs/chd_concordance_collapsed.csv \
       --out       reference_outputs/chd_concordance_collapsed.csv \
-      --xlsx      reference_outputs/MAVIS_CHD_concordance_collapsed.xlsx
+      --xlsx      reference_outputs/COMAVI_CHD_concordance_collapsed.xlsx
 """
 import argparse
 import pandas as pd

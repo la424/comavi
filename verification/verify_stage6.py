@@ -9,7 +9,7 @@ file, without touching FoldX or the structural metrics computation.
 Compares output to expected v5 headline numbers.
 
 Usage:
-  python verify_stage6.py --intermediate /path/to/mavis_v7_results_with_nbhd.csv
+  python verify_stage6.py --intermediate /path/to/comavi_v7_results_with_nbhd.csv
 """
 import argparse
 import sys
@@ -28,12 +28,42 @@ EXPECTED_V5 = {
         't25': 0.761, 'tSAP': 0.750,
     },
     'threshold_stable': 28,
-    'level1_TPR_t10_MAVIS_full': 0.913,
+    'level1_TPR_t10_COMAVI_full': 0.913,
     'level1_TPR_t10_monomer_only': 0.391,
     'level3_HBB_pearson_r': 0.89,
     'level2_pathogenic_detection_t10': 24,
     'level2_pathogenic_gof_detection_t10': 5,
     'level2_benign_silent_t25': 7,
+}
+
+# Track C — canonical 61-variant release (reference_outputs/scored_61var_canonical.csv).
+#
+# These are the numbers the manuscript reports, and they are NOT covered by
+# EXPECTED_V5 above: that block dates from the 44-variant generation, whose
+# per-axis ground truth predates the tightened evidence standard (ledger §2-§4).
+# 14 of those 44 variants had ground-truth tokens changed in re-curation, so a
+# Track B pass says nothing about the released canonical numbers. Values below
+# are post the v7.1 `structurally_uncommitted` grading correction (ledger §15).
+EXPECTED_CANONICAL = {
+    'structural_agreement': {
+        't10': (87, 120), 't15': (93, 120), 't20': (92, 120),
+        't25': (92, 120), 'tSAP': (91, 120),
+    },
+    'mech_consistency': {
+        't10': 0.553, 't15': 0.660, 't20': 0.681,
+        't25': 0.723, 'tSAP': 0.734,
+    },
+    'mech_graded_n': 47,
+    # Four-way decomposition of the t=2.5 headline (ledger §13).
+    'axis_decomposition_t25': {
+        'monomer': (14, 16), 'fold': (20, 25),
+        'binding': (24, 32), 'tier': (34, 47),
+    },
+    # Tier pathogenicity gradient — carries no expected_mech_class term, so the
+    # v7.1 correction must leave it untouched.
+    'tier_gradient': [(14, 14), (13, 18), (7, 10), (3, 7)],
+    'n_ppi_rows': 49,
+    'n_brct_rows': 12,
 }
 
 TOLERANCE = 0.005  # within 0.5 percentage points
@@ -72,7 +102,126 @@ def run_concordance(input_csv, output_dir, scripts_dir, am_xlsx):
         print("STDERR:")
         print(result.stderr[-2000:])
         sys.exit(1)
-    return output_dir / 'mavis_v7_concordance.csv'
+    return output_dir / 'comavi_v7_concordance.csv'
+
+
+def verify_canonical(canonical_csv, scripts_dir):
+    """Track C — verify the released canonical 61-variant table.
+
+    There is no 61-variant *pipeline input* in the repo (the canonical table is
+    itself the released product), so this track cannot re-run the pipeline end
+    to end. Instead it re-derives the grading columns from the released table
+    using the pipeline's own functions and checks three things:
+
+      1. the re-derived grades reproduce the STORED columns exactly (guards
+         against the table drifting from the code that produced it);
+      2. the pooled headlines match EXPECTED_CANONICAL;
+      3. the tier gradient is unchanged (it must not depend on grading).
+
+    Two conventions are required and are easy to get wrong (ledger §15):
+      - discover_partners() over the wide released table also returns the
+        per-partner `_ci95_*` / `_distinguishable_*` columns as if they were
+        partner chains; they must be filtered out.
+      - grading applies to the 49 interaction rows only; the 12 BRCA1-BRCT
+        fold-expansion rows are excluded from interaction-axis grading.
+    """
+    sys.path.insert(0, str(scripts_dir))
+    import apply_concordance_v5 as ac
+
+    print("\n" + "=" * 70)
+    print("Track C verification (released canonical 61-variant table)")
+    print("=" * 70)
+
+    df = pd.read_csv(canonical_csv, low_memory=False)
+    results = []
+    MC_MAP = {'consistent': 1.0, 'partial': 0.5, 'inconsistent': 0.0}
+    tags = [t for t, _ in ac.THRESHOLD_SPECS]
+
+    partners = [p for p in ac.discover_partners(df)
+                if '_ci95_' not in p and '_distinguishable_' not in p]
+    ppi = df['expected_mech_class'].notna()
+
+    print(f"\n  rows: {len(df)}  PPI: {int(ppi.sum())}  BRCT: {int((~ppi).sum())}"
+          f"  partner chains: {len(partners)}")
+    results.append(check("n_ppi_rows", float(ppi.sum()),
+                         float(EXPECTED_CANONICAL['n_ppi_rows']), tol=0))
+    results.append(check("n_brct_rows", float((~ppi).sum()),
+                         float(EXPECTED_CANONICAL['n_brct_rows']), tol=0))
+
+    # --- 1. re-derive grading from the pipeline's own functions -------------
+    reder = df.copy()
+    reder.loc[ppi, 'expected_mech_class'] = reder[ppi].apply(
+        ac.derive_expected_mech_class, axis=1)
+    axes_by_idx = {i: ac.classify_axis_status(r) for i, r in reder.iterrows()}
+    for suf in tags:
+        grades = [
+            ac.grade_mechanism_consistency(
+                r, r.get(f'mech_{suf}'), r.get('expected_mech_class'),
+                axes_by_idx.get(r.name))[0]
+            for _, r in reder[ppi].iterrows()
+        ]
+        reder.loc[ppi, f'mech_consistency_{suf}'] = grades
+    for tag, t in ac.THRESHOLD_SPECS:
+        mt, ft, bt = ((t['monomer'], t['fold'], t['binding'])
+                      if isinstance(t, dict) else (float(t),) * 3)
+        sa = reder[ppi].apply(
+            lambda r, _m=mt, _f=ft, _b=bt:
+                ac.compute_structural_agreement(r, partners, _m, _f, _b), axis=1)
+        reder.loc[ppi, f'structural_agreement_n_{tag}'] = [x[0] for x in sa]
+        reder.loc[ppi, f'structural_agreement_d_{tag}'] = [x[1] for x in sa]
+
+    print("\n  re-derived grading reproduces stored columns:")
+    for tag in tags:
+        sn = (int(df[f'structural_agreement_n_{tag}'].fillna(0).sum()),
+              int(df[f'structural_agreement_d_{tag}'].fillna(0).sum()))
+        rn = (int(reder[f'structural_agreement_n_{tag}'].fillna(0).sum()),
+              int(reder[f'structural_agreement_d_{tag}'].fillna(0).sum()))
+        ok = sn == rn
+        print(f"    [{' OK ' if ok else 'FAIL'}] SA_{tag} stored {sn[0]}/{sn[1]}"
+              f" vs re-derived {rn[0]}/{rn[1]}")
+        results.append(ok)
+        smc = df[f'mech_consistency_{tag}'].map(MC_MAP).dropna()
+        rmc = reder[f'mech_consistency_{tag}'].map(MC_MAP).dropna()
+        ok = (len(smc) == len(rmc)) and abs(smc.mean() - rmc.mean()) < 1e-9
+        print(f"    [{' OK ' if ok else 'FAIL'}] MC_{tag} stored {smc.mean():.4f}"
+              f" (n={len(smc)}) vs re-derived {rmc.mean():.4f} (n={len(rmc)})")
+        results.append(ok)
+
+    # --- 2. pooled headlines ------------------------------------------------
+    print("\n  structural_agreement vs expected:")
+    for tag in tags:
+        en, ed = EXPECTED_CANONICAL['structural_agreement'][tag]
+        n = int(df[f'structural_agreement_n_{tag}'].fillna(0).sum())
+        d = int(df[f'structural_agreement_d_{tag}'].fillna(0).sum())
+        ok = (n, d) == (en, ed)
+        print(f"    [{' OK ' if ok else 'FAIL'}] SA_{tag}: {n}/{d} = {n/d:.4f}"
+              f" (expected {en}/{ed} = {en/ed:.4f})")
+        results.append(ok)
+
+    print("\n  mech_consistency vs expected:")
+    graded = df['mech_consistency_t25'].map(MC_MAP).dropna()
+    results.append(check("mech_graded_n", float(len(graded)),
+                         float(EXPECTED_CANONICAL['mech_graded_n']), tol=0))
+    for tag in tags:
+        vals = df[f'mech_consistency_{tag}'].map(MC_MAP).dropna()
+        results.append(check(f"mech_consistency_{tag}", float(vals.mean()),
+                             EXPECTED_CANONICAL['mech_consistency'][tag]))
+
+    # --- 3. tier gradient (must be untouched by grading) --------------------
+    print("\n  tier pathogenicity gradient (independent of expected_mech_class):")
+    sub = df[df['comavi_tier'].notna() & df['role'].notna()].copy()
+    sub['path'] = sub['role'].astype(str).str.startswith('pathogenic')
+    for i, tier in enumerate(['Tier 1', 'Tier 2', 'Tier 3', 'Tier 4']):
+        rows = sub[sub['comavi_tier'].astype(str) == tier]
+        got = (int(rows['path'].sum()), int(len(rows)))
+        exp = tuple(EXPECTED_CANONICAL['tier_gradient'][i])
+        ok = got == exp
+        pct = 100 * got[0] / got[1] if got[1] else 0
+        print(f"    [{' OK ' if ok else 'FAIL'}] {tier}: {got[0]}/{got[1]}"
+              f" ({pct:.0f}%)  expected {exp[0]}/{exp[1]}")
+        results.append(ok)
+
+    return results
 
 
 def run_evaluation(corrected_csv, output_dir, scripts_dir):
@@ -162,12 +311,12 @@ def verify_evaluation(eval_dir):
     l1_csv = eval_dir / 'level1_merged.csv'
     if l1_csv.exists():
         l1 = pd.read_csv(l1_csv)
-        full = l1[l1['classifier'] == 'MAVIS_full']
+        full = l1[l1['classifier'] == 'COMAVI_full']
         mono = l1[l1['classifier'] == 'monomer_only']
         if len(full) > 0:
-            ok = check("Level 1 MAVIS_full TPR @ t=1.0",
+            ok = check("Level 1 COMAVI_full TPR @ t=1.0",
                        float(full.iloc[0]['TPR_t10']),
-                       EXPECTED_V5['level1_TPR_t10_MAVIS_full'], tol=0.005)
+                       EXPECTED_V5['level1_TPR_t10_COMAVI_full'], tol=0.005)
             results.append(ok)
         if len(mono) > 0:
             ok = check("Level 1 monomer_only TPR @ t=1.0",
@@ -206,13 +355,16 @@ def verify_evaluation(eval_dir):
 def main():
     parser = argparse.ArgumentParser(description="Verify v5 framework downstream")
     parser.add_argument('--intermediate', required=True,
-                        help='Path to mavis_v7_results_with_nbhd.csv')
+                        help='Path to comavi_v7_results_with_nbhd.csv')
     parser.add_argument('--am', required=True,
                         help='Path to AM xlsx')
     parser.add_argument('--scripts-dir', required=True,
                         help='Path to PIPELINE_CURRENT/scripts/')
     parser.add_argument('--corrected',
-                        help='Path to mavis_v7_results_corrected.csv (for Track A)')
+                        help='Path to comavi_v7_results_corrected.csv (for Track A)')
+    parser.add_argument('--canonical',
+                        help='Path to reference_outputs/scored_61var_canonical.csv '
+                             '(Track C — the released manuscript numbers)')
     parser.add_argument('--output-dir', default='./verification_output',
                         help='Where to write verification artifacts')
     args = parser.parse_args()
@@ -241,8 +393,16 @@ def main():
     else:
         print("\n[SKIP Track A] --corrected not provided")
 
+    # Track C — released canonical 61-variant table (the manuscript numbers)
+    track_c_results = []
+    if args.canonical:
+        track_c_results = verify_canonical(Path(args.canonical).resolve(), scripts_dir)
+    else:
+        print("\n[SKIP Track C] --canonical not provided")
+
     # Summary
-    all_results = [r for r in (track_b_results + track_a_results) if r is not None]
+    all_results = [r for r in (track_b_results + track_a_results + track_c_results)
+                   if r is not None]
     n_pass = sum(1 for r in all_results if r is True)
     n_fail = sum(1 for r in all_results if r is False)
     print("\n" + "=" * 70)

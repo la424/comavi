@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-MAVIS v7 — Concordance post-processor v4.
+COMAVI v7 — Concordance post-processor v4.
 
 Layered on top of v3. New in v4:
 
@@ -74,12 +74,12 @@ classification, and pipeline_agreement are unchanged from v3.
 
 USAGE
 -----
-    cd ~/mavis_v7
+    cd ~/comavi_v7
     python3 apply_concordance_v4.py
 
-Reads:  results/mavis_v7_results_with_nbhd.csv
-        AM_variants_mavis_mechanism_test.xlsx
-Writes: results/mavis_v7_concordance.csv
+Reads:  results/comavi_v7_results_with_nbhd.csv
+        AM_variants_comavi_mechanism_test.xlsx
+Writes: results/comavi_v7_concordance.csv
 """
 from __future__ import annotations
 import argparse
@@ -164,7 +164,7 @@ _NOTTEST_AXIS_TOKENS  = {"unknown", ""}
 _AT_INTERFACE_TOKENS = {"at_interface"}
 _AWAY_INTERFACE_TOKENS = {"away_from_interface"}
 
-# MAVIS mechanism labels → structural axes that label asserts POSITIVE.
+# COMAVI mechanism labels → structural axes that label asserts POSITIVE.
 # Each label is a dict of booleans for (fold_monomer_affected,
 # fold_complex_affected, binding_affected, interface_asserted) and a direction
 # tag. Derived from classify_mechanism_at's label space.
@@ -504,17 +504,17 @@ def compute_nbhd_score(row, partners):
 _THIS_DIR = Path(__file__).resolve().parent
 if str(_THIS_DIR) not in sys.path:
     sys.path.insert(0, str(_THIS_DIR))
-from mavis_v7.mechanism import classify_mechanism as _modular_classify_mechanism
+from comavi_v7.mechanism import classify_mechanism as _modular_classify_mechanism
 
 
-def classify_mechanism_at(row, partners, threshold, tier_col="mavis_tier"):
+def classify_mechanism_at(row, partners, threshold, tier_col="comavi_tier"):
     """
     Classify mechanism at a given threshold (scalar or per-axis dict).
 
     Wraps the modular classify_mechanism with two adaptations:
       1. Masks binding ΔΔG to 0 for partners flagged as indistinguishable
          from the per-system baseline (preserving v4 behavior in this script).
-      2. Substitutes the requested tier column (mavis_tier vs nbhd_tier) so
+      2. Substitutes the requested tier column (comavi_tier vs nbhd_tier) so
          that contact-driven / burial-driven decisions reflect the correct
          pipeline's tier assignment.
 
@@ -531,10 +531,10 @@ def classify_mechanism_at(row, partners, threshold, tier_col="mavis_tier"):
             if bd_col in row_view.index and pd.notna(row_view[bd_col]):
                 row_view[bd_col] = 0.0
 
-    # Substitute the requested tier (modular classifier reads 'mavis_tier' by default)
-    if tier_col != "mavis_tier":
+    # Substitute the requested tier (modular classifier reads 'comavi_tier' by default)
+    if tier_col != "comavi_tier":
         row_view = row_view.copy()
-        row_view["mavis_tier"] = row_view.get(tier_col)
+        row_view["comavi_tier"] = row_view.get(tier_col)
 
     mech, _partner, _ext = _modular_classify_mechanism(row_view, partners, ddg_destab=threshold)
     return mech
@@ -809,11 +809,26 @@ def derive_expected_mech_class(row):
         return "ppi_stab_mechanism" if bind_dir == "stab" else "ppi_destab_mechanism"
 
     # No positive ΔΔG axes
-    if iface_pos and not fold_committed and not bind_c:
+    ddg_committed = fold_committed or bind_c
+    if iface_pos and not ddg_committed:
         # Interface-only case: topology positive but ΔΔG axes uncommitted
         return "interface_uncommitted_magnitude"
 
-    # All committed axes negative (or only topology committed negative)
+    # v5.1 FIX: no ΔΔG axis is committed at all — only topology is committed,
+    # and it is negative. There is no measured ΔΔG expectation on ANY axis to
+    # grade against, so the variant is structurally uncommitted and receives
+    # the same N/A treatment as the all-axes-untested case above.
+    #
+    # Previously these rows fell through to `structurally_silent`, which IS
+    # graded and penalises COMAVI for firing an axis even though no
+    # measurement exists that could contradict it. Two benchmark variants took
+    # this path (MSH2 C697F, VHL W117R); the ledger already records W117R as
+    # "structural-position only (excluded)", so the derived label contradicted
+    # the curation record.
+    if not ddg_committed:
+        return "structurally_uncommitted"
+
+    # All committed axes negative
     return "structurally_silent"
 
 
@@ -826,13 +841,13 @@ def grade_mechanism_consistency(row, mech_call, expected_class, axes):
 
     Returns a tuple (grade, false_positive_axes, missed_positive_axes) where:
       - grade in {'consistent', 'partial', 'inconsistent', 'N/A'}
-      - false_positive_axes: list of tested-negative axes MAVIS fired on
-      - missed_positive_axes: list of tested-positive axes MAVIS did not fire
+      - false_positive_axes: list of tested-negative axes COMAVI fired on
+      - missed_positive_axes: list of tested-positive axes COMAVI did not fire
 
     Parameters
     ----------
     row : pd.Series
-    mech_call : str — the MAVIS mechanism label
+    mech_call : str — the COMAVI mechanism label
     expected_class : str — output of derive_expected_mech_class
     axes : dict|None — output of classify_axis_status
     """
@@ -847,18 +862,18 @@ def grade_mechanism_consistency(row, mech_call, expected_class, axes):
                           "interface_uncommitted_magnitude") or axes is None:
         return "N/A", empty, empty
 
-    # Resolve MAVIS label assertions
+    # Resolve COMAVI label assertions
     label_info = MECH_LABEL_ASSERTIONS.get(mech_call)
     if label_info is None:
         return "N/A", empty, empty
     fold_m_a, fold_c_a, bind_a, iface_a, direction = label_info
     # v5 Rubric B: track fold subtypes separately. fold_asserted (legacy
     # "any fold subtype") is retained for the structurally_silent branch
-    # below, where the question is just "did MAVIS fire any fold axis".
+    # below, where the question is just "did COMAVI fire any fold axis".
     fold_asserted = fold_m_a or fold_c_a
 
-    mavis_no_effect = (mech_call == "No structural effect detected")
-    mavis_dng = mech_call in (
+    comavi_no_effect = (mech_call == "No structural effect detected")
+    comavi_dng = mech_call in (
         "Interface variant (DDG neutral)",
         "Structural variant — contact-driven (DDG neutral)",
         "Structural variant — burial-driven (DDG neutral)",
@@ -929,14 +944,14 @@ def grade_mechanism_consistency(row, mech_call, expected_class, axes):
             (exp_bind_dir == "stab" and direction == "destab")):
             dflip.append("binding")
 
-    # Topology false-fire only if MAVIS asserts interface AND ground truth is
-    # explicitly away, AND MAVIS isn't already fully asserting via fold/bind.
+    # Topology false-fire only if COMAVI asserts interface AND ground truth is
+    # explicitly away, AND COMAVI isn't already fully asserting via fold/bind.
     if iface_neg and iface_a and not (fold_asserted or bind_a):
         fp.append("topology")
 
     # Step 3: structurally_silent expects silence
     if expected_class == "structurally_silent":
-        if mavis_no_effect or mavis_dng:
+        if comavi_no_effect or comavi_dng:
             return "consistent", empty, empty
         # Any specific-axis firing on a structurally-silent variant is a
         # false positive. Per rubric v2, ANY false-fire → inconsistent
@@ -955,7 +970,7 @@ def grade_mechanism_consistency(row, mech_call, expected_class, axes):
         return "inconsistent", fp, mp
 
     # Step 5: "No structural effect" when positive axes exist = inconsistent
-    if mp and mavis_no_effect:
+    if mp and comavi_no_effect:
         return "inconsistent", fp, mp
 
     # Step 6: all positive axes correctly called?
@@ -968,8 +983,8 @@ def grade_mechanism_consistency(row, mech_call, expected_class, axes):
     if fp:
         # Missed-and-wrong → inconsistent
         return "inconsistent", fp, mp
-    # Magnitude miss case: topology positive, MAVIS gives DNG-only
-    if mavis_dng and iface_pos:
+    # Magnitude miss case: topology positive, COMAVI gives DNG-only
+    if comavi_dng and iface_pos:
         return "partial", empty, mp
     # Axis miss without false-fire → partial
     return "partial", empty, mp
@@ -1070,7 +1085,7 @@ def compute_structural_agreement(row, partners, mono_thr, fold_thr, bind_thr):
         if emc in ('structurally_silent', 'mixed_structural', 'fold_mechanism',
                    'ppi_destab_mechanism', 'ppi_stab_mechanism'):
             d += 1
-            tier_fires = str(row.get('mavis_tier')) in FOOTPRINT_TIERS
+            tier_fires = str(row.get('comavi_tier')) in FOOTPRINT_TIERS
             tier_expected = emc != 'structurally_silent'
             if tier_fires == tier_expected:
                 n += 1
@@ -1132,7 +1147,7 @@ def compute_directional_agreement(row, partners, mono_thr, fold_thr, bind_thr):
         if emc in ('structurally_silent', 'mixed_structural', 'fold_mechanism',
                    'ppi_destab_mechanism', 'ppi_stab_mechanism'):
             d += 1
-            tier_fires = str(row.get('mavis_tier')) in FOOTPRINT_TIERS
+            tier_fires = str(row.get('comavi_tier')) in FOOTPRINT_TIERS
             tier_expected = emc != 'structurally_silent'
             if tier_fires == tier_expected:
                 n_full += 1
@@ -1233,7 +1248,7 @@ def compute_tier_structural_signal_type(row, partners):
     ambiguous: tier fires but neither pattern dominates
     none: tier doesn't fire (Tier 3-4)
     """
-    if str(row.get('mavis_tier')) not in FOOTPRINT_TIERS:
+    if str(row.get('comavi_tier')) not in FOOTPRINT_TIERS:
         return 'none'
 
     mono_c = sf(row.get('monomer_n_contacts'), 0)
@@ -1294,8 +1309,8 @@ def compute_evaluation_note(row, sa_score_d_25, mc_grade_25):
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--results", default="results/mavis_v7_results_with_nbhd.csv")
-    ap.add_argument("--external", default="AM_variants_mavis_mechanism_test.xlsx")
+    ap.add_argument("--results", default="results/comavi_v7_results_with_nbhd.csv")
+    ap.add_argument("--external", default="AM_variants_comavi_mechanism_test.xlsx")
     ap.add_argument("--outdir", default="results")
     args = ap.parse_args()
 
@@ -1350,7 +1365,7 @@ def main():
     # Column naming: mech_t10, mech_t15, mech_t20, mech_t25, mech_tSAP
     for tag, t in THRESHOLD_SPECS:
         merged[f"mech_{tag}"] = merged.apply(
-            lambda r, _t=t: classify_mechanism_at(r, partners, _t, tier_col="mavis_tier"), axis=1)
+            lambda r, _t=t: classify_mechanism_at(r, partners, _t, tier_col="comavi_tier"), axis=1)
 
     # Stage 3: Pipeline 2 — nbhd_score + nbhd_tier
     nbhd_records = [compute_nbhd_score(r, partners) for _, r in merged.iterrows()]
@@ -1368,10 +1383,10 @@ def main():
 
     # Stage 5: concordance for both pipelines × both modes (unchanged)
     p1_full = merged.apply(
-        lambda r: compute_concordance(r, r["mavis_tier"], prefix="", include_external=True),
+        lambda r: compute_concordance(r, r["comavi_tier"], prefix="", include_external=True),
         axis=1, result_type="expand")
     p1_struct = merged.apply(
-        lambda r: compute_concordance(r, r["mavis_tier"], prefix="", include_external=False),
+        lambda r: compute_concordance(r, r["comavi_tier"], prefix="", include_external=False),
         axis=1, result_type="expand")
     p2_full = merged.apply(
         lambda r: compute_concordance(r, r["nbhd_tier"], prefix="nbhd_", include_external=True),
@@ -1385,7 +1400,7 @@ def main():
 
     # Stage 5b NEW: structural-signal / external-consensus split (both pipelines)
     p1_split = merged.apply(
-        lambda r: compute_signal_consensus_split(r, r["mavis_tier"], prefix=""),
+        lambda r: compute_signal_consensus_split(r, r["comavi_tier"], prefix=""),
         axis=1, result_type="expand")
     p2_split = merged.apply(
         lambda r: compute_signal_consensus_split(r, r["nbhd_tier"], prefix="nbhd_"),
@@ -1516,9 +1531,9 @@ def main():
                 cutoff = max(t['monomer'], t['fold'], t['binding'])
             else:
                 cutoff = float(t)
-            # P1 (mavis_tier)
+            # P1 (comavi_tier)
             def _p1_concordance(r, _c=cutoff):
-                tier_high = str(r.get("mavis_tier")) in FOOTPRINT_TIERS
+                tier_high = str(r.get("comavi_tier")) in FOOTPRINT_TIERS
                 ddg_fires = sf(r.get("max_abs_ddg"), 0.0) >= _c
                 return _ddg_concordance_label(tier_high, ddg_fires)
             merged[f"p1_ddg_concordance_{tag}"] = merged.apply(_p1_concordance, axis=1)
@@ -1533,10 +1548,10 @@ def main():
 
     # Stage 7: pipeline agreement
     merged["pipeline_agreement"] = merged.apply(
-        lambda r: classify_agreement(r.get("mavis_tier"), r.get("nbhd_tier")), axis=1)
+        lambda r: classify_agreement(r.get("comavi_tier"), r.get("nbhd_tier")), axis=1)
 
     # Save
-    master_path = od / "mavis_v7_concordance.csv"
+    master_path = od / "comavi_v7_concordance.csv"
     merged.to_csv(master_path, index=False)
     print(f"\nWrote {master_path}  ({len(merged)} rows, {len(merged.columns)} cols)")
 
@@ -1544,7 +1559,7 @@ def main():
     print("\n=== Pipeline agreement ===")
     print(merged["pipeline_agreement"].value_counts().to_string())
     print("\n=== Pipeline 1 vs Pipeline 2 tier ===")
-    print(pd.crosstab(merged["mavis_tier"], merged["nbhd_tier"]).to_string())
+    print(pd.crosstab(merged["comavi_tier"], merged["nbhd_tier"]).to_string())
 
     if mode_A:
         print("\n=== expected_mech_class distribution ===")

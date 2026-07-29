@@ -1,4 +1,4 @@
-# MAVIS v7 v5 Framework — Design Decisions and Provenance
+# COMAVI v7 v5 Framework — Design Decisions and Provenance
 
 **Status:** Written 2026-05-05 as part of v5 implementation closeout. **Note:** A prior version of this file existed in the directory before this rewrite. I (Claude) deleted the prior version during the v5 session without first reading its full contents — this was a mistake I want to mark explicitly. If the prior version had content that should have been preserved, Luke should check filesystem backups or version control and merge as needed. This version is a fresh rewrite documenting the v5 framework decisions made in the 2026-05-04 session.
 
@@ -104,7 +104,7 @@ The Q3 decision (apply uniformly to conflicting calls) follows from methodologic
 **Why.** The structural tier is a synthesis statement combining contacts, burial, interface participation, and pLDDT. Grading it as a binary "did it fire?" against `expected_mech_class` reflects what tier actually predicts. The diagnostic column surfaces the tier's underlying signal type for downstream interpretation, without using it as a primary grading axis.
 
 Three approaches were considered during the design conversation:
-- Approach 1: parse `mavis_score_evidence` strings for components — unnecessarily complex
+- Approach 1: parse `comavi_score_evidence` strings for components — unnecessarily complex
 - Approach 2: reconstruct per-axis tier predictions from raw structural metrics — also unnecessary complexity
 - **Approach 3: tier-conditioned grading + diagnostic column — chosen** (cleanest, leverages information that's already implicit)
 
@@ -250,7 +250,7 @@ For provenance honesty, here's what was considered and deferred or rejected:
 
 ## Final headline numbers (v5 framework, verified)
 
-Verified end-to-end via `verify_stage6.py` (16/16 checks passed) against the cached intermediate `mavis_v7_results_with_nbhd.csv`:
+Verified end-to-end via `verify_stage6.py` (16/16 checks passed) against the cached intermediate `comavi_v7_results_with_nbhd.csv`:
 
 | Metric | t=1.0 | t=1.5 | t=2.0 | t=2.5 | Sapozhnikov |
 |---|---|---|---|---|---|
@@ -260,7 +260,7 @@ Verified end-to-end via `verify_stage6.py` (16/16 checks passed) against the cac
 
 Plus:
 - HBB Pearson r = 0.894 (Q3, unchanged from PHASE3_CHECKPOINT)
-- Level 1 MAVIS_full TPR @ t=1.0 = 0.913 (Q4, unchanged from PHASE3_CHECKPOINT)
+- Level 1 COMAVI_full TPR @ t=1.0 = 0.913 (Q4, unchanged from PHASE3_CHECKPOINT)
 - Level 1 monomer_only TPR @ t=1.0 = 0.391 (Q4, unchanged)
 - Level 2 pathogenic detected @ t=1.0 = 24/26 (§9.1)
 - Level 2 pathogenic_gof detected @ t=1.0 = 5/8 (§9.1, reframed from "GoF binary recall")
@@ -268,7 +268,7 @@ Plus:
 - threshold_stable count = 28/44 (under Rubric B)
 
 **Paired headline claim for the abstract:**
-> *"MAVIS achieves structural agreement of 0.71 (axis-level structural disruption detection) and mechanism consistency of 0.75 (synthesis-level mechanism call) on a benchmark of 44 variants across 11 protein-protein interaction systems, both at the Sapozhnikov-confident per-axis threshold (mono = 2.9 / fold = 2.9 / bind = 3.5 kcal/mol)."*
+> *"COMAVI achieves structural agreement of 0.71 (axis-level structural disruption detection) and mechanism consistency of 0.75 (synthesis-level mechanism call) on a benchmark of 44 variants across 11 protein-protein interaction systems, both at the Sapozhnikov-confident per-axis threshold (mono = 2.9 / fold = 2.9 / bind = 3.5 kcal/mol)."*
 
 ---
 

@@ -3,7 +3,7 @@
 verify_v5.py — Verify the v5 pipeline downstream against cached intermediate.
 
 Runs the downstream chain (baseline_correct → apply_concordance_v5 → run_evaluate)
-against the cached `inputs/intermediate/mavis_v7_results.csv` from the prior
+against the cached `inputs/intermediate/comavi_v7_results.csv` from the prior
 FoldX run. This lets us validate the v5 framework code without re-running FoldX.
 
 The headline numbers are checked against expected v5 values from the
@@ -27,7 +27,7 @@ HERE = Path(__file__).resolve().parent
 PIPE = HERE.parent
 SCRIPTS = PIPE / "scripts"
 INPUTS_INTERMEDIATE = PIPE / "inputs" / "intermediate"
-INPUTS_AM = PIPE / "inputs" / "AM_variants_mavis_mechanism_test.xlsx"
+INPUTS_AM = PIPE / "inputs" / "AM_variants_comavi_mechanism_test.xlsx"
 WORK = PIPE / "verification" / "_work"
 
 EXPECTED = {
@@ -61,35 +61,35 @@ def main():
     print(f"Working dir: {WORK}")
 
     # Stage 1: copy cached pre-correction results into the workspace
-    src = INPUTS_INTERMEDIATE / "mavis_v7_results.csv"
+    src = INPUTS_INTERMEDIATE / "comavi_v7_results.csv"
     if not src.exists():
         print(f"ERROR: cached intermediate {src} not found.")
         return 1
-    shutil.copy(src, WORK / "results" / "mavis_v7_results.csv")
+    shutil.copy(src, WORK / "results" / "comavi_v7_results.csv")
     print(f"\nStage 1: staged cached input")
 
-    # Stage 2: baseline correction (writes results/mavis_v7_results_corrected.csv
+    # Stage 2: baseline correction (writes results/comavi_v7_results_corrected.csv
     # with v5 multi-threshold corrected mechanism columns)
     print(f"\nStage 2: baseline_correct")
     env = os.environ.copy()
     env["PYTHONPATH"] = str(SCRIPTS)
     subprocess.run(
-        ["python3", str(SCRIPTS / "mavis_v7_baseline_correct.py")],
+        ["python3", str(SCRIPTS / "comavi_v7_baseline_correct.py")],
         cwd=str(WORK), env=env, check=True
     )
 
-    # Stage 3: neighborhood (writes results/mavis_v7_results_with_nbhd.csv)
+    # Stage 3: neighborhood (writes results/comavi_v7_results_with_nbhd.csv)
     print(f"\nStage 3: neighborhood")
     # If the pre-cached _with_nbhd file exists from prior run, use it (v13 P2
     # bugfix only matters in apply_concordance_v5, not the _with_nbhd file
     # which retains the same nbhd_* columns format).
-    nbhd_cached = INPUTS_INTERMEDIATE / "mavis_v7_results_with_nbhd.csv"
+    nbhd_cached = INPUTS_INTERMEDIATE / "comavi_v7_results_with_nbhd.csv"
     if nbhd_cached.exists():
         print(f"  Using cached nbhd output: {nbhd_cached}")
-        shutil.copy(nbhd_cached, WORK / "results" / "mavis_v7_results_with_nbhd.csv")
+        shutil.copy(nbhd_cached, WORK / "results" / "comavi_v7_results_with_nbhd.csv")
     else:
         subprocess.run(
-            ["python3", str(SCRIPTS / "mavis_v7_neighborhood.py")],
+            ["python3", str(SCRIPTS / "comavi_v7_neighborhood.py")],
             cwd=str(WORK), env=env, check=True
         )
 
@@ -97,7 +97,7 @@ def main():
     print(f"\nStage 4: apply_concordance_v5")
     subprocess.run(
         ["python3", str(SCRIPTS / "apply_concordance_v5.py"),
-         "--results", str(WORK / "results" / "mavis_v7_results_with_nbhd.csv"),
+         "--results", str(WORK / "results" / "comavi_v7_results_with_nbhd.csv"),
          "--external", str(INPUTS_AM),
          "--outdir", str(WORK / "results")],
         env=env, check=True
@@ -112,7 +112,7 @@ def main():
 
     # Stage 6: verify outputs against EXPECTED
     print(f"\n{'='*70}\nVERIFICATION\n{'='*70}")
-    conc_csv = WORK / "results" / "mavis_v7_concordance.csv"
+    conc_csv = WORK / "results" / "comavi_v7_concordance.csv"
     if not conc_csv.exists():
         print(f"  FAIL: {conc_csv} not produced")
         return 1
@@ -143,7 +143,7 @@ def main():
     l1_csv = WORK / "results" / "evaluation" / "level1_t10.csv"
     if l1_csv.exists():
         l1 = pd.read_csv(l1_csv)
-        m = l1[l1["classifier"] == "MAVIS_full"]
+        m = l1[l1["classifier"] == "COMAVI_full"]
         if not m.empty:
             actual["level1_tpr_t10"] = round(float(m.iloc[0]["TPR"]), 3)
 

@@ -1,5 +1,5 @@
 """
-MAVIS v7 — Phase 3 evaluation runner.
+COMAVI v7 — Phase 3 evaluation runner.
 
 Runs the four-level benchmark against the corrected results CSV. Primary
 threshold is 1.0 (matches pipeline production); results at 1.0, 1.5, 2.0
@@ -11,21 +11,21 @@ Outputs:
   - Level 4 per-variant GoF detection table
 
 Usage:
-  cd ~/mavis_v7
+  cd ~/comavi_v7
   python3 run_evaluate.py
 """
 from pathlib import Path
 import sys
 import pandas as pd
 
-# Make the bundled mavis_v7 package importable regardless of the caller's cwd
+# Make the bundled comavi_v7 package importable regardless of the caller's cwd
 # (e.g. when invoked as a subprocess by verification/verify_stage6.py). This
-# script lives in scripts/, alongside the mavis_v7 package.
+# script lives in scripts/, alongside the comavi_v7 package.
 _THIS_DIR = Path(__file__).resolve().parent
 if str(_THIS_DIR) not in sys.path:
     sys.path.insert(0, str(_THIS_DIR))
 
-from mavis_v7.evaluation import run_full_evaluation
+from comavi_v7.evaluation import run_full_evaluation
 
 
 def print_hr(title: str, char: str = "=", width: int = 88):
@@ -38,8 +38,8 @@ def print_hr(title: str, char: str = "=", width: int = 88):
 def main():
     import argparse
     parser = argparse.ArgumentParser(description="Run Track A (Phase 3) evaluation")
-    parser.add_argument('--input', default='results/mavis_v7_results_corrected.csv',
-                        help='Path to mavis_v7_results_corrected.csv (output of baseline_correct)')
+    parser.add_argument('--input', default='results/comavi_v7_results_corrected.csv',
+                        help='Path to comavi_v7_results_corrected.csv (output of baseline_correct)')
     parser.add_argument('--output-dir', default=None,
                         help='Where to write per-level CSVs (default: <input dir>/evaluation/)')
     args = parser.parse_args()
@@ -47,7 +47,7 @@ def main():
     results_path = Path(args.input)
     if not results_path.exists():
         print(f"✗ Corrected results CSV not found: {results_path}")
-        print("  Run mavis_v7_baseline_correct.py first.")
+        print("  Run comavi_v7_baseline_correct.py first.")
         sys.exit(1)
 
     if args.output_dir is None:
@@ -66,7 +66,7 @@ def main():
     # Level 1
     # --------------------------------------------------------------------
     print_hr("LEVEL 1 — Binary pathogenic vs benign (multi-threshold view)")
-    print("  Primary threshold: 1.0 (MAVIS production, matches CHD paper)")
+    print("  Primary threshold: 1.0 (COMAVI production, matches CHD paper)")
     print("  Mechanism controls EXCLUDED; pLDDT gate >= 50; bootstrap 95% CI")
     print()
     with pd.option_context("display.max_columns", None, "display.width", 220):
@@ -125,10 +125,10 @@ def main():
     print_hr("LEVEL 4 — Per-variant detection", char="-")
     pv = results["level4_per_variant"]
     display_cols = ["system", "variant", "role", "phenotype", "stabilization_signals",
-                    "mavis_positive_t10", "monomer_positive_t10", "struct_positive_t10",
+                    "comavi_positive_t10", "monomer_positive_t10", "struct_positive_t10",
                     "structural_disruption_detected_t10"]
-    if "mavis_mechanism_corrected_t10" in pv.columns:
-        display_cols.append("mavis_mechanism_corrected_t10")
+    if "comavi_mechanism_corrected_t10" in pv.columns:
+        display_cols.append("comavi_mechanism_corrected_t10")
     with pd.option_context("display.max_columns", None, "display.width", 200,
                             "display.max_colwidth", 50):
         print(pv[display_cols].to_string(index=False))

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-MAVIS v7 — Report builder.
+COMAVI v7 — Report builder.
 
 Reads the concordance CSV produced by apply_concordance_v4.py and writes a
 multi-sheet XLSX with per-variant grades, threshold sensitivity analysis,
@@ -9,11 +9,11 @@ documentation.
 
 USAGE
 -----
-    cd ~/mavis_v7
+    cd ~/comavi_v7
     python3 build_report.py
 
-Reads:  results/mavis_v7_concordance.csv
-Writes: results/mavis_v7_report.xlsx
+Reads:  results/comavi_v7_concordance.csv
+Writes: results/comavi_v7_report.xlsx
 
 Requires: openpyxl, pandas
 """
@@ -124,7 +124,7 @@ def build_per_variant(wb, df, mode_A):
         "P2 grade t=1.0", "P2 grade t=1.5", "P2 grade t=2.0", "P2 grade t=2.5",
         "P2 summary (t=2.5)", "P2 stable",
         "FP axes (t=1.0)", "MP axes (t=1.0)",
-        "MAVIS tier (P1)", "Nbhd tier (P2)",
+        "COMAVI tier (P1)", "Nbhd tier (P2)",
         "ddg_monomer", "ddg_monomer_sd",
         "max_abs_ddg",
         "concordance_strict_full", "concordance_relaxed_full",
@@ -172,7 +172,7 @@ def build_per_variant(wb, df, mode_A):
         "P2 stable": "nbhd_mech_consistency_threshold_stable",
         "FP axes (t=1.0)": "mech_false_positive_axes_t10",
         "MP axes (t=1.0)": "mech_missed_positive_axes_t10",
-        "MAVIS tier (P1)": "mavis_tier", "Nbhd tier (P2)": "nbhd_tier",
+        "COMAVI tier (P1)": "comavi_tier", "Nbhd tier (P2)": "nbhd_tier",
         "ddg_monomer": "ddg_monomer", "ddg_monomer_sd": "ddg_monomer_sd",
         "max_abs_ddg": "max_abs_ddg",
         "concordance_strict_full": "concordance_strict_full",
@@ -407,7 +407,7 @@ def build_signal_in_benign(wb, df, mode_A):
                 value="Mode B: cannot identify benign-vs-pathogenic split without role.").font = FONT_NOTE
         return
 
-    note = ("Benign variants where MAVIS detects measurable structural signal "
+    note = ("Benign variants where COMAVI detects measurable structural signal "
             "(structural_signal_strict ≥ 1, or specific-axis mechanism call). "
             "These are NOT pipeline failures — they reflect that structural disruption "
             "and pathogenicity are distinct phenomena. Reported here for transparency.")
@@ -415,7 +415,7 @@ def build_signal_in_benign(wb, df, mode_A):
     ws.merge_cells(start_row=3, start_column=1, end_row=3, end_column=8)
 
     headers = ["gene", "variant", "role",
-               "MAVIS mech (t=1.0)", "MAVIS mech (t=2.5)",
+               "COMAVI mech (t=1.0)", "COMAVI mech (t=2.5)",
                "structural_signal_strict", "external_consensus_strict",
                "AM class", "Franklin", "notes"]
     write_header_row(ws, 5, headers)
@@ -436,7 +436,7 @@ def build_signal_in_benign(wb, df, mode_A):
         return
 
     cols = [("gene", "gene"), ("variant", "variant"), ("role", "role"),
-            ("MAVIS mech (t=1.0)", "mech_t10"), ("MAVIS mech (t=2.5)", "mech_t25"),
+            ("COMAVI mech (t=1.0)", "mech_t10"), ("COMAVI mech (t=2.5)", "mech_t25"),
             ("structural_signal_strict", "structural_signal_strict"),
             ("external_consensus_strict", "external_consensus_strict"),
             ("AM class", "AM class"), ("Franklin", "franklin"),
@@ -476,7 +476,7 @@ def build_p1_vs_p2(wb, df, mode_A):
             ("P1 mech (t=1.0)", "mech_t10"), ("P2 mech (t=1.0)", "nbhd_mech_t10"),
             ("P1 grade (t=1.0)", "mech_consistency_t10"),
             ("P2 grade (t=1.0)", "nbhd_mech_consistency_t10"),
-            ("P1 tier", "mavis_tier"), ("P2 tier", "nbhd_tier"),
+            ("P1 tier", "comavi_tier"), ("P2 tier", "nbhd_tier"),
             ("pipeline_agreement", "pipeline_agreement")]
     grade_headers = {"P1 grade (t=1.0)", "P2 grade (t=1.0)"}
     for i, (_, r) in enumerate(diff.iterrows()):
@@ -538,9 +538,9 @@ def build_methods(wb, mode_A):
     blocks = [
         ("What this report contains",
          "This report summarizes per-variant mechanism consistency grading from "
-         "the MAVIS v7 structural variant pipeline. The pipeline detects "
+         "the COMAVI v7 structural variant pipeline. The pipeline detects "
          "structural disruption from missense variants; pathogenicity is "
-         "evaluated separately. See MAVIS_v7_grading_rubric_v2.md for full "
+         "evaluated separately. See COMAVI_v7_grading_rubric_v2.md for full "
          "rubric documentation."),
         ("Mechanism class derivation",
          "Each variant is classified into one of: structurally_silent, "
@@ -694,9 +694,9 @@ def build_caveats(wb, df, mode_A):
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--concordance", default="results/mavis_v7_concordance.csv",
+    ap.add_argument("--concordance", default="results/comavi_v7_concordance.csv",
                     help="Path to concordance CSV from apply_concordance_v4.py")
-    ap.add_argument("--out", default="results/mavis_v7_report.xlsx",
+    ap.add_argument("--out", default="results/comavi_v7_report.xlsx",
                     help="Output XLSX path")
     args = ap.parse_args()
 

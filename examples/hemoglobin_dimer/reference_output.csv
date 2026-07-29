@@ -1,2 +1,2 @@
-system,variant,gene,ddg_monomer,ddg_monomer_sd,ddg_fold_hba1,ddg_fold_hba1_sd,ddg_binding_hba1,ddg_binding_hba1_sd,mavis_mechanism,expected_ddg_monomer,expected_ddg_fold_complex,expected_ddg_binding
+system,variant,gene,ddg_monomer,ddg_monomer_sd,ddg_fold_hba1,ddg_fold_hba1_sd,ddg_binding_hba1,ddg_binding_hba1_sd,comavi_mechanism,expected_ddg_monomer,expected_ddg_fold_complex,expected_ddg_binding
 hemoglobin_dimer,E6V,hbb,0.717,0.1257,0.8044,0.0117,-0.0193,0.0,No structural effect detected,neutral,neutral,neutral

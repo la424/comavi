@@ -1,4 +1,4 @@
-# MAVIS — Pre-Publication Checkpoint
+# COMAVI — Pre-Publication Checkpoint
 
 > ## ⚑ HISTORICAL DOCUMENT — superseded by the v7 / 61-variant canonical set
 >
@@ -7,16 +7,16 @@
 > from this document as current.**
 >
 > Current authoritative sources:
-> - **Benchmark numbers** → `docs/MAVIS_v7_canonical_benchmark_ledger.md` §12
+> - **Benchmark numbers** → `docs/COMAVI_v7_canonical_benchmark_ledger.md` §12
 > - **Canonical scored set** → `reference_outputs/scored_61var_canonical.csv` (61 variants, 14 systems)
 > - **Figures** → `figures/README.md`
-> - **Results interpretation** → `docs/MAVIS_results_synthesis.md` (top banner governs)
+> - **Results interpretation** → `docs/COMAVI_results_synthesis.md` (top banner governs)
 >
 > **What changed since this checkpoint (read this before §2–§8):**
 > 1. **The monomer-fold expansion named as the gating task in §7 is DONE** (v6, BRCA1 tandem-BRCT,
 >    PDB 1JNX, 12 variants, Rowling 2010 measured GdmCl ΔΔG_U–F). §2's "n=2 graded destabilizers"
 >    and §7's expansion task are both obsolete. See ledger §10.
-> 2. **The canonical benchmark file changed.** §3 and §6.4 name `mavis_v7_concordance_annotated.csv`
+> 2. **The canonical benchmark file changed.** §3 and §6.4 name `comavi_v7_concordance_annotated.csv`
 >    (44 variants); the canonical set is now `reference_outputs/scored_61var_canonical.csv` (61).
 > 3. **The headline numbers moved** (§4 banner below has the current values).
 > 4. **§8's "in sync with GitHub" is point-in-time** and does not describe the working tree now.
@@ -35,14 +35,14 @@ cohort, **since resolved in v6**), one production-only.
 _(Paths updated to the current repo layout; the v1.2 reorg moved the benchmark input to `inputs/raw/` and the CHD inputs to `inputs/chd/`. Content otherwise as of the checkpoint date.)_
 - **Benchmark:** `inputs/raw/benchmark_variants_v5.csv` (44 variants / 11 PPI systems).
 - **CHD:** `inputs/chd/chd_input_final.csv`, `inputs/chd/chd_input_per_system.csv` (bidirectional per-system),
-  `data/MAVIS_CHD_variant_domain_interface_map.csv`.
+  `data/COMAVI_CHD_variant_domain_interface_map.csv`.
 - **Annotations:** `inputs/chd/variants_with_alphamissense_and_franklin_expanded.csv` (AlphaMissense + Franklin,
-  transposition-corrected), `inputs/AM_variants_mavis_mechanism_test.xlsx`.
+  transposition-corrected), `inputs/AM_variants_comavi_mechanism_test.xlsx`.
 - **Structures:** AlphaFold-3 Server (multimers); experimental PDBs where AF2 confidence is insufficient
   (2HHB / HBB, 6XI7 / KRAS-RAF1, 1JM7 / BRCA1-BARD1). `structures/` is gitignored (obtain per docs).
 
 ## 2. Pipeline — works as intended, with known limits
-The `mavis_v7` engine is byte-identical across the working and release trees; the concordance engine
+The `comavi_v7` engine is byte-identical across the working and release trees; the concordance engine
 round-trips byte-for-byte on the canonical CHD file; `archive/derivation/apply_chd_concordance.py` is idempotent on
 already-correct input.
 
@@ -60,13 +60,13 @@ Remaining limits:
 ## 3. Outputs — inventory
 | Artifact | Path | Notes |
 |---|---|---|
-| Benchmark comprehensive **[SUPERSEDED]** | `reference_outputs/mavis_v7_concordance_annotated.csv` | 44 variants, per-axis, 1255 cols — v6-era. **Canonical set is now `reference_outputs/scored_61var_canonical.csv` (61 variants, 14 systems).** |
+| Benchmark comprehensive **[SUPERSEDED]** | `reference_outputs/comavi_v7_concordance_annotated.csv` | 44 variants, per-axis, 1255 cols — v6-era. **Canonical set is now `reference_outputs/scored_61var_canonical.csv` (61 variants, 14 systems).** |
 | CHD comprehensive | `reference_outputs/chd_concordance_results_FIXED.csv` | 384 rows × 213 cols |
-| CHD collapsed | `reference_outputs/chd_concordance_collapsed.csv` + `MAVIS_CHD_concordance_collapsed.xlsx` | 144 variants, one row each |
-| Per-variant overview | `reference_outputs/MAVIS_results_summary.xlsx` | 11 sheets (benchmark + CHD per-variant, distributions, candidates, control recall, orthogonal cases) |
-| Narrative summary | `reference_outputs/MAVIS_results_summary.docx` | prose writeup + matching tables |
-| Benchmark takeaways | `docs/MAVIS_v7_canonical_benchmark_ledger.md` | locked metrics, per-system notes, principles |
-| Two-paper synthesis | `docs/MAVIS_results_synthesis.md` | benchmark + CHD results, interpretation, verification ledger |
+| CHD collapsed | `reference_outputs/chd_concordance_collapsed.csv` + `COMAVI_CHD_concordance_collapsed.xlsx` | 144 variants, one row each |
+| Per-variant overview | `reference_outputs/COMAVI_results_summary.xlsx` | 11 sheets (benchmark + CHD per-variant, distributions, candidates, control recall, orthogonal cases) |
+| Narrative summary | `reference_outputs/COMAVI_results_summary.docx` | prose writeup + matching tables |
+| Benchmark takeaways | `docs/COMAVI_v7_canonical_benchmark_ledger.md` | locked metrics, per-system notes, principles |
+| Two-paper synthesis | `docs/COMAVI_results_synthesis.md` | benchmark + CHD results, interpretation, verification ledger |
 | Methods / decisions | `docs/methods_metrics_sketch.md`, `docs/design_decisions.md` | |
 
 ## 4. Locked headline results
@@ -74,8 +74,9 @@ Remaining limits:
 > **⚑ SUPERSEDED — v7 / 61-variant canonical set.** The benchmark headline below is the v6-era
 > 44/56-variant record. Current authoritative numbers (recomputed from
 > `reference_outputs/scored_61var_canonical.csv`; full record in ledger §12): **61 variants** (49 PPI
-> across 13 complexes + 12 BRCA1-BRCT; 14 systems); structural_agreement **0.76** (92/121 at t=2.5),
-> mech_consistency **0.71** (graded n=48); tier gradient **100 / 72 / 70 / 43** (T1–T4), Fisher
+> across 13 complexes + 12 BRCA1-BRCT; 14 systems); structural_agreement **0.77** (92/120 at t=2.5),
+> mech_consistency **0.72** (graded n=47) — both post the v7.1 grading-rubric correction, ledger §15,
+> which superseded 0.76 (92/121) / 0.71 (n=48); tier gradient **100 / 72 / 70 / 43** (T1–T4), Fisher
 > OR = 3.78 (p = 0.080), Spearman ρ = −0.40 (p = 0.0044) — the rank-correlation framing is preferred.
 > Physical validation unchanged: BRCT fold ρ = 0.72 (n=10), Hb binding ρ = 0.90 (n=7). AlphaMissense:
 > 47 PPI with a score (36 pathogenic / 11 benign). No tier×FoldX AUC-improvement claim is made
@@ -89,7 +90,7 @@ Pipeline 2 (neighborhood) equals P1 on mechanism and degrades the pathogenicity 
 
 **CHD:** 144 variants (133 patient + 11 ZIC3 controls); 45 evaluable, 99 unevaluable (disordered in every
 context). Controls: 8/9 structure, 7/9 ddG. **Patient candidates: 8** — KPNA6 I498T at 4/4 (all four
-channels), seven at 3/4. ROCK2 T367M is the single clean MAVIS-vs-AM disagreement; DVL2 D441Y the cleanest
+channels), seven at 3/4. ROCK2 T367M is the single clean COMAVI-vs-AM disagreement; DVL2 D441Y the cleanest
 novel candidate; H286R correctly scored silent (trafficking / NLS mechanism).
 
 ## 5. Did the recent AlphaMissense fix change any takeaways?
@@ -108,7 +109,7 @@ novel candidate; H286R correctly scored silent (trafficking / NLS mechanism).
    axis; the "29" was the all-silent count, which also counted the 10 benign variants.
 3. Pipeline 2 = tested-and-rejected; report tier OR 6.48 → 4.00 and elevated-subset OR 0.26; the ledger's
    "OR 0.48" is superseded (does not reproduce under either natural 2×2).
-4. Canonical benchmark file = `mavis_v7_concordance_annotated.csv` (formerly `v5_reconciled`, absent from
+4. Canonical benchmark file = `comavi_v7_concordance_annotated.csv` (formerly `v5_reconciled`, absent from
    disk; confirmed the same artifact — carries the full raw + pLDDT-reconciled mech_consistency columns).
 
 ## 7. Open before submission
@@ -126,5 +127,5 @@ novel candidate; H286R correctly scored silent (trafficking / NLS mechanism).
 ## 8. Repository state
 _Point-in-time as of 2026-07-01; see `git status` for the live state._
 
-`la424/mavis`, branch `main`, in sync with GitHub as of this checkpoint date. The FoldX binary and
+`la424/comavi`, branch `main`, in sync with GitHub as of this checkpoint date. The FoldX binary and
 AlphaFold structures are gitignored — users supply their own (see `README.md` and `docs/`).

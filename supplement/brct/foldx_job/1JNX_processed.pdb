@@ -1,4 +1,4 @@
-REMARK   MAVIS brca1_brct: chain X only, HETATM/HOH stripped. Native BRCA1 numbering (offset 0).
+REMARK   COMAVI brca1_brct: chain X only, HETATM/HOH stripped. Native BRCA1 numbering (offset 0).
 ATOM      1  N   ARG X1649      44.696  62.030  39.506  1.00 34.99           N  
 ATOM      2  CA  ARG X1649      45.315  60.704  39.852  1.00 36.59           C  
 ATOM      3  C   ARG X1649      44.348  59.568  39.556  1.00 36.95           C  

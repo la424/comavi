@@ -120,11 +120,11 @@ if __name__ == "__main__":
     args = ap.parse_args()
 
     # import the package config (adjust path/import as needed in your env)
-    from mavis_v7.config import build_benchmark_config  # noqa
+    from comavi_v7.config import build_benchmark_config  # noqa
     try:
-        from mavis_v7.build_chd_config import build_chd_config
+        from comavi_v7.build_chd_config import build_chd_config
     except ImportError:
         # if build_chd_config was pasted into config.py instead:
-        from mavis_v7.config import build_chd_config
+        from comavi_v7.config import build_chd_config
 
     prepare(args.in_path, args.out_path, build_chd_config())

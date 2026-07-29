@@ -1,12 +1,12 @@
 # Adding your own genes
 
-MAVIS is config-driven: you describe your complexes in a YAML file and provide the
+COMAVI is config-driven: you describe your complexes in a YAML file and provide the
 AlphaFold structures. No Python editing is required.
 
 ## What you need
 
 - **AlphaFold structures** for each gene and each hub-partner complex (you supply these;
-  MAVIS consumes structures, it does not predict them).
+  COMAVI consumes structures, it does not predict them).
 - **FoldX 5.x** (free for academics, https://foldxsuite.crg.eu/), exposed as
   `export FOLDX_BINARY=/path/to/foldx`.
 - A **variant CSV** with columns `gene,ref_aa,position,alt_aa`.
@@ -20,7 +20,7 @@ together) and a **monomer** prediction for each gene. Put them all in one direct
 complexes, but files can be named anything as long as the YAML points at the right names.
 If your PDB B-factor column is zeroed (common for some AlphaFold exports), drop the
 matching `.cif` next to each `.pdb` and reference it via `cif_file` / `monomer_cif` —
-MAVIS reads pLDDT from the CIF in that case.
+COMAVI reads pLDDT from the CIF in that case.
 
 ## Step 2 — the systems config (YAML)
 
@@ -47,7 +47,7 @@ it as e.g. `my_systems.yaml`. A minimal complex:
 `configs/chd_systems.yaml` is a full real-world example; `configs/benchmark_systems.yaml`
 shows the harder cases (x-ray/NMR complexes with HETATM handling, position offsets,
 non-standard chain order, and a 4-chain homo-tetramer). The complete field reference is
-the docstring at the top of `scripts/mavis_v7/config_io.py`.
+the docstring at the top of `scripts/comavi_v7/config_io.py`.
 
 Fields worth knowing:
 - `chain:` is the gene's chain **in the complex** (drives the interface analysis).
@@ -92,7 +92,7 @@ To layer AlphaMissense + Franklin/ClinVar on top, include `AlphaMissense`,
 `AlphaMissense_pathogenicity`, and `franklin` columns in your variant CSV, then run
 `scripts/apply_concordance_v5.py` on the structural output (see its `--help`).
 
-## What MAVIS still can't do for you
+## What COMAVI still can't do for you
 
 - Predict structures (bring your own AlphaFold models).
 - Guess chain assignments (verify them in the PDB).

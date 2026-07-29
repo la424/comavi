@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-MAVIS v7 — Relaxed-tier re-grounding walk over the 18 contracted axes.
+COMAVI v7 — Relaxed-tier re-grounding walk over the 18 contracted axes.
 
 For each axis that went graded->unknown across Batches 5-11, classify as either:
   - RELAXED-DIRECTIONAL: indirect-but-specific evidence supports a sign

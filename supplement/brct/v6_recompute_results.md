@@ -1,6 +1,6 @@
-# MAVIS v6 recompute — structural_agreement with the expanded monomer-fold arm
+# COMAVI v6 recompute — structural_agreement with the expanded monomer-fold arm
 
-Reproduced with the repo's own `scripts/mavis_v7/evaluation.py` (`level3_mechanism_axis`),
+Reproduced with the repo's own `scripts/comavi_v7/evaluation.py` (`level3_mechanism_axis`),
 primary threshold **1.0 kcal/mol** (production operating point; 1.5/2.0 reported as sensitivity).
 Truth tokens for BRCT assigned ONCE from **measured** ΔΔG_U–F (Rowling 2010) via the pipeline's
 own `discretize_ddg`, held fixed; FoldX ΔΔG monomer is the prediction.

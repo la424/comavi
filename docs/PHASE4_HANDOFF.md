@@ -1,4 +1,4 @@
-# MAVIS v7 — Phase 4 Hand-Off
+# COMAVI v7 — Phase 4 Hand-Off
 
 **Date:** 2026-05-05
 **State at hand-off:** v5 framework fully implemented and verified end-to-end against cached intermediate. All 16 verification checks pass. Ready for full FoldX rerun on Luke's machine.
@@ -8,14 +8,14 @@
 ## What's in PIPELINE_CURRENT/
 
 ### Modular package patches (committed)
-- `scripts/mavis_v7/mechanism.py` — `classify_mechanism` accepts per-axis threshold dict; 33-category fold split; `ALL_MECHANISMS` updated; `_resolve_thresholds()` helper
-- `scripts/mavis_v7/pipeline.py` — writes `mavis_mechanism_t{10,15,20,25,SAP}` plus backward-compat `mavis_mechanism` alias
-- `scripts/mavis_v7/evaluation.py` — Track A v5: LoF/GoF mapping dropped; `level2_per_phenotype_detection` replaces `level2_three_class`; Level 4 reframed
-- `scripts/mavis_v7_baseline_correct.py` — `reclassify_with_flags` writes `mavis_mechanism_corrected_t{10,15,20,25,SAP}` plus alias
+- `scripts/comavi_v7/mechanism.py` — `classify_mechanism` accepts per-axis threshold dict; 33-category fold split; `ALL_MECHANISMS` updated; `_resolve_thresholds()` helper
+- `scripts/comavi_v7/pipeline.py` — writes `comavi_mechanism_t{10,15,20,25,SAP}` plus backward-compat `comavi_mechanism` alias
+- `scripts/comavi_v7/evaluation.py` — Track A v5: LoF/GoF mapping dropped; `level2_per_phenotype_detection` replaces `level2_three_class`; Level 4 reframed
+- `scripts/comavi_v7_baseline_correct.py` — `reclassify_with_flags` writes `comavi_mechanism_corrected_t{10,15,20,25,SAP}` plus alias
 
 ### Pipeline scripts
 - `scripts/run_live.py` — full Phase 1–3 runner (8 stages: preprocessing → variant loading → metrics → FoldX → P1 scoring → baseline correction → neighborhood)
-- `archive/derivation/mavis_v7_neighborhood.py` — Pipeline 2 (±3 neighborhood; tested and rejected, retained under `archive/`)
+- `archive/derivation/comavi_v7_neighborhood.py` — Pipeline 2 (±3 neighborhood; tested and rejected, retained under `archive/`)
 - `scripts/apply_concordance_v5.py` — Track B v5 concordance assembly with all v5 features:
   - 5-threshold mechanism sweep including Sapozhnikov per-axis
   - Symmetric internal CI95 gating
@@ -44,14 +44,14 @@
 ## How to run v5 end-to-end on a fresh machine
 
 ### Prerequisites
-- Python 3.14 virtualenv at `~/mavis_v7/.venv/` with pandas, numpy, openpyxl, biopython, scikit-learn
-- FoldX 5.1 binary at `/Users/lukearnce/Downloads/foldx5_Mac_0/foldx_20270131` (path set in `mavis_v7/config.py`; edit if different)
+- Python 3.14 virtualenv at `~/comavi_v7/.venv/` with pandas, numpy, openpyxl, biopython, scikit-learn
+- FoldX 5.1 binary at `/Users/lukearnce/Downloads/foldx5_Mac_0/foldx_20270131` (path set in `comavi_v7/config.py`; edit if different)
 - Structure files in `inputs/raw/structures/` (AlphaFold monomer .pdb files + complex multimer PDBs)
 
 ### Phase 4 step-by-step
 
 ```bash
-cd ~/mavis_v7
+cd ~/comavi_v7
 source .venv/bin/activate
 
 # Stage 1-7: full pipeline (preprocessing → FoldX → P1 scoring → baseline correction)
@@ -62,31 +62,31 @@ python scripts/run_live.py \
   --output-dir outputs/track_b/
 
 # Stage 7b: neighborhood scoring (Pipeline 2)
-python archive/derivation/mavis_v7_neighborhood.py \
-  --input outputs/track_b/mavis_v7_results_corrected.csv \
-  --output outputs/track_b/mavis_v7_results_with_nbhd.csv
+python archive/derivation/comavi_v7_neighborhood.py \
+  --input outputs/track_b/comavi_v7_results_corrected.csv \
+  --output outputs/track_b/comavi_v7_results_with_nbhd.csv
 
 # Track B: apply v5 concordance + diagnostics
 python scripts/apply_concordance_v5.py \
-  --results outputs/track_b/mavis_v7_results_with_nbhd.csv \
-  --external inputs/AM_variants_mavis_mechanism_test.xlsx \
+  --results outputs/track_b/comavi_v7_results_with_nbhd.csv \
+  --external inputs/AM_variants_comavi_mechanism_test.xlsx \
   --outdir outputs/track_b/
 
 # Track A: run binary classifier metrics + HBB + per-phenotype detection
 python scripts/run_evaluate.py \
-  --input outputs/track_b/mavis_v7_results_corrected.csv \
+  --input outputs/track_b/comavi_v7_results_corrected.csv \
   --output-dir outputs/track_a/
 
 # Build 9-sheet xlsx report
 python scripts/build_report.py \
-  --concordance outputs/track_b/mavis_v7_concordance.csv \
-  --output outputs/track_b/mavis_v7_concordance_v5.xlsx
+  --concordance outputs/track_b/comavi_v7_concordance.csv \
+  --output outputs/track_b/comavi_v7_concordance_v5.xlsx
 
 # OPTIONAL: verify against expected v5 headlines
 python verification/verify_stage6.py \
-  --intermediate outputs/track_b/mavis_v7_results_with_nbhd.csv \
-  --corrected outputs/track_b/mavis_v7_results_corrected.csv \
-  --am inputs/AM_variants_mavis_mechanism_test.xlsx \
+  --intermediate outputs/track_b/comavi_v7_results_with_nbhd.csv \
+  --corrected outputs/track_b/comavi_v7_results_corrected.csv \
+  --am inputs/AM_variants_comavi_mechanism_test.xlsx \
   --scripts-dir scripts \
   --output-dir verification_run/
 ```
@@ -118,7 +118,7 @@ Track B verification (apply_concordance_v5)
   [ OK ] threshold_stable_count: 28 (expected 28)
 
 Track A verification (run_evaluate)
-  [ OK ] Level 1 MAVIS_full TPR @ t=1.0: 0.913 (expected 0.913)
+  [ OK ] Level 1 COMAVI_full TPR @ t=1.0: 0.913 (expected 0.913)
   [ OK ] Level 1 monomer_only TPR @ t=1.0: 0.391 (expected 0.391)
   [ OK ] Level 3 HBB Pearson r: 0.894 (expected 0.890)
   [ OK ] Level 2 pathogenic detected @ t=1.0: 24 (expected 24)
@@ -134,7 +134,7 @@ Verification summary: 16/16 passed
 
 ## What might shift after fresh FoldX rerun
 
-The cached intermediate `mavis_v7_results_with_nbhd.csv` reflects a prior FoldX run. A fresh rerun may produce slightly different ΔΔG values due to:
+The cached intermediate `comavi_v7_results_with_nbhd.csv` reflects a prior FoldX run. A fresh rerun may produce slightly different ΔΔG values due to:
 
 1. **FoldX stochasticity in BuildModel.** Despite fixed seed, the 5-replicate mean and SD can vary by ~0.05–0.1 kcal/mol between runs.
 2. **RepairPDB differences** if any structure files changed.

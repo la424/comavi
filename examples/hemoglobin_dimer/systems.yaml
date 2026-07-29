@@ -1,4 +1,4 @@
-# Minimal single-system MAVIS config, extracted verbatim from
+# Minimal single-system COMAVI config, extracted verbatim from
 # configs/benchmark_systems.yaml (system `hemoglobin_dimer`) so this example
 # scores identically to the benchmark row it reproduces.
 #

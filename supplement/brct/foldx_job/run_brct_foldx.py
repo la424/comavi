@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-MAVIS brca1_brct monomer-fold FoldX 5.1 BuildModel driver (standalone).
-Mirrors scripts/mavis_v7/foldx_runner.build_model: RepairPDB (once) then BuildModel n_runs=5.
+COMAVI brca1_brct monomer-fold FoldX 5.1 BuildModel driver (standalone).
+Mirrors scripts/comavi_v7/foldx_runner.build_model: RepairPDB (once) then BuildModel n_runs=5.
 Outputs ddg_monomer mean+SD per variant to brct_foldx_ddg.csv.
 
 USAGE:

@@ -1,6 +1,6 @@
-# MAVIS v7 — Methods Paper Metrics Outline (v4 — implementation-verified)
+# COMAVI v7 — Methods Paper Metrics Outline (v4 — implementation-verified)
 
-**Status:** All numbers verified by `archive/derivation/verify_v5.py` against the v5 implementation (superseded by `verification/verify_stage6.py`; retained for the audit trail). The v5 framework is fully implemented in `scripts/apply_concordance_v5.py`, `mavis_v7/mechanism.py`, `mavis_v7/pipeline.py`, `mavis_v7_baseline_correct.py`, and `mavis_v7/evaluation.py`. Locked.
+**Status:** All numbers verified by `archive/derivation/verify_v5.py` against the v5 implementation (superseded by `verification/verify_stage6.py`; retained for the audit trail). The v5 framework is fully implemented in `scripts/apply_concordance_v5.py`, `comavi_v7/mechanism.py`, `comavi_v7/pipeline.py`, `comavi_v7_baseline_correct.py`, and `comavi_v7/evaluation.py`. Locked.
 
 **v3 → v4 update:** mech_consistency numbers reflect the actual Rubric B implementation (per-axis fold subtype checks via `grade_mechanism_consistency` in `apply_concordance_v5.py`), which is more permissive than the standalone-compute sketch numbers — fold subtypes are checked against per-axis annotations, but the rubric retains the existing axis-presence framework rather than imposing a coarser axis-alignment rule.
 
@@ -8,7 +8,7 @@
 
 ## §1. Pipeline outputs
 
-For each input variant, MAVIS v7 generates structural-disruption predictions decomposed across multiple axes:
+For each input variant, COMAVI v7 generates structural-disruption predictions decomposed across multiple axes:
 
 - A **structural tier** (Tier 1–4) reflecting position-level structural importance, derived from Grantham severity, contacts, burial state, interface participation, and pLDDT confidence
 - **Three FoldX ΔΔG axes** with replicate-derived 95% confidence intervals: monomer fold stability, fold-in-complex stability per partner, and binding interaction energy per partner
@@ -97,13 +97,13 @@ This is the only experimental-magnitude validation in the benchmark; expansion i
 
 ### Q4: Does the multimer axis add value beyond simpler scoring?
 
-**Metric: baseline comparison.** Three classifiers compared against role-based binary outcome (pathogenic vs benign): MAVIS_full (tier + multimer ΔΔG), monomer_only (tier + monomer ΔΔG), structural_score (tier alone). Reports TPR, TNR, accuracy.
+**Metric: baseline comparison.** Three classifiers compared against role-based binary outcome (pathogenic vs benign): COMAVI_full (tier + multimer ΔΔG), monomer_only (tier + monomer ΔΔG), structural_score (tier alone). Reports TPR, TNR, accuracy.
 
-**Headline: at threshold 1.0, MAVIS_full TPR = 0.913 vs monomer_only TPR = 0.391**, demonstrating the multimer axis recovers pathogenic structural disruption that single-residue scoring misses. The threshold for this comparison is t=1.0 for continuity with the original PHASE3_CHECKPOINT analysis. Sensitivity at higher thresholds and full per-classifier comparison are reported in supplementary.
+**Headline: at threshold 1.0, COMAVI_full TPR = 0.913 vs monomer_only TPR = 0.391**, demonstrating the multimer axis recovers pathogenic structural disruption that single-residue scoring misses. The threshold for this comparison is t=1.0 for continuity with the original PHASE3_CHECKPOINT analysis. Sensitivity at higher thresholds and full per-classifier comparison are reported in supplementary.
 
 (Note: these numbers are pre-v5 PHASE3_CHECKPOINT values. Track A's update under v5 — LoF/GoF cleanup and fold-split categories — may shift them slightly. Final values will be re-verified after implementation.)
 
-### Q5 (supporting): Where do MAVIS predictions agree with external pathogenicity evidence?
+### Q5 (supporting): Where do COMAVI predictions agree with external pathogenicity evidence?
 
 **Metric: external_consensus** (AM + Franklin agreement) and **legacy 4-way concordance** (tier + collapsed DDG + AM + Franklin). The 4-way is retained for backward-compatibility with prior cross-tool comparison literature; it is not a primary contribution.
 
@@ -232,7 +232,7 @@ This variant illustrates correct silence on a true negative — the pipeline's m
 
 The framework distinguishes two uses of GoF/LoF labeling. **Phenotype labels** (pathogenic_lof / pathogenic_gof / benign) are used as ground-truth annotations for stratifying detection-rate reporting. **Predictive mapping** from mechanism call to functional outcome (the leaky destabilization → LoF / stabilization → GoF convention) is not used.
 
-The pipeline's outputs describe *structural* disruption and the *type* of structural disruption (fold, binding, both, neutral); translation to functional consequence requires case-specific biological context and is outside MAVIS's predictive scope.
+The pipeline's outputs describe *structural* disruption and the *type* of structural disruption (fold, binding, both, neutral); translation to functional consequence requires case-specific biological context and is outside COMAVI's predictive scope.
 
 The destabilization → LoF / stabilization → GoF convention is leaky in three specific ways:
 

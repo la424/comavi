@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Compare a MAVIS run of this example against the frozen benchmark values.
+"""Compare a COMAVI run of this example against the frozen benchmark values.
 
 Usage:
-    python examples/hemoglobin_dimer/compare_to_reference.py /tmp/mavis_hb/structural_results.csv
+    python examples/hemoglobin_dimer/compare_to_reference.py /tmp/comavi_hb/structural_results.csv
 
 FoldX is stochastic, so exact equality is not expected. The tolerance is 3x the
 largest per-axis replicate SD recorded in the reference run -- the scale of
@@ -54,11 +54,11 @@ def main(path):
             fails += not ok
             print(f"{r.variant:6s} {col:18s} ref {float(r[col]):8.4f}  got {float(g[col]):8.4f}"
                   f"  d {d:+7.4f}  {'ok' if ok else 'DIFFERS'}")
-        if "mavis_mechanism" in got.columns:
-            same = str(g["mavis_mechanism"]) == str(r["mavis_mechanism"])
+        if "comavi_mechanism" in got.columns:
+            same = str(g["comavi_mechanism"]) == str(r["comavi_mechanism"])
             fails += not same
-            print(f"{r.variant:6s} {'mechanism':18s} ref {r['mavis_mechanism']!r}"
-                  f"  got {g['mavis_mechanism']!r}  {'ok' if same else 'DIFFERS'}")
+            print(f"{r.variant:6s} {'mechanism':18s} ref {r['comavi_mechanism']!r}"
+                  f"  got {g['comavi_mechanism']!r}  {'ok' if same else 'DIFFERS'}")
         print()
 
     print("PASS - reproduces the benchmark values" if not fails

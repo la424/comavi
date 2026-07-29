@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from mavis_v7.config_io import scaffold_system_yaml
+from comavi_v7.config_io import scaffold_system_yaml
 
 
 def main():

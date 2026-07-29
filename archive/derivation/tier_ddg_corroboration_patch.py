@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-MAVIS v7 — tier/ddG corroboration column patch.
+COMAVI v7 — tier/ddG corroboration column patch.
 
 Adds per-variant structural-evidence columns derived ENTIRELY from columns already present in the
 pipeline output. No new computation, no ground-truth dependency. Run as a post-processing stage on
@@ -8,14 +8,14 @@ the concordance output (or the corrected results CSV).
 
 WHAT IT ADDS
 ------------
-1. `structural_evidence_strength` (per variant) — a legible relabeling of mavis_tier encoding the
+1. `structural_evidence_strength` (per variant) — a legible relabeling of comavi_tier encoding the
    calibrated gradient (T1 strongest -> T4 minimal). Makes the tier self-documenting for downstream
    (CHD) use.
 
 2. `axis_corroboration_{mono,fold,bind}` (per axis) — the orthogonal-channel agreement flag, applied
    ONLY where the literature ground-truth token is `unknown` (elsewhere it's 'has_ground_truth').
    Compares two INDEPENDENT channels:
-     - contact-severity channel: mavis_tier (Grantham severity x contact count; ddG-independent)
+     - contact-severity channel: comavi_tier (Grantham severity x contact count; ddG-independent)
      - thermodynamic channel:    FoldX ddG on that axis, vs a 1.0 kcal/mol detectability floor
    Values:
      corroborated_disruption          - both channels fire (elevated confidence of real disruption)
@@ -33,9 +33,9 @@ DESIGN NOTES
   token is buried_core or partially_buried: a large Grantham change at a densely-packed buried
   position lights up both channels without being two independent observations of fold destabilization.
 - Strength and mechanism are kept SEPARATE (the framework's axis separation): this patch adds an
-  evidence-STRENGTH column; the mechanism call lives in mavis_mechanism_*. A downstream user reads
+  evidence-STRENGTH column; the mechanism call lives in comavi_mechanism_*. A downstream user reads
   them together.
-- Independence basis: mavis_score = Grantham severity x (mono + max inter contacts); contains NO ddG
+- Independence basis: comavi_score = Grantham severity x (mono + max inter contacts); contains NO ddG
   term (confirmed: apply_concordance_v5 / mechanism.py line 71; v13 removed the nbhd ddG term).
 """
 import argparse
@@ -58,10 +58,10 @@ def _fv(x):
     except: return None
 
 def _tier_fires(row):
-    return _tn(row.get('mavis_tier')) in ('1', '2')
+    return _tn(row.get('comavi_tier')) in ('1', '2')
 
 def _monomer_is_buried(row):
-    ev = str(row.get('mavis_score_evidence', ''))
+    ev = str(row.get('comavi_score_evidence', ''))
     return ('buried_core(monomer)' in ev) or ('partially_buried(monomer)' in ev)
 
 def _foldx_axis(row, axis):
@@ -97,15 +97,15 @@ def corroboration_for_axis(row, axis):
     return 'channels_conflict'
 
 def add_columns(df):
-    df['structural_evidence_strength'] = df['mavis_tier'].map(lambda t: STRENGTH_MAP.get(_tn(t), 'unknown_tier'))
+    df['structural_evidence_strength'] = df['comavi_tier'].map(lambda t: STRENGTH_MAP.get(_tn(t), 'unknown_tier'))
     for axis in ('mono', 'fold', 'bind'):
         df[f'axis_corroboration_{axis}'] = df.apply(lambda r: corroboration_for_axis(r, axis), axis=1)
     return df
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--in', dest='infile', default='results/p2_corrected/mavis_v7_concordance.csv')
-    ap.add_argument('--out', dest='outfile', default='results/p2_corrected/mavis_v7_concordance_annotated.csv')
+    ap.add_argument('--in', dest='infile', default='results/p2_corrected/comavi_v7_concordance.csv')
+    ap.add_argument('--out', dest='outfile', default='results/p2_corrected/comavi_v7_concordance_annotated.csv')
     args = ap.parse_args()
 
     df = pd.read_csv(args.infile)

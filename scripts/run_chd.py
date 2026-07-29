@@ -13,13 +13,13 @@ import os
 import sys
 from pathlib import Path
 
-# Make the bundled mavis_v7 package importable. This script lives in scripts/,
-# alongside the mavis_v7 package. Run it from the repository root:
+# Make the bundled comavi_v7 package importable. This script lives in scripts/,
+# alongside the comavi_v7 package. Run it from the repository root:
 #   python scripts/run_chd.py
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from mavis_v7.build_chd_config import build_chd_config
-from mavis_v7.pipeline import run_pipeline
+from comavi_v7.build_chd_config import build_chd_config
+from comavi_v7.pipeline import run_pipeline
 
 res = run_pipeline(
     configs=build_chd_config(),

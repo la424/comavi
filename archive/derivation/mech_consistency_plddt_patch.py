@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-MAVIS v7 — mech_consistency pLDDT-reconciliation patch + runner.
+COMAVI v7 — mech_consistency pLDDT-reconciliation patch + runner.
 
 PURPOSE
 -------
@@ -115,16 +115,16 @@ def _weighted(grades):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--results', default='results/mavis_v7_concordance_v5_out.csv',
+    ap.add_argument('--results', default='results/comavi_v7_concordance_v5_out.csv',
                     help='CSV that already has raw mech_consistency_{suf} columns')
     ap.add_argument('--script-dir', default='/mnt/user-data/uploads',
                     help='dir containing apply_concordance_v5.py (for MECH_LABEL_ASSERTIONS)')
     args = ap.parse_args()
 
     # stub the missing module so we can import the assertions table + rubric
-    m = types.ModuleType('mavis_v7'); ms = types.ModuleType('mavis_v7.mechanism')
+    m = types.ModuleType('comavi_v7'); ms = types.ModuleType('comavi_v7.mechanism')
     ms.classify_mechanism = lambda *a, **k: ('No structural effect detected', '', '')
-    m.mechanism = ms; sys.modules['mavis_v7'] = m; sys.modules['mavis_v7.mechanism'] = ms
+    m.mechanism = ms; sys.modules['comavi_v7'] = m; sys.modules['comavi_v7.mechanism'] = ms
     sys.path.insert(0, args.script_dir)
     import importlib, pandas as pd
     A = importlib.import_module('apply_concordance_v5')
@@ -142,7 +142,7 @@ def main():
         for _, r in df.iterrows():
             v = f"{r['ref_aa']}{r['position']}{r['alt_aa']}"
             recon.append(reconcile_grade(r['gene'], v, r[raw_col],
-                                         r.get(f'mavis_mechanism_corrected_{suf}'),
+                                         r.get(f'comavi_mechanism_corrected_{suf}'),
                                          A.MECH_LABEL_ASSERTIONS))
         df[f'mech_consistency_{suf}_plddt_reconciled'] = recon
         rp, rn, rf = _weighted(df[raw_col])
@@ -150,14 +150,14 @@ def main():
         print(f'  {suf:5s}  {rp:.1f}/{rn}={rf:.3f}        {cp:.1f}/{cn}={cf:.3f}')
 
     df['mech_consistency_summary_plddt_reconciled'] = df['mech_consistency_t25_plddt_reconciled']
-    out = Path(args.results).with_name('mavis_v7_concordance_v5_reconciled.csv')
+    out = Path(args.results).with_name('comavi_v7_concordance_v5_reconciled.csv')
     df.to_csv(out, index=False)
     print(f'\nwrote {out}')
     print('\nExcused (N/A pLDDT-excluded) at t25:')
     for _, r in df.iterrows():
         if r['mech_consistency_t25_plddt_reconciled'] == 'N/A (pLDDT-excluded)':
             print(f"  {r['gene']} {r['ref_aa']}{r['position']}{r['alt_aa']}  "
-                  f"(raw was {r['mech_consistency_t25']}; call={r['mavis_mechanism_corrected_t25']})")
+                  f"(raw was {r['mech_consistency_t25']}; call={r['comavi_mechanism_corrected_t25']})")
 
 
 if __name__ == '__main__':

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generic MAVIS runner - structural scoring for ANY genes via a YAML systems config.
+"""Generic COMAVI runner - structural scoring for ANY genes via a YAML systems config.
 
   export FOLDX_BINARY=/path/to/foldx
   python run.py --config configs/my_systems.yaml --variants my_variants.csv \
@@ -18,14 +18,14 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent / "scripts"))
 
 import pandas as pd
-from mavis_v7.config import validate_config
-from mavis_v7.config_io import load_config, autofanout
-from mavis_v7.numbering import (check_variant_numbering, format_report,
+from comavi_v7.config import validate_config
+from comavi_v7.config_io import load_config, autofanout
+from comavi_v7.numbering import (check_variant_numbering, format_report,
                                 check_structure_provenance)
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Run MAVIS structural scoring from a YAML systems config.")
+    ap = argparse.ArgumentParser(description="Run COMAVI structural scoring from a YAML systems config.")
     ap.add_argument("--config", required=True, help="YAML systems config (see configs/chd_systems.yaml)")
     ap.add_argument("--variants", required=True, help="Variant CSV: gene,ref_aa,position,alt_aa[,system]")
     ap.add_argument("--structures", default="structures", help="Directory of AlphaFold/PDB structures")
@@ -102,7 +102,7 @@ def main():
         # position_multi. Checking the raw frame would compare uppercase CSV gene
         # names against lowercase config keys, resolve nothing, and report a
         # vacuous pass.
-        from mavis_v7.variant_loading import load_variants
+        from comavi_v7.variant_loading import load_variants
         num_ok, num_issues, num_counts = check_variant_numbering(
             configs, load_variants(expanded_path, configs, verbose=False),
             structures, out / "_preprocessed")
@@ -138,7 +138,7 @@ def main():
         print("\n[dry-run] Config valid and variants expanded. Stopping before FoldX.")
         return
 
-    from mavis_v7.pipeline import run_pipeline
+    from comavi_v7.pipeline import run_pipeline
     res = run_pipeline(
         configs=configs,
         variants_csv=expanded_path,

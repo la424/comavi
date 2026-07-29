@@ -4,7 +4,7 @@ apply_chd_concordance.py - Versioned CHD four-way concordance (re)assembly.
 
 Re-derives the CHD four-way concordance (structure tier . ddG . AlphaMissense .
 Franklin) on top of the LOCKED structural layer, using the shared engine
-mavis_v7.concordance.add_concordance - the exact engine that produced the
+comavi_v7.concordance.add_concordance - the exact engine that produced the
 reference (verified to round-trip on the reference byte-for-byte).
 
 INPUT MODEL (why it consumes the concordance reference, not chd_structural_results.csv):
@@ -29,7 +29,7 @@ from pathlib import Path
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from mavis_v7.concordance import add_concordance, std_franklin
+from comavi_v7.concordance import add_concordance, std_franklin
 
 FRANKLIN_PATHONLY = {"pathogenic", "likely pathogenic"}   # NO VUS counted
 KEYS = ["gene", "ref_aa", "position", "alt_aa"]

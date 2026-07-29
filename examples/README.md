@@ -1,6 +1,6 @@
 # Worked examples
 
-Each subdirectory is a complete, self-contained MAVIS input set with the frozen
+Each subdirectory is a complete, self-contained COMAVI input set with the frozen
 benchmark values it should reproduce. Use these to verify an installation, to see
 what a valid config and variant file look like before writing your own, or as a
 template to copy.
@@ -16,7 +16,7 @@ the config and expands the variant list without invoking FoldX.
 ## Why hemoglobin E6V is the example to start with
 
 HBB Glu6Val is the sickle-cell variant — one of the best-characterised pathogenic
-mutations in human medicine. MAVIS scores it as structurally silent on all three
+mutations in human medicine. COMAVI scores it as structurally silent on all three
 axes, and the benchmark grades all three expectations as `neutral`. That is the
 correct answer: E6V does not destabilise the globin fold or the alpha1-beta1
 interface. It creates a *new* hydrophobic surface patch that drives polymerisation
@@ -24,10 +24,10 @@ of deoxy-HbS into fibres — an intermolecular gain-of-function that a single
 alpha-beta dimer cannot express, and that no ddG on these three axes is designed
 to detect.
 
-So the example is a check on what MAVIS is and is not. **A structural score near
+So the example is a check on what COMAVI is and is not. **A structural score near
 zero is not a benign call.** Mechanism and pathogenicity are separate axes, and
 E6V is the cleanest demonstration in the benchmark: maximally pathogenic,
-structurally quiet. Anyone reading the output as "MAVIS thinks sickle cell is
+structurally quiet. Anyone reading the output as "COMAVI thinks sickle cell is
 fine" has misread the tool.
 
 ## Running it
@@ -41,17 +41,17 @@ python examples/hemoglobin_dimer/fetch_structures.py \
 python run.py --config examples/hemoglobin_dimer/systems.yaml \
               --variants examples/hemoglobin_dimer/variants.csv \
               --structures examples/hemoglobin_dimer/structures \
-              --out /tmp/mavis_hb --dry-run
+              --out /tmp/comavi_hb --dry-run
 
 # 3. full scoring (needs your own FoldX 5.x binary)
 python run.py --config examples/hemoglobin_dimer/systems.yaml \
               --variants examples/hemoglobin_dimer/variants.csv \
               --structures examples/hemoglobin_dimer/structures \
-              --out /tmp/mavis_hb --foldx /path/to/foldx
+              --out /tmp/comavi_hb --foldx /path/to/foldx
 
 # 4. compare against the frozen benchmark values
 python examples/hemoglobin_dimer/compare_to_reference.py \
-       /tmp/mavis_hb/structural_results.csv
+       /tmp/comavi_hb/structural_results.csv
 ```
 
 Step 2 is the useful smoke test: it exercises config parsing, structure
@@ -79,8 +79,8 @@ which runs off cached intermediates and needs no structures and no FoldX:
 
 ```bash
 python verification/verify_stage6.py \
-  --intermediate inputs/intermediate/mavis_v7_results_with_nbhd.csv \
-  --am inputs/AM_variants_mavis_mechanism_test.xlsx \
+  --intermediate inputs/intermediate/comavi_v7_results_with_nbhd.csv \
+  --am inputs/AM_variants_comavi_mechanism_test.xlsx \
   --scripts-dir scripts
 ```
 

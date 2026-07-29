@@ -113,7 +113,7 @@ def main():
     print(f"\nStructures ready in {out}")
     print("Next: python run.py --config examples/hemoglobin_dimer/systems.yaml \\")
     print(f"        --variants examples/hemoglobin_dimer/variants.csv --structures {out} \\")
-    print("        --out /tmp/mavis_hb --dry-run")
+    print("        --out /tmp/comavi_hb --dry-run")
     return 0
 
 

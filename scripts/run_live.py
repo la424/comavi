@@ -1,7 +1,7 @@
 """Benchmark pipeline entry point (live FoldX run).
 
 Runs the multimer-aware structural scoring over the 44-variant / 11-PPI-system
-benchmark. Produces results/mavis_v7_results.csv, which the concordance and
+benchmark. Produces results/comavi_v7_results.csv, which the concordance and
 evaluation steps consume (see README). To reproduce the headline metrics WITHOUT
 FoldX, use the cached self-test in README instead.
 
@@ -16,11 +16,11 @@ import warnings
 warnings.filterwarnings('ignore')
 from pathlib import Path
 
-# Make the bundled mavis_v7 package importable.
+# Make the bundled comavi_v7 package importable.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from mavis_v7.config import build_benchmark_config
-from mavis_v7.pipeline import run_pipeline
+from comavi_v7.config import build_benchmark_config
+from comavi_v7.pipeline import run_pipeline
 
 FOLDX = Path(os.environ.get("FOLDX_BINARY", "foldx"))
 
@@ -37,5 +37,5 @@ results = run_pipeline(
     verbose=True,
 )
 df = results['df']
-df.to_csv('results/mavis_v7_results.csv', index=False)
-print('Wrote', len(df), 'variants to results/mavis_v7_results.csv')
+df.to_csv('results/comavi_v7_results.csv', index=False)
+print('Wrote', len(df), 'variants to results/comavi_v7_results.csv')
