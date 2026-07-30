@@ -1,5 +1,7 @@
 # COMAVI — Complex-Aware Variant Impact Scoring
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21284083.svg)](https://doi.org/10.5281/zenodo.21284083)
+
 COMAVI is a FoldX-based structural variant-interpretation pipeline. Most structural
 variant-effect tools score a mutation against a single protein in isolation. But
 disease genes act in **protein complexes**, and a variant's real structural
