@@ -111,5 +111,6 @@ for s in ("top", "right"):
     ax.spines[s].set_visible(False)
 fig.tight_layout()
 fig.savefig(OUT, dpi=300, bbox_inches="tight")
+fig.savefig(OUT.with_suffix(".pdf"), bbox_inches="tight")
 print(f"plotted n={len(pv)} (pathogenic {npath}, benign {nben})")
 print(f"saved {OUT.relative_to(REPO)}")

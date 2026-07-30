@@ -127,6 +127,7 @@ fig.suptitle("COMAVI predicted vs directly-measured "
              fontsize=9.6, y=0.995)
 fig.tight_layout(rect=(0, 0, 1, 0.965), w_pad=2.6)
 fig.savefig(OUT, dpi=300, bbox_inches="tight")
+fig.savefig(OUT.with_suffix(".pdf"), bbox_inches="tight")
 print(f"panel a: rho={rho_a:.4f} p={p_a:.4f} n={len(graded)}")
 print(f"panel b: rho={rho_b:.4f} p={p_b:.4f} n={len(hb)}")
 print(f"saved {OUT.relative_to(REPO)}")
