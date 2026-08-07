@@ -803,6 +803,20 @@ def derive_expected_mech_class(row):
     if fold_pos and bind_pos:
         return "mixed_structural"
     if fold_pos:
+        # v7.3: the fold branch is now direction-aware, symmetric with the
+        # binding branch below. A measured STABILIZING fold change is not a
+        # fold-destabilization mechanism; labelling it `fold_mechanism` makes
+        # the expectation incoherent (the grader then demands the pipeline call
+        # a destabilization that the measurement says does not occur).
+        #
+        # Blast radius: exactly one row in the 61-variant benchmark carries a
+        # stabilizing ground-truth annotation on any axis (BRCA1-BRCT R1699Q,
+        # expected_ddg_monomer == 'stab'). No interaction row is affected.
+        fold_dir = _axis_direction(row)
+        fold_axes = [a for a in ("fold_monomer", "fold_complex")
+                     if axes[a] == "positive"]
+        if fold_axes and all(fold_dir.get(a) == "stab" for a in fold_axes):
+            return "structurally_silent"
         return "fold_mechanism"
     if bind_pos:
         bind_dir = _axis_direction(row).get("binding")
@@ -830,6 +844,171 @@ def derive_expected_mech_class(row):
 
     # All committed axes negative
     return "structurally_silent"
+
+
+# ============================================================================
+# NEW in v7.1: direction-explicit axis signature (Stage A)
+# ============================================================================
+# `expected_mech_class` (above) is what the grader consumes. It is an AXIS
+# SIGNATURE, not a mechanism: it says which ground-truth axes are positive,
+# and it is frozen because grading reproduces from it.
+#
+# `axis_signature` restates the same information with two defects removed:
+#   1. Direction is explicit on EVERY axis. The legacy rubric splits the
+#      binding axis by direction (ppi_stab_ vs ppi_destab_mechanism) but
+#      collapses the fold axes, so a stabilising fold variant and a
+#      destabilising one share the label `fold_mechanism`.
+#   2. Monomer fold and complex fold are named separately rather than
+#      merged into an undifferentiated "fold".
+# It is DERIVED and carries no grading authority — it exists so figures and
+# tables can label classes honestly without reopening the frozen metric.
+_SIG_POSITIVE = {"destab", "stab"}
+
+
+def derive_axis_signature(row):
+    """Direction-explicit, monomer/complex-distinguished restatement of the
+    ground-truth axis pattern. Returns a string label, or 'NA' in Mode B."""
+    axes = classify_axis_status(row)
+    if axes is None:
+        return "NA"
+    direction = _axis_direction(row)
+
+    def state(axis):
+        if axes[axis] == "positive":
+            return direction.get(axis) or "destab"
+        return axes[axis]
+
+    fm, fc, bd = state("fold_monomer"), state("fold_complex"), state("binding")
+    fold_pos = (fm in _SIG_POSITIVE) or (fc in _SIG_POSITIVE)
+    bind_pos = bd in _SIG_POSITIVE
+
+    if not fold_pos and not bind_pos:
+        # Nothing positive. Distinguish "measured and negative" from
+        # "never measured" exactly as the legacy rubric does.
+        tested = [a for a in (fm, fc, bd) if a == "negative"]
+        return "no_structural_effect" if tested else "uncommitted"
+
+    if bind_pos and fold_pos:
+        scope = "monomer" if fm in _SIG_POSITIVE else "complex"
+        return "%s_fold_and_binding_%s" % (scope, bd)
+
+    if bind_pos:
+        return "binding_%s_fold_intact" % bd
+
+    # Fold-only. Name the direction and the scope.
+    dirs = {v for v in (fm, fc) if v in _SIG_POSITIVE}
+    tag = "stab" if dirs == {"stab"} else "destab"
+    if fm in _SIG_POSITIVE and fc in _SIG_POSITIVE:
+        scope = "monomer_and_complex"
+    elif fm in _SIG_POSITIVE:
+        scope = "monomer_only"
+    else:
+        scope = "complex_only"
+    return "fold_%s_%s" % (tag, scope)
+
+
+# ============================================================================
+# NEW in v7.1: curated mechanism (Stage A)
+# ============================================================================
+# The axis signature can only describe axes that were annotated. Two kinds of
+# row are therefore invisible to it:
+#
+#   (a) Single-chain systems (BRCA1 tandem-BRCT, PDB 1JNX). No complex-fold or
+#       binding axis physically exists, so the multi-axis grader abstains and
+#       `expected_mech_class` is blank — even though the biology is a
+#       well-characterised, directly-measured fold mechanism. The curation for
+#       these rows lives in supplement/brct/brct_foldx_concordance.csv under
+#       `role_in_cohort`, derived from equilibrium unfolding measurements.
+#
+#   (b) Rows whose ground-truth axes read `unknown` but whose curator note
+#       asserts a mechanism from functional data (VHL W117R, TNNI3 R162W).
+#
+# `curated_mechanism` records the literature-and-measurement mechanism call
+# for every benchmark row, independent of which axes the pipeline can score.
+# It is a LABEL, never an input to grading.
+BRCT_ROLE_TO_MECHANISM = {
+    "monomer_fold_destabilizer": "monomer_fold_destabilization",
+    "measured_neutral_control":  "no_structural_effect",
+    "fold_intact_function_lost": "binding_site_loss_fold_intact",
+}
+
+# Rows where the ground-truth ΔΔG axes are `unknown` but the curator note
+# states the mechanism from functional evidence. Keyed by (system, variant).
+CURATED_MECHANISM_OVERRIDES = {
+    ("vhl_elonginc", "W117R"): "monomer_fold_destabilization",
+    ("troponin_ic",  "R162W"): "binding_stabilization",
+}
+
+_SIGNATURE_TO_MECHANISM = {
+    "fold_destab_monomer_and_complex": "monomer_fold_destabilization",
+    "fold_destab_monomer_only":        "monomer_fold_destabilization",
+    "fold_destab_complex_only":        "complex_fold_destabilization",
+    "fold_stab_monomer_and_complex":   "fold_stabilization",
+    "fold_stab_monomer_only":          "fold_stabilization",
+    "fold_stab_complex_only":          "fold_stabilization",
+    "binding_destab_fold_intact":      "binding_disruption_fold_intact",
+    "binding_stab_fold_intact":        "binding_stabilization",
+    "monomer_fold_and_binding_destab": "fold_and_binding_disruption",
+    "complex_fold_and_binding_destab": "fold_and_binding_disruption",
+    "no_structural_effect":            "no_structural_effect",
+}
+
+
+def derive_curated_mechanism(row, brct_roles=None):
+    """Literature/measurement mechanism call, independent of axis coverage.
+
+    brct_roles : dict {variant: role_in_cohort} loaded from the BRCT
+                 concordance file, or None to skip single-chain rows.
+    """
+    system = ss(row.get("system")).strip().lower()
+    variant = ss(row.get("variant")).strip()
+
+    key = (system, variant)
+    if key in CURATED_MECHANISM_OVERRIDES:
+        return CURATED_MECHANISM_OVERRIDES[key]
+
+    if brct_roles and variant in brct_roles:
+        mapped = BRCT_ROLE_TO_MECHANISM.get(brct_roles[variant])
+        if mapped:
+            return mapped
+
+    sig = derive_axis_signature(row)
+    return _SIGNATURE_TO_MECHANISM.get(sig, "uncommitted")
+
+
+def load_brct_roles(path=None):
+    """Load {variant: role_in_cohort} from the BRCT concordance file."""
+    if path is None:
+        path = _THIS_DIR.parent / "supplement" / "brct" / "brct_foldx_concordance.csv"
+    path = Path(path)
+    if not path.exists():
+        return {}
+    t = pd.read_csv(path)
+    if "variant" not in t.columns or "role_in_cohort" not in t.columns:
+        return {}
+    return dict(zip(t["variant"].astype(str).str.strip(),
+                    t["role_in_cohort"].astype(str).str.strip()))
+
+
+# Roles whose curated mechanism cannot be observed on the deposited structure.
+# `fold_intact_function_lost` variants lose a phospho-peptide binding site; the
+# isolated tandem-BRCT structure (1JNX) contains no peptide partner, so there
+# is no axis on which that mechanism could register. Grading them scores the
+# pipeline against evidence its input does not contain.
+UNOBSERVABLE_ROLES = frozenset({"fold_intact_function_lost"})
+
+
+def unobservable_variants(roles=None):
+    """Variants that are ungraded-by-construction, from curated roles.
+
+    v7.3. Derived from `role_in_cohort` in the BRCT concordance file — never a
+    hardcoded variant list, so re-curating the cohort re-derives the exclusion.
+    Returns a set of variant strings; empty if the cohort file is absent
+    (Mode B), which correctly grades nothing extra.
+    """
+    if roles is None:
+        roles = load_brct_roles()
+    return {v for v, r in roles.items() if r in UNOBSERVABLE_ROLES}
 
 
 # ============================================================================
@@ -1063,6 +1242,56 @@ def _axis_check(predicted_value, fires, ground_truth):
     return True, not fires  # neutral
 
 
+def structural_agreement_by_axis(row, partners, mono_thr, fold_thr, bind_thr):
+    """
+    Per-variant structural_agreement, decomposed by axis.
+
+    Returns {'tier': (n, d), 'monomer': (n, d), 'fold': (n, d), 'binding': (n, d)}.
+    `compute_structural_agreement` is the sum of these, so the four-way axis
+    decomposition reported in the ledger and asserted by `verify_stage6.py`
+    cannot drift from the headline it decomposes.
+    """
+    out = {k: (0, 0) for k in ('tier', 'monomer', 'fold', 'binding')}
+
+    # Tier (Approach 3: conditioned on expected_mech_class)
+    #
+    # v7.3: the tier axis is gradeable only where a tier was actually assigned.
+    # The structural-evidence tier is built from interface-partner and burial
+    # terms, so it is undefined for single-chain systems (no partner chain) and
+    # is NaN there. `bool(nan)` is True, so the old gate admitted those rows and
+    # scored a missing tier as "did not fire" — free credit on rows whose
+    # expected class is silent, and a free miss on every other row. Neither is
+    # evidence. Require the tier to exist.
+    if pd.notna(row.get("comavi_tier")) and bool(row.get("structure_evaluable", True)):
+        emc = str(row.get('expected_mech_class', '')).strip().lower()
+        if emc in ('structurally_silent', 'mixed_structural', 'fold_mechanism',
+                   'ppi_destab_mechanism', 'ppi_stab_mechanism'):
+            tier_fires = str(row.get('comavi_tier')) in FOOTPRINT_TIERS
+            tier_expected = emc != 'structurally_silent'
+            out['tier'] = (int(tier_fires == tier_expected), 1)
+
+    # Monomer ΔΔG
+    if bool(row.get('ddg_monomer_confident', False)) and pd.notna(row.get('ddg_monomer')):
+        if bool(row.get('ddg_monomer_distinguishable_internal_from_0', False)):
+            v = float(row['ddg_monomer'])
+            in_d, ok = _axis_check(v, abs(v) >= mono_thr, row.get('expected_ddg_monomer'))
+            if in_d:
+                out['monomer'] = (int(bool(ok)), 1)
+
+    # Fold and binding ΔΔG (operative partner — selects the partner with the
+    # largest CI-distinguishable signal, which is what should be graded against
+    # the complex-context expectation)
+    for axis, thr, exp_col in (('fold', fold_thr, 'expected_ddg_fold_complex'),
+                               ('binding', bind_thr, 'expected_ddg_binding')):
+        v, _p = _operative_axis(row, partners, axis)
+        if v is not None:
+            in_d, ok = _axis_check(v, abs(v) >= thr, row.get(exp_col))
+            if in_d:
+                out[axis] = (int(bool(ok)), 1)
+
+    return out
+
+
 def compute_structural_agreement(row, partners, mono_thr, fold_thr, bind_thr):
     """
     Per-variant structural_agreement: count gradeable axes (tier + 3 DDG)
@@ -1076,52 +1305,13 @@ def compute_structural_agreement(row, partners, mono_thr, fold_thr, bind_thr):
     indistinguishable from 0).
 
     Returns (n_correct, n_gradeable).
+
+    v7.3: this is now the sum over `structural_agreement_by_axis`, so the
+    headline and its four-way decomposition are guaranteed consistent by
+    construction rather than by two parallel implementations agreeing.
     """
-    n, d = 0, 0
-
-    # Tier (Approach 3: conditioned on expected_mech_class)
-    if bool(row.get("structure_evaluable", True)):
-        emc = str(row.get('expected_mech_class', '')).strip().lower()
-        if emc in ('structurally_silent', 'mixed_structural', 'fold_mechanism',
-                   'ppi_destab_mechanism', 'ppi_stab_mechanism'):
-            d += 1
-            tier_fires = str(row.get('comavi_tier')) in FOOTPRINT_TIERS
-            tier_expected = emc != 'structurally_silent'
-            if tier_fires == tier_expected:
-                n += 1
-
-    # Monomer ΔΔG
-    if bool(row.get('ddg_monomer_confident', False)) and pd.notna(row.get('ddg_monomer')):
-        ci_dist = bool(row.get('ddg_monomer_distinguishable_internal_from_0', False))
-        if ci_dist:
-            v = float(row['ddg_monomer'])
-            fires = abs(v) >= mono_thr
-            in_d, ok = _axis_check(v, fires, row.get('expected_ddg_monomer'))
-            if in_d:
-                d += 1
-                if ok: n += 1
-
-    # Fold ΔΔG (operative partner — selects partner with the largest
-    # CI-distinguishable signal, which is what should be graded against the
-    # complex-context expectation)
-    fv, fp = _operative_axis(row, partners, 'fold')
-    if fv is not None:
-        fires = abs(fv) >= fold_thr
-        in_d, ok = _axis_check(fv, fires, row.get('expected_ddg_fold_complex'))
-        if in_d:
-            d += 1
-            if ok: n += 1
-
-    # Binding ΔΔG (operative partner)
-    bv, bp = _operative_axis(row, partners, 'binding')
-    if bv is not None:
-        fires = abs(bv) >= bind_thr
-        in_d, ok = _axis_check(bv, fires, row.get('expected_ddg_binding'))
-        if in_d:
-            d += 1
-            if ok: n += 1
-
-    return n, d
+    per = structural_agreement_by_axis(row, partners, mono_thr, fold_thr, bind_thr)
+    return (sum(v[0] for v in per.values()), sum(v[1] for v in per.values()))
 
 
 def compute_directional_agreement(row, partners, mono_thr, fold_thr, bind_thr):
@@ -1142,7 +1332,8 @@ def compute_directional_agreement(row, partners, mono_thr, fold_thr, bind_thr):
     n_full, n_half, d = 0, 0, 0
 
     # Tier (binary, no partial credit on tier)
-    if bool(row.get("structure_evaluable", True)):
+    # v7.3: tier must exist to be gradeable — see compute_structural_agreement.
+    if pd.notna(row.get("comavi_tier")) and bool(row.get("structure_evaluable", True)):
         emc = str(row.get('expected_mech_class', '')).strip().lower()
         if emc in ('structurally_silent', 'mixed_structural', 'fold_mechanism',
                    'ppi_destab_mechanism', 'ppi_stab_mechanism'):

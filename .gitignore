@@ -38,3 +38,7 @@ verification_output/
 
 # Release archives staged for Zenodo upload (not tracked)
 dist/
+
+# AHA fellowship working files — unrelated to the COMAVI methods repo
+AHA_docx_diagnostic/
+AHA_harmonized_citations/
