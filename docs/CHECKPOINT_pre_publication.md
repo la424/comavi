@@ -74,11 +74,12 @@ Remaining limits:
 > **⚑ SUPERSEDED — v7 / 61-variant canonical set.** The benchmark headline below is the v6-era
 > 44/56-variant record. Current authoritative numbers (recomputed from
 > `reference_outputs/scored_61var_canonical.csv`; full record in ledger §12): **61 variants** (49 PPI
-> across 13 complexes + 12 BRCA1-BRCT; 14 systems); structural_agreement **0.77** (92/120 at t=2.5),
-> mech_consistency **0.72** (graded n=47) — both post the v7.1 grading-rubric correction, ledger §15,
-> which superseded 0.76 (92/121) / 0.71 (n=48); tier gradient **100 / 72 / 70 / 43** (T1–T4), Fisher
+> across 13 complexes + 12 BRCA1-BRCT; 14 systems); structural_agreement **0.76** (99/131 at t=2.5),
+> mech_consistency **0.72** (graded n=57) — both post the v7.3 pooling of the BRCA1-BRCT cohort into
+> the graded arms, ledger §18, which superseded 0.7667 (92/120) / 0.7234 (n=47); those in turn post
+> the v7.1 grading-rubric correction, ledger §15; tier gradient **100 / 72 / 70 / 43** (T1–T4), Fisher
 > OR = 3.78 (p = 0.080), Spearman ρ = −0.40 (p = 0.0044) — the rank-correlation framing is preferred.
-> Physical validation unchanged: BRCT fold ρ = 0.72 (n=10), Hb binding ρ = 0.90 (n=7). AlphaMissense:
+> Physical validation unchanged: BRCT fold ρ = 0.72 (n=10), Hb binding ρ = 0.90 (n=5). AlphaMissense:
 > 47 PPI with a score (36 pathogenic / 11 benign). No tier×FoldX AUC-improvement claim is made
 > (Spearman ρ = 0.60 partial-independence only; the "0.81→0.87" observation did not reproduce on 61).
 

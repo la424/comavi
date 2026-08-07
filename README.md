@@ -199,8 +199,13 @@ plus the 12-variant BRCA1-BRCT monomer-fold supplement; Pipeline 1, t = 2.5):
 
 | Metric | Value |
 |---|---|
-| structural_agreement | **0.77** (92/120; threshold sweep 0.73–0.78) |
-| mech_consistency | **0.72** (graded n=47) |
+| structural_agreement | **0.76** (99/131; threshold sweep 0.72–0.76) |
+| mech_consistency | **0.72** (graded n=57) |
+
+Both arms of the benchmark are graded on the same metrics: the 49 PPI variants and the
+12-variant BRCA1-BRCT fold cohort are pooled, the latter contributing 10 graded mechanism
+rows (2 are ungraded by construction — their curated mechanism is loss of a peptide-binding
+site, unobservable on the partner-free deposited structure). Ledger §18.
 
 The structural-evidence tier is a monotonic pathogenicity gradient with no ΔΔG term:
 Tier 1 100% → Tier 2 72% → Tier 3 70% → Tier 4 43% pathogenic (Spearman ρ = −0.40,

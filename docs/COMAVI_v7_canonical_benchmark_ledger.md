@@ -4,9 +4,12 @@
 > (12→14 systems) by adding two interface systems whose pathogenic variants disrupt a protein–protein
 > interface with the **monomer fold intact** — **VWF A1–GPIbα** (PDB 1SQ0) and **CFH FH1-4–C3b** (PDB 2WII) —
 > plus matched retained-binding and benign controls. This supplies the first within-benchmark proof point
-> for the interface-resolution claim. Canonical 61-set headline (t=2.5): mechanism-consistency **0.72**,
-> structural agreement **0.77** (92/120). **§12–13 record the v7 expansion and recompute; §15 records the
-> v7.1 grading-rubric correction that produced these values.**
+> for the interface-resolution claim. **§12–13 record the v7 expansion and recompute; §15 records the
+> v7.1 grading-rubric correction; §18 records the v7.3 BRCT pooling that produced the current headline.**
+>
+> **CURRENT AUTHORITATIVE HEADLINE (t = 2.5, 61-variant canonical set) — see §18:**
+> mechanism-consistency **0.72** (0.7193, graded n = 57); structural agreement **0.76** (99/131 = 0.7557).
+> *Superseded, do not cite: 0.7234 / n=47 and 92/120 = 0.7667 (§15); 0.7083 / n=48 and 92/121 (§13).*
 > Canonical dataset: `scored_61var_canonical.csv`.
 >
 > **v6 update (BRCT monomer-fold expansion).** The benchmark was extended from 44→56 variants
@@ -140,7 +143,22 @@ fold-intact groove lesion → pathogenic (R1699L/Q) — i.e. disruption ⊥ path
 **FoldX vs measured (quantitative anchor).** COMAVI FoldX 5.1 (RepairPDB → BuildModel n=5) on 1JNX:
 - Spearman ρ = **0.72** (fold axis, n=10, p=0.019); ρ = 0.67 over all 12.
 - My FoldX vs Rowling's own reported FoldX: Pearson r = **0.83** (n=11) — confirms correct FoldX operation.
-- BRCT fold-axis categorical accuracy: **10/12 = 0.833** (t=1.0/1.5/2.0).
+- BRCT fold-axis categorical accuracy. **Two thresholds are in play and must not be conflated:**
+  - `role_in_cohort == monomer_fold_destabilizer` uses **measured ΔΔG_U–F > 1.0** → **n = 8**
+    destabilizers (Y1853C … L1664P above). This is the *cohort-membership* definition and is
+    what the "n=2 → n=10 across 3 systems" arm count is built from.
+  - The shipped `measured_destab` flag in `brct_foldx_concordance.csv` uses **> 2.5**, symmetric
+    with the canonical calling threshold → 4 measured-positive of 12. This is the *scoring* truth.
+  - Categorical accuracy against the shipped `measured_destab` truth: 8/12 = 0.667 (t=1.0),
+    7/12 = 0.583 (t=1.5), **9/12 = 0.750** (t=2.0 and t=2.5, canonical).
+  - `figure3_axis_competency.py` uses the **≥ 1.0** cut (cohort-membership definition). The two
+    truth definitions yield *identical* per-threshold accuracies on this cohort — 8/12, 7/12,
+    9/12, 9/12 — so the figure and the scoring truth agree numerically despite differing
+    definitions. Coincidence, not design; do not assume it survives a cohort change.
+  - Supersedes the previously recorded "10/12 = 0.833", which does not reproduce from the shipped
+    CSV under either definition at any threshold. The three misses at canonical are V1736A
+    (false-negative, see below) and V1808A / V1665M (measured 2.40 and 2.22, called destab
+    by FoldX at 3.57 and 2.98).
 - **V1736A** is a documented FoldX under-prediction (FoldX 1.24 vs measured 4.20; reproduces Rowling's
   own FoldX 0.02 — buried Val→Ala cavity). It fires correctly at the primary t=1.0 but is a
   false-negative at the stricter t=2.5; report both. This is the case that motivates measurement-anchoring.
@@ -220,6 +238,12 @@ model. This is the benchmark's one principled exclusion; structurally-silent out
 
 **61-set recompute (canonical basis: frozen 44-annotated sweep + 5-new operative-ΔΔG sweep, reconciled
 with the tier axis).** Headline at the canonical calling threshold t=2.5:
+
+> **Historical record — superseded by §18 (v7.3 pooling).** Every headline and
+> decomposition in the rest of this section predates pooling the BRCA1-BRCT cohort
+> into the graded set. Current authoritative values: MC **0.7193** (graded n = 57),
+> SA **99/131 = 0.7557**, decomposition monomer **21/27** + complex-fold **20/25** +
+> binding **24/32** + tier **34/47**. Do not cite this section's numbers.
 - **mechanism-consistency 0.72** (0.7234; graded n=47), **structural agreement 0.77** (92/120 = 0.7667).
   *(Superseded by §15: the pre-correction values were 0.71 / 0.7083 at graded n=48 and 0.76 / 92/121.)*
 - Threshold sweep (MC / SA): t1.0 0.553 / 0.725 (87/120); t1.5 0.660 / 0.775 (93/120);
@@ -237,7 +261,7 @@ reported as primary, consistent with the tier being an orthogonal structural-dis
 axis rather than a pathogenicity classifier.
 
 **Physical validation unchanged** (independent of the expansion): BRCT fold ρ = 0.72 (n=10, p=0.019);
-Hb binding ρ = 0.90 (n=7, p=0.037).
+Hb binding ρ = 0.90 (n=5, p=0.037).
 
 ## 13. Artifacts (v7 / interface-disruptor session)
 - `scored_61var_canonical.csv` — 61 variants / 14 systems, canonical basis (released canonical dataset).
@@ -255,26 +279,36 @@ own `_operative_axis` / `_axis_check` on `reference_outputs/scored_61var_canonic
 
 | # | Quantity | mono | cx-fold | binding | Definition |
 |---|---|---|---|---|---|
-| A | **Annotated destabilizers** | **10** | **19** | **15** | Rows whose `expected_ddg_*` ground-truth token is `destab`. No prediction-side gating. This is a property of the *curated benchmark*, not of any pipeline run. |
-| B | **Gradeable axes** | **16** | **25** | **32** | Axes that enter the structural-agreement denominator: prediction present, axis-evaluability gate passed, and the prediction's internal CI95 excludes 0. Includes neutral and stabilizing controls. Sums with the tier axis (48) to the headline denominator **121**. |
-| C | **Graded disruptors** | **2** | **10** | **13** | Intersection of A and B — annotated destabilizers that are *also* gradeable at t = 2.5. |
+| A | **Annotated destabilizers** | **10** | **11** | **15** | Rows whose `expected_ddg_*` ground-truth token is `destab`. No prediction-side gating. This is a property of the *curated benchmark*, not of any pipeline run. |
+| B | **Gradeable axes** | **27** | **25** | **32** | Axes that enter the structural-agreement denominator: prediction present, axis-evaluability gate passed, and the prediction's internal CI95 excludes 0. Includes neutral and stabilizing controls. Sums with the tier axis to the headline denominator: 48 tier axes → **121** before the §15 `structurally_uncommitted` correction, **47** tier axes → **120** after it (the released canonical value). |
+| C | **Graded disruptors** | **10** | **10** | **13** | Intersection of A and B — annotated destabilizers that are *also* gradeable at t = 2.5. |
 
 ### Which to quote where
 
-- **§2.2 / Methods, describing benchmark composition** → **A (10 / 19 / 15)**. The claim is "the
+- **§2.2 / Methods, describing benchmark composition** → **A (10 / 11 / 15)**. The claim is "the
   curated set contains this many disruptors per axis," which is threshold-independent.
-- **§3.3 / per-axis agreement table** → **B (16 / 25 / 32)**, already correct in the manuscript, with
+- **§3.3 / per-axis agreement table** → **B (27 / 25 / 32)**, already correct in the manuscript, with
   the existing prose explaining that B exceeds C because the denominator includes controls.
 - **C is not a headline quantity** and should not appear as "the axis is supported by n disruptors" —
-  it is threshold-dependent and, on the monomer axis, misleadingly small for a reason that is an
-  artifact of file layout, not of the science (below).
+  it is threshold-dependent.
+
+*Values above regenerated on the v7.3 pooled table (§18); the monomer column moved
+(B 16 → 27, C 2 → 10) when the monomer CI gate was backfilled, and the complex-fold A
+entry was corrected from a mistranscribed 19.*
 
 ### The monomer-axis trap
 
-Column `ddg_monomer_distinguishable_internal_from_0` is **NaN for all 12 BRCT rows** in the canonical
-CSV: BRCT monomer ΔΔG was computed in the v6 supplement run
+> **Resolved in v7.3 (§18) — retained as the record of why the gate behaved as it did.**
+> The CI columns described below were backfilled from the per-replicate SDs already in the
+> table using the pipeline's own `compute_ddg_cis`, so the monomer gate now decides on real
+> numbers. Current monomer agreement is **21/27**, not 16, and the headline decomposition is
+> **99/131 = 0.7557**. The "do not backfill before submission" instruction below was
+> deliberately superseded; do not act on it.
+
+Column `ddg_monomer_distinguishable_internal_from_0` was **NaN for all 12 BRCT rows** in the
+canonical CSV as released through v7.2: BRCT monomer ΔΔG was computed in the v6 supplement run
 (`supplement/brct/brct_foldx_ddg.csv`, n = 5 replicates with per-run values and SD) and merged in
-without that derived CI column. Two consequences:
+without that derived CI column. Two consequences followed:
 
 1. **`bool(NaN)` is `True` in Python.** A naive gate check written as `bool(row.get(col, False))`
    silently *admits* all 12 BRCT rows, giving monomer gradeable = 28 and disruptors = 10. The shipped
@@ -288,10 +322,11 @@ without that derived CI column. Two consequences:
    core/fold sites, p = 0.019) and the 0.83 categorical accuracy, both computed in the supplement,
    not by C. **This is the reason C must not be quoted as arm support.**
 
-Optional cleanup (not required for the paper, and it would touch a frozen number): backfill
+**Done in v7.3 (§18).** The backfill contemplated here — populating
 `ddg_monomer_distinguishable_internal_from_0` for the BRCT rows from the per-replicate SDs already in
-`brct_foldx_ddg.csv`, which would move monomer gradeable 16 → 28 and shift the headline denominator.
-**Do not do this before submission** — the frozen 92/120 = 0.767 (§15) is computed on the current file.
+`brct_foldx_ddg.csv` — was carried out as part of pooling the cohort into the headline. It moved
+monomer gradeable 16 → 27 (not 28: one row fails the gate on real numbers) and the headline
+denominator 120 → 131. The frozen headline is now **99/131 = 0.7557** at MC 0.7193, graded n = 57.
 
 ### BRCT destabilizer-count double-threshold (verified, not a defect)
 
@@ -387,7 +422,7 @@ on the 44-variant generation and is explicitly labelled as such. Full run: **33/
 
 ---
 
-## 16. Benchmark stress tests (v7.1, authoritative)
+## 16. Benchmark stress tests (regenerated on the v7.3 pooled set, authoritative)
 
 Four robustness tests on the released canonical table, in
 `verification/stress_tests.py`. All four re-derive expected mechanism class and
@@ -401,26 +436,28 @@ fires on every run.
 
 | Test | Result |
 |---|---|
-| **A. Permutation null** (n=2000, ground-truth block permuted as a unit) | MC observed **0.7234** vs null 0.4950 ± 0.0510, **p = 5×10⁻⁴** (floor for 2000 draws); SA observed **0.7667** vs null 0.5381 ± 0.0495, **p = 5×10⁻⁴** |
-| **B. Leave-one-system-out** (14 gene systems) | MC range **0.7045–0.7619**; SA range **0.7522–0.7788**. No single system carries the result. |
-| **C. FoldX replicate noise** (n=500, Gaussian at SE of the 5-replicate mean, mechanism labels **re-called** from perturbed energies) | MC **0.7256 ± 0.0162**; SA **0.7645 ± 0.0040**; mean 0.97 label flips per draw (max 4 of 49); **29 % of draws label-identical**; **41/49 variants never flip** |
-| **D. Variant bootstrap** (n=2000) | MC 0.7234, 95 % CI **[0.606, 0.827]**; SA 0.7667, 95 % CI **[0.689, 0.839]** |
+| **A. Permutation null** (n=2000, ground-truth block permuted as a unit) | MC observed **0.7193** vs null 0.4792 ± 0.0497, **p = 5×10⁻⁴** (floor for 2000 draws); SA observed **0.7557** vs null 0.5321 ± 0.0446, **p = 5×10⁻⁴** |
+| **B. Leave-one-system-out** (14 gene systems) | MC range **0.7037–0.7500**; SA range **0.7419–0.7719**. No single system carries the result. |
+| **C. FoldX replicate noise** (n=500, Gaussian at SE of the 5-replicate mean, mechanism labels **re-called** from perturbed energies) | MC **0.7207 ± 0.0133**; SA **0.7535 ± 0.0040**; mean 1.01 label flips per draw (max 4 of 61); **30 % of draws label-identical**; **52/61 variants never flip** |
+| **D. Variant bootstrap** (n=2000) | MC 0.7193, 95 % CI **[0.614, 0.819]**; SA 0.7557, 95 % CI **[0.682, 0.828]** |
+| **E. Cluster bootstrap** (n=2000, whole systems resampled; 14 clusters) | MC 95 % CI **[0.625, 0.821]**; SA 95 % CI **[0.706, 0.820]**. Wider than D on MC, comparable on SA — axes within a system are not independent, so this is the honest interval. Seeded (`SEED_CLUSTER = 8`); moves ~0.002 under a different seed. |
 
 **Noise-fragile calls** (`verification_output/comavi_noise_fragility.csv`) — the
-eight variants whose mechanism label is not fully stable under the force field's
+nine variants whose mechanism label is not fully stable under the force field's
 own replicate scatter. Report these as a diagnostic, not as failures: they are
 variants sitting near a calling threshold.
 
 | Variant | Mechanism at t=2.5 | Flip rate |
 |---|---|---|
-| TNNI3 R145Q | Multimer fold destabilization at interface | 0.448 |
-| PIK3CA H1047R | Structural variant — contact-driven (ΔΔG neutral) | 0.316 |
-| CALM1 D96V | Interface variant (ΔΔG neutral) | 0.110 |
-| PIK3R1 N564D | Multimer fold + PPI destabilization | 0.058 |
-| MSH2 G674R | Both fold destabilization | 0.046 |
-| MLH1 L749P | Multimer fold destabilization at interface | 0.034 |
-| SMAD4 R361C | Both fold + PPI destabilization | 0.024 |
-| TNNI3 R145G | Multimer fold destabilization at interface | 0.006 |
+| TNNI3 R145Q | Multimer fold destabilization at interface | 0.482 |
+| PIK3CA H1047R | Structural variant — contact-driven (ΔΔG neutral) | 0.288 |
+| CALM1 D96V | Interface variant (ΔΔG neutral) | 0.124 |
+| PIK3R1 N564D | Multimer fold + PPI destabilization | 0.050 |
+| SMAD4 R361C | Both fold + PPI destabilization | 0.030 |
+| BRCA1 R1699Q (BRCT) | No structural effect detected | 0.028 |
+| MLH1 L749P | Multimer fold destabilization at interface | 0.024 |
+| MSH2 G674R | Both fold destabilization | 0.016 |
+| TNNI3 R145G | Multimer fold destabilization at interface | 0.004 |
 
 ### Three design decisions worth preserving
 
@@ -433,8 +470,9 @@ variants sitting near a calling threshold.
    mechanism-consistency mathematically unable to move — the first run reported
    sd = 0.0000, which was an artifact of that mistake, not stability.
 3. **Panel (c) of the supplementary figure is a stem plot, not a histogram.**
-   Mechanism-consistency on n=47 graded variants is discrete in steps of
-   0.5/47 = 0.0106; only 8 values are attainable, and binning invents gaps.
+   Mechanism-consistency on n=57 graded variants is discrete in steps of
+   0.5/57 = 0.0088; only a handful of values are attainable, and binning
+   invents gaps.
 
 ### Reproduce
 
@@ -446,3 +484,189 @@ variants sitting near a calling threshold.
 The figure script carries its own geometric layout assertion (no label overlap,
 no spine collision, nothing clipped) and exits non-zero rather than writing a
 figure that fails it. Seeds are fixed in the script, so both are deterministic.
+
+## 17. v7.2 released-table defect repairs (authoritative)
+
+Three independent defects in `reference_outputs/scored_61var_canonical.csv`,
+found by the per-system column-coverage audit. All three are repairs to the
+*released table*, not to the method: **no prediction changed, and the
+mechanism-consistency series is byte-identical at every threshold before and
+after** (t1.0 0.5532 · t1.5 0.6596 · t2.0 0.6809 · t2.5 0.7234 · tSAP 0.7340,
+graded n = 47 throughout). Verification: 33/33 pass, unchanged.
+
+Applied by `scripts/apply_canonical_corrections_v72.py` (idempotent; `--dry-run`
+prints the before/after without writing; timestamped backup on write).
+
+**17.1 Phantom complex-fold ground truth on single-chain systems.** `brca1_brct`
+(PDB 1JNX, tandem BRCT) has no partner chain, but `expected_ddg_fold_complex`
+had been populated as a verbatim duplicate of `expected_ddg_monomer` in 12/12
+rows. The grader therefore required agreement on a complex-fold axis that cannot
+physically exist, docking correct monomer calls to `partial` with
+`missed=fold_complex`. Both `expected_ddg_fold_complex` and
+`expected_ddg_binding` are now the explicit sentinel **`not_applicable`** for
+single-chain systems (`SINGLE_CHAIN_SYSTEMS` in the corrections script), which
+`_tokenize_axis` maps to `not_tested` — the axis is excluded from grading rather
+than silently blank. This is a *scoping* correction: had these rows been graded
+under the duplicated annotation, BRCT mechanism-consistency would have read
+0.458 instead of 0.667 at t = 2.5, entirely from the phantom axis.
+
+**17.2 Unpersisted mechanism calls.** 17 rows (brca1_brct 12, cfh_c3b 3,
+vwf_gpiba 2) shipped with every `comavi_mechanism_*` column empty. For cfh_c3b
+and vwf_gpiba the mechanism-consistency *grades* were present and feeding the
+headline, so the released table could not justify its own numbers for those
+rows. Re-running the shipped classifier (`classify_mechanism_at`) reproduces all
+stored grades exactly — 5 rows x 5 thresholds, zero mismatches — establishing
+that the calls were computed and then dropped at the write step, not that the
+grades were unfounded. The corrections script asserts this reproduction and
+aborts rather than writing if any grade fails to reproduce. Calls are now
+persisted at all five thresholds.
+
+**17.3 Stale summary grade.** `mech_consistency_summary` is defined as an alias
+of `mech_consistency_t25` (`apply_concordance_v5.py:1594`). VHL **W117R** retained
+`inconsistent` in the summary column while its t25 grade became NA under the
+v7.1 `structurally_uncommitted` correction (Sec. 15). Verification and this
+ledger already carried the corrected headline (MC t2.5 = 0.723, graded n = 47);
+only the released CSV column was stale, so `build_report.py` — which reads
+`mech_consistency_summary` — was emitting 0.7083 (n=48) into the workbook.
+Summary is re-derived from t25 and the threshold-stable flags recomputed.
+
+**Reporting convention (adopted here, applies to all future threshold
+reporting).** Every threshold sweep reported in text, tables, or figures must
+include the **Sapozhnikov per-axis operating point (tSAP: monomer 2.9 / fold 2.9
+/ binding 3.5 kcal/mol)** alongside the uniform sweep t = 1.0/1.5/2.0/2.5, not
+the uniform grid alone.
+
+**Not included in v7.2.** Pooling the BRCT cohort into the graded headline is a
+genuine metric change (adds 12 rows scoring 0.667 against a running mean of
+0.723) and requires a downstream re-freeze of the manuscript, figures, and
+verification constants. It is deliberately staged separately from these repairs.
+
+---
+
+## 18. v7.3 — pooling the BRCA1-BRCT fold cohort into the headlines (authoritative)
+
+**What changed.** The 12-variant BRCA1 tandem-BRCT monomer-fold cohort, previously carried
+alongside the benchmark but excluded from both headline metrics, is now **pooled into them**. This
+is the metric change §16 deliberately staged out of the v7.2 repairs; unlike those, it moves
+numbers. Applied by `scripts/apply_brct_pooling_v73.py` (idempotent, backs up before writing,
+aborts on any guard failure).
+
+**Headlines (t = 2.5).**
+
+| metric | before (v7.2) | after (v7.3) |
+|---|---|---|
+| mechanism-consistency | 0.7234 (graded n = 47) | **0.7193** (graded n = 57) |
+| structural agreement | 92/120 = 0.7667 | **99/131 = 0.7557** |
+
+Full sweep (MC / SA), including the Sapozhnikov per-axis operating point per the §16 reporting
+convention: t1.0 0.579 / 94/131 0.718 · t1.5 0.649 / 99/131 0.756 · t2.0 0.684 / 99/131 0.756 ·
+**t2.5 0.719 / 99/131 0.756** · tSAP 0.711 / 97/131 0.740.
+
+95% CIs on the pooled canonical values: MC variant bootstrap [0.614, 0.819]; SA Jeffreys
+[0.677, 0.823]; and a **cluster bootstrap resampling whole systems** (the honest interval, since
+axes within a system are not independent) MC [0.625, 0.821], SA [0.706, 0.820]. All three are
+regenerated by `verification/stress_tests.py` (tests D and E) — the cluster interval is seeded at
+`SEED_CLUSTER = 8` and moves by ~0.002 under a different seed, so quote it only from the
+generated `comavi_stress_tests.csv`.
+
+**Why the headline falls slightly.** Weighted-average dilution, not a regression. The cohort's
+graded arm scores 7 consistent / 3 inconsistent = 0.700 on mechanism (V1736A, R1751Q, L1664P) and
+contributes 11 agreement axes at 7/11 = 0.636; the pre-pooling running means were 0.723 (MC, n = 47)
+and 0.767 (SA, 92/120). Adding a block that scores below the running mean
+lowers it even when most of the block is right. No prediction changed anywhere in the table.
+
+**The graded arm is n = 10, not 12.** R1699L and R1699Q are **ungraded by construction**: their
+curated mechanism is loss of a phospho-peptide binding site, and the deposited structure (1JNX) is
+the isolated tandem domain with no peptide partner. There is no axis on which that mechanism could
+register, so grading them would score the pipeline against evidence its input does not contain.
+This is **not a new judgment call** — it is the pre-existing curation. The exclusion set is derived
+from `role_in_cohort == "fold_intact_function_lost"` in `supplement/brct/brct_foldx_concordance.csv`
+(never a hardcoded variant list), and it is exactly the pair the published Figure 4 measured-vs-FoldX
+correlation already excludes. The remaining n = 10 is the same 10 that correlation is computed on
+(ρ = 0.72).
+
+**Mechanism exclusion does NOT imply agreement exclusion.** The two headlines have different row
+sets, and conflating them is the single easiest error to make here. Structural agreement grades
+**per-axis against per-axis ground truth**, so an excluded-for-mechanism row still contributes its
+measured monomer axis. Of the two: R1699Q contributes (its signal is distinguishable from zero and
+genuinely disagrees with the measurement — an honest miss), R1699L does not (its monomer CI is
+indistinguishable from zero, so the confidence gate correctly drops it). Hence +12 mechanism rows
+but only +11 agreement axes.
+
+### 17.1 Four defects found and fixed while pooling
+
+Pooling exposed four latent defects that were invisible only because the cohort was ungraded. All
+four are fixed at source; each was proven confined before the edit (zero interaction rows affected).
+
+1. **Direction-blind fold class.** `derive_expected_mech_class` returned `fold_mechanism` for a
+   *stabilizing* fold annotation — an incoherent expectation demanding the pipeline call a
+   destabilization the measurement says does not occur. The fold branch is now direction-aware,
+   symmetric with the binding branch, which already was. Exactly one row table-wide carries a
+   stabilizing annotation on any axis (R1699Q); no interaction row is affected.
+
+2. **Phantom tier axis (`bool(NaN) is True`).** The structural-evidence tier is built from
+   interface-partner and burial terms and is therefore **undefined for a single-chain system**. The
+   agreement gate read a missing tier as "the tier did not fire", awarding free credit wherever the
+   expected class is silent and a free miss everywhere else — **both directions fabricated** (4
+   free-correct, 8 free-wrong). Both agreement functions now require the tier to actually exist.
+
+3. **Monomer CI columns never populated.** The interval gate passed the same way, for a different
+   reason: the columns were empty for the cohort even though the point estimate and run-to-run SD
+   were both present. This one is a **repair, not a new quantity** — the pipeline's own
+   `compute_ddg_cis()` returns correct values from data already in the table. Backfilled.
+
+4. **`mech_*` alias never mirrored.** The released table carries each mechanism call under two
+   names, `comavi_mechanism_<tag>` (written by the pipeline) and `mech_<tag>` (a convenience alias,
+   verified identical on all 49 interaction rows). The alias was never populated for the cohort, so
+   any consumer reading it — including the verifier's independent re-derivation track — saw NaN and
+   silently graded the cohort N/A. Now mirrored, guarded by an equality assertion on the 49.
+
+### 17.2 A regression introduced and caught during this work
+
+The CI backfill wrote Python bools into float64 columns. The CSV round-trip then yielded the
+**strings** `"True"`/`"False"` — and `bool("False")` is `True`, silently re-opening the exact gate
+the backfill existed to close. Caught by a stored-vs-recomputed comparison that flagged four
+non-cohort rows the confinement guards said were untouchable. Fixed at source by casting at the
+write, plus a **dtype-drift guard** that aborts if any column's dtype changes across the run.
+Worth recording as a general hazard: a boolean flag stored in a float column and round-tripped
+through CSV is truthy in every state, including false.
+
+### 17.3 Verification infrastructure corrected
+
+Both suites contained the same **row-partition proxy** — "a row is an interaction row iff
+`expected_mech_class` is populated" — which held only while the cohort was ungraded. Pooling
+populated that column and silently reclassified all 12 rows. `verify_stage6.py` now partitions on
+`system`; `stress_tests.py` scores the whole table and applies the mechanism exclusion inside the
+scorer, so the two metrics keep their (correctly different) row sets.
+
+`stress_tests.py` also grouped its **leave-one-system-out jackknife by `gene`**, which is null for
+all 12 cohort rows (dropped as one unnamed `nan` group) and splits two complexes across groups
+(`mlh1_pms2` → mlh1 + pms2; `pi3k` → pik3ca + pik3r1), so "dropping mlh1" left a pms2 row of the
+same complex in place. It was not a leave-one-system-out at all. Now grouped on `system`, which is
+populated on every row and partitions the table exactly.
+
+**Rule consolidation.** The direction-aware fold rule and the unobservable-mechanism exclusion now
+live in the shipped `apply_concordance_v5.py` (`derive_expected_mech_class`, `unobservable_variants`)
+rather than being restated in each of the three consumers. The applier retains its local restatement
+purely as an **equivalence oracle**: it asserts the shipped derivation agrees with it row-for-row
+*and* that the rule actually fires on the stabilizing row, so neither a silent behaviour change nor
+a silent deletion of the rule can pass.
+
+### 17.4 Post-pooling verification state
+
+- `verify_stage6.py` — **33/33 pass**, with the independent re-derivation track reproducing every
+  stored `mech_consistency_*` and `structural_agreement_*` column exactly.
+- `stress_tests.py` — scorer reproduces the stored headline exactly. Permutation null MC 0.479 ±
+  0.050 (p = 0.0005), SA 0.532 ± 0.045 (p = 0.0005). Leave-one-system-out MC 0.704–0.750, SA
+  0.742–0.772 across all 14 systems. Noise fragility: 52/61 rows fully stable, mean 1.01 label
+  flips per draw.
+- Re-frozen constants in `verify_stage6.py`: `mech_graded_n = 57`; SA (94, 99, 99, 99, 97)/131;
+  axis decomposition monomer **21/27**, fold 20/25, binding 24/32, tier 34/47 = 99/131.
+- **Independent additivity check:** dropping the cohort in the jackknife returns MC 0.7234 at
+  n = 47 and SA 92/120 — bit-exact recovery of the pre-pooling v7.2 headline.
+
+**What did NOT move.** The **tier pathogenicity gradient is untouched** (14/14, 13/18, 7/10, 3/7 =
+100 / 72 / 70 / 43 %; Spearman ρ = −0.400, p = 0.0044, n = 49), because the tier carries no
+`expected_mech_class` term and the cohort contributes no tier axis. The interaction-row axis
+decomposition (fold 20/25, binding 24/32, tier 34/47) is identical to v7.2; only the monomer term
+moves, 14/16 → 21/27.

@@ -250,6 +250,15 @@ For provenance honesty, here's what was considered and deferred or rejected:
 
 ## Final headline numbers (v5 framework, verified)
 
+> **⚑ SUPERSEDED — historical record, do not cite.** This section and the abstract claim below it
+> are the **v5-era 44-variant** snapshot, preserved as provenance for the decisions documented in
+> this file. They are not current. The benchmark was subsequently expanded to the **61-variant
+> canonical set** (49 PPI across 13 complexes + the 12-variant BRCA1-BRCT fold cohort; 14 systems),
+> the grading rubric was corrected (ledger §15), and the fold cohort was pooled into the graded
+> arms (ledger §18). Current authoritative headlines at t = 2.5: **mech_consistency 0.7193**
+> (graded n = 57), **structural agreement 99/131 = 0.7557**. See
+> `docs/COMAVI_v7_canonical_benchmark_ledger.md` §18 and `docs/COMAVI_results_synthesis.md`.
+
 Verified end-to-end via `verify_stage6.py` (16/16 checks passed) against the cached intermediate `comavi_v7_results_with_nbhd.csv`:
 
 | Metric | t=1.0 | t=1.5 | t=2.0 | t=2.5 | Sapozhnikov |
@@ -283,3 +292,32 @@ Plus:
 **CHD validation.** Once the methods paper is complete, the same v5 framework can be applied to the CHD candidate gene pipeline (163 variants across 13 genes per the original userMemories). The framework is benchmark-agnostic by design.
 
 **v6 code unification (Option β).** Track A and Track B code unification was deferred from v5. Whenever convenient, a pure refactor pass can dissolve the two-script structure into one. The methods paper does not depend on this; only future maintainability does.
+
+## §17. v7.4 — BRCT supplement annotation backfill (benchmark-assembly defect, not a pipeline defect)
+
+**Defect.** The BRCA1-BRCT supplement (PDB 1JNX, 12 variants) was scored in a separate run
+and merged into the canonical benchmark table without three structural-provenance columns:
+`site_plddt_status`, `structure_evaluable`, and the derived `ddg_confidence`. Because
+`apply_concordance_v5.py` *reads* `site_plddt_status` but never *writes* it, those 12 rows
+silently fell out of the four-way concordance framework and out of the
+confidence-restriction sensitivity analysis.
+
+**Second, related defect.** Five variants in the two complexes added during the v7 interface
+expansion carried concordance values frozen at a smaller axis denominator — computed before
+their AlphaMissense and clinical annotations were merged.
+
+**Scope: this is not a pipeline bug.** `scripts/comavi_v7/` emits `site_plddt_status`
+correctly, including the `crystal` sentinel for crystal/NMR systems via `plddt_gate=False`
+(structure_loading sets pLDDT = 100; mechanism.py bypasses gating). The published pipeline
+requires no change and no release. The defect lived entirely in the benchmark-assembly
+layer — a supplement merge that dropped columns the evaluation layer depends on.
+
+**Fix.** `scripts/apply_brct_annotations_v74.py` backfills the three columns for the BRCT
+cohort (crystal structure → `site_plddt_status='crystal'`, `structure_evaluable=True`) and
+recomputes concordance for the five stale rows, under an explicit allowlist plus an assertion
+that no variant outside that set changes. Headline metrics are unchanged by the repair, which
+is asserted in the script: this was a coverage repair, not a metric change.
+
+**Prevention.** Any future supplement merge must carry the structural-provenance columns.
+`verification/verify_stage6.py` should be extended with a completeness assert on
+`site_plddt_status` before the next benchmark expansion.

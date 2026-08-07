@@ -10,19 +10,23 @@
 > tagged body disagrees, this block wins.** Full record: ledger §12.
 >
 > - **Composition:** 61 variants — 49 PPI (13 complexes) + 12 BRCA1-BRCT; 14 systems.
-> - **Mechanism-consistency:** 0.72 (0.7234 at canonical t=2.5; graded n=47). Sweep (MC): 0.553 /
->   0.660 / 0.681 / 0.723 / 0.734 across t=1.0/1.5/2.0/2.5/SAP.
-> - **Structural agreement:** 0.77 (92/120 at canonical). Sweep (SA): 0.725 / 0.775 / 0.767 / 0.767 /
->   0.758. Four-way decomposition: monomer 14/16 + complex-fold 20/25 + binding 24/32 + tier 34/47 =
->   92/120.
-> - *Both headlines post the v7.1 grading-rubric correction (ledger §15), which superseded
->   MC 0.71 / n=48 and SA 0.76 / 92-121. Numerators unchanged; only one tier axis left the denominator.*
+> - **Mechanism-consistency:** 0.72 (0.7193 at canonical t=2.5; graded n=57). Sweep (MC): 0.579 /
+>   0.649 / 0.684 / 0.719 / 0.711 across t=1.0/1.5/2.0/2.5/SAP. Variant bootstrap 95% CI
+>   [0.614, 0.819]; system-level cluster bootstrap [0.625, 0.821].
+> - **Structural agreement:** 0.76 (99/131 at canonical). Sweep (SA): 0.718 / 0.756 / 0.756 / 0.756 /
+>   0.740. Four-way decomposition: monomer 21/27 + complex-fold 20/25 + binding 24/32 + tier 34/47 =
+>   99/131. Jeffreys 95% CI [0.677, 0.823]; system-level cluster bootstrap [0.706, 0.820] (preferred —
+>   axes within a system are not independent).
+> - *Both headlines post the v7.3 pooling of the BRCA1-BRCT cohort into the graded arms (ledger §18),
+>   which superseded MC 0.7234 / n=47 and SA 0.7667 / 92-120. The cohort adds 10 graded mechanism rows
+>   and 11 agreement axes; no prediction changed anywhere in the table. These in turn postdate the
+>   v7.1 grading-rubric correction (ledger §15), which superseded MC 0.71 / n=48 and SA 0.76 / 92-121.*
 > - **Tier gradient (49 labeled PPI):** T1 14/14 (100%), T2 13/18 (72%), T3 7/10 (70%), T4 3/7 (43%);
 >   Fisher OR = 3.78 (p = 0.080); Spearman ρ = −0.40 (p = 0.0044). The rank-correlation framing is
 >   preferred; the binary strong-vs-weak Fisher test loses significance on the expanded set. **The
 >   old 100/81/70/33, OR 6.48, ρ=−0.46 figures in the tagged body are superseded.**
 > - **Physical validation (unchanged by the expansion):** BRCT fold ρ = 0.72 (n=10, p=0.019); Hb
->   binding ρ = 0.90 (n=7, p=0.037).
+>   binding ρ = 0.90 (n=5, p=0.037).
 > - **AlphaMissense concordance:** n=47 PPI with an AM score (36 pathogenic / 11 benign); the two VWF
 >   variants lack AM scores (mature protein exceeds the AM length limit).
 > - **Grantham skew (measured-biophysics panel):** structurally-active disruptors (n=17) median
@@ -30,6 +34,22 @@
 > - **Exploratory tier×FoldX:** partially independent signal, Spearman ρ = 0.60. The earlier
 >   "AUC 0.81→0.87 combination" observation does **not** reproduce on the 61-set (FoldX-alone 0.85 ≥
 >   combined 0.85) and has been dropped from the manuscript; no combination-improvement claim is made.
+> - **Per-axis counts — three distinct definitions; always name which one.** The tagged body's
+>   "PPI-disruption n=13" is definition C below, not an error, but it must never be quoted as though
+>   it were the composition count. On the canonical set:
+>
+>   | | definition | monomer-fold | complex-fold | binding/PPI |
+>   |---|---|---|---|---|
+>   | **A** | **Annotated destabilizers** — rows whose curated expectation on that axis is `destab` | 10 | 11 | **15** |
+>   | **B** | **Gradeable axes** — rows where the axis is evaluable and enters the agreement denominator | 27 | 25 | **32** |
+>   | **C** | **Graded disruptors** — A ∩ B, annotated destabilizers that are also gradeable | 10 | 10 | **13** |
+>
+>   Use **A** for benchmark composition ("the axis is supported by n annotated disruptors" — §2.2,
+>   §3.1). Use **B** for per-axis agreement denominators (Fig. 3a). **C** is diagnostic only. The
+>   binding A→C gap of 2 is PI3K E542K and SMAD4/SMAD3 D351H; the complex-fold A→C gap of 1 is
+>   MLH1/PMS2 R755W — annotated destabilizers whose axis fails the evaluability gate, so they
+>   contribute to composition but not to agreement. Recompute all three columns with
+>   `comavi_axis_decomposition`; do not carry them in your head.
 
 *Prepared 2026-06-15. This document was written **after** a verification pass against the raw data files, not from memory. Every quantitative claim is tagged:*
 
