@@ -145,32 +145,22 @@ _CLASSES = [
 ]
 CLASSB = {f"{lbl} (n={_ngraded(m)})": (col, _mc(m)) for lbl, col, m in _CLASSES}
 
-# Panel c — monomer-fold axis, ALL variants with a curated fold expectation and a
-# measured comparator. This is a DIFFERENT metric from panel b: binary direction
-# agreement on one axis, not multi-axis mechanism-consistency with partial credit.
-# The two cannot share a y-axis, which is why this is its own panel.
-#
-# Arm = the three systems with directly measured subunit stability: BRCA1 tandem-
-# BRCT (12, GdmCl dGU-F, Rowling 2010), BRCA1-BARD1 C61G, MLH1-PMS2 R755W.
-# Truth is `curated_mechanism`, which is measurement-derived and does not depend
-# on whether a complex-fold or binding axis exists for the system.
-_FOLD_ARM_SYS = ["brca1_brct"]
-_FOLD_ARM_EXTRA = ["C61G", "R755W"]
-_arm = _d[_d["system"].isin(_FOLD_ARM_SYS) | _d["variant"].isin(_FOLD_ARM_EXTRA)].copy()
-_arm_destab = _arm["curated_mechanism"].eq("monomer_fold_destabilization")
-FOLDARM = [round((((_arm["ddg_monomer"] >= t) == _arm_destab).mean()), 4)
-           for t in (1.0, 1.5, 2.0, 2.5)]
-_N_ARM = len(_arm)
-_N_ARM_DESTAB = int(_arm_destab.sum())
-_N_ARM_SYS = _arm["system"].nunique()
+# Panel c (monomer-fold direction agreement vs measured dG_U-F) was CUT at v21.
+# It binarized the same 10 measured destabilizers that Figure 4a plots as a proper
+# correlation against measured dG_U-F (rho=0.72), and its 4 fold-intact controls
+# are already drawn in Figure 4a under their own marker styles (M1663K, P1806A as
+# measured neutral controls; R1699L/Q as fold-intact/function-lost). It therefore
+# added no data, while its agreement line sat below panel a's monomer-fold line
+# for purely definitional reasons (binary one-axis direction vs direction-aware
+# per-axis agreement), manufacturing a reconciliation trap for readers.
 
 _tot = sum(_ngraded(m) for _, _, m in _CLASSES)
 _head = int(_d["mech_consistency_t25"].map(_MCMAP).notna().sum())
 assert _tot == _head, f"class denominators {_tot} != headline graded {_head}"
 
 apply_figure_style()
-fig = plt.figure(figsize=(13.6, 4.5))
-gs = fig.add_gridspec(1, 3, wspace=0.34, left=0.055, right=0.99, top=0.80, bottom=0.17)
+fig = plt.figure(figsize=(9.2, 4.5))
+gs = fig.add_gridspec(1, 2, wspace=0.26, left=0.078, right=0.985, top=0.80, bottom=0.17)
 
 ax1 = fig.add_subplot(gs[0, 0])
 for key, lbl, col in AXINFO:
@@ -216,29 +206,9 @@ ax2.legend(h2, l2, loc="upper center", bbox_to_anchor=(0.5, 1.0), fontsize=6.3,
            handlelength=1.4, labelspacing=0.3, borderpad=0.4)
 set_frame(ax2); panel_letter(ax2, "b")
 
-ax3 = fig.add_subplot(gs[0, 2])
-ax3.plot(XPOS[:4], FOLDARM, "-o", color="#2a7f62", lw=2.0, ms=5.5, zorder=3,
-         label=f"Monomer-fold arm (n={_N_ARM})")
-ax3.axvline(2.5, color="#bbb", lw=1, ls=":", zorder=1)
-ax3.set_xticks(XPOS[:4]); ax3.set_xticklabels(XLAB[:4])
-ax3.set_xlim(0.8, 2.75); ax3.set_ylim(0.15, 1.06)
-ax3.set_xlabel("FoldX |\u0394\u0394G| call threshold (kcal/mol)")
-ax3.set_ylabel("Monomer-fold direction agreement")
-ax3.set_title("Monomer-fold axis vs measured \u0394G$_{U-F}$", loc="left")
-ax3.text(2.55, 0.185, "canonical\nt=2.5", fontsize=6.5, color="#999",
-         ha="left", va="bottom")
-ax3.text(0.03, 0.965,
-         f"{_N_ARM_DESTAB} measured destabilizers + "
-         f"{_N_ARM - _N_ARM_DESTAB} fold-intact controls\n"
-         f"across {_N_ARM_SYS} systems (BRCA1-BRCT, BRCA1-BARD1, MLH1-PMS2).\n"
-         "Binary direction agreement \u2014 not the panel-b metric.",
-         transform=ax3.transAxes, fontsize=6.4, color="#555", va="top", ha="left")
-ax3.legend(loc="lower left", fontsize=6.6, handlelength=1.5, borderpad=0.5)
-set_frame(ax3); panel_letter(ax3, "c")
-
 fig.suptitle("COMAVI benchmark competency (61-variant set; direction-aware "
              "agreement reproduces shipped-pipeline metric)",
-             x=0.055, ha="left", fontsize=9.6, y=0.955)
+             x=0.078, ha="left", fontsize=9.6, y=0.955)
 fig.savefig(OUT, dpi=300, bbox_inches="tight")
 fig.savefig(OUT.with_suffix(".pdf"), bbox_inches="tight")
 print("panel a t=2.5: monomer %d/%d, fold %d/%d, binding %d/%d"
@@ -246,7 +216,4 @@ print("panel a t=2.5: monomer %d/%d, fold %d/%d, binding %d/%d"
 print(f"panel b (computed; class graded sum {_tot} == headline {_head}):")
 for _lbl, (_c, _v) in CLASSB.items():
     print(f"    {_lbl:34s} {_v}")
-print(f"panel c monomer-fold arm n={_N_ARM} "
-      f"({_N_ARM_DESTAB} destab / {_N_ARM - _N_ARM_DESTAB} intact, "
-      f"{_N_ARM_SYS} systems): {FOLDARM}")
 print(f"saved {OUT.relative_to(REPO)}")

@@ -1,0 +1,62 @@
+variant,system,label,expected_mech_class,tier,mono,fold,bind,fires,mech,grade,unobs,tier_n,maxabs,am,am_class,franklin
+V11G,brca1_bard1,pathogenic,ppi_destab_mechanism,Tier 1,False,True,False,True,Multimer fold destabilization at interface,partial,False,1.0,3.2927,0.705,likely_pathogenic,likely_pathogenic
+C61G,brca1_bard1,pathogenic,fold_mechanism,Tier 1,False,True,False,True,Multimer fold destabilization,partial,False,1.0,6.782,0.99,likely_pathogenic,pathogenic
+K45R,brca1_bard1,benign,structurally_silent,Tier 3,False,False,False,False,No structural effect detected,consistent,False,3.0,0.1193,0.081,likely_benign,likely_benign
+E100Q,brca1_bard1,benign,structurally_silent,Tier 4,False,False,False,False,No structural effect detected,consistent,False,4.0,0.3113,0.07,likely_benign,vus_mid
+E542K,pi3k,pathogenic,mixed_structural,Tier 2,False,True,False,True,Multimer fold destabilization at interface,partial,False,2.0,3.1544,0.941,likely_pathogenic,pathogenic
+E545K,pi3k,pathogenic,mixed_structural,Tier 2,False,False,False,False,PPI stabilization,inconsistent,False,2.0,4.6348,0.988,likely_pathogenic,pathogenic
+H1047R,pi3k,pathogenic,structurally_silent,Tier 2,False,False,False,False,Structural variant — contact-driven (DDG neutral),consistent,False,2.0,2.321,0.538,ambiguous,pathogenic
+N564D,pi3k,pathogenic,structurally_silent,Tier 2,False,True,True,True,Multimer fold + PPI destabilization,inconsistent,False,2.0,3.7317,0.999,likely_pathogenic,likely_pathogenic
+M326I,pi3k,benign,structurally_silent,Tier 4,False,False,False,False,No structural effect detected,consistent,False,4.0,0.4337,0.253,likely_benign,likely_benign
+Q542L,mlh1_pms2,pathogenic,ppi_destab_mechanism,Tier 1,False,False,False,False,Interface variant (DDG neutral),partial,False,1.0,1.0732,0.918,likely_pathogenic,likely_pathogenic
+L749P,mlh1_pms2,pathogenic,mixed_structural,Tier 2,False,True,False,True,Multimer fold destabilization at interface,partial,False,2.0,5.1714,0.999,likely_pathogenic,pathogenic
+R755W,mlh1_pms2,pathogenic,fold_mechanism,Tier 2,False,False,False,False,PPI stabilization,inconsistent,False,2.0,9.6643,0.986,likely_pathogenic,likely_pathogenic
+V384D,mlh1_pms2,benign,structurally_silent,Tier 3,False,False,False,False,Interface variant (DDG neutral),consistent,False,3.0,1.5634,0.988,likely_pathogenic,benign
+G857A,mlh1_pms2,benign,structurally_silent,Tier 2,False,False,False,False,Interface variant (DDG neutral),consistent,False,2.0,0.9481,0.077,likely_benign,vus_mid
+H718Y,mlh1_pms2,benign,structurally_silent,Tier 3,False,False,False,False,No structural effect detected,consistent,False,3.0,1.2012,0.225,likely_benign,benign
+K618E,mlh1_pms2,benign,structurally_silent,Tier 2,False,False,False,False,Structural variant — burial-driven (DDG neutral),consistent,False,2.0,1.1737,0.649,likely_pathogenic,benign
+G674R,msh2_msh6,pathogenic,structurally_silent,Tier 2,True,True,False,True,Both fold destabilization,inconsistent,False,2.0,3.9881,0.999,likely_pathogenic,pathogenic
+A636P,msh2_msh6,pathogenic,structurally_silent,Tier 3,True,True,False,True,Both fold destabilization,inconsistent,False,3.0,5.3805,0.896,likely_pathogenic,pathogenic
+C697F,msh2_msh6,pathogenic,structurally_silent,Tier 1,True,True,False,True,Both fold destabilization,inconsistent,False,1.0,15.2559,0.991,likely_pathogenic,pathogenic
+N127S,msh2_msh6,benign,structurally_silent,Tier 2,False,False,False,False,Structural variant — contact-driven (DDG neutral),consistent,False,2.0,1.4817,0.348,ambiguous,benign
+G322D,msh2_msh6,benign,structurally_silent,Tier 4,False,False,False,False,No structural effect detected,consistent,False,4.0,2.0405,0.323,likely_benign,benign
+L158Q,vhl_elonginc,pathogenic,mixed_structural,Tier 2,False,True,True,True,Multimer fold + PPI destabilization,consistent,False,2.0,2.9118,0.996,likely_pathogenic,likely_pathogenic
+W117R,vhl_elonginc,pathogenic,structurally_uncommitted,Tier 1,True,True,False,True,Both fold destabilization,N/A,False,1.0,4.4564,0.999,likely_pathogenic,pathogenic
+Y98H,vhl_elonginc,pathogenic,structurally_silent,Tier 2,False,False,False,False,Structural variant — contact-driven (DDG neutral),consistent,False,2.0,1.285,0.973,likely_pathogenic,pathogenic
+G12D,kras_craf,pathogenic,structurally_silent,Tier 3,False,False,False,False,No structural effect detected,consistent,False,3.0,2.2859,0.998,likely_pathogenic,pathogenic
+G12V,kras_craf,pathogenic,structurally_silent,Tier 3,False,False,False,False,No structural effect detected,consistent,False,3.0,0.4266,0.995,likely_pathogenic,pathogenic
+Q61H,kras_craf,pathogenic,structurally_silent,Tier 4,False,False,False,False,No structural effect detected,consistent,False,4.0,0.7045,0.998,likely_pathogenic,pathogenic
+E6V,hemoglobin_dimer,pathogenic,structurally_silent,Tier 3,False,False,False,False,No structural effect detected,consistent,False,3.0,0.8044,0.223,likely_benign,pathogenic
+W37Y,hemoglobin_tetramer,pathogenic,mixed_structural,Tier 2,False,True,False,True,Multimer fold destabilization at interface,partial,False,2.0,2.8501,0.894,likely_pathogenic,
+W37A,hemoglobin_tetramer,pathogenic,mixed_structural,Tier 1,False,True,True,True,Multimer fold + PPI destabilization,consistent,False,1.0,6.1596,0.969,likely_pathogenic,
+W37G,hemoglobin_tetramer,pathogenic,mixed_structural,Tier 1,False,True,True,True,Multimer fold + PPI destabilization,consistent,False,1.0,7.7632,0.94,likely_pathogenic,
+W37E,hemoglobin_tetramer,pathogenic,mixed_structural,Tier 1,False,True,True,True,Multimer fold + PPI destabilization,consistent,False,1.0,5.878,0.993,likely_pathogenic,
+N102T,hemoglobin_tetramer,pathogenic,mixed_structural,Tier 1,False,False,False,False,Interface variant (DDG neutral),partial,False,1.0,0.7689,0.969,likely_pathogenic,vus_low
+R145G,troponin_ic,pathogenic,structurally_silent,Tier 3,False,True,False,True,Multimer fold destabilization at interface,inconsistent,False,3.0,3.6898,0.971,likely_pathogenic,pathogenic
+R145Q,troponin_ic,pathogenic,structurally_silent,Tier 3,False,True,False,True,Multimer fold destabilization at interface,inconsistent,False,3.0,2.5295,0.687,likely_pathogenic,pathogenic
+R162W,troponin_ic,pathogenic,interface_uncommitted_magnitude,Tier 2,False,False,False,False,Interface variant (DDG neutral),N/A,False,2.0,1.3216,0.411,ambiguous,likely_pathogenic
+P82S,troponin_ic,benign,structurally_silent,Tier 4,False,False,False,False,No structural effect detected,consistent,False,4.0,0.6571,0.127,likely_benign,benign
+D96V,cam_cav12,pathogenic,structurally_silent,Tier 2,False,False,False,False,Interface variant (DDG neutral),consistent,False,2.0,0.9439,0.984,likely_pathogenic,pathogenic
+N98S,cam_cav12,pathogenic,structurally_silent,Tier 4,False,False,False,False,No structural effect detected,consistent,False,4.0,0.266,0.209,likely_benign,pathogenic
+F142L,cam_cav12,pathogenic,structurally_silent,Tier 1,False,False,False,False,Interface variant (DDG neutral),consistent,False,1.0,0.706,0.998,likely_pathogenic,pathogenic
+D351H,smad4_smad3,pathogenic,ppi_destab_mechanism,Tier 1,True,True,False,True,Both fold destabilization,partial,False,1.0,12.1121,1.0,likely_pathogenic,likely_pathogenic
+R361C,smad4_smad3,pathogenic,ppi_destab_mechanism,Tier 1,True,True,True,True,Both fold + PPI destabilization,consistent,False,1.0,7.427,0.998,likely_pathogenic,pathogenic
+I500T,smad4_smad3,pathogenic,structurally_silent,Tier 2,False,False,False,False,Structural variant — contact-driven (DDG neutral),consistent,False,2.0,1.6233,0.991,likely_pathogenic,pathogenic
+I500V,smad4_smad3,pathogenic,structurally_silent,Tier 3,False,False,False,False,No structural effect detected,consistent,False,3.0,0.9476,0.616,likely_pathogenic,pathogenic
+Y1853C,brca1_brct,pathogenic,fold_mechanism,,True,False,False,True,Monomer fold destabilization,consistent,False,,3.3869,,,
+A1843P,brca1_brct,pathogenic,fold_mechanism,,True,False,False,True,Monomer fold destabilization,consistent,False,,6.4287,,,
+V1736A,brca1_brct,pathogenic,fold_mechanism,,False,False,False,False,No structural effect detected,inconsistent,False,,1.2414,,,
+M1783T,brca1_brct,vus,fold_mechanism,,True,False,False,True,Monomer fold destabilization,consistent,False,,2.8551,,,
+V1808A,brca1_brct,vus,fold_mechanism,,True,False,False,True,Monomer fold destabilization,consistent,False,,3.5669,,,
+V1665M,brca1_brct,vus,fold_mechanism,,True,False,False,True,Monomer fold destabilization,consistent,False,,2.979,,,
+R1751Q,brca1_brct,benign,fold_mechanism,,False,False,False,False,No structural effect detected,inconsistent,False,,0.7285,,,
+L1664P,brca1_brct,benign,fold_mechanism,,False,False,False,False,No structural effect detected,inconsistent,False,,0.5333,,,
+M1663K,brca1_brct,vus,structurally_silent,,False,False,False,False,No structural effect detected,consistent,False,,0.4458,,,
+P1806A,brca1_brct,vus,structurally_silent,,False,False,False,False,No structural effect detected,consistent,False,,1.6691,,,
+R1699L,brca1_brct,pathogenic,structurally_silent,,False,False,False,False,No structural effect detected,consistent,True,,0.387,,,
+R1699Q,brca1_brct,pathogenic,structurally_silent,,False,False,False,False,No structural effect detected,consistent,True,,1.768,,,
+R78G,cfh_c3b,pathogenic,ppi_destab_mechanism,Tier 1,False,True,True,True,Multimer fold + PPI destabilization,partial,False,1.0,6.1211,0.398,ambiguous,
+R53H,cfh_c3b,pathogenic,structurally_silent,Tier 4,False,False,False,False,No structural effect detected,consistent,False,4.0,1.3156,0.2427,likely_benign,
+I62V,cfh_c3b,benign,structurally_silent,Tier 2,False,False,False,False,Structural variant — contact-driven (DDG neutral),consistent,False,2.0,0.714,0.0589,likely_benign,
+R1334Q,vwf_gpiba,pathogenic,ppi_destab_mechanism,Tier 1,False,True,True,True,Multimer fold + PPI destabilization,partial,False,1.0,4.7285,,unavailable,
+A1381T,vwf_gpiba,benign,structurally_silent,Tier 2,False,False,False,False,Structural variant — contact-driven (DDG neutral),consistent,False,2.0,0.0984,,unavailable,

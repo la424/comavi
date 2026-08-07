@@ -1,0 +1,332 @@
+{
+ "SA_by_axis": {
+  "binding": [
+   24,
+   32,
+   0.75
+  ],
+  "fold": [
+   20,
+   25,
+   0.8
+  ],
+  "monomer": [
+   21,
+   27,
+   0.7778
+  ],
+  "tier": [
+   34,
+   47,
+   0.7234
+  ]
+ },
+ "SA_total": [
+  99,
+  131
+ ],
+ "SA": 0.7557,
+ "MC": 0.7193,
+ "MC_n": 57,
+ "N_variants": 61,
+ "labels": {
+  "pathogenic": 42,
+  "benign": 14,
+  "vus": 5
+ },
+ "scope_firing_by_class": {
+  "fold_mechanism": {
+   "n": 10,
+   "fires": 6,
+   "rate": 0.6
+  },
+  "interface_uncommitted_magnitude": {
+   "n": 1,
+   "fires": 0,
+   "rate": 0.0
+  },
+  "mixed_structural": {
+   "n": 9,
+   "fires": 7,
+   "rate": 0.778
+  },
+  "ppi_destab_mechanism": {
+   "n": 6,
+   "fires": 5,
+   "rate": 0.833
+  },
+  "structurally_silent": {
+   "n": 34,
+   "fires": 6,
+   "rate": 0.176
+  },
+  "structurally_uncommitted": {
+   "n": 1,
+   "fires": 1,
+   "rate": 1.0
+  }
+ },
+ "scope_note": "denominators include ALL labels incl. VUS (rule F0)",
+ "precision_fire_n": 25,
+ "precision_fire_labels": {
+  "pathogenic": 22,
+  "vus": 3
+ },
+ "silent_n": 36,
+ "silent_labels": {
+  "pathogenic": 20,
+  "benign": 14,
+  "vus": 2
+ },
+ "benign_silent": [
+  14,
+  14
+ ],
+ "silent_pathogenic_n": 20,
+ "silent_pathogenic_by_expected": {
+  "structurally_silent": 14,
+  "mixed_structural": 2,
+  "fold_mechanism": 2,
+  "ppi_destab_mechanism": 1,
+  "interface_uncommitted_magnitude": 1
+ },
+ "silent_pathogenic_by_grade": {
+  "consistent": 14,
+  "inconsistent": 3,
+  "partial": 2,
+  "N/A": 1
+ },
+ "true_misses": [
+  "E545K",
+  "R755W",
+  "V1736A"
+ ],
+ "tier_gradient": {
+  "Tier 1": [
+   14,
+   14,
+   1.0
+  ],
+  "Tier 2": [
+   13,
+   18,
+   0.722
+  ],
+  "Tier 3": [
+   7,
+   10,
+   0.7
+  ],
+  "Tier 4": [
+   3,
+   7,
+   0.429
+  ]
+ },
+ "tier_spearman": [
+  -0.3997,
+  0.0044
+ ],
+ "auc_tier": 0.757,
+ "auc_maxddg": 0.842,
+ "MC_tier_ablated": 0.7193,
+ "MC_tier_ablated_n": 57,
+ "MC_delta": 0.0,
+ "labels_changed_by_ablation": 7,
+ "grades_changed_by_ablation": 0,
+ "tier_driven_calls_n": 14,
+ "tier_driven_grades": {
+  "consistent": 11,
+  "partial": 2,
+  "N/A": 1
+ },
+ "AM_auc": 0.903,
+ "AM_auc_n": 47,
+ "tier_auc_on_AM_set": 0.769,
+ "tier_auc_on_AM_set_n": 47,
+ "AM_set_n": 47,
+ "AM_set_labels": {
+  "pathogenic": 36,
+  "benign": 11
+ },
+ "maxddg_auc_on_AM_set": 0.818,
+ "AM_discrepancy": "RESOLVED \u2014 no discrepancy. Frozen values confirmed: n=47 AM-scored variants (36 pathogenic / 11 benign), AUC AlphaMissense 0.903 vs structural-evidence tier 0.769. My first attempt merged the 44-row external xlsx and lost 3 CFH variants scored later; the canonical CSV already carries 'AM pathogenicity'. ALWAYS read AM from the canonical column, never re-merge the xlsx.",
+ "threshold_sweep": {
+  "1.0": {
+   "MC": 0.5789,
+   "MC_n": 57,
+   "SA": 0.7176,
+   "SA_frac": [
+    94,
+    131
+   ]
+  },
+  "1.5": {
+   "MC": 0.6491,
+   "MC_n": 57,
+   "SA": 0.7557,
+   "SA_frac": [
+    99,
+    131
+   ]
+  },
+  "2.0": {
+   "MC": 0.6842,
+   "MC_n": 57,
+   "SA": 0.7557,
+   "SA_frac": [
+    99,
+    131
+   ]
+  },
+  "2.5": {
+   "MC": 0.7193,
+   "MC_n": 57,
+   "SA": 0.7557,
+   "SA_frac": [
+    99,
+    131
+   ]
+  },
+  "3.0": {
+   "MC": 0.693,
+   "MC_n": 57,
+   "SA": 0.7176,
+   "SA_frac": [
+    94,
+    131
+   ]
+  }
+ },
+ "sweep_discrepancy": "frozen note said 'plateau across t=1.0-2.5'. Canonical: MC RISES monotonically 0.5789->0.6491->0.6842->0.7193 over t=1.0..2.5 then falls to 0.6930 at t=3.0 (NOT a plateau). SA IS a plateau: 0.7557 across t=1.5-2.5, 0.7176 at t=1.0 and t=3.0. Claim must be restated as 'SA plateau; MC peaks at t=2.5'.",
+ "MC_cluster_ci95": [
+  0.6308,
+  0.8182
+ ],
+ "SA_cluster_ci95": [
+  0.7042,
+  0.8211
+ ],
+ "bootstrap_n": 2000,
+ "bootstrap_unit": "system (cluster)",
+ "n_systems": 14,
+ "systems": [
+  "brca1_bard1",
+  "brca1_brct",
+  "cam_cav12",
+  "cfh_c3b",
+  "hemoglobin_dimer",
+  "hemoglobin_tetramer",
+  "kras_craf",
+  "mlh1_pms2",
+  "msh2_msh6",
+  "pi3k",
+  "smad4_smad3",
+  "troponin_ic",
+  "vhl_elonginc",
+  "vwf_gpiba"
+ ],
+ "annotated_disruptors": {
+  "binding": 15,
+  "complex_fold": 11,
+  "monomer": 10
+ },
+ "gradeable_disruptors": {
+  "binding": 13,
+  "complex_fold": 10,
+  "monomer": 10
+ },
+ "disruptor_definitions": {
+  "ANNOTATED": "literature annotation for that axis contains 'destab' (ground-truth side only)",
+  "GRADEABLE": "ANNOTATED and the prediction for that axis is evaluable (monomer: ddg_monomer_confident and non-null; fold/binding: an operative partner exists after confidence/indistinguishability gating)",
+  "rule": "F2 \u2014 both correct, different definitions, never reconciled; every use states which is in force"
+ },
+ "threshold_canonical": 2.5,
+ "canonical_source": "/Users/lukearnce/mavis_release/reference_outputs/scored_61var_canonical.csv",
+ "repo_commit": "8e8ea23",
+ "canonical_sha256": "03f69f15c3961312739a6007cae84fa7edcc240220540b69dfbe80afbe85c975",
+ "tier_gradient_note": "on the 61-variant canonical set restricted to pathogenic/benign with a tier assigned (n=49). The older 12/12, 13/16, 7/10, 2/6 gradient was the 44-variant PPI-only set and is SUPERSEDED.",
+ "AM_labeled_n": 47,
+ "AM_labeled_labels": {
+  "pathogenic": 36,
+  "benign": 11
+ },
+ "auc_tier_n": 49,
+ "auc_maxddg_n": 56,
+ "stress_permutation": {
+  "MC_observed": 0.7193,
+  "MC_null_mean": 0.4792,
+  "p": 0.0005
+ },
+ "stress_LOSO_MC_range": [
+  0.7037,
+  0.75
+ ],
+ "stress_noise_sd": 0.0133,
+ "stress_noise_label_identical_frac": 0.3,
+ "tier_OR_strong_vs_weak": {
+  "OR": 3.78,
+  "p": 0.08,
+  "note": "REPORTED ONLY AS SUPERSEDED-BY-RANK-CORRELATION; rule E2 forbids leading with it. Old 6.48 was the 44-set value."
+ },
+ "fig4_panel_a": {
+  "rho": 0.7212,
+  "p": 0.0186,
+  "n": 10,
+  "what": "BRCT fold axis vs measured dG_U-F"
+ },
+ "fig4_panel_b": {
+  "rho": 0.9,
+  "p": 0.0374,
+  "n": 5,
+  "what": "hemoglobin binding axis vs measured"
+ },
+ "skempi": {
+  "barnase_all": {
+   "n": 24,
+   "r": 0.37,
+   "p": 0.074,
+   "rho": 0.3,
+   "sign_correct": [
+    14,
+    22
+   ]
+  },
+  "barnase_ex_Glu73": {
+   "n": 17,
+   "r": 0.51,
+   "p": 0.0354,
+   "rho": 0.56,
+   "sign_correct": [
+    14,
+    15
+   ]
+  },
+  "tem1_blip": {
+   "n": 24,
+   "r": 0.51,
+   "p": 0.0101,
+   "rho": 0.5,
+   "sign_correct": [
+    16,
+    18
+   ]
+  },
+  "combined_ex_Glu73": {
+   "n": 41,
+   "r": 0.48,
+   "p": 0.0016,
+   "rho": 0.55,
+   "p_rho": 0.0002,
+   "sign_correct": [
+    30,
+    33
+   ]
+  }
+ },
+ "fig3_panel_c_monomer_arm": {
+  "n": 14,
+  "composition": "10 measured destabilizers + 4 fold-intact controls, 3 systems",
+  "status": "PANEL BEING CUT in v21; its 4 controls move to Fig 4a as open markers"
+ }
+}
