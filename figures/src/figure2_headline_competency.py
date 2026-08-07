@@ -11,9 +11,10 @@ Panel b: fraction pathogenic per structural-evidence tier, with Wilson score
 
 Both panels recompute from reference_outputs/scored_61var_canonical.csv rather
 than hard-coding, and print the computed values so a run self-verifies against
-docs/COMAVI_v7_canonical_benchmark_ledger.md §12:
-  MC/SA sweep  t1.0 0.542/0.719 · t1.5 0.646/0.769 · t2.0 0.667/0.760 ·
-               t2.5 0.708/0.760 · tSAP 0.719/0.752   (SA denominator 121)
+docs/COMAVI_v7_canonical_benchmark_ledger.md §17 (v7.3, current):
+  MC/SA sweep  t1.0 0.579/0.718 · t1.5 0.649/0.756 · t2.0 0.684/0.756 ·
+               t2.5 0.719/0.756 · tSAP 0.711/0.740   (SA denominator 131,
+               MC graded n = 57 with the BRCA1-BRCT cohort pooled in)
   tier         T1 14/14 · T2 13/18 · T3 7/10 · T4 3/7;
                Fisher OR 3.78 p 0.080; Spearman rho -0.400 p 0.0044
 
@@ -24,7 +25,8 @@ Notes that are not evident from the code:
     variants equally with four-axis ones.
   * The tier gradient is computed on the 49 tier-assigned rows only; the 12
     BRCT rows carry no tier (the tier is a PPI-interface construct) and drop out
-    via dropna. "Pathogenic" includes pathogenic_gof — the tier measures
+    via dropna. This is why v7.3 pooling moved panel a but left panel b
+    untouched — the cohort contributes mechanism and agreement rows, not tiers. "Pathogenic" includes pathogenic_gof — the tier measures
     structural-evidence strength, not direction of effect.
   * Fisher's exact test dichotomises tiers 1-2 vs 3-4; it is reported alongside
     the Spearman rho, which is the primary statistic (the dichotomy loses

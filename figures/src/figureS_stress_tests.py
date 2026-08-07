@@ -9,7 +9,7 @@ Reads the draws written by verification/stress_tests.py. Run that first:
     python3 figures/src/figureS_stress_tests.py
 
 Panel (c) is drawn as a discrete stem plot, not a histogram: mechanism-
-consistency on n=47 graded variants moves in steps of 0.5/47 = 0.0106, so
+consistency on n=57 graded variants moves in steps of 0.5/57 = 0.0088, so
 binning invents gaps between attainable values.
 """
 
@@ -104,13 +104,18 @@ def main():
             f"{100 * np.mean(noise_flips == 0):.0f}% of draws\nlabel-identical",
             transform=ax.transAxes, ha="right", va="top", fontsize=6,
             color=COMP, linespacing=1.25)
-    ax.set_xlim(vals.min() - 0.010, vals.max() + 0.030)
+    # Pad to the next tick beyond the data so the rightmost tick label is not
+    # flush with the panel edge (it overhangs the canvas at right=0.995).
+    ax.set_xlim(vals.min() - 0.010, vals.max() + 0.040)
     ax.set_xlabel("Mechanism-consistency")
     ax.set_ylabel("Perturbation draws")
     ax.set_title("Stable to force-field noise", loc="left")
     ax.margins(y=0.08)
 
-    fig.subplots_adjust(left=0.085, right=0.995, top=0.80, bottom=0.20, wspace=0.42)
+    # v7.3: panel (b) y-tick labels are full system names and extend left into
+    # the inter-panel gap; pooling also moved the observed MC to the right edge
+    # of panel (a), so its annotation now reaches the same gap. Widen it.
+    fig.subplots_adjust(left=0.075, right=0.995, top=0.80, bottom=0.20, wspace=0.58)
     for a, lab in zip(axes, "abc"):
         bb = a.get_position()
         fig.text(bb.x0 - 0.060, bb.y1 + 0.075, lab, fontsize=9,
