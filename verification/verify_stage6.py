@@ -44,23 +44,35 @@ EXPECTED_V5 = {
 # 14 of those 44 variants had ground-truth tokens changed in re-curation, so a
 # Track B pass says nothing about the released canonical numbers. Values below
 # are post the v7.1 `structurally_uncommitted` grading correction (ledger §15).
+# v7.3 RE-FREEZE. The BRCA1-BRCT monomer-fold cohort is now POOLED into both
+# headlines (scripts/apply_brct_pooling_v73.py). Graded rows 47 -> 57: the
+# cohort contributes 10 (12 rows less R1699L/R1699Q, whose curated mechanism —
+# loss of a phospho-peptide binding site — is not observable on the isolated
+# tandem-BRCT structure; these are the same 2 the published measured-vs-FoldX
+# correlation excludes, via role_in_cohort == 'fold_intact_function_lost').
+#
+# Structural agreement 120 -> 131 gradeable axes: +12 monomer axes from the
+# cohort, less 1 (R1699L, whose monomer CI is indistinguishable from 0). The
+# cohort contributes NO tier axis — the tier is undefined without a partner
+# chain, and grading it was scoring a NaN as "did not fire" (v7.3 fix (d)).
 EXPECTED_CANONICAL = {
     'structural_agreement': {
-        't10': (87, 120), 't15': (93, 120), 't20': (92, 120),
-        't25': (92, 120), 'tSAP': (91, 120),
+        't10': (94, 131), 't15': (99, 131), 't20': (99, 131),
+        't25': (99, 131), 'tSAP': (97, 131),
     },
     'mech_consistency': {
-        't10': 0.553, 't15': 0.660, 't20': 0.681,
-        't25': 0.723, 'tSAP': 0.734,
+        't10': 0.579, 't15': 0.649, 't20': 0.684,
+        't25': 0.719, 'tSAP': 0.711,
     },
-    'mech_graded_n': 47,
+    'mech_graded_n': 57,
     # Four-way decomposition of the t=2.5 headline (ledger §13).
+    # monomer 16 -> 27 gradeable: +12 cohort rows, -1 CI-excluded (R1699L).
     'axis_decomposition_t25': {
-        'monomer': (14, 16), 'fold': (20, 25),
+        'monomer': (21, 27), 'fold': (20, 25),
         'binding': (24, 32), 'tier': (34, 47),
     },
-    # Tier pathogenicity gradient — carries no expected_mech_class term, so the
-    # v7.1 correction must leave it untouched.
+    # Tier pathogenicity gradient — carries no expected_mech_class term, so
+    # neither the v7.1 correction nor v7.3 pooling may move it.
     'tier_gradient': [(14, 14), (13, 18), (7, 10), (3, 7)],
     'n_ppi_rows': 49,
     'n_brct_rows': 12,
@@ -139,7 +151,12 @@ def verify_canonical(canonical_csv, scripts_dir):
 
     partners = [p for p in ac.discover_partners(df)
                 if '_ci95_' not in p and '_distinguishable_' not in p]
-    ppi = df['expected_mech_class'].notna()
+    # v7.3: partition on the SYSTEM, not on expected_mech_class. The old proxy
+    # ("a row is an interaction row iff its expected class is populated") held
+    # only while the BRCT cohort's class was unfilled; pooling populated it and
+    # silently reclassified all 12 rows as interaction rows.
+    brct = df['system'].eq('brca1_brct')
+    ppi = ~brct
 
     print(f"\n  rows: {len(df)}  PPI: {int(ppi.sum())}  BRCT: {int((~ppi).sum())}"
           f"  partner chains: {len(partners)}")
@@ -148,27 +165,64 @@ def verify_canonical(canonical_csv, scripts_dir):
     results.append(check("n_brct_rows", float((~ppi).sum()),
                          float(EXPECTED_CANONICAL['n_brct_rows']), tol=0))
 
+    # --- 0. structural-provenance completeness (v7.4 regression guard) ------
+    #
+    # The v7.4 defect: the BRCT supplement was merged into the canonical table
+    # WITHOUT site_plddt_status / structure_evaluable, so those 12 rows fell
+    # silently out of the concordance framework and the confidence-restriction
+    # analysis. apply_concordance_v5 reads site_plddt_status but never writes
+    # it, so nothing downstream noticed. Assert completeness on every row so a
+    # future supplement merge that drops these columns fails loudly here.
+    print("\n  structural-provenance completeness (v7.4 guard):")
+    for col, allowed in (("site_plddt_status",
+                          {"crystal", "confident", "partial", "low"}),
+                         ("structure_evaluable", None)):
+        if col not in df.columns:
+            print(f"    [FAIL] {col}: column absent from canonical table")
+            results.append(False)
+            continue
+        n_missing = int(df[col].isna().sum())
+        results.append(check(f"{col}_complete", float(n_missing), 0.0, tol=0))
+        if allowed is not None:
+            bad = sorted(set(df[col].dropna().astype(str).str.lower()) - allowed)
+            if bad:
+                print(f"    [FAIL] {col}: unexpected values {bad}")
+                results.append(False)
+            else:
+                print(f"    [PASS] {col}: all values in {sorted(allowed)}")
+                results.append(True)
+
     # --- 1. re-derive grading from the pipeline's own functions -------------
+    #
+    # v7.3: the BRCT cohort is now graded too, so the re-derivation must cover
+    # ALL rows. Both cohort rules live in the shipped module — the direction
+    # -aware fold branch inside derive_expected_mech_class(), and the
+    # unobservable-mechanism exclusion in unobservable_variants() — so this
+    # track exercises the released code path rather than a local restatement
+    # of it. It still re-derives every column independently of the applier.
+    unobservable = ac.unobservable_variants()
     reder = df.copy()
-    reder.loc[ppi, 'expected_mech_class'] = reder[ppi].apply(
+    reder['expected_mech_class'] = reder.apply(
         ac.derive_expected_mech_class, axis=1)
+    gradeable = ~reder['variant'].isin(unobservable)
     axes_by_idx = {i: ac.classify_axis_status(r) for i, r in reder.iterrows()}
     for suf in tags:
+        reder[f'mech_consistency_{suf}'] = None
         grades = [
             ac.grade_mechanism_consistency(
                 r, r.get(f'mech_{suf}'), r.get('expected_mech_class'),
                 axes_by_idx.get(r.name))[0]
-            for _, r in reder[ppi].iterrows()
+            for _, r in reder[gradeable].iterrows()
         ]
-        reder.loc[ppi, f'mech_consistency_{suf}'] = grades
+        reder.loc[gradeable, f'mech_consistency_{suf}'] = grades
     for tag, t in ac.THRESHOLD_SPECS:
         mt, ft, bt = ((t['monomer'], t['fold'], t['binding'])
                       if isinstance(t, dict) else (float(t),) * 3)
-        sa = reder[ppi].apply(
+        sa = reder.apply(
             lambda r, _m=mt, _f=ft, _b=bt:
                 ac.compute_structural_agreement(r, partners, _m, _f, _b), axis=1)
-        reder.loc[ppi, f'structural_agreement_n_{tag}'] = [x[0] for x in sa]
-        reder.loc[ppi, f'structural_agreement_d_{tag}'] = [x[1] for x in sa]
+        reder[f'structural_agreement_n_{tag}'] = [x[0] for x in sa]
+        reder[f'structural_agreement_d_{tag}'] = [x[1] for x in sa]
 
     print("\n  re-derived grading reproduces stored columns:")
     for tag in tags:
@@ -206,6 +260,33 @@ def verify_canonical(canonical_csv, scripts_dir):
         vals = df[f'mech_consistency_{tag}'].map(MC_MAP).dropna()
         results.append(check(f"mech_consistency_{tag}", float(vals.mean()),
                              EXPECTED_CANONICAL['mech_consistency'][tag]))
+
+    # --- 2b. four-way axis decomposition of the t=2.5 headline --------------
+    # v7.3: this constant was previously declared and never asserted. It is the
+    # decomposition quoted in the ledger and in the manuscript, so it must be
+    # checked, and it must close to the headline it decomposes.
+    print("\n  axis decomposition of SA_t25 (must sum to the headline):")
+    spec = dict(ac.THRESHOLD_SPECS)['t25']
+    triple = ((spec['monomer'], spec['fold'], spec['binding'])
+              if isinstance(spec, dict) else (spec, spec, spec))
+    dec = {k: [0, 0] for k in ('monomer', 'fold', 'binding', 'tier')}
+    for _, r in df.iterrows():
+        for k, (a, b) in ac.structural_agreement_by_axis(r, partners, *triple).items():
+            dec[k][0] += a
+            dec[k][1] += b
+    for k in ('monomer', 'fold', 'binding', 'tier'):
+        got = tuple(dec[k])
+        exp = tuple(EXPECTED_CANONICAL['axis_decomposition_t25'][k])
+        ok = got == exp
+        print(f"    [{' OK ' if ok else 'FAIL'}] {k}: {got[0]}/{got[1]}"
+              f"  (expected {exp[0]}/{exp[1]})")
+        results.append(ok)
+    dsum = (sum(v[0] for v in dec.values()), sum(v[1] for v in dec.values()))
+    hsum = tuple(EXPECTED_CANONICAL['structural_agreement']['t25'])
+    ok = dsum == hsum
+    print(f"    [{' OK ' if ok else 'FAIL'}] decomposition closes: "
+          f"{dsum[0]}/{dsum[1]} vs headline {hsum[0]}/{hsum[1]}")
+    results.append(ok)
 
     # --- 3. tier gradient (must be untouched by grading) --------------------
     print("\n  tier pathogenicity gradient (independent of expected_mech_class):")

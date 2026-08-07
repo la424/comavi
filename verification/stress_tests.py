@@ -52,6 +52,7 @@ SEED_PERM = 20260729
 SEED_NOISE = 11
 SEED_FRAGILITY = 12
 SEED_BOOT = 7
+SEED_CLUSTER = 8
 
 
 def clean_partners(df, ac):
@@ -61,8 +62,23 @@ def clean_partners(df, ac):
 
 
 def interaction_rows(df):
-    """The PPI-graded subset. BRCT fold-expansion rows carry NaN class."""
-    return df[df["expected_mech_class"].notna()].copy()
+    """Rows the stress tests perturb — the WHOLE canonical table.
+
+    v7.3: the BRCT fold-expansion cohort is POOLED into both headlines, so
+    there is no longer a subset to select. The old selector ("a row is graded
+    iff expected_mech_class is populated") was a proxy that held only while the
+    cohort was ungraded; pooling populated that column and the proxy silently
+    admitted all 12 rows, including the 2 that are ungraded by construction.
+
+    The two headlines have DIFFERENT row sets and must not be conflated:
+      * mechanism-consistency excludes the unobservable-mechanism rows
+        (they have no gradeable mechanism), n = 57;
+      * structural agreement includes them (agreement grades per-AXIS against
+        per-axis ground truth, and those rows still carry a measured monomer
+        ΔΔG that the pipeline either matches or misses), 131 axes.
+    score() applies the mechanism exclusion; both run over this same frame.
+    """
+    return df.copy()
 
 
 def score(df, ac, partners, tag="t25", thr=T25, recall_mech=False):
@@ -82,8 +98,15 @@ def score(df, ac, partners, tag="t25", thr=T25, recall_mech=False):
             lambda r: ac.classify_mechanism_at(r, partners, thr[0]), axis=1)
     d["expected_mech_class"] = d.apply(ac.derive_expected_mech_class, axis=1)
     axis_status = {i: ac.classify_axis_status(r) for i, r in d.iterrows()}
+    # v7.3: rows whose curated mechanism is unobservable on the deposited
+    # structure are ungraded for MECHANISM only — they still contribute their
+    # measured monomer axis to structural agreement below.
+    unobs = ac.unobservable_variants()
     grades = []
     for i, r in d.iterrows():
+        if r.get("variant") in unobs:
+            grades.append(None)
+            continue
         g, _, _ = ac.grade_mechanism_consistency(
             r, r.get(f"mech_{tag}"), r["expected_mech_class"], axis_status[i])
         grades.append(g)
@@ -146,7 +169,7 @@ def main():
     sub = interaction_rows(canon)
     pairs = sd_pairs(canon)
 
-    print(f"canonical rows {len(canon)} | interaction rows {len(sub)} | "
+    print(f"canonical rows {len(canon)} | scored rows {len(sub)} | "
           f"partners {len(partners)} | perturbable axes {len(pairs)}")
 
     # --- Gate: the scorer must reproduce the released headlines exactly -------
@@ -173,11 +196,18 @@ def main():
 
     # --- B. leave-one-system-out --------------------------------------------
     rows = []
-    for gene in sorted(sub["gene"].astype(str).unique()):
-        keep = sub[sub["gene"].astype(str) != gene]
+    # v7.3: group on `system`, not `gene`. Two reasons the gene key was wrong:
+    #   (1) it is NULL for all 12 BRCA1-BRCT rows, so the fold cohort was
+    #       dropped as one unnamed "nan" group rather than as a named system;
+    #   (2) it splits two complexes across groups (mlh1_pms2 -> mlh1 + pms2,
+    #       pi3k -> pik3ca + pik3r1), so "dropping mlh1" left a pms2 row of the
+    #       same complex in place — not a leave-one-SYSTEM-out at all.
+    # `system` is populated on every row and partitions the table exactly.
+    for gene in sorted(sub["system"].astype(str).unique()):
+        keep = sub[sub["system"].astype(str) != gene]
         m, n, N, D = score(keep, ac, partners)
         rows.append(dict(dropped=gene,
-                         n_dropped=int((sub["gene"].astype(str) == gene).sum()),
+                         n_dropped=int((sub["system"].astype(str) == gene).sum()),
                          mc=round(m, 4), mc_n=n, sa=f"{N}/{D}",
                          sa_val=round(N / D, 4)))
     loso = pd.DataFrame(rows).sort_values("mc")
@@ -207,7 +237,8 @@ def main():
         d = perturb(sub, pairs, rng)
         mt = d.apply(lambda r: ac.classify_mechanism_at(r, partners, 2.5), axis=1)
         flip += (mt.values != sub["mech_t25"].values).astype(int)
-    frag = (pd.DataFrame({"gene": sub["gene"].values,
+    frag = (pd.DataFrame({"system": sub["system"].values,
+                          "gene": sub["gene"].values,
                           "variant": sub["variant"].values,
                           "mech_t25": sub["mech_t25"].values,
                           "flip_rate": flip / args.n_noise})
@@ -230,6 +261,26 @@ def main():
     sa_ci = np.nanpercentile(bs, [2.5, 97.5])
     print(f"[D] MC {mc_obs:.4f} 95% CI [{mc_ci[0]:.3f}, {mc_ci[1]:.3f}] | "
           f"SA {sa_obs:.4f} 95% CI [{sa_ci[0]:.3f}, {sa_ci[1]:.3f}]")
+
+    # --- E. cluster bootstrap (resample whole systems) -----------------------
+    # Axes within a system are not independent -- they share a structure, a
+    # partner set and a curator. Resampling variants (D) therefore understates
+    # the interval. Resampling whole systems is the honest analogue, at the
+    # cost of a much coarser resampling unit (14 systems).
+    rng = np.random.default_rng(SEED_CLUSTER)
+    systems = sub["system"].unique()
+    cbm, cbs = [], []
+    for _ in range(args.n_boot):
+        pick = rng.choice(systems, len(systems), replace=True)
+        b = pd.concat([sub[sub.system == s] for s in pick]).reset_index(drop=True)
+        m, _, N, D = score(b, ac, partners)
+        cbm.append(m)
+        cbs.append(N / D if D else np.nan)
+    cmc_ci = np.nanpercentile(np.asarray(cbm, dtype=float), [2.5, 97.5])
+    csa_ci = np.nanpercentile(np.asarray(cbs, dtype=float), [2.5, 97.5])
+    print(f"[E] cluster (n={len(systems)} systems) "
+          f"MC 95% CI [{cmc_ci[0]:.3f}, {cmc_ci[1]:.3f}] | "
+          f"SA 95% CI [{csa_ci[0]:.3f}, {csa_ci[1]:.3f}]")
 
     summary = pd.DataFrame([
         dict(test="permutation null (MC)", observed=round(mc_obs, 4),
@@ -254,6 +305,10 @@ def main():
              null_mean=f"[{mc_ci[0]:.3f}, {mc_ci[1]:.3f}]", null_sd="", p_value=""),
         dict(test="bootstrap 95% CI (SA)", observed=round(sa_obs, 4),
              null_mean=f"[{sa_ci[0]:.3f}, {sa_ci[1]:.3f}]", null_sd="", p_value=""),
+        dict(test="cluster bootstrap 95% CI (MC)", observed=round(mc_obs, 4),
+             null_mean=f"[{cmc_ci[0]:.3f}, {cmc_ci[1]:.3f}]", null_sd="", p_value=""),
+        dict(test="cluster bootstrap 95% CI (SA)", observed=round(sa_obs, 4),
+             null_mean=f"[{csa_ci[0]:.3f}, {csa_ci[1]:.3f}]", null_sd="", p_value=""),
     ])
     summary.to_csv(out / "comavi_stress_tests.csv", index=False)
 
