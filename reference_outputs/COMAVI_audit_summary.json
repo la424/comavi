@@ -1,0 +1,212 @@
+{
+ "denominators": {
+  "n_rows": 61,
+  "n_unobservable": 2,
+  "n_graded": 57,
+  "n_committed": 57,
+  "n_structural": 25,
+  "n_silent": 32,
+  "note": "graded == committed == 57; the 2 class-uncommitted variants carry no grade, so every headline denominator coincides."
+ },
+ "headline_MC_t25": 0.7193,
+ "threshold_averaged_MC": 0.6684,
+ "threshold_averaged_MC_balanced": 0.6666,
+ "R1_crossover_structural_weight": 0.646,
+ "R1_benchmark_actual_weight": 0.439,
+ "R2_lability": {
+  "n_committed": 57,
+  "n_stable": 36,
+  "n_labile": 21,
+  "grades_monotone_in_threshold": 57,
+  "direction_is_forced": true,
+  "labile_structural_n": 8,
+  "labile_silent_n": 13,
+  "labile_structural_median_ddg": 3.102,
+  "labile_silent_median_ddg": 1.623,
+  "stable_structural_median_ddg": 4.729,
+  "stable_silent_median_ddg": 0.706,
+  "mannwhitney_U": 93.0,
+  "mannwhitney_p": 0.00185
+ },
+ "R3_model_free": {
+  "definition": "real destabilizer = |measured| >= 1.0 kcal/mol",
+  "n_real_destabilizers": 44,
+  "n_calibration_points": 63
+ },
+ "gate_fragility": {
+  "weak_cell_n_variants": 3,
+  "weak_cell_n_residues": 2,
+  "weak_cell_n_systems": 2,
+  "weak_cell_variants": [
+   "A636P",
+   "R145G",
+   "R145Q"
+  ],
+  "residue_collapsed_2x2": [
+   [
+    10,
+    3
+   ],
+   [
+    0,
+    2
+   ]
+  ],
+  "residue_collapsed_fisher_p": 0.0952,
+  "systems_with_both_tier_strata_among_firing": 1,
+  "n_systems_among_firing": 10,
+  "fisher_p_if_1_weak_were_structural": 0.1548,
+  "fisher_p_if_2_weak_were_structural": 0.5304,
+  "fisher_p_if_3_weak_were_structural": 1.0,
+  "bh_firing_adj": {
+   "t10": 0.0473,
+   "t15": 0.0473,
+   "t20": 0.0473,
+   "t25": 0.0515,
+   "tSAP": 0.1087
+  },
+  "bh_silent_adj": {
+   "t10": 0.1373,
+   "t15": 0.1087,
+   "t20": 0.1087,
+   "t25": 0.1087,
+   "tSAP": 0.0842
+  },
+  "n_surviving_bh_05": 3
+ },
+ "tier_gradient": {
+  "n": 49,
+  "spearman_rho": -0.3997,
+  "spearman_p": 0.00444,
+  "gradient": [
+   {
+    "tier": 1,
+    "pathogenic": 14,
+    "n": 14,
+    "frac": 1.0
+   },
+   {
+    "tier": 2,
+    "pathogenic": 13,
+    "n": 18,
+    "frac": 0.722
+   },
+   {
+    "tier": 3,
+    "pathogenic": 7,
+    "n": 10,
+    "frac": 0.7
+   },
+   {
+    "tier": 4,
+    "pathogenic": 3,
+    "n": 7,
+    "frac": 0.429
+   }
+  ],
+  "loso_worst_p": 0.0299,
+  "loso_worst_system": "brca1_bard1",
+  "loso_all_significant": true,
+  "cluster_boot_rho_mean": -0.399,
+  "cluster_boot_ci": [
+   -0.599,
+   -0.153
+  ],
+  "cluster_boot_p_rho_negative": 0.9986
+ },
+ "tradeoff_bootstrap": {
+  "variant_boot_recall_ci": [
+   [
+    0.62,
+    0.88
+   ],
+   [
+    0.56,
+    0.86
+   ],
+   [
+    0.48,
+    0.78
+   ],
+   [
+    0.46,
+    0.74
+   ],
+   [
+    0.4,
+    0.68
+   ]
+  ],
+  "variant_boot_reject_ci": [
+   [
+    0.281,
+    0.625
+   ],
+   [
+    0.438,
+    0.75
+   ],
+   [
+    0.562,
+    0.875
+   ],
+   [
+    0.656,
+    0.938
+   ],
+   [
+    0.719,
+    0.969
+   ]
+  ],
+  "p_recall_drops": 0.9998,
+  "p_reject_rises": 1.0,
+  "p_curves_cross": 0.9951,
+  "cluster_p_recall_drops": 0.9995,
+  "cluster_p_reject_rises": 1.0,
+  "cluster_recall_ci_t10": [
+   0.636,
+   0.857
+  ],
+  "cluster_reject_ci_tSAP": [
+   0.688,
+   1.0
+  ],
+  "note": "Per-variant grades are monotone in threshold by construction, so the bootstrap confirms the MAGNITUDE of the tradeoff, not its shape."
+ },
+ "tier_ablation": {
+  "n_graded": 57,
+  "mc_with_tier": 0.7193,
+  "mc_without_tier": 0.7193,
+  "delta": 0.0,
+  "n_labels_changed": 7,
+  "n_grades_changed": 0,
+  "note": "Tier changes mechanism VOCABULARY, not mechanism ACCURACY."
+ },
+ "cluster_bootstrap": {
+  "n_boot": 10000,
+  "seed": 42,
+  "resample_unit": "system",
+  "recall_t10": 0.76,
+  "recall_t10_ci": [
+   0.639,
+   0.862
+  ],
+  "recall_tSAP": 0.54,
+  "recall_tSAP_ci": [
+   0.4,
+   0.68
+  ],
+  "rejection_t10": 0.438,
+  "rejection_t10_ci": [
+   0.273,
+   0.633
+  ],
+  "rejection_tSAP": 0.844,
+  "rejection_tSAP_ci": [
+   0.69,
+   1.0
+  ],
+  "p_tradeoff": 0.9996
+ }
+}

@@ -1,0 +1,6 @@
+threshold,firing_strong_structural,firing_strong_n,firing_weak_structural,firing_weak_n,firing_fisher_p,silent_strong_structural,silent_strong_n,silent_weak_structural,silent_weak_n,silent_fisher_p,weak_firing_n_variants,weak_firing_n_residues,weak_firing_n_systems,firing_fisher_p_bh,silent_fisher_p_bh
+t10,15,23,0,6,0.0063,2,7,0,11,0.1373,6,5,4,0.0473,0.1373
+t15,14,19,0,4,0.0142,3,11,0,13,0.0815,4,3,2,0.0473,0.1087
+t20,13,17,0,4,0.0117,4,13,0,13,0.0957,4,3,2,0.0473,0.1087
+t25,13,16,0,3,0.0206,4,14,0,14,0.0978,3,2,2,0.0515,0.1087
+tSAP,12,15,0,2,0.0735,5,15,0,15,0.0421,2,2,2,0.1087,0.0842

@@ -1,0 +1,14 @@
+dropped_system,n,rho,p
+brca1_bard1,45,-0.324,0.0299
+cam_cav12,46,-0.423,0.0034
+cfh_c3b,46,-0.441,0.0021
+hemoglobin_dimer,48,-0.416,0.0033
+hemoglobin_tetramer,44,-0.363,0.0153
+kras_craf,46,-0.467,0.0011
+mlh1_pms2,42,-0.401,0.0085
+msh2_msh6,44,-0.391,0.0088
+pi3k,44,-0.366,0.0146
+smad4_smad3,45,-0.4,0.0064
+troponin_ic,45,-0.401,0.0063
+vhl_elonginc,46,-0.392,0.007
+vwf_gpiba,47,-0.412,0.0041

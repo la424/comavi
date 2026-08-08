@@ -1,0 +1,58 @@
+variant,system,mech_with_tier,mech_without_tier,label_changed,grade_with_tier,grade_without_tier,grade_changed
+V11G,brca1_bard1,Multimer fold destabilization at interface,Multimer fold destabilization at interface,False,0.5,0.5,False
+C61G,brca1_bard1,Multimer fold destabilization,Multimer fold destabilization,False,0.5,0.5,False
+K45R,brca1_bard1,No structural effect detected,No structural effect detected,False,1.0,1.0,False
+E100Q,brca1_bard1,No structural effect detected,No structural effect detected,False,1.0,1.0,False
+E542K,pi3k,Multimer fold destabilization at interface,Multimer fold destabilization at interface,False,0.5,0.5,False
+E545K,pi3k,PPI stabilization,PPI stabilization,False,0.0,0.0,False
+H1047R,pi3k,Structural variant — contact-driven (DDG neutral),No structural effect detected,True,1.0,1.0,False
+N564D,pi3k,Multimer fold + PPI destabilization,Multimer fold + PPI destabilization,False,0.0,0.0,False
+M326I,pi3k,No structural effect detected,No structural effect detected,False,1.0,1.0,False
+Q542L,mlh1_pms2,Interface variant (DDG neutral),Interface variant (DDG neutral),False,0.5,0.5,False
+L749P,mlh1_pms2,Multimer fold destabilization at interface,Multimer fold destabilization at interface,False,0.5,0.5,False
+R755W,mlh1_pms2,PPI stabilization,PPI stabilization,False,0.0,0.0,False
+V384D,mlh1_pms2,Interface variant (DDG neutral),Interface variant (DDG neutral),False,1.0,1.0,False
+G857A,mlh1_pms2,Interface variant (DDG neutral),Interface variant (DDG neutral),False,1.0,1.0,False
+H718Y,mlh1_pms2,No structural effect detected,No structural effect detected,False,1.0,1.0,False
+K618E,mlh1_pms2,Structural variant — burial-driven (DDG neutral),No structural effect detected,True,1.0,1.0,False
+G674R,msh2_msh6,Both fold destabilization,Both fold destabilization,False,0.0,0.0,False
+A636P,msh2_msh6,Both fold destabilization,Both fold destabilization,False,0.0,0.0,False
+C697F,msh2_msh6,Both fold destabilization,Both fold destabilization,False,0.0,0.0,False
+N127S,msh2_msh6,Structural variant — contact-driven (DDG neutral),No structural effect detected,True,1.0,1.0,False
+G322D,msh2_msh6,No structural effect detected,No structural effect detected,False,1.0,1.0,False
+L158Q,vhl_elonginc,Multimer fold + PPI destabilization,Multimer fold + PPI destabilization,False,1.0,1.0,False
+Y98H,vhl_elonginc,Structural variant — contact-driven (DDG neutral),No structural effect detected,True,1.0,1.0,False
+G12D,kras_craf,No structural effect detected,No structural effect detected,False,1.0,1.0,False
+G12V,kras_craf,No structural effect detected,No structural effect detected,False,1.0,1.0,False
+Q61H,kras_craf,No structural effect detected,No structural effect detected,False,1.0,1.0,False
+E6V,hemoglobin_dimer,No structural effect detected,No structural effect detected,False,1.0,1.0,False
+W37Y,hemoglobin_tetramer,Multimer fold destabilization at interface,Multimer fold destabilization at interface,False,0.5,0.5,False
+W37A,hemoglobin_tetramer,Multimer fold + PPI destabilization,Multimer fold + PPI destabilization,False,1.0,1.0,False
+W37G,hemoglobin_tetramer,Multimer fold + PPI destabilization,Multimer fold + PPI destabilization,False,1.0,1.0,False
+W37E,hemoglobin_tetramer,Multimer fold + PPI destabilization,Multimer fold + PPI destabilization,False,1.0,1.0,False
+N102T,hemoglobin_tetramer,Interface variant (DDG neutral),Interface variant (DDG neutral),False,0.5,0.5,False
+R145G,troponin_ic,Multimer fold destabilization at interface,Multimer fold destabilization at interface,False,0.0,0.0,False
+R145Q,troponin_ic,Multimer fold destabilization at interface,Multimer fold destabilization at interface,False,0.0,0.0,False
+P82S,troponin_ic,No structural effect detected,No structural effect detected,False,1.0,1.0,False
+D96V,cam_cav12,Interface variant (DDG neutral),Interface variant (DDG neutral),False,1.0,1.0,False
+N98S,cam_cav12,No structural effect detected,No structural effect detected,False,1.0,1.0,False
+F142L,cam_cav12,Interface variant (DDG neutral),Interface variant (DDG neutral),False,1.0,1.0,False
+D351H,smad4_smad3,Both fold destabilization,Both fold destabilization,False,0.5,0.5,False
+R361C,smad4_smad3,Both fold + PPI destabilization,Both fold + PPI destabilization,False,1.0,1.0,False
+I500T,smad4_smad3,Structural variant — contact-driven (DDG neutral),No structural effect detected,True,1.0,1.0,False
+I500V,smad4_smad3,No structural effect detected,No structural effect detected,False,1.0,1.0,False
+Y1853C,brca1_brct,Monomer fold destabilization,Monomer fold destabilization,False,1.0,1.0,False
+A1843P,brca1_brct,Monomer fold destabilization,Monomer fold destabilization,False,1.0,1.0,False
+V1736A,brca1_brct,No structural effect detected,No structural effect detected,False,0.0,0.0,False
+M1783T,brca1_brct,Monomer fold destabilization,Monomer fold destabilization,False,1.0,1.0,False
+V1808A,brca1_brct,Monomer fold destabilization,Monomer fold destabilization,False,1.0,1.0,False
+V1665M,brca1_brct,Monomer fold destabilization,Monomer fold destabilization,False,1.0,1.0,False
+R1751Q,brca1_brct,No structural effect detected,No structural effect detected,False,0.0,0.0,False
+L1664P,brca1_brct,No structural effect detected,No structural effect detected,False,0.0,0.0,False
+M1663K,brca1_brct,No structural effect detected,No structural effect detected,False,1.0,1.0,False
+P1806A,brca1_brct,No structural effect detected,No structural effect detected,False,1.0,1.0,False
+R78G,cfh_c3b,Multimer fold + PPI destabilization,Multimer fold + PPI destabilization,False,0.5,0.5,False
+R53H,cfh_c3b,No structural effect detected,No structural effect detected,False,1.0,1.0,False
+I62V,cfh_c3b,Structural variant — contact-driven (DDG neutral),No structural effect detected,True,1.0,1.0,False
+R1334Q,vwf_gpiba,Multimer fold + PPI destabilization,Multimer fold + PPI destabilization,False,0.5,0.5,False
+A1381T,vwf_gpiba,Structural variant — contact-driven (DDG neutral),No structural effect detected,True,1.0,1.0,False

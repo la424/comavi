@@ -1,0 +1,6 @@
+threshold,foldx_t,n_real_destabilizers,caught,missed,measured_recall,median_measured_caught,median_measured_missed,max_measured_missed,largest_miss,largest_miss_measured,largest_miss_foldx
+t10,1.0,44,35,9,0.795,2.88,1.57,3.09,NA58A,3.09,-0.0
+t15,1.5,44,26,18,0.591,3.05,2.11,7.66,HA102L,7.66,1.19
+t20,2.0,44,19,25,0.432,3.62,2.23,7.66,HA102L,7.66,1.19
+t25,2.5,44,13,31,0.295,3.73,2.41,7.66,HA102L,7.66,1.19
+tSAP,2.9,44,12,32,0.273,4.25,2.47,7.66,HA102L,7.66,1.19
