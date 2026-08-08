@@ -1,0 +1,17 @@
+{
+ "n_all": 63,
+ "n_fit": 56,
+ "n_excl": 7,
+ "slope": 0.4253,
+ "intercept": 0.6912,
+ "rho": 0.6346,
+ "p": 1.5e-07,
+ "image_of_2p5": 1.75,
+ "straddle_n": 18,
+ "straddle_borderline": 7,
+ "straddle_substantive": 11,
+ "med_abs_borderline": 0.79,
+ "med_abs_substantive": 2.96,
+ "rho_delta_vs_measured": -0.7046,
+ "p_delta_vs_measured": 1.36e-09
+}
