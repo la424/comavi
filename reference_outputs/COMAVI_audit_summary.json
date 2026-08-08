@@ -208,5 +208,29 @@
    1.0
   ],
   "p_tradeoff": 0.9996
+ },
+ "structural_agreement": {
+  "sap_hits": 97,
+  "sap_tested": 130,
+  "sap": 0.7462,
+  "primary_hits": 99,
+  "primary_tested": 130,
+  "primary": 0.7615,
+  "all_rows_hits": 99,
+  "all_rows_tested": 131,
+  "all_rows": 0.7557,
+  "convention": "primary excludes unobservable_variants() so that structural agreement and mechanism-consistency share the same 59-row population",
+  "unobservable": [
+   "R1699L",
+   "R1699Q"
+  ]
+ },
+ "asymmetry_bound": {
+  "threshold": 2.5,
+  "n_silent_all_axes": 36,
+  "n_pathogenic": 20,
+  "n_benign": 14,
+  "n_vus": 2,
+  "note": "a negative structural call carries no evidentiary weight against pathogenicity"
  }
 }

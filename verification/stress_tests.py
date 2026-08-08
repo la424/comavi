@@ -98,9 +98,13 @@ def score(df, ac, partners, tag="t25", thr=T25, recall_mech=False):
             lambda r: ac.classify_mechanism_at(r, partners, thr[0]), axis=1)
     d["expected_mech_class"] = d.apply(ac.derive_expected_mech_class, axis=1)
     axis_status = {i: ac.classify_axis_status(r) for i, r in d.iterrows()}
-    # v7.3: rows whose curated mechanism is unobservable on the deposited
-    # structure are ungraded for MECHANISM only — they still contribute their
-    # measured monomer axis to structural agreement below.
+    # v7.4: rows whose curated mechanism is unobservable on the deposited
+    # structure are excluded from BOTH metrics, so mechanism-consistency and
+    # structural agreement are computed on the same population. Prior releases
+    # excluded them from mechanism only, letting one such row contribute a
+    # testable axis to the structural-agreement denominator (131 vs 130) while
+    # contributing no grade. Both figures are arithmetically correct; the shared
+    # population is the convention the manuscript reports.
     unobs = ac.unobservable_variants()
     grades = []
     for i, r in d.iterrows():
@@ -113,6 +117,8 @@ def score(df, ac, partners, tag="t25", thr=T25, recall_mech=False):
     mc = pd.Series(grades).map(MCMAP)
     num = den = 0
     for _, r in d.iterrows():
+        if r.get("variant") in unobs:
+            continue
         n, dd = ac.compute_structural_agreement(r, partners, *thr)
         num += n
         den += dd

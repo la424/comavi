@@ -37,6 +37,7 @@ import apply_concordance_v5 as ac  # noqa: E402
 GMAP = {"consistent": 1.0, "partial": 0.5, "inconsistent": 0.0}
 STRUCT = {"ppi_destab_mechanism", "mixed_structural", "fold_mechanism"}
 REAL_DESTAB_KCAL = 1.0  # model-free definition of a real destabilizer
+T_CANON = 2.5  # canonical calling threshold, kcal/mol
 N_BOOT = 10000
 SEED = 42
 
@@ -52,7 +53,7 @@ def load():
     com = g[g.expected_mech_class.isin(STRUCT | {"structurally_silent"})].copy()
     com["truth_struct"] = com.expected_mech_class.isin(STRUCT)
     com["max_abs_ddg"] = com.apply(lambda r: ac.compute_max_abs_ddg(r, partners), axis=1)
-    return df, g, com, partners, tags
+    return df, g, com, partners, tags, unobs
 
 
 def ddg_axis_fire(row, partners, spec):
@@ -350,7 +351,7 @@ def bootstrap_tradeoff(com, gc):
 
 def main():
     out = REPO / "reference_outputs"
-    df, g, com, partners, tags = load()
+    df, g, com, partners, tags, unobs = load()
     recall, reject, pooled, gc = operating_points(com, tags)
 
     ops = pd.DataFrame({
@@ -482,6 +483,99 @@ def main():
         zip(sweep.threshold, [round(float(v), 4) for v in padj[len(sweep):]]))
     summary["gate_fragility"]["n_surviving_bh_05"] = int((padj < 0.05).sum())
     sweep.to_csv(out / "COMAVI_audit_gate_sweep.csv", index=False)
+
+    # ------------------------------------------------------------------
+    # A7. Structural agreement, with its denominator convention made explicit.
+    #
+    # Two values are in circulation and both are arithmetically correct; they
+    # differ only in whether the ungraded-by-construction BRCT variants are
+    # dropped before the per-axis denominator is accumulated.
+    #
+    #   99/131 = 0.7557  — every row in the canonical table
+    #   99/130 = 0.7615  — rows excluding unobservable_variants()
+    #
+    # R1699Q contributes one testable axis but no grade, because its curated
+    # role in the BRCT cohort is ungraded-by-construction; R1699L contributes
+    # neither. Mechanism-consistency already excludes both (n = 57), so the
+    # exclusion is the convention that makes the two headline metrics share a
+    # population. We adopt 99/130 and report the alternative here so that a
+    # reader meeting 0.7557 in an earlier draft can reconcile it.
+    # ------------------------------------------------------------------
+    sa_hit_excl = sa_tot_excl = sa_hit_all = sa_tot_all = 0
+    for _, r in df.iterrows():
+        n_ok, n_tested = ac.compute_structural_agreement(
+            r, partners, T_CANON, T_CANON, T_CANON)
+        sa_hit_all += n_ok
+        sa_tot_all += n_tested
+        if r["variant"] not in unobs:
+            sa_hit_excl += n_ok
+            sa_tot_excl += n_tested
+    sap = dict(ac.THRESHOLD_SPECS)["tSAP"]
+    sa_hit_sap = sa_tot_sap = 0
+    for _, r in df.iterrows():
+        if r["variant"] in unobs:
+            continue
+        n_ok, n_tested = ac.compute_structural_agreement(
+            r, partners, sap["monomer"], sap["fold"], sap["binding"])
+        sa_hit_sap += n_ok
+        sa_tot_sap += n_tested
+    summary["structural_agreement"] = {
+        "sap_hits": int(sa_hit_sap),
+        "sap_tested": int(sa_tot_sap),
+        "sap": round(sa_hit_sap / sa_tot_sap, 4),
+        "primary_hits": int(sa_hit_excl),
+        "primary_tested": int(sa_tot_excl),
+        "primary": round(sa_hit_excl / sa_tot_excl, 4),
+        "all_rows_hits": int(sa_hit_all),
+        "all_rows_tested": int(sa_tot_all),
+        "all_rows": round(sa_hit_all / sa_tot_all, 4),
+        "convention": ("primary excludes unobservable_variants() so that "
+                       "structural agreement and mechanism-consistency share "
+                       "the same 59-row population"),
+        "unobservable": sorted(unobs),
+    }
+
+    # ------------------------------------------------------------------
+    # A8. The asymmetry bound: variants silent on all three axes at the
+    # canonical threshold, by clinical label. BRCT pathogenicity comes from
+    # the cohort file's clinvar_germline column because the canonical table's
+    # phenotype field is null for that system.
+    # ------------------------------------------------------------------
+    brct_lab = {}
+    brct_path = REPO / "supplement/brct/brct_foldx_concordance.csv"
+    if brct_path.exists():
+        bt = pd.read_csv(brct_path)
+        if "clinvar_germline" in bt.columns:
+            brct_lab = dict(zip(bt.variant.astype(str),
+                                bt.clinvar_germline.astype(str)))
+
+    def clinical_label(row):
+        if row["system"] == "brca1_brct" and str(row["variant"]) in brct_lab:
+            raw = brct_lab[str(row["variant"])]
+        else:
+            raw = str(row.get("phenotype") or "")
+        low = raw.lower()
+        if "conflict" in low or "uncertain" in low:
+            return "vus"
+        if "pathogenic" in low:
+            return "pathogenic"
+        if "benign" in low:
+            return "benign"
+        return None
+
+    silent = df[~df.apply(
+        lambda r: ddg_axis_fire(r, partners, T_CANON), axis=1)].copy()
+    silent["clinical"] = silent.apply(clinical_label, axis=1)
+    counts = silent.clinical.value_counts(dropna=False).to_dict()
+    summary["asymmetry_bound"] = {
+        "threshold": T_CANON,
+        "n_silent_all_axes": int(len(silent)),
+        "n_pathogenic": int(counts.get("pathogenic", 0)),
+        "n_benign": int(counts.get("benign", 0)),
+        "n_vus": int(counts.get("vus", 0)),
+        "note": ("a negative structural call carries no evidentiary weight "
+                 "against pathogenicity"),
+    }
 
     with open(out / "COMAVI_audit_summary.json", "w") as fh:
         json.dump(summary, fh, indent=1)
