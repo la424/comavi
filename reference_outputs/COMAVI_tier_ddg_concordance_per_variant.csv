@@ -1,0 +1,48 @@
+variant,system,label,tier,tier_n,tier_strong,fires,structural,expected_mech_class,stratum,grade,pathogenic,gnum,n_streams
+V11G,brca1_bard1,pathogenic,Tier 1,1,True,True,True,ppi_destab_mechanism,both agree (tier 1-2 + ΔΔG fires),partial,True,0.5,2
+C61G,brca1_bard1,pathogenic,Tier 1,1,True,True,True,fold_mechanism,both agree (tier 1-2 + ΔΔG fires),partial,True,0.5,2
+K45R,brca1_bard1,benign,Tier 3,3,False,False,False,structurally_silent,neither,consistent,False,1.0,0
+E100Q,brca1_bard1,benign,Tier 4,4,False,False,False,structurally_silent,neither,consistent,False,1.0,0
+E542K,pi3k,pathogenic_gof,Tier 2,2,True,True,True,mixed_structural,both agree (tier 1-2 + ΔΔG fires),partial,True,0.5,2
+E545K,pi3k,pathogenic_gof,Tier 2,2,True,False,True,mixed_structural,tier only (ΔΔG silent),inconsistent,True,0.0,1
+H1047R,pi3k,pathogenic_gof,Tier 2,2,True,False,False,structurally_silent,tier only (ΔΔG silent),consistent,True,1.0,1
+N564D,pi3k,pathogenic,Tier 2,2,True,True,False,structurally_silent,both agree (tier 1-2 + ΔΔG fires),inconsistent,True,0.0,2
+M326I,pi3k,benign,Tier 4,4,False,False,False,structurally_silent,neither,consistent,False,1.0,0
+Q542L,mlh1_pms2,pathogenic,Tier 1,1,True,False,True,ppi_destab_mechanism,tier only (ΔΔG silent),partial,True,0.5,1
+L749P,mlh1_pms2,pathogenic,Tier 2,2,True,True,True,mixed_structural,both agree (tier 1-2 + ΔΔG fires),partial,True,0.5,2
+R755W,mlh1_pms2,pathogenic,Tier 2,2,True,False,True,fold_mechanism,tier only (ΔΔG silent),inconsistent,True,0.0,1
+V384D,mlh1_pms2,benign,Tier 3,3,False,False,False,structurally_silent,neither,consistent,False,1.0,0
+G857A,mlh1_pms2,benign,Tier 2,2,True,False,False,structurally_silent,tier only (ΔΔG silent),consistent,False,1.0,1
+H718Y,mlh1_pms2,benign,Tier 3,3,False,False,False,structurally_silent,neither,consistent,False,1.0,0
+K618E,mlh1_pms2,benign,Tier 2,2,True,False,False,structurally_silent,tier only (ΔΔG silent),consistent,False,1.0,1
+G674R,msh2_msh6,pathogenic,Tier 2,2,True,True,False,structurally_silent,both agree (tier 1-2 + ΔΔG fires),inconsistent,True,0.0,2
+A636P,msh2_msh6,pathogenic,Tier 3,3,False,True,False,structurally_silent,ΔΔG only (tier 3-4),inconsistent,True,0.0,1
+C697F,msh2_msh6,pathogenic,Tier 1,1,True,True,False,structurally_silent,both agree (tier 1-2 + ΔΔG fires),inconsistent,True,0.0,2
+N127S,msh2_msh6,benign,Tier 2,2,True,False,False,structurally_silent,tier only (ΔΔG silent),consistent,False,1.0,1
+G322D,msh2_msh6,benign,Tier 4,4,False,False,False,structurally_silent,neither,consistent,False,1.0,0
+L158Q,vhl_elonginc,pathogenic,Tier 2,2,True,True,True,mixed_structural,both agree (tier 1-2 + ΔΔG fires),consistent,True,1.0,2
+Y98H,vhl_elonginc,pathogenic,Tier 2,2,True,False,False,structurally_silent,tier only (ΔΔG silent),consistent,True,1.0,1
+G12D,kras_craf,pathogenic_gof,Tier 3,3,False,False,False,structurally_silent,neither,consistent,True,1.0,0
+G12V,kras_craf,pathogenic_gof,Tier 3,3,False,False,False,structurally_silent,neither,consistent,True,1.0,0
+Q61H,kras_craf,pathogenic_gof,Tier 4,4,False,False,False,structurally_silent,neither,consistent,True,1.0,0
+E6V,hemoglobin_dimer,pathogenic,Tier 3,3,False,False,False,structurally_silent,neither,consistent,True,1.0,0
+W37Y,hemoglobin_tetramer,pathogenic,Tier 2,2,True,True,True,mixed_structural,both agree (tier 1-2 + ΔΔG fires),partial,True,0.5,2
+W37A,hemoglobin_tetramer,pathogenic,Tier 1,1,True,True,True,mixed_structural,both agree (tier 1-2 + ΔΔG fires),consistent,True,1.0,2
+W37G,hemoglobin_tetramer,pathogenic,Tier 1,1,True,True,True,mixed_structural,both agree (tier 1-2 + ΔΔG fires),consistent,True,1.0,2
+W37E,hemoglobin_tetramer,pathogenic,Tier 1,1,True,True,True,mixed_structural,both agree (tier 1-2 + ΔΔG fires),consistent,True,1.0,2
+N102T,hemoglobin_tetramer,pathogenic,Tier 1,1,True,False,True,mixed_structural,tier only (ΔΔG silent),partial,True,0.5,1
+R145G,troponin_ic,pathogenic,Tier 3,3,False,True,False,structurally_silent,ΔΔG only (tier 3-4),inconsistent,True,0.0,1
+R145Q,troponin_ic,pathogenic,Tier 3,3,False,True,False,structurally_silent,ΔΔG only (tier 3-4),inconsistent,True,0.0,1
+P82S,troponin_ic,benign,Tier 4,4,False,False,False,structurally_silent,neither,consistent,False,1.0,0
+D96V,cam_cav12,pathogenic,Tier 2,2,True,False,False,structurally_silent,tier only (ΔΔG silent),consistent,True,1.0,1
+N98S,cam_cav12,pathogenic,Tier 4,4,False,False,False,structurally_silent,neither,consistent,True,1.0,0
+F142L,cam_cav12,pathogenic,Tier 1,1,True,False,False,structurally_silent,tier only (ΔΔG silent),consistent,True,1.0,1
+D351H,smad4_smad3,pathogenic,Tier 1,1,True,True,True,ppi_destab_mechanism,both agree (tier 1-2 + ΔΔG fires),partial,True,0.5,2
+R361C,smad4_smad3,pathogenic,Tier 1,1,True,True,True,ppi_destab_mechanism,both agree (tier 1-2 + ΔΔG fires),consistent,True,1.0,2
+I500T,smad4_smad3,pathogenic_gof,Tier 2,2,True,False,False,structurally_silent,tier only (ΔΔG silent),consistent,True,1.0,1
+I500V,smad4_smad3,pathogenic_gof,Tier 3,3,False,False,False,structurally_silent,neither,consistent,True,1.0,0
+R78G,cfh_c3b,pathogenic,Tier 1,1,True,True,True,ppi_destab_mechanism,both agree (tier 1-2 + ΔΔG fires),partial,True,0.5,2
+R53H,cfh_c3b,pathogenic,Tier 4,4,False,False,False,structurally_silent,neither,consistent,True,1.0,0
+I62V,cfh_c3b,benign,Tier 2,2,True,False,False,structurally_silent,tier only (ΔΔG silent),consistent,False,1.0,1
+R1334Q,vwf_gpiba,pathogenic,Tier 1,1,True,True,True,ppi_destab_mechanism,both agree (tier 1-2 + ΔΔG fires),partial,True,0.5,2
+A1381T,vwf_gpiba,benign,Tier 2,2,True,False,False,structurally_silent,tier only (ΔΔG silent),consistent,False,1.0,1

@@ -1,0 +1,5 @@
+stratum,n,structural,silent,precision,pathogenic,mech_consistency,pathogenic_frac
+both agree (tier 1-2 + ΔΔG fires),16,13,3,0.812,16,0.562,1.0
+tier only (ΔΔG silent),14,4,10,0.286,9,0.786,0.643
+ΔΔG only (tier 3-4),3,0,3,0.0,3,0.0,1.0
+neither,14,0,14,0.0,7,1.0,0.5
