@@ -1,0 +1,6 @@
+threshold,foldx_ddg,measured_image_benchmark_fit,measured_image_pooled_fit,n_structural,sensitivity,n_silent,specificity,balanced_MC,pooled_MC,pooled_MC_full
+t10,1.0,0.58,0.73,25,0.76,32,0.438,0.599,0.579,0.5789
+t15,1.5,1.41,1.9,25,0.72,32,0.594,0.657,0.649,0.6491
+t20,2.0,2.24,3.08,25,0.64,32,0.719,0.679,0.684,0.6842
+t25,2.5,3.06,4.25,25,0.6,32,0.812,0.706,0.719,0.7193
+tSAP,2.9,3.72,5.19,25,0.54,32,0.844,0.692,0.711,0.7105
