@@ -1,0 +1,16 @@
+variant,system,axis,measured_kcal,source,foldx_ddg,grade_t25,expected_mech_class,ungraded_by_construction,truth_sign_convention,truth_threshold_convention,foldx_call_t25,conventions_disagree,foldx_correct_under_sign,foldx_correct_under_threshold
+M1663K,brca1_brct,monomer-fold,-0.03,Rowling 2010 GdmCl unfolding,0.4458,consistent,structurally_silent,False,neutral,neutral,neutral,False,True,True
+P1806A,brca1_brct,monomer-fold,0.06,Rowling 2010 GdmCl unfolding,1.6691,consistent,structurally_silent,False,destab,neutral,neutral,True,False,True
+L1664P,brca1_brct,monomer-fold,1.18,Rowling 2010 GdmCl unfolding,0.5333,inconsistent,fold_mechanism,False,destab,neutral,neutral,True,False,True
+N102T,hemoglobin_tetramer,binding,1.5,Hb tetramer assembly energetics,-0.1374,partial,mixed_structural,False,destab,neutral,neutral,True,False,True
+R1751Q,brca1_brct,monomer-fold,1.57,Rowling 2010 GdmCl unfolding,0.7285,inconsistent,fold_mechanism,False,destab,neutral,neutral,True,False,True
+W37Y,hemoglobin_tetramer,binding,2.0,Hb tetramer assembly energetics,1.5986,partial,mixed_structural,False,destab,neutral,neutral,True,False,True
+V1665M,brca1_brct,monomer-fold,2.22,Rowling 2010 GdmCl unfolding,2.979,consistent,fold_mechanism,False,destab,neutral,destab,True,True,False
+V1808A,brca1_brct,monomer-fold,2.4,Rowling 2010 GdmCl unfolding,3.5669,consistent,fold_mechanism,False,destab,neutral,destab,True,True,False
+M1783T,brca1_brct,monomer-fold,3.73,Rowling 2010 GdmCl unfolding,2.8551,consistent,fold_mechanism,False,destab,destab,destab,False,True,True
+V1736A,brca1_brct,monomer-fold,4.2,Rowling 2010 GdmCl unfolding,1.2414,inconsistent,fold_mechanism,False,destab,destab,neutral,False,False,False
+A1843P,brca1_brct,monomer-fold,4.89,Rowling 2010 GdmCl unfolding,6.4287,consistent,fold_mechanism,False,destab,destab,destab,False,True,True
+W37A,hemoglobin_tetramer,binding,5.0,Hb tetramer assembly energetics,4.5339,consistent,mixed_structural,False,destab,destab,destab,False,True,True
+Y1853C,brca1_brct,monomer-fold,6.04,Rowling 2010 GdmCl unfolding,3.3869,consistent,fold_mechanism,False,destab,destab,destab,False,True,True
+W37G,hemoglobin_tetramer,binding,7.0,Hb tetramer assembly energetics,5.449,consistent,mixed_structural,False,destab,destab,destab,False,True,True
+W37E,hemoglobin_tetramer,binding,9.0,Hb tetramer assembly energetics,5.1379,consistent,mixed_structural,False,destab,destab,destab,False,True,True

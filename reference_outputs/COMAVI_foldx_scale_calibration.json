@@ -1,0 +1,54 @@
+{
+ "n": 15,
+ "spearman_rho": 0.814,
+ "spearman_p": 0.000219,
+ "pearson_r": 0.777,
+ "ols_slope": 0.605,
+ "ols_intercept": 0.647,
+ "foldx_image_of_2p5": 2.16,
+ "monomer-fold": {
+  "n": 10,
+  "spearman_rho": 0.721,
+  "spearman_p": 0.0186,
+  "ols_slope": 0.591
+ },
+ "binding": {
+  "n": 5,
+  "spearman_rho": 0.9,
+  "spearman_p": 0.0374,
+  "ols_slope": 0.699
+ },
+ "counterfactual": {
+  "MC_baseline": 0.7193,
+  "MC_threshold_convention": 0.7281,
+  "delta": 0.0088,
+  "n": 57,
+  "grades_fixed": [
+   "R1751Q",
+   "L1664P",
+   "W37Y"
+  ],
+  "grades_broken": [
+   "V1808A",
+   "V1665M"
+  ],
+  "fold_class_base": [
+   0.55,
+   10
+  ],
+  "fold_class_alt": [
+   0.583,
+   6
+  ],
+  "silent_class_base": [
+   0.812,
+   32
+  ],
+  "silent_class_alt": [
+   0.778,
+   36
+  ]
+ },
+ "decision": "Sign convention RETAINED. Threshold convention tested and rejected: +0.009 MC for a 40% smaller fold arm.",
+ "note_fold_axis": "monomer-fold n=10 rho reproduces the frozen Figure 4a value (0.72, p=0.019) exactly."
+}
