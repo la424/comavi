@@ -20,6 +20,10 @@ import numpy as np, pandas as pd
 import matplotlib as mpl, matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle, Patch
 from matplotlib.lines import Line2D
+import sys as _sys
+_sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from _comavi_style import (COLUMN_W as CW, BASE, SECOND, TICK,
+                           apply_figure_style, check_legibility, check_overlaps)
 
 REPO = pathlib.Path(__file__).resolve().parents[2]
 
@@ -30,7 +34,7 @@ mpl.rcParams.update({
     'axes.spines.top': False,
     'axes.titlelocation': 'left',
     'axes.titlesize': 9.0,
-    'font.size': 9.0,
+    'font.size': BASE,
     'legend.fontsize': 7.5,
     'legend.frameon': False,
     'lines.linewidth': 1.2,
@@ -90,10 +94,15 @@ def _pa(ax):
     ax.scatter(gx.measured_kcal,gx.foldx_ddg,s=34,marker="D",facecolor="none",
                edgecolor=C_EXC,linewidth=1.1,zorder=5)
     ax.set_xlim(lo,hi); ax.set_ylim(lo,hi)
+    # shared identity range means the corner x/y tick labels coincide;
+    # suppress the lowest x tick so they do not overprint
+    ax.set_xticks([t for t in ax.get_xticks() if t > lo + 0.35*(hi-lo)/10])
     ax.set_xlabel("Measured ΔΔG (kcal/mol)"); ax.set_ylabel("FoldX ΔΔG (kcal/mol)")
     ax.set_title("FoldX ranks with measurement\nbut compresses its scale",loc="left")
-    ax.text(hi-0.25,lo+0.3,f"slope {sl:.2f}   ρ = {rho:.2f}",ha="right",va="bottom",fontsize=7.5,color="#333")
-    ax.annotate("identity",xy=(8.2,8.2),xytext=(6.0,9.3),fontsize=7,color=GREY,ha="center",
+    ax.text(hi-0.25,lo+0.85,f"slope {sl:.2f}   ρ = {rho:.2f}",ha="right",va="bottom",
+            fontsize=SECOND,color="#333",
+            bbox=dict(boxstyle="square,pad=0.15",facecolor="white",edgecolor="none",alpha=0.85))
+    ax.annotate("identity",xy=(8.2,8.2),xytext=(6.0,9.3),fontsize=SECOND,color=GREY,ha="center",
                 arrowprops=dict(arrowstyle="-",lw=0.6,color=GREY))
     h=[Line2D([],[],ls="none",marker=MK[s],color=COL["Monomer fold" if s=="BRCA1 BRCT" else "Binding"],
        markersize=5.5,markeredgecolor="white",markeredgewidth=0.5,
@@ -102,7 +111,7 @@ def _pa(ax):
     h+=[Line2D([],[],ls="none",marker="D",markerfacecolor="none",markeredgecolor=C_EXC,
                markersize=5.5,label="Glu73 cluster (excluded)"),
         Patch(facecolor="#f2f2f2",edgecolor="none",label="calls disagree at 2.5")]
-    ax.legend(handles=h,loc="upper left",bbox_to_anchor=(-0.012,1.015),frameon=False,fontsize=7,
+    ax.legend(handles=h,loc="upper left",bbox_to_anchor=(-0.012,1.015),frameon=False,fontsize=SECOND,
               handletextpad=0.35,borderpad=0.15,labelspacing=0.3)
     set_frame(ax); panel_letter(ax,"a")
 
@@ -125,39 +134,41 @@ def panel_b(ax):
     ax.set_xlim(-1.6,9.6); ax.set_ylim(-6.6,3.4)
     ax.set_xlabel("Measured ΔΔG (kcal/mol)"); ax.set_ylabel("FoldX − measured (kcal/mol)")
     ax.set_title("Error grows with the size of\nthe true effect",loc="left")
-    ax.text(9.4,-6.35,f"ρ = {rho_delta:.2f}",ha="right",va="bottom",fontsize=7.5,color="#333")
-    ax.text(-1.3,3.15,"FoldX over-predicts",fontsize=6.8,color="#666",va="top")
-    ax.text(-1.3,-6.35,"FoldX under-predicts",fontsize=6.8,color="#666",va="bottom")
-    ax.annotate("expected from\nslope 0.43",xy=(7.2,(sl-1)*7.2+ic),xytext=(4.6,-5.7),fontsize=6.8,
+    ax.text(9.4,-5.55,f"ρ = {rho_delta:.2f}",ha="right",va="bottom",fontsize=SECOND,color="#333")
+    ax.text(-1.3,3.15,"FoldX over-predicts",fontsize=SECOND,color="#666",va="top")
+    ax.text(-1.3,-6.35,"FoldX under-predicts",fontsize=SECOND,color="#666",va="bottom",ha="left")
+    ax.annotate("expected from\nslope 0.43",xy=(7.2,(sl-1)*7.2+ic),xytext=(6.6,-1.15),fontsize=SECOND,
                 color=GREY,ha="center",arrowprops=dict(arrowstyle="-",lw=0.6,color=GREY))
     set_frame(ax); panel_letter(ax,"b")
 
 
 def panel_c(ax):
     sub=FIT.copy()
-    cats=[("Calls agree",sub[~sub.straddles],"#b9b9b9"),
-          ("Borderline\ndisagreement",sub[sub.straddles&sub.both_near],"#2c7fb8"),
-          ("Substantive\ndisagreement",sub[sub.straddles&~sub.both_near],"#d7301f")]
+    cats=[("Agree",sub[~sub.straddles],"#b9b9b9"),
+          ("Borderline",sub[sub.straddles&sub.both_near],"#2c7fb8"),
+          ("Substantive",sub[sub.straddles&~sub.both_near],"#d7301f")]
     for i,(nm,g,c) in enumerate(cats):
         x=np.random.default_rng(0).normal(i,0.075,len(g))
         ax.scatter(x,g.absdelta,s=26,facecolor=c,edgecolor="white",linewidth=0.5,alpha=0.92,zorder=3)
         m=g.absdelta.median()
         ax.plot([i-0.26,i+0.26],[m,m],lw=2.0,color="#222",zorder=4,solid_capstyle="butt")
-        ax.text(i,-0.45,f"n={len(g)}",ha="center",fontsize=7,color="#444")
-        ax.text(i+0.31,m,f"{m:.2f}",ha="left",va="center",fontsize=7,color="#222",zorder=5)
+        ax.text(i,-0.45,f"n={len(g)}",ha="center",fontsize=SECOND,color="#444")
+        ax.text(i+0.31,m,f"{m:.2f}",ha="left",va="center",fontsize=SECOND,color="#222",zorder=5)
     ax.axhline(1.0,ls="--",lw=0.7,color=GREY,zorder=1)
-    ax.text(2.88,1.08,"1 kcal/mol",ha="right",va="bottom",fontsize=6.8,color="#666")
-    ax.set_xticks(range(3)); ax.set_xticklabels([c[0] for c in cats],fontsize=7)
-    ax.set_xlim(-0.5,2.9); ax.set_ylim(-0.75,7.0)
+    ax.text(-0.55,1.08,"1 kcal/mol",ha="left",va="bottom",fontsize=SECOND,color="#666")
+    ax.set_xticks(range(3)); ax.set_xticklabels([c[0] for c in cats],fontsize=SECOND)
+    ax.set_xlim(-0.62,2.95); ax.set_ylim(-0.75,7.0)
     ax.set_ylabel("|FoldX − measured| (kcal/mol)")
     ax.set_title("Only borderline disagreements are\nnear-misses in energy",loc="left")
-    set_frame(ax); panel_letter(ax,"c")
+    set_frame(ax); panel_letter(ax,"c",dx=-0.24)
 
 
-fig=plt.figure(figsize=(11.6,4.05))
-gs=fig.add_gridspec(1,3,width_ratios=[1.28,1.0,1.05],wspace=0.30,
-                    left=0.055,right=0.995,top=0.815,bottom=0.185)
+fig=plt.figure(figsize=(CW,3.05))
+gs=fig.add_gridspec(1,3,width_ratios=[1.06,0.92,1.24],wspace=0.46,
+                    left=0.072,right=0.995,top=0.80,bottom=0.185)
 axA,axB,axC=[fig.add_subplot(gs[0,i]) for i in range(3)]
 panel_a(axA); panel_b(axB); panel_c(axC)
 fig.savefig("figures/COMAVI_Figure_delta_calibration.png",dpi=300)
 fig.savefig("figures/COMAVI_Figure_delta_calibration.pdf")
+print("below-floor text:", check_legibility(fig))
+print("overlaps:", check_overlaps(fig))

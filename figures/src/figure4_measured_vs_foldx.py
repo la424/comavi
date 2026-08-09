@@ -16,15 +16,13 @@ from scipy.stats import spearmanr
 REPO = pathlib.Path(__file__).resolve().parents[2]
 OUT = REPO / "figures" / "COMAVI_Figure4_measured_vs_foldx.png"
 
-mpl.rcParams.update({
-    "font.family": "sans-serif",
-    "font.sans-serif": ["Helvetica", "Arial", "DejaVu Sans"],
-    "font.size": 9, "axes.labelsize": 9, "axes.titlesize": 9,
-    "xtick.labelsize": 8, "ytick.labelsize": 8, "legend.fontsize": 7.5,
-    "axes.spines.top": False, "axes.spines.right": False,
-    "axes.linewidth": 0.8, "xtick.major.width": 0.8, "ytick.major.width": 0.8,
-    "savefig.dpi": 300, "figure.dpi": 300, "pdf.fonttype": 42, "ps.fonttype": 42,
-})
+import sys
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from _comavi_style import (COLUMN_W as CW, BASE, SECOND, TICK, LETTER, panel_letter,
+                           apply_figure_style, check_legibility, check_overlaps)
+
+apply_figure_style()
+mpl.rcParams.update({"font.sans-serif": ["Helvetica", "Arial", "DejaVu Sans"]})
 
 C_FOLD_DESTAB = "#c0392b"
 C_NEUTRAL = "#2980b9"
@@ -59,7 +57,7 @@ hb = pd.DataFrame({
 })
 rho_b, p_b = spearmanr(hb.measured, hb.foldx)
 
-fig, (axA, axB) = plt.subplots(1, 2, figsize=(11.6, 4.9))
+fig, (axA, axB) = plt.subplots(1, 2, figsize=(CW, 3.5))
 
 # ── Panel a ─────────────────────────────────────────────────────────────────
 axA.plot([-2.5, 7.2], [-2.5, 7.2], ls=":", c="0.62", lw=0.9, zorder=1)
@@ -74,15 +72,19 @@ for role, (lab, col) in ROLE_STYLE.items():
 # per-variant label offsets: the low-DDG cluster is crowded, so a few labels
 # are placed away from the default upper-right position to avoid collisions.
 LAB_OFF = {
-    "L1664P": (2, -11), "R1751Q": (7, 4), "M1663K": (7, -3),
-    "R1699L": (-40, -3), "V1665M": (7, -9), "P1806A": (7, 2),
+    "L1664P": (1, -12), "R1751Q": (6, 4), "M1663K": (-6, 6),
+    "R1699L": (6, -10), "V1665M": (6, -10), "P1806A": (6, 3),
+    "A1843P": (6, 1), "Y1853C": (6, 1), "V1808A": (6, 2),
+    "M1783T": (6, -2), "R1699Q": (6, 2),
 }
+LAB_HA = {"M1663K": "right"}
 for _, r in brct.iterrows():
     if r.variant == "V1736A":
         continue
     axA.annotate(r.variant, (r.measured_ddG_UF_kcal_mol, r.foldx_ddg_monomer_mean),
-                 textcoords="offset points", xytext=LAB_OFF.get(r.variant, (7, 2)),
-                 fontsize=7, color="#2b2b2b")
+                 textcoords="offset points", xytext=LAB_OFF.get(r.variant, (6, 2)),
+                 ha=LAB_HA.get(r.variant, "left"),
+                 fontsize=SECOND, color="#2b2b2b")
 
 fn = brct[brct.variant == "V1736A"].iloc[0]
 axA.annotate(
@@ -90,20 +92,27 @@ axA.annotate(
     f"FoldX {fn.foldx_ddg_monomer_mean:.2f})",
     xy=(fn.measured_ddG_UF_kcal_mol, fn.foldx_ddg_monomer_mean),
     xytext=(fn.measured_ddG_UF_kcal_mol + 0.6, fn.foldx_ddg_monomer_mean - 1.05),
-    fontsize=7, color=C_FN, ha="left", va="top",
+    fontsize=SECOND, color=C_FN, ha="left", va="top",
     arrowprops=dict(arrowstyle="-", color=C_FN, lw=0.9))
 axA.annotate("V1736A", (fn.measured_ddG_UF_kcal_mol, fn.foldx_ddg_monomer_mean),
-             textcoords="offset points", xytext=(7, -9), fontsize=7, color="#2b2b2b")
+             textcoords="offset points", xytext=(6, -10), fontsize=SECOND, color="#2b2b2b")
 
-axA.set_xlabel(r"Measured $\Delta\Delta$G$_{U-F}$ (kcal/mol) $\cdot$ Rowling 2010 GdmCl unfolding")
-axA.set_ylabel(r"COMAVI FoldX $\Delta\Delta$G monomer (kcal/mol)")
-axA.set_title(f"Fold axis — BRCA1 BRCT ({len(brct)} shown)\n"
-              f"Spearman \u03c1={rho_a:.2f} (n={len(graded)}, p={p_a:.3f}); "
-              f"R1699L/Q excluded (fold-intact)", fontsize=8.6, loc="left")
+# Headroom for the rightmost/leftmost point labels, which are drawn in data
+# space and would otherwise clip at the panel edge.
+axA.set_xlim(-2.9, 8.1)
+axA.set_xlabel("Measured $\\Delta\\Delta$G$_{U-F}$ (kcal/mol)")
+axA.set_ylabel("FoldX $\\Delta\\Delta$G monomer (kcal/mol)")
+axA.set_title(f"Fold axis — BRCA1 BRCT ({len(brct)} shown)", fontsize=BASE,
+              loc="left", pad=4)
+# Statistic sits inside the panel, not in the title: a two-line title at
+# column width wraps into the axes.
+axA.text(0.97, 0.03, f"Spearman \u03c1={rho_a:.2f}\nn={len(graded)}, p={p_a:.3f}",
+         transform=axA.transAxes, ha="right", va="bottom",
+         fontsize=SECOND, color="#333", linespacing=1.25)
 axA.legend(loc="upper left", frameon=False, handletextpad=0.4,
-           borderpad=0.2, labelspacing=0.35, bbox_to_anchor=(0.0, 0.99))
-axA.text(-0.115, 1.06, "a", transform=axA.transAxes, fontsize=13,
-         fontweight="bold", va="top")
+           borderpad=0.2, labelspacing=0.3, fontsize=SECOND,
+           bbox_to_anchor=(-0.01, 1.01))
+panel_letter(axA, "a", dx=-0.20, dy=1.01)
 
 # ── Panel b ─────────────────────────────────────────────────────────────────
 axB.plot([-0.6, 10], [-0.6, 10], ls=":", c="0.62", lw=0.9, zorder=1)
@@ -111,23 +120,35 @@ axB.scatter(hb.measured, hb.foldx, s=52, c=C_BIND, edgecolors="0.25",
             linewidths=0.6, zorder=3, label="Hb tetramer assembly")
 for _, r in hb.iterrows():
     axB.annotate(r.variant, (r.measured, r.foldx), textcoords="offset points",
-                 xytext=(7, 2), fontsize=7, color="#2b2b2b")
-axB.set_xlabel(r"Measured assembly $\Delta\Delta$G (kcal/mol) $\cdot$ tetramer$\rightarrow$dimer"
-               "\nKwiatkowski 1998 / Bonaventura 1968")
-axB.set_ylabel(r"COMAVI FoldX $\Delta\Delta$G$_{bind}$ $\alpha$1$\beta$2 (kcal/mol)")
-axB.set_title(f"Binding axis — hemoglobin tetramer (n={len(hb)})\n"
-              f"Spearman \u03c1={rho_b:.2f} (p={p_b:.3f}) \u00b7 W37 dose-series",
-              fontsize=8.6, loc="left")
-axB.legend(loc="upper left", frameon=False, handletextpad=0.4, borderpad=0.2)
-axB.text(-0.115, 1.06, "b", transform=axB.transAxes, fontsize=13,
-         fontweight="bold", va="top")
+                 xytext=(6, 2), fontsize=SECOND, color="#2b2b2b")
+axB.set_xlim(-1.4, 12.2)
+# x and y share the -2 gridline; suppress the redundant x tick at the corner
+# so the two labels do not overprint.
+axB.set_xticks([-2, 0, 2, 4, 6, 8, 10, 12][1:])
+axB.set_xlabel("Measured assembly $\\Delta\\Delta$G (kcal/mol)")
+axB.set_ylabel("FoldX $\\Delta\\Delta$G$_{bind}$ $\\alpha$1$\\beta$2 (kcal/mol)")
+axB.set_title(f"Binding axis — hemoglobin tetramer (n={len(hb)})",
+              fontsize=BASE, loc="left", pad=4)
+axB.text(0.97, 0.03, f"Spearman \u03c1={rho_b:.2f}\np={p_b:.3f} \u00b7 W37 series",
+         transform=axB.transAxes, ha="right", va="bottom",
+         fontsize=SECOND, color="#333", linespacing=1.25)
+axB.legend(loc="upper left", frameon=False, handletextpad=0.4, borderpad=0.2,
+           fontsize=SECOND, bbox_to_anchor=(-0.01, 1.01))
+panel_letter(axB, "b", dx=-0.20, dy=1.01)
 
-fig.suptitle("COMAVI predicted vs directly-measured "
-             r"$\Delta\Delta$G — the two systems with quantitative biophysical comparators",
-             fontsize=9.6, y=0.995)
-fig.tight_layout(rect=(0, 0, 1, 0.965), w_pad=2.6)
+fig.suptitle("Predicted vs directly-measured $\\Delta\\Delta$G",
+             fontsize=BASE, y=1.0, x=0.012, ha="left", va="top",
+             fontweight="bold")
+# Source attributions move to the caption; at column width they do not fit
+# under the axes without colliding with the panel below.
+fig.tight_layout(rect=(0, 0, 1, 0.985), w_pad=1.5)
+fig.subplots_adjust(top=0.845)
 fig.savefig(OUT, dpi=300, bbox_inches="tight")
 fig.savefig(OUT.with_suffix(".pdf"), bbox_inches="tight")
+_bad = check_legibility(fig)
+_ov = check_overlaps(fig)
+print(f"below-floor text: {_bad}")
+print(f"overlaps: {_ov}")
 print(f"panel a: rho={rho_a:.4f} p={p_a:.4f} n={len(graded)}")
 print(f"panel b: rho={rho_b:.4f} p={p_b:.4f} n={len(hb)}")
 print(f"saved {OUT.relative_to(REPO)}")
