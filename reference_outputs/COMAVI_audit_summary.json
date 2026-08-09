@@ -225,6 +225,19 @@
    "R1699Q"
   ]
  },
+ "predictive_value": {
+  "threshold": 2.5,
+  "firing_pathogenic": 22,
+  "firing_benign": 0,
+  "silent_pathogenic": 20,
+  "silent_benign": 14,
+  "ppv_firing": 1.0,
+  "ppv_silent": 0.5882,
+  "base_rate": 0.75,
+  "fisher_p": 0.0003052640685307365,
+  "n_systems_with_pathogenic_silent": 11,
+  "note": "a firing axis is highly specific on this benchmark; a silent result leaves pathogenicity near the benchmark base rate"
+ },
  "asymmetry_bound": {
   "threshold": 2.5,
   "n_silent_all_axes": 36,

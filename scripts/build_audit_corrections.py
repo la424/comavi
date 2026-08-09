@@ -567,6 +567,28 @@ def main():
         lambda r: ddg_axis_fire(r, partners, T_CANON), axis=1)].copy()
     silent["clinical"] = silent.apply(clinical_label, axis=1)
     counts = silent.clinical.value_counts(dropna=False).to_dict()
+    firing = df[df.apply(
+        lambda r: ddg_axis_fire(r, partners, T_CANON), axis=1)].copy()
+    firing["clinical"] = firing.apply(clinical_label, axis=1)
+    fc = firing.clinical.value_counts(dropna=False).to_dict()
+    nf_p, nf_b = int(fc.get("pathogenic", 0)), int(fc.get("benign", 0))
+    ns_p = int(counts.get("pathogenic", 0))
+    ns_b = int(counts.get("benign", 0))
+    or_, p_ = fisher_exact([[nf_p, nf_b], [ns_p, ns_b]])
+    summary["predictive_value"] = {
+        "threshold": T_CANON,
+        "firing_pathogenic": nf_p, "firing_benign": nf_b,
+        "silent_pathogenic": ns_p, "silent_benign": ns_b,
+        "ppv_firing": round(nf_p / (nf_p + nf_b), 4) if nf_p + nf_b else None,
+        "ppv_silent": round(ns_p / (ns_p + ns_b), 4) if ns_p + ns_b else None,
+        "base_rate": round((nf_p + ns_p) / (nf_p + nf_b + ns_p + ns_b), 4),
+        "fisher_p": float(p_),
+        "n_systems_with_pathogenic_silent": int(
+            silent[silent.clinical == "pathogenic"].system.nunique()),
+        "note": ("a firing axis is highly specific on this benchmark; a silent "
+                 "result leaves pathogenicity near the benchmark base rate"),
+    }
+
     summary["asymmetry_bound"] = {
         "threshold": T_CANON,
         "n_silent_all_axes": int(len(silent)),
