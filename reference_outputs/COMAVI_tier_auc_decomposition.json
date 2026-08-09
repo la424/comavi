@@ -1,0 +1,26 @@
+{
+ "n": 49,
+ "n_pathogenic": 37,
+ "n_benign": 12,
+ "n_systems": 13,
+ "auc_tier_alone": 0.757,
+ "auc_energy_alone": 0.849,
+ "auc_combined": 0.849,
+ "delta_auc_combined_minus_energy": 0.0,
+ "delta_auc_cluster_ci95": [
+  -0.126,
+  0.099
+ ],
+ "auc_tier_cluster_ci95": [
+  0.603,
+  0.895
+ ],
+ "auc_energy_cluster_ci95": [
+  0.699,
+  0.979
+ ],
+ "spearman_tier_vs_energy": -0.579,
+ "spearman_p": 1.32e-05,
+ "n_bootstrap": 2000,
+ "note": "Equal-weight z-sum, not a fitted combination: any weight fit on these 49 variants and scored on the same 49 would be optimistically biased. Cluster bootstrap resamples whole systems."
+}
