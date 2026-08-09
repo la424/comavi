@@ -13,6 +13,7 @@ Usage:
     python scripts/build_manuscript_docx.py docs/COMAVI_manuscript_v22.md \
            docs/COMAVI_manuscript_v22.docx
 """
+import json
 import re
 import sys
 from pathlib import Path
@@ -28,7 +29,29 @@ INLINE = re.compile(r"(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)")
 
 
 def resolve_artifact(aid, fallback_dir=None):
-    """Return a filesystem path for an artifact id, or None."""
+    """Return a filesystem path for an artifact id.
+
+    Resolution order is repo-first: figures/manifest.json maps each artifact
+    id embedded in the manuscript to its committed PNG, so a checkout builds
+    the same document without needing the artifact store. The store is
+    consulted only for ids the manifest does not cover.
+
+    Raises rather than returning None. An earlier version fell back to "the
+    first PNG in the directory", which embedded whichever file happened to
+    sort first under all eight figure ids; when the store was also
+    unreachable it returned None and the build emitted a figure-less
+    manuscript with exit status 0. A missing figure must stop the build.
+    """
+    fig_dir = Path(fallback_dir) if fallback_dir else Path(__file__).resolve().parent.parent / "figures"
+    manifest_path = fig_dir / "manifest.json"
+    if manifest_path.exists():
+        manifest = json.loads(manifest_path.read_text())
+        if aid in manifest:
+            p = fig_dir / manifest[aid]
+            if not p.exists():
+                raise FileNotFoundError(
+                    f"manifest maps {aid} to {manifest[aid]}, which is absent from {fig_dir}")
+            return str(p)
     try:
         host  # noqa: F821  (injected in kernel contexts)
     except NameError:
@@ -38,10 +61,8 @@ def resolve_artifact(aid, fallback_dir=None):
             return host.artifact_path(aid)  # noqa: F821
         except Exception:
             pass
-    if fallback_dir:
-        for p in Path(fallback_dir).glob("*.png"):
-            return str(p)
-    return None
+    raise KeyError(
+        f"figure artifact {aid} is in neither {manifest_path} nor the artifact store")
 
 
 def add_md_runs(par, text):
