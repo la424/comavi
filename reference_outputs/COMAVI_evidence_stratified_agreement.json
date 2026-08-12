@@ -1,0 +1,115 @@
+{
+ "threshold": 2.5,
+ "accounting": {
+  "n_committed_axes": 107,
+  "n_ddg_axes_gradeable": 84,
+  "n_committed_but_gated_out": 23,
+  "n_tier_axes_gradeable": 47,
+  "n_total_gradeable": 131,
+  "note": "Committed axes carry ground truth; a committed axis is gradeable only if the prediction also clears confidence and internal-CI gating. The difference is the cost of those gates, not missing curation."
+ },
+ "crude": {
+  "quant_ok": 21,
+  "quant_n": 33,
+  "quant_rate": 0.636,
+  "soft_ok": 44,
+  "soft_n": 51,
+  "soft_rate": 0.863,
+  "OR": 0.278,
+  "p": 0.0307
+ },
+ "token_composition_by_grade": {
+  "soft": {
+   "destab": 9,
+   "neutral": 42,
+   "stab": 0
+  },
+  "quantitative": {
+   "destab": 24,
+   "neutral": 8,
+   "stab": 1
+  }
+ },
+ "stratified": {
+  "per_token": {
+   "destab": {
+    "quant_ok": 14,
+    "quant_n": 24,
+    "soft_ok": 6,
+    "soft_n": 9,
+    "quant_rate": 0.583,
+    "soft_rate": 0.667,
+    "OR": 0.7,
+    "p": 1.0
+   },
+   "neutral": {
+    "quant_ok": 7,
+    "quant_n": 8,
+    "soft_ok": 38,
+    "soft_n": 42,
+    "quant_rate": 0.875,
+    "soft_rate": 0.905,
+    "OR": 0.737,
+    "p": 1.0
+   },
+   "stab": {
+    "note": "single evidence-grade stratum",
+    "ok": 0,
+    "n": 1
+   }
+  },
+  "OR_mantel_haenszel": 0.711,
+  "chi2": 0.027,
+  "p": 0.8694
+ },
+ "by_evidence_type": {
+  "E1_quantitative_energetic": {
+   "ok": 18,
+   "n": 25,
+   "rate": 0.72
+  },
+  "E2_quantitative_functional": {
+   "ok": 3,
+   "n": 8,
+   "rate": 0.375
+  },
+  "E3_qualitative_experimental": {
+   "ok": 22,
+   "n": 26,
+   "rate": 0.846
+  },
+  "E4_population_frequency": {
+   "ok": 6,
+   "n": 6,
+   "rate": 1.0
+  },
+  "E5_inferred_no_axis_assay": {
+   "ok": 16,
+   "n": 19,
+   "rate": 0.842
+  }
+ },
+ "by_directness": {
+  "coupled": {
+   "ok": 6,
+   "n": 7,
+   "rate": 0.857
+  },
+  "direct": {
+   "ok": 36,
+   "n": 51,
+   "rate": 0.706
+  },
+  "inferred": {
+   "ok": 22,
+   "n": 25,
+   "rate": 0.88
+  },
+  "off_axis": {
+   "ok": 1,
+   "n": 1,
+   "rate": 1.0
+  }
+ },
+ "interpretation": "The crude contrast is confounded: quantitative measurement was sought for destabilizers, while qualitative and inferred tokens are predominantly neutral. Stratified by expected token the association is absent, so evidence grade does not explain the headline agreement."
+}

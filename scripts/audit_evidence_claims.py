@@ -1,0 +1,124 @@
+#!/usr/bin/env python
+"""Assert every evidence-ledger number in the manuscript matches the generated data.
+
+The §2.2 and §3.9 prose asserts ~30 literals about the evidence ledger. Each is
+checked here against the two JSON summaries so a re-curation cannot silently
+desynchronise the paper from its data. Prose is wrong until the data says
+otherwise.
+"""
+from __future__ import annotations
+
+import json
+import pathlib
+import sys
+
+REPO = pathlib.Path(__file__).resolve().parent.parent
+MS = REPO / "docs" / "COMAVI_manuscript_v22.md"
+LED = REPO / "reference_outputs" / "COMAVI_evidence_ledger_summary.json"
+STRAT = REPO / "reference_outputs" / "COMAVI_evidence_stratified_agreement.json"
+
+E1 = "E1_quantitative_energetic"
+E2 = "E2_quantitative_functional"
+E3 = "E3_qualitative_experimental"
+E4 = "E4_population_frequency"
+E5 = "E5_inferred_no_axis_assay"
+
+
+def main() -> int:
+    text = MS.read_text()
+    led = json.loads(LED.read_text())
+    st = json.loads(STRAT.read_text())
+    typ, dirn = led["by_evidence_type"], led["by_directness"]
+    acc, crude, strat = st["accounting"], st["crude"], st["stratified"]
+    by_type = st["by_evidence_type"]
+    comp = st["token_composition_by_grade"]
+    fold_inferred = led["type_by_axis"]["fold_complex"][E5]
+    fold_committed = sum(led["type_by_axis"]["fold_complex"].values())
+
+    checks = [
+        # ---- §2.2 ledger composition
+        (f"{led['n_committed_axes']} axes across {led['n_variants']} variants "
+         f"and {led['n_systems']} systems", "ledger scope"),
+        (f"K_D, Tm; n = {typ[E1]})", "E1 count"),
+        (f"deep-mutational-scan score (n = {typ[E2]})", "E2 count"),
+        (f"natively folded (n = {typ[E3]})", "E3 count"),
+        (f"allele frequency alone (n = {typ[E4]})", "E4 count"),
+        (f"absence of a reported effect (n = {typ[E5]})", "E5 count"),
+        (f"out this axis; n = {dirn['direct']})", "direct count"),
+        (f"interaction survived; n = {dirn['coupled']})", "coupled count"),
+        (f"any structural axis; n = {dirn['off_axis']})", "off-axis count"),
+        (f"no measurement;\nn = {dirn['inferred']})", "inferred count"),
+        (f"**{round(led['frac_quantitative']*100)}% of committed axes rest on a "
+         f"quantitative measurement (E1 or E2) and "
+         f"{round(led['frac_energetic']*100)}% on a directly\nmeasured energy; "
+         f"{round(led['frac_direct']*100)}% are direct, and "
+         f"{round(led['frac_inferred']*100)}% are inferred", "fraction summary"),
+        (f"({fold_inferred} of its {fold_committed} committed axes)",
+         "fold-axis inferred share"),
+        # ---- §3.9 accounting
+        (f"Of\nthe {acc['n_committed_axes']} committed axes, "
+         f"{acc['n_ddg_axes_gradeable']} clear confidence", "gradeable ddG"),
+        (f"with the {acc['n_tier_axes_gradeable']} gradeable tier axes",
+         "gradeable tier"),
+        (f"structural-agreement denominator of {acc['n_total_gradeable']} exactly",
+         "SA denominator"),
+        (f"The {acc['n_committed_but_gated_out']}-axis shortfall", "gated out"),
+        # ---- §3.9 crude contrast
+        (f"| Quantitative (E1–E2) | {crude['quant_ok']}/{crude['quant_n']} | "
+         f"{crude['quant_rate']:.3f} |", "crude quant row"),
+        (f"| Qualitative or inferred (E3–E5) | {crude['soft_ok']}/"
+         f"{crude['soft_n']} | {crude['soft_rate']:.3f} |", "crude soft row"),
+        (f"Odds ratio {crude['OR']:.2f}, Fisher p = {crude['p']:.3f}",
+         "crude OR/p"),
+        # ---- §3.9 confound table
+        (f"| Quantitative (E1–E2) | {comp['quantitative']['destab']} | "
+         f"{comp['quantitative']['neutral']} | "
+         f"{comp['quantitative']['stab']} |", "confound quant row"),
+        (f"| Qualitative or inferred (E3–E5) | {comp['soft']['destab']} | "
+         f"{comp['soft']['neutral']} | {comp['soft']['stab']} |",
+         "confound soft row"),
+        # ---- §3.9 stratified
+        (f"the rates are {strat['per_token']['destab']['quant_rate']:.3f} "
+         f"(quantitative) versus "
+         f"{strat['per_token']['destab']['soft_rate']:.3f}", "destab stratum"),
+        (f"expected-neutral axes {strat['per_token']['neutral']['quant_rate']:.3f}"
+         f" versus {strat['per_token']['neutral']['soft_rate']:.3f}",
+         "neutral stratum"),
+        (f"**OR = {strat['OR_mantel_haenszel']:.2f}, χ² = {strat['chi2']:.2f}, "
+         f"p = {strat['p']:.2f}.**", "Mantel-Haenszel"),
+        # ---- §3.9 E1 subset
+        (f"the {by_type[E1]['n']} gradeable E1 axes", "E1 gradeable n"),
+        (f"agreement is {by_type[E1]['ok']}/{by_type[E1]['n']} = "
+         f"{by_type[E1]['rate']:.3f}", "E1 agreement"),
+        (f"weakest performer at {by_type[E2]['ok']}/{by_type[E2]['n']}",
+         "E2 agreement"),
+        (f"{round(led['frac_inferred']*100)}% of committed axes are inferred",
+         "limitation inferred pct"),
+    ]
+
+    fails = [label for needle, label in checks if needle not in text]
+    for needle, label in checks:
+        if needle not in text:
+            print(f"MISSING [{label}]: {needle!r}", file=sys.stderr)
+
+    # Forbidden: the retired prose that claimed evidence grading without data.
+    forbidden = [
+        ("graded by type: **quantitative**", "pre-ledger evidence-grading claim"),
+        ("structural-inference** (contact-level", "pre-ledger evidence tiers"),
+    ]
+    for needle, label in forbidden:
+        if needle in text:
+            print(f"FORBIDDEN [{label}] still present", file=sys.stderr)
+            fails.append(label)
+
+    print(f"evidence-claim audit: {len(checks)-len([f for f in fails if f not in dict(forbidden).values()])}"
+          f"/{len(checks)} literals verified")
+    if fails:
+        print(f"FAIL ({len(fails)})", file=sys.stderr)
+        return 1
+    print("PASS — every evidence-ledger literal in the manuscript matches generated data")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

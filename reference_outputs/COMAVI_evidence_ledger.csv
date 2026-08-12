@@ -1,0 +1,108 @@
+system,variant,axis,expected_token,evidence_type,evidence_directness,evidence_basis,evidence_citation
+brca1_bard1,C61G,binding,neutral,E3_qualitative_experimental,direct,BARD1 binding preserved despite fold loss,Brzovic 1998 JBC 273:7795 (PMID 9520298); Roehm & Berg 1997 Biochemistry 36:10240
+brca1_bard1,C61G,fold_complex,destab,E3_qualitative_experimental,direct,RING heterodimer fold disrupted by Zn-coordination loss,Brzovic 1998 JBC 273:7795 (PMID 9520298); Roehm & Berg 1997 Biochemistry 36:10240
+brca1_bard1,C61G,monomer,destab,E3_qualitative_experimental,direct,C61 is a Zn-coordinating ligand; RING fold lost on Zn release,Brzovic 1998 JBC 273:7795 (PMID 9520298); Roehm & Berg 1997 Biochemistry 36:10240
+brca1_bard1,E100Q,binding,neutral,E3_qualitative_experimental,direct,WT-like BARD1 interaction by Y2H,Starita 2015 (Y2H interaction panel)
+brca1_bard1,E100Q,fold_complex,neutral,E5_inferred_no_axis_assay,inferred,No assembly-context stability measurement; token inferred from the intact monomer fold,Starita 2015 (Y2H interaction panel)
+brca1_bard1,E100Q,monomer,neutral,E5_inferred_no_axis_assay,inferred,No subunit-stability assay; token inferred from WT-like two-hybrid function,Starita 2015 (Y2H interaction panel)
+brca1_bard1,K45R,binding,neutral,E3_qualitative_experimental,direct,WT-like BARD1 interaction by Y2H,Starita 2015 (Y2H interaction panel)
+brca1_bard1,K45R,fold_complex,neutral,E5_inferred_no_axis_assay,inferred,No assembly-context stability measurement; token inferred from the intact monomer fold,Starita 2015 (Y2H interaction panel)
+brca1_bard1,K45R,monomer,neutral,E5_inferred_no_axis_assay,inferred,No subunit-stability assay; token inferred from WT-like two-hybrid function,Starita 2015 (Y2H interaction panel)
+brca1_bard1,V11G,binding,destab,E2_quantitative_functional,direct,Moderate BARD1 binding loss by two-hybrid,Clark 2022 (mammalian two-hybrid)
+brca1_brct,A1843P,monomer,destab,E1_quantitative_energetic,direct,GdmCl equilibrium unfolding: measured ddG_U-F = +4.89 kcal/mol,"Rowling, Cook & Itzhaki 2010 JBC 285:20080 (PMID 20452977; PMC2888420), Table S1"
+brca1_brct,L1664P,monomer,destab,E1_quantitative_energetic,direct,GdmCl equilibrium unfolding: measured ddG_U-F = +1.18 kcal/mol,"Rowling, Cook & Itzhaki 2010 JBC 285:20080 (PMID 20452977; PMC2888420), Table S1"
+brca1_brct,M1663K,monomer,neutral,E1_quantitative_energetic,direct,GdmCl equilibrium unfolding: measured ddG_U-F = -0.03 kcal/mol,"Rowling, Cook & Itzhaki 2010 JBC 285:20080 (PMID 20452977; PMC2888420), Table S1"
+brca1_brct,M1783T,monomer,destab,E1_quantitative_energetic,direct,GdmCl equilibrium unfolding: measured ddG_U-F = +3.73 kcal/mol,"Rowling, Cook & Itzhaki 2010 JBC 285:20080 (PMID 20452977; PMC2888420), Table S1"
+brca1_brct,P1806A,monomer,neutral,E1_quantitative_energetic,direct,GdmCl equilibrium unfolding: measured ddG_U-F = +0.06 kcal/mol,"Rowling, Cook & Itzhaki 2010 JBC 285:20080 (PMID 20452977; PMC2888420), Table S1"
+brca1_brct,R1699L,monomer,neutral,E1_quantitative_energetic,direct,GdmCl equilibrium unfolding: measured ddG_U-F = -0.99 kcal/mol,"Rowling, Cook & Itzhaki 2010 JBC 285:20080 (PMID 20452977; PMC2888420), Table S1"
+brca1_brct,R1699Q,monomer,stab,E1_quantitative_energetic,direct,GdmCl equilibrium unfolding: measured ddG_U-F = -1.83 kcal/mol,"Rowling, Cook & Itzhaki 2010 JBC 285:20080 (PMID 20452977; PMC2888420), Table S1"
+brca1_brct,R1751Q,monomer,destab,E1_quantitative_energetic,direct,GdmCl equilibrium unfolding: measured ddG_U-F = +1.57 kcal/mol,"Rowling, Cook & Itzhaki 2010 JBC 285:20080 (PMID 20452977; PMC2888420), Table S1"
+brca1_brct,V1665M,monomer,destab,E1_quantitative_energetic,direct,GdmCl equilibrium unfolding: measured ddG_U-F = +2.22 kcal/mol,"Rowling, Cook & Itzhaki 2010 JBC 285:20080 (PMID 20452977; PMC2888420), Table S1"
+brca1_brct,V1736A,monomer,destab,E1_quantitative_energetic,direct,GdmCl equilibrium unfolding: measured ddG_U-F = +4.20 kcal/mol,"Rowling, Cook & Itzhaki 2010 JBC 285:20080 (PMID 20452977; PMC2888420), Table S1"
+brca1_brct,V1808A,monomer,destab,E1_quantitative_energetic,direct,GdmCl equilibrium unfolding: measured ddG_U-F = +2.40 kcal/mol,"Rowling, Cook & Itzhaki 2010 JBC 285:20080 (PMID 20452977; PMC2888420), Table S1"
+brca1_brct,Y1853C,monomer,destab,E1_quantitative_energetic,direct,GdmCl equilibrium unfolding: measured ddG_U-F = +6.04 kcal/mol,"Rowling, Cook & Itzhaki 2010 JBC 285:20080 (PMID 20452977; PMC2888420), Table S1"
+cam_cav12,D96V,binding,neutral,E2_quantitative_functional,off_axis,"Ca2+ affinity at EF-hand III is measured, but no IQ-motif binding measurement exists; the binding token is inferred from preserved target engagement",Crotti 2013
+cam_cav12,F142L,binding,neutral,E3_qualitative_experimental,coupled,C-domain Ca2+ binding impaired while RyR2 inhibition is preserved -- engagement retained at a homologous IQ-type site,Hwang 2014 (PMC5270481)
+cam_cav12,N98S,binding,neutral,E2_quantitative_functional,off_axis,"Ca2+ affinity at EF-hand III is measured, but no IQ-motif binding measurement exists; the binding token is inferred from preserved target engagement",Crotti 2013
+cfh_c3b,I62V,binding,neutral,E1_quantitative_energetic,direct,"SPR K_D 10-14 uM, WT-like","Pechtl 2011 JBC 286:11082 (PMID 21270465), SPR"
+cfh_c3b,I62V,fold_complex,neutral,E5_inferred_no_axis_assay,inferred,No assembly-context stability measurement; token inferred from the intact monomer fold,"Pechtl 2011 JBC 286:11082 (PMID 21270465), SPR"
+cfh_c3b,I62V,monomer,neutral,E3_qualitative_experimental,direct,Natively folded by CD / thermal denaturation,"Pechtl 2011 JBC 286:11082 (PMID 21270465), SPR"
+cfh_c3b,R53H,binding,neutral,E1_quantitative_energetic,direct,"SPR K_D ~12 uM, comparable to WT","Pechtl 2011 JBC 286:11082 (PMID 21270465), SPR"
+cfh_c3b,R53H,fold_complex,neutral,E5_inferred_no_axis_assay,inferred,No assembly-context stability measurement; token inferred from the intact monomer fold,"Pechtl 2011 JBC 286:11082 (PMID 21270465), SPR"
+cfh_c3b,R53H,monomer,neutral,E3_qualitative_experimental,direct,Natively folded by CD / thermal denaturation,"Pechtl 2011 JBC 286:11082 (PMID 21270465), SPR"
+cfh_c3b,R78G,binding,destab,E1_quantitative_energetic,direct,SPR K_D > 35 uM (binding effectively abolished),"Pechtl 2011 JBC 286:11082 (PMID 21270465), SPR"
+cfh_c3b,R78G,fold_complex,neutral,E5_inferred_no_axis_assay,inferred,No assembly-context stability measurement; token inferred from the intact monomer fold,"Pechtl 2011 JBC 286:11082 (PMID 21270465), SPR"
+cfh_c3b,R78G,monomer,neutral,E3_qualitative_experimental,direct,Natively folded by CD / thermal denaturation,"Pechtl 2011 JBC 286:11082 (PMID 21270465), SPR"
+hemoglobin_dimer,E6V,binding,neutral,E3_qualitative_experimental,direct,"HbS assembles normally -- pathogenicity arises from deoxy-state polymerization at a surface patch, not from alpha1-beta1 interface disruption",Eaton & Hofrichter 1990 (HbS polymerization)
+hemoglobin_dimer,E6V,fold_complex,neutral,E3_qualitative_experimental,direct,Native tetramer; assembly unaffected,Eaton & Hofrichter 1990 (HbS polymerization)
+hemoglobin_dimer,E6V,monomer,neutral,E3_qualitative_experimental,direct,Native beta-subunit fold; the lesion is intermolecular,Eaton & Hofrichter 1990 (HbS polymerization)
+hemoglobin_tetramer,N102T,binding,destab,E1_quantitative_energetic,direct,"Hb Kansas: alpha1-beta2 H-bond loss, reduced tetramer assembly energy (~1.5 kcal/mol)",Bonaventura & Riggs 1968 JBC (Hb Kansas)
+hemoglobin_tetramer,N102T,fold_complex,destab,E1_quantitative_energetic,coupled,Coupled reading of the same assembly measurement,Bonaventura & Riggs 1968 JBC (Hb Kansas)
+hemoglobin_tetramer,W37A,binding,destab,E1_quantitative_energetic,direct,Equilibrium dimer->tetramer assembly ddG = +5.0 kcal/mol,Kiger / Kwiatkowski Biochemistry 1998 (PMID 9521754 equilibrium assembly dG; PMID 9521753 kinetics)
+hemoglobin_tetramer,W37A,fold_complex,destab,E1_quantitative_energetic,coupled,"Same assembly-energy measurement; the fold-in-complex token is a coupled reading of the assembly ddG, not an independent subunit-stability measurement",Kiger / Kwiatkowski Biochemistry 1998 (PMID 9521754 equilibrium assembly dG; PMID 9521753 kinetics)
+hemoglobin_tetramer,W37E,binding,destab,E1_quantitative_energetic,direct,Equilibrium dimer->tetramer assembly ddG = +9.0 kcal/mol,Kiger / Kwiatkowski Biochemistry 1998 (PMID 9521754 equilibrium assembly dG; PMID 9521753 kinetics)
+hemoglobin_tetramer,W37E,fold_complex,destab,E1_quantitative_energetic,coupled,"Same assembly-energy measurement; the fold-in-complex token is a coupled reading of the assembly ddG, not an independent subunit-stability measurement",Kiger / Kwiatkowski Biochemistry 1998 (PMID 9521754 equilibrium assembly dG; PMID 9521753 kinetics)
+hemoglobin_tetramer,W37G,binding,destab,E1_quantitative_energetic,direct,Equilibrium dimer->tetramer assembly ddG = +7.0 kcal/mol,Kiger / Kwiatkowski Biochemistry 1998 (PMID 9521754 equilibrium assembly dG; PMID 9521753 kinetics)
+hemoglobin_tetramer,W37G,fold_complex,destab,E1_quantitative_energetic,coupled,"Same assembly-energy measurement; the fold-in-complex token is a coupled reading of the assembly ddG, not an independent subunit-stability measurement",Kiger / Kwiatkowski Biochemistry 1998 (PMID 9521754 equilibrium assembly dG; PMID 9521753 kinetics)
+hemoglobin_tetramer,W37Y,binding,destab,E1_quantitative_energetic,direct,Equilibrium dimer->tetramer assembly ddG = +2.0 kcal/mol,Kiger / Kwiatkowski Biochemistry 1998 (PMID 9521754 equilibrium assembly dG; PMID 9521753 kinetics)
+hemoglobin_tetramer,W37Y,fold_complex,destab,E1_quantitative_energetic,coupled,"Same assembly-energy measurement; the fold-in-complex token is a coupled reading of the assembly ddG, not an independent subunit-stability measurement",Kiger / Kwiatkowski Biochemistry 1998 (PMID 9521754 equilibrium assembly dG; PMID 9521753 kinetics)
+kras_craf,G12D,binding,neutral,E3_qualitative_experimental,direct,WT-like RAF1 binding; impaired GTP hydrolysis. G12 is 13.6 A from RAF1,Hunter 2015
+kras_craf,G12V,binding,neutral,E3_qualitative_experimental,direct,WT-like RAF1 binding; impaired GTP hydrolysis,Hunter 2015
+kras_craf,Q61H,binding,neutral,E3_qualitative_experimental,direct,Preserved RAF binding; switch-II hydrolysis defect. Q61 is 11.1 A from RAF1,Hunter 2015
+mlh1_pms2,G857A,binding,neutral,E4_population_frequency,inferred,gnomAD AF 28%; ClinVar BA1 stand-alone benign,gnomAD; ClinVar BA1
+mlh1_pms2,G857A,fold_complex,neutral,E4_population_frequency,inferred,gnomAD AF 28%; ClinVar BA1 stand-alone benign,gnomAD; ClinVar BA1
+mlh1_pms2,G857A,monomer,neutral,E4_population_frequency,inferred,gnomAD AF 28%; ClinVar BA1 stand-alone benign,gnomAD; ClinVar BA1
+mlh1_pms2,H718Y,binding,neutral,E2_quantitative_functional,coupled,Proficient MMR implies the MLH1-PMS2 interaction survived,Raevaara 2005 (MMR activity)
+mlh1_pms2,H718Y,fold_complex,neutral,E5_inferred_no_axis_assay,inferred,No assembly-context stability measurement; token inferred from the intact monomer fold,Raevaara 2005 (MMR activity)
+mlh1_pms2,H718Y,monomer,neutral,E5_inferred_no_axis_assay,inferred,No subunit-stability assay; token inferred,Raevaara 2005 (MMR activity)
+mlh1_pms2,K618E,binding,neutral,E3_qualitative_experimental,coupled,Non-damaging in functional assay,Drost 2019 (functional assay)
+mlh1_pms2,K618E,fold_complex,neutral,E5_inferred_no_axis_assay,inferred,No assembly-context stability measurement; token inferred from the intact monomer fold,Drost 2019 (functional assay)
+mlh1_pms2,K618E,monomer,neutral,E5_inferred_no_axis_assay,inferred,No subunit-stability assay; token inferred,Drost 2019 (functional assay)
+mlh1_pms2,L749P,binding,destab,E2_quantitative_functional,direct,PMS2 co-IP 30% of WT,"Kosinski 2010 (PMS2 co-IP, MMR activity)"
+mlh1_pms2,L749P,fold_complex,destab,E5_inferred_no_axis_assay,inferred,Proline substitution presumed fold-destabilizing; no stability assay,"Kosinski 2010 (PMS2 co-IP, MMR activity)"
+mlh1_pms2,Q542L,binding,destab,E2_quantitative_functional,direct,PMS2 co-IP 54% of WT,"Kosinski 2010 (PMS2 co-IP, MMR activity)"
+mlh1_pms2,R755W,binding,neutral,E2_quantitative_functional,direct,MAVE interaction score +0.617; PMS2 co-IP 82% -- binding preserved,MAVE abundance/interaction scores; Kosinski 2010 co-IP
+mlh1_pms2,R755W,fold_complex,destab,E2_quantitative_functional,direct,MAVE abundance score -0.334: reduced cellular abundance,MAVE abundance/interaction scores; Kosinski 2010 co-IP
+mlh1_pms2,R755W,monomer,destab,E2_quantitative_functional,direct,MAVE abundance score -0.334: reduced cellular abundance,MAVE abundance/interaction scores; Kosinski 2010 co-IP
+mlh1_pms2,V384D,binding,neutral,E3_qualitative_experimental,coupled,Reclassified non-pathogenic; MMR-proficient,InSiGHT expert-panel reclassification; rs63750447 AF ~8.9% EAS
+mlh1_pms2,V384D,fold_complex,neutral,E5_inferred_no_axis_assay,inferred,No assembly-context stability measurement; token inferred from the intact monomer fold,InSiGHT expert-panel reclassification; rs63750447 AF ~8.9% EAS
+mlh1_pms2,V384D,monomer,neutral,E5_inferred_no_axis_assay,inferred,No subunit-stability assay; token inferred,InSiGHT expert-panel reclassification; rs63750447 AF ~8.9% EAS
+msh2_msh6,A636P,binding,neutral,E3_qualitative_experimental,direct,MSH2-MSH6 interaction intact; ATPase mismatch binding/release defect,Ollila 2008 Hum Mutat 29:1355 (PMID 18951462); Ollila 2006 Gastroenterology (PMID 17101317)
+msh2_msh6,C697F,binding,neutral,E3_qualitative_experimental,direct,"ATPase catalytic defect, protein stable, interaction intact",Ollila 2008 Hum Mutat 29:1355 (PMID 18951462); Ollila 2006 Gastroenterology (PMID 17101317)
+msh2_msh6,G322D,binding,neutral,E3_qualitative_experimental,direct,MMR-proficient with interaction intact; gnomAD ~1.9%,Ollila 2008 Hum Mutat 29:1355 (PMID 18951462); Ollila 2006 Gastroenterology (PMID 17101317)
+msh2_msh6,G674R,binding,neutral,E3_qualitative_experimental,direct,MSH6 binding preserved by co-IP; MMR lost via Walker-A ATPase defect,Jia 2021
+msh2_msh6,N127S,binding,neutral,E3_qualitative_experimental,direct,"MSH6 IP, bandshift and MMR all WT-like",Ollila 2008 Hum Mutat 29:1355 (PMID 18951462); Ollila 2006 Gastroenterology (PMID 17101317)
+pi3k,E542K,binding,destab,E3_qualitative_experimental,direct,"Disrupts the nSH2 inhibitory contact, releasing autoinhibition",Zhao & Vogt 2008 PNAS
+pi3k,E542K,fold_complex,destab,E3_qualitative_experimental,direct,"Disrupts the nSH2 inhibitory contact, releasing autoinhibition",Zhao & Vogt 2008 PNAS
+pi3k,E542K,monomer,neutral,E5_inferred_no_axis_assay,inferred,No subunit-stability assay; token inferred; helical-domain hotspot taken as fold-neutral,Zhao & Vogt 2008 PNAS
+pi3k,E545K,binding,destab,E3_qualitative_experimental,direct,"Disrupts the nSH2 inhibitory contact, releasing autoinhibition",Zhao & Vogt 2008 PNAS
+pi3k,E545K,fold_complex,destab,E3_qualitative_experimental,direct,"Disrupts the nSH2 inhibitory contact, releasing autoinhibition",Zhao & Vogt 2008 PNAS
+pi3k,E545K,monomer,neutral,E5_inferred_no_axis_assay,inferred,No subunit-stability assay; token inferred; helical-domain hotspot taken as fold-neutral,Zhao & Vogt 2008 PNAS
+pi3k,H1047R,binding,neutral,E3_qualitative_experimental,direct,Kinase C-lobe gain of function with p85 binding structurally unaffected,Mandelker 2009
+pi3k,H1047R,fold_complex,neutral,E5_inferred_no_axis_assay,inferred,No assembly-context stability measurement; token inferred from the intact monomer fold,Mandelker 2009
+pi3k,H1047R,monomer,neutral,E5_inferred_no_axis_assay,inferred,No subunit-stability assay; token inferred,Mandelker 2009
+pi3k,M326I,binding,neutral,E4_population_frequency,inferred,"rs3730089, gnomAD MAF > 10%: benign by frequency alone",gnomAD (rs3730089)
+pi3k,M326I,fold_complex,neutral,E4_population_frequency,inferred,"rs3730089, gnomAD MAF > 10%: benign by frequency alone",gnomAD (rs3730089)
+pi3k,M326I,monomer,neutral,E4_population_frequency,inferred,"rs3730089, gnomAD MAF > 10%: benign by frequency alone",gnomAD (rs3730089)
+pi3k,N564D,binding,neutral,E3_qualitative_experimental,direct,"Retains p110 binding, loses inhibition -- allosteric, not interface loss",Wu / Jaiswal 2009
+pi3k,N564D,fold_complex,neutral,E5_inferred_no_axis_assay,inferred,No assembly-context stability measurement; token inferred from the intact monomer fold,Wu / Jaiswal 2009
+pi3k,N564D,monomer,neutral,E5_inferred_no_axis_assay,inferred,No subunit-stability assay; token inferred,Wu / Jaiswal 2009
+smad4_smad3,D351H,binding,destab,E3_qualitative_experimental,direct,Abolished phospho-Smad2/3 interaction by co-IP,De Bosscher 2004 (co-IP)
+smad4_smad3,I500T,binding,neutral,E5_inferred_no_axis_assay,inferred,Post-translational mechanism (reduced ubiquitination -> protein stabilization); no interface measurement,Le Goff 2011
+smad4_smad3,I500V,binding,neutral,E5_inferred_no_axis_assay,inferred,Post-translational mechanism (reduced ubiquitination -> protein stabilization); no interface measurement,Le Goff 2011
+smad4_smad3,R361C,binding,destab,E3_qualitative_experimental,direct,Completely abolished R-Smad interaction,Lanauze 2021 (co-IP)
+troponin_ic,P82S,binding,neutral,E4_population_frequency,inferred,AF ~3% African-American: benign by frequency,Frazier 2008; gnomAD
+troponin_ic,P82S,fold_complex,neutral,E4_population_frequency,inferred,AF ~3% African-American: benign by frequency,Frazier 2008; gnomAD
+troponin_ic,P82S,monomer,neutral,E4_population_frequency,inferred,AF ~3% African-American: benign by frequency,Frazier 2008; gnomAD
+troponin_ic,R145G,binding,neutral,E2_quantitative_functional,direct,"EC50 1.4 uM vs 0.8 uM WT: reduced inhibitory potency, actin affinity unchanged -- interface retained",Elliott 2000 JBC 275:22069; Takahashi / Kimura 2001 (PMID 11735257)
+troponin_ic,R145Q,binding,neutral,E2_quantitative_functional,direct,"Same class as R145G: reduced inhibition, actin affinity unchanged",Kimura 2001 (PMID 11735257)
+vhl_elonginc,L158Q,binding,destab,E3_qualitative_experimental,direct,Disrupts VCB complex assembly,Stebbins 1999 Science
+vhl_elonginc,L158Q,fold_complex,destab,E3_qualitative_experimental,direct,Disrupts VCB complex assembly,Stebbins 1999 Science
+vhl_elonginc,Y98H,binding,neutral,E3_qualitative_experimental,direct,"VCB assembly preserved while HIF binding is abolished (beta-domain HIF face, not the ElonginC face)",Ohh 2000
+vhl_elonginc,Y98H,fold_complex,neutral,E3_qualitative_experimental,direct,"VCB assembly preserved while HIF binding is abolished (beta-domain HIF face, not the ElonginC face)",Ohh 2000
+vwf_gpiba,A1381T,binding,neutral,E1_quantitative_energetic,direct,Binding-competent by SPR,Tischer / Moon-Tasson / Auton 2025 J Thromb Haemost 23(4):1215-1228 (PMID 39756657); CD/DSC + SPR + shear-flow
+vwf_gpiba,A1381T,fold_complex,neutral,E5_inferred_no_axis_assay,inferred,No assembly-context stability measurement; token inferred from the intact monomer fold,Tischer / Moon-Tasson / Auton 2025 J Thromb Haemost 23(4):1215-1228 (PMID 39756657); CD/DSC + SPR + shear-flow
+vwf_gpiba,A1381T,monomer,neutral,E1_quantitative_energetic,direct,"Natively folded, WT-like Tm",Tischer / Moon-Tasson / Auton 2025 J Thromb Haemost 23(4):1215-1228 (PMID 39756657); CD/DSC + SPR + shear-flow
+vwf_gpiba,R1334Q,binding,destab,E1_quantitative_energetic,direct,GPIba binding lost by SPR and shear-flow adhesion,Tischer / Moon-Tasson / Auton 2025 J Thromb Haemost 23(4):1215-1228 (PMID 39756657); CD/DSC + SPR + shear-flow
+vwf_gpiba,R1334Q,fold_complex,neutral,E5_inferred_no_axis_assay,inferred,No assembly-context stability measurement; token inferred from the intact monomer fold,Tischer / Moon-Tasson / Auton 2025 J Thromb Haemost 23(4):1215-1228 (PMID 39756657); CD/DSC + SPR + shear-flow
+vwf_gpiba,R1334Q,monomer,neutral,E1_quantitative_energetic,direct,Natively folded with modestly reduced Tm -- below the destabilization threshold,Tischer / Moon-Tasson / Auton 2025 J Thromb Haemost 23(4):1215-1228 (PMID 39756657); CD/DSC + SPR + shear-flow
