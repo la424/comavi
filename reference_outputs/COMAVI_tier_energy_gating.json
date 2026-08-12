@@ -1,0 +1,300 @@
+{
+ "_source": "reference_outputs/scored_61var_canonical.csv",
+ "_definitions": {
+  "firing": "confidence-gated three-axis max|ddG| >= threshold",
+  "strong_tier": [
+   "Tier 1",
+   "Tier 2"
+  ],
+  "structural_classes": [
+   "mixed_structural",
+   "ppi_destab_mechanism",
+   "fold_mechanism"
+  ]
+ },
+ "population_n": 47,
+ "population_structural": 17,
+ "population_silent": 30,
+ "population_systems": 13,
+ "four_state_t25": {
+  "convergent": {
+   "n": 18,
+   "structural": 15,
+   "rate": 0.8333
+  },
+  "energy_only": {
+   "n": 3,
+   "structural": 0,
+   "rate": 0.0
+  },
+  "context_only": {
+   "n": 12,
+   "structural": 2,
+   "rate": 0.1667
+  },
+  "neither": {
+   "n": 14,
+   "structural": 0,
+   "rate": 0.0
+  }
+ },
+ "sweep": {
+  "t10": {
+   "firing": {
+    "strong_structural": 16,
+    "strong_n": 25,
+    "weak_structural": 0,
+    "weak_n": 8,
+    "fisher_p": 0.0027
+   },
+   "silent": {
+    "strong_structural": 1,
+    "strong_n": 5,
+    "weak_structural": 0,
+    "weak_n": 9,
+    "fisher_p": 0.3571
+   }
+  },
+  "t15": {
+   "firing": {
+    "strong_structural": 15,
+    "strong_n": 21,
+    "weak_structural": 0,
+    "weak_n": 6,
+    "fisher_p": 0.0031
+   },
+   "silent": {
+    "strong_structural": 2,
+    "strong_n": 9,
+    "weak_structural": 0,
+    "weak_n": 11,
+    "fisher_p": 0.1895
+   }
+  },
+  "t20": {
+   "firing": {
+    "strong_structural": 15,
+    "strong_n": 19,
+    "weak_structural": 0,
+    "weak_n": 5,
+    "fisher_p": 0.003
+   },
+   "silent": {
+    "strong_structural": 2,
+    "strong_n": 11,
+    "weak_structural": 0,
+    "weak_n": 12,
+    "fisher_p": 0.2174
+   }
+  },
+  "t25": {
+   "firing": {
+    "strong_structural": 15,
+    "strong_n": 18,
+    "weak_structural": 0,
+    "weak_n": 3,
+    "fisher_p": 0.015
+   },
+   "silent": {
+    "strong_structural": 2,
+    "strong_n": 12,
+    "weak_structural": 0,
+    "weak_n": 14,
+    "fisher_p": 0.2031
+   }
+  },
+  "tSAP": {
+   "firing": {
+    "strong_structural": 11,
+    "strong_n": 14,
+    "weak_structural": 0,
+    "weak_n": 2,
+    "fisher_p": 0.0833
+   },
+   "silent": {
+    "strong_structural": 6,
+    "strong_n": 16,
+    "weak_structural": 0,
+    "weak_n": 15,
+    "fisher_p": 0.0177
+   }
+  }
+ },
+ "bh": {
+  "firing_t10": {
+   "p": 0.0027,
+   "p_adj": 0.0104,
+   "survives_05": true
+  },
+  "silent_t10": {
+   "p": 0.3571,
+   "p_adj": 0.3571,
+   "survives_05": false
+  },
+  "firing_t15": {
+   "p": 0.0031,
+   "p_adj": 0.0104,
+   "survives_05": true
+  },
+  "silent_t15": {
+   "p": 0.1895,
+   "p_adj": 0.2415,
+   "survives_05": false
+  },
+  "firing_t20": {
+   "p": 0.003,
+   "p_adj": 0.0104,
+   "survives_05": true
+  },
+  "silent_t20": {
+   "p": 0.2174,
+   "p_adj": 0.2415,
+   "survives_05": false
+  },
+  "firing_t25": {
+   "p": 0.015,
+   "p_adj": 0.0353,
+   "survives_05": true
+  },
+  "silent_t25": {
+   "p": 0.2031,
+   "p_adj": 0.2415,
+   "survives_05": false
+  },
+  "firing_tSAP": {
+   "p": 0.0833,
+   "p_adj": 0.1389,
+   "survives_05": false
+  },
+  "silent_tSAP": {
+   "p": 0.0177,
+   "p_adj": 0.0353,
+   "survives_05": true
+  }
+ },
+ "bh_n_surviving": 5,
+ "canonical_cells": {
+  "strong_structural": 15,
+  "strong_n": 18,
+  "weak_structural": 0,
+  "weak_n": 3,
+  "fisher_p": 0.015
+ },
+ "reclassification_fragility": {
+  "reclassify_1": 0.1278,
+  "reclassify_2": 0.4887
+ },
+ "weak_tier_firing_variants": [
+  {
+   "variant": "A636P",
+   "system": "msh2_msh6",
+   "expected_mech_class": "structurally_silent"
+  },
+  {
+   "variant": "R145G",
+   "system": "troponin_ic",
+   "expected_mech_class": "structurally_silent"
+  },
+  {
+   "variant": "R145Q",
+   "system": "troponin_ic",
+   "expected_mech_class": "structurally_silent"
+  }
+ ],
+ "n_systems_contributing_firing": 10,
+ "n_systems_with_both_tier_strata": 1,
+ "residue_collapsed": {
+  "strong_structural": 12,
+  "strong_n": 15,
+  "weak_structural": 0,
+  "weak_n": 2,
+  "fisher_p": 0.0735
+ },
+ "marginal_tier_screen": {
+  "strong_structural": 17,
+  "strong_n": 30,
+  "weak_structural": 0,
+  "weak_n": 17,
+  "sensitivity": 1.0,
+  "sensitivity_ci": [
+   0.8049,
+   1.0
+  ],
+  "specificity": 0.5667,
+  "specificity_ci": [
+   0.3743,
+   0.7454
+  ],
+  "npv": 1.0,
+  "ppv": 0.5667,
+  "n_systems_in_weak_cell": 10,
+  "n_systems_with_both_strata": 7,
+  "weak_tier_classes": {
+   "structurally_silent": 17
+  },
+  "structural_by_tier": {
+   "Tier 1": 11,
+   "Tier 2": 6
+  },
+  "stratified_cells_are_subsets_of_marginal_zero": true,
+  "structural_by_class": {
+   "mixed_structural": 9,
+   "ppi_destab_mechanism": 6,
+   "fold_mechanism": 2
+  },
+  "non_ppi_structural_n": 11,
+  "non_ppi_structural_all_strong_tier": true,
+  "fold_mechanism_n": 2,
+  "fold_mechanism_all_strong_tier": true,
+  "fisher_p": 6.851e-05,
+  "within_system_permutation_p": 0.0097,
+  "cluster_bootstrap_rate_diff_ci": [
+   0.3448,
+   0.75
+  ]
+ },
+ "stratum_mc": {
+  "convergent_all": {
+   "n": 18,
+   "mc": 0.5
+  },
+  "convergent_structural_gt": {
+   "n": 15,
+   "mc": 0.6
+  },
+  "convergent_silent_gt": {
+   "n": 3,
+   "mc": 0.0,
+   "variants": [
+    "C697F",
+    "G674R",
+    "N564D"
+   ]
+  },
+  "tier_only_structural_gt": {
+   "n": 2,
+   "mc": 0.5,
+   "variants": [
+    "N102T",
+    "Q542L"
+   ]
+  }
+ },
+ "classifier": {
+  "n": 49,
+  "n_pathogenic": 37,
+  "n_benign": 12,
+  "n_systems": 13,
+  "auc_energy": 0.8491,
+  "auc_tier": 0.7568,
+  "auc_combined": 0.8491,
+  "spearman_tier_vs_energy": -0.5789,
+  "spearman_p": 1.3184812719163951e-05,
+  "auc_delta_combined_minus_energy": 0.0,
+  "auc_delta_cluster_bootstrap_ci": [
+   -0.125,
+   0.103
+  ],
+  "auc_delta_bootstrap_n": 2000
+ }
+}
