@@ -1,0 +1,286 @@
+{
+ "population_n": 47,
+ "structural_n": 17,
+ "silent_n": 30,
+ "reimplementation_fidelity": "47/47",
+ "interface_bonus_reach": {
+  "structural_with_bonus": 15,
+  "structural_total": 17,
+  "by_class": {
+   "fold_mechanism": "1/2",
+   "mixed_structural": "9/9",
+   "ppi_destab_mechanism": "5/6"
+  },
+  "structural_without_bonus": [
+   "C61G",
+   "D351H"
+  ],
+  "note": "15/17 \u2014 NOT the 6 binding-only-class variants. The manuscript's original 6-of-17 claim inferred bonus reach from mechanism class and was wrong."
+ },
+ "screen_full_tier": {
+  "strong_structural": 17,
+  "weak_structural": 0,
+  "strong_silent": 13,
+  "weak_silent": 17,
+  "sensitivity": 1.0,
+  "sensitivity_ci": [
+   0.805,
+   1.0
+  ],
+  "specificity": 0.567,
+  "specificity_ci": [
+   0.374,
+   0.745
+  ],
+  "fisher_p": 6.9e-05,
+  "within_system_permutation_p": 0.0095
+ },
+ "screen_interface_bonus_zeroed": {
+  "strong_structural": 14,
+  "weak_structural": 3,
+  "strong_silent": 12,
+  "weak_silent": 18,
+  "sensitivity": 0.824,
+  "sensitivity_ci": [
+   0.566,
+   0.962
+  ],
+  "specificity": 0.6,
+  "specificity_ci": [
+   0.406,
+   0.773
+  ],
+  "fisher_p": 0.006546,
+  "within_system_permutation_p": 0.1294
+ },
+ "variants_demoted_by_ablation": [
+  {
+   "variant": "E542K",
+   "system": "pi3k",
+   "expected_mech_class": "mixed_structural",
+   "comavi_tier": "Tier 2",
+   "tier_no_iface": "Tier 3"
+  },
+  {
+   "variant": "E545K",
+   "system": "pi3k",
+   "expected_mech_class": "mixed_structural",
+   "comavi_tier": "Tier 2",
+   "tier_no_iface": "Tier 3"
+  },
+  {
+   "variant": "W37Y",
+   "system": "hemoglobin_tetramer",
+   "expected_mech_class": "mixed_structural",
+   "comavi_tier": "Tier 2",
+   "tier_no_iface": "Tier 3"
+  },
+  {
+   "variant": "D96V",
+   "system": "cam_cav12",
+   "expected_mech_class": "structurally_silent",
+   "comavi_tier": "Tier 2",
+   "tier_no_iface": "Tier 3"
+  }
+ ],
+ "sensitivity_invariance_is_identity": {
+  "structural_variants_removed_by_requiring_strong_tier": {
+   "t10": 0,
+   "t15": 0,
+   "t20": 0,
+   "t25": 0,
+   "tSAP": 0
+  },
+  "note": "Zero at every threshold BECAUSE the marginal weak-tier structural cell is empty. Conjoining strong_tier to ANY energy rule removes zero true positives. Do not report as 'no sensitivity cost'."
+ },
+ "loso_is_identity": {
+  "per_system": {
+   "brca1_bard1": {
+    "n": 43,
+    "weak_tier_structural": 0,
+    "sensitivity": 1.0
+   },
+   "cam_cav12": {
+    "n": 44,
+    "weak_tier_structural": 0,
+    "sensitivity": 1.0
+   },
+   "cfh_c3b": {
+    "n": 44,
+    "weak_tier_structural": 0,
+    "sensitivity": 1.0
+   },
+   "hemoglobin_dimer": {
+    "n": 46,
+    "weak_tier_structural": 0,
+    "sensitivity": 1.0
+   },
+   "hemoglobin_tetramer": {
+    "n": 42,
+    "weak_tier_structural": 0,
+    "sensitivity": 1.0
+   },
+   "kras_craf": {
+    "n": 44,
+    "weak_tier_structural": 0,
+    "sensitivity": 1.0
+   },
+   "mlh1_pms2": {
+    "n": 40,
+    "weak_tier_structural": 0,
+    "sensitivity": 1.0
+   },
+   "msh2_msh6": {
+    "n": 42,
+    "weak_tier_structural": 0,
+    "sensitivity": 1.0
+   },
+   "pi3k": {
+    "n": 42,
+    "weak_tier_structural": 0,
+    "sensitivity": 1.0
+   },
+   "smad4_smad3": {
+    "n": 43,
+    "weak_tier_structural": 0,
+    "sensitivity": 1.0
+   },
+   "troponin_ic": {
+    "n": 44,
+    "weak_tier_structural": 0,
+    "sensitivity": 1.0
+   },
+   "vhl_elonginc": {
+    "n": 45,
+    "weak_tier_structural": 0,
+    "sensitivity": 1.0
+   },
+   "vwf_gpiba": {
+    "n": 45,
+    "weak_tier_structural": 0,
+    "sensitivity": 1.0
+   }
+  },
+  "note": "Row removal cannot CREATE a weak-tier structural variant when the full-cohort cell is already 0. Valid as a check on the tier GRADIENT (refit), not on the screen's perfect recall."
+ },
+ "specificity_gain": {
+  "by_threshold": {
+   "t10": {
+    "specificity_energy_only": 0.433,
+    "specificity_convergent": 0.7,
+    "gain": 0.267,
+    "energy_only_cell_n": 8,
+    "energy_only_systems": 5,
+    "energy_only_distinct_residues": 7,
+    "energy_only_variants": [
+     "V384D",
+     "H718Y",
+     "A636P",
+     "G322D",
+     "G12D",
+     "R145G",
+     "R145Q",
+     "R53H"
+    ]
+   },
+   "t15": {
+    "specificity_energy_only": 0.6,
+    "specificity_convergent": 0.8,
+    "gain": 0.2,
+    "energy_only_cell_n": 6,
+    "energy_only_systems": 4,
+    "energy_only_distinct_residues": 5,
+    "energy_only_variants": [
+     "V384D",
+     "A636P",
+     "G322D",
+     "G12D",
+     "R145G",
+     "R145Q"
+    ]
+   },
+   "t20": {
+    "specificity_energy_only": 0.7,
+    "specificity_convergent": 0.867,
+    "gain": 0.167,
+    "energy_only_cell_n": 5,
+    "energy_only_systems": 3,
+    "energy_only_distinct_residues": 4,
+    "energy_only_variants": [
+     "A636P",
+     "G322D",
+     "G12D",
+     "R145G",
+     "R145Q"
+    ]
+   },
+   "t25": {
+    "specificity_energy_only": 0.8,
+    "specificity_convergent": 0.9,
+    "gain": 0.1,
+    "energy_only_cell_n": 3,
+    "energy_only_systems": 2,
+    "energy_only_distinct_residues": 2,
+    "energy_only_variants": [
+     "A636P",
+     "R145G",
+     "R145Q"
+    ]
+   },
+   "tSAP": {
+    "specificity_energy_only": 0.833,
+    "specificity_convergent": 0.9,
+    "gain": 0.067,
+    "energy_only_cell_n": 2,
+    "energy_only_systems": 2,
+    "energy_only_distinct_residues": 2,
+    "energy_only_variants": [
+     "A636P",
+     "R145G"
+    ]
+   }
+  },
+  "reference_t25_cluster_bootstrap_ci": [
+   0.0,
+   0.233
+  ],
+  "fraction_resamples_no_gain": 0.114
+ },
+ "evidence_restricted_views": {
+  "all": {
+   "n": 47,
+   "sensitivity": 1.0,
+   "specificity": 0.567,
+   "weak_tier_structural": 0,
+   "fisher_p": 6.85e-05
+  },
+  "E1_E3_only": {
+   "n": 42,
+   "sensitivity": 1.0,
+   "specificity": 0.56,
+   "weak_tier_structural": 0,
+   "fisher_p": 0.000121
+  },
+  "direct_or_coupled_only": {
+   "n": 40,
+   "sensitivity": 1.0,
+   "specificity": 0.565,
+   "weak_tier_structural": 0,
+   "fisher_p": 0.000107
+  }
+ },
+ "detection_auc": {
+  "energy": 0.861,
+  "tier": 0.89,
+  "combined_zsum": 0.947,
+  "delta_combined_minus_energy_ci": [
+   0.009,
+   0.156
+  ],
+  "delta_combined_minus_tier_ci": [
+   -0.008,
+   0.139
+  ],
+  "note": "Same-cohort, not externally validated. The tier's interface bonus is partly definitional for structural class (15/17), so the combination gain is not independent of ground truth."
+ }
+}

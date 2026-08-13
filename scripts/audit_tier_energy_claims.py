@@ -25,6 +25,8 @@ import sys
 REPO = pathlib.Path(__file__).resolve().parent.parent
 MS = REPO / "docs" / "COMAVI_manuscript_v22.md"
 JSON = REPO / "reference_outputs" / "COMAVI_tier_energy_gating.json"
+TC = REPO / "reference_outputs" / "COMAVI_tier_construction.json"
+SILENT = "structurally_silent"
 
 
 def section(text, start_marker, end_marker):
@@ -105,6 +107,43 @@ def main():
         (f"{abs(c['spearman_tier_vs_energy']):.3f}", "tier-energy Spearman"),
     ]
 
+    # --- construction verification (scripts/verify_tier_construction.py) -----
+    # These lock the corrected circularity claim. The section previously argued
+    # from mechanism CLASS that the interface bonus accounts for 6 of 17; the
+    # component recomputation shows it reaches 15 of 17. If that recomputation
+    # ever stops reproducing the shipped tiers, the claim is unsupported.
+    if TC.exists():
+        tc = json.loads(TC.read_text())
+        ib, ab = tc["interface_bonus_reach"], tc["screen_interface_bonus_zeroed"]
+        assert tc["reimplementation_fidelity"] == f"{tc['population_n']}/{tc['population_n']}", (
+            "verify_tier_construction.py no longer reproduces the shipped tier; "
+            "§3.12's ablation claim is unsupported until it does"
+        )
+        required += [
+            (f"{ib['structural_with_bonus']} of the {ib['structural_total']} structural variants "
+             f"receive a nonzero", "corrected interface-bonus reach"),
+            (f"{ib['by_class']['mixed_structural']} mixed-structural", "bonus reach by class (mixed)"),
+            (f"{ib['by_class']['ppi_destab_mechanism']} binding-only", "bonus reach by class (binding)"),
+            (f"{ib['by_class']['fold_mechanism']} fold-mechanism", "bonus reach by class (fold)"),
+            *[(v, f"structural variant without interface bonus: {v}")
+              for v in ib["structural_without_bonus"]],
+            (f"{ab['strong_structural']}/{ab['strong_structural'] + ab['weak_structural']} = "
+             f"{ab['sensitivity']:.3f}", "ablated sensitivity"),
+            (f"{ab['specificity']:.3f}", "ablated specificity"),
+            (f"Fisher p = {ab['fisher_p']:.4f}", "ablated Fisher p"),
+            (f"p = {ab['within_system_permutation_p']:.3f}", "ablated permutation p"),
+            *[(r["variant"], f"variant demoted by ablation: {r['variant']}")
+              for r in tc["variants_demoted_by_ablation"] if r["expected_mech_class"] != SILENT],
+        ]
+        # The sensitivity-invariance identity must never be reported as a finding.
+        forbidden_extra = [
+            ("without losing sensitivity", "sensitivity identity stated as an empirical result"),
+            ("at no cost in sensitivity", "sensitivity identity stated as an empirical result"),
+            ("no sensitivity cost", "sensitivity identity stated as an empirical result"),
+        ]
+    else:
+        tc, forbidden_extra = None, []
+
     # Stale literals distinctive enough that they cannot legitimately occur
     # anywhere in the paper.
     forbidden_global = [
@@ -134,7 +173,7 @@ def main():
     for needle, label in required:
         if flat(needle) not in fsec:
             fails.append(f"MISSING in §3.12: {label!r} -- expected literal {needle!r}")
-    for needle, label in forbidden_global:
+    for needle, label in forbidden_global + forbidden_extra:
         if flat(needle) in ftext:
             fails.append(f"STALE literal survives in manuscript: {label!r} -- {needle!r}")
     for needle, label in forbidden_in_section:
@@ -151,7 +190,7 @@ def main():
     for f in fails:
         print(f"  {f}")
     print(f"\n{len(required)} required literals, "
-          f"{len(forbidden_global) + len(forbidden_in_section)} forbidden literals, "
+          f"{len(forbidden_global) + len(forbidden_in_section) + len(forbidden_extra)} forbidden literals, "
           f"{len(fails)} failure(s)")
     sys.exit(1 if fails else 0)
 
