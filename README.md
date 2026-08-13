@@ -199,8 +199,18 @@ plus the 12-variant BRCA1-BRCT monomer-fold supplement; Pipeline 1, t = 2.5):
 
 | Metric | Value |
 |---|---|
-| structural_agreement | **0.76** (99/131; threshold sweep 0.72–0.76) |
-| mech_consistency | **0.72** (graded n=57) |
+| structural_agreement | **0.76** (99/130 on the graded population; threshold sweep 0.72–0.76) |
+| mech_consistency | **0.72** (0.7193, graded n=57) |
+
+Both headline metrics are reported on the same population — the 57 variants with a
+gradeable mechanism, excluding the two whose curated mechanism is unobservable on the
+deposited structure (`unobservable_variants()`). Scoring structural_agreement over all
+61 rows instead gives 99/131 = 0.756.
+
+Per-axis decomposition of structural_agreement (all 61 rows, so denominators sum to
+131 rather than 130): structural-evidence tier 34/47, monomer-fold ΔΔG 21/27,
+complex-fold ΔΔG 20/25, binding ΔΔG 24/32 — each axis between 0.72 and 0.80, i.e. no
+single axis carries the headline.
 
 Both arms of the benchmark are graded on the same metrics: the 49 PPI variants and the
 12-variant BRCA1-BRCT fold cohort are pooled, the latter contributing 10 graded mechanism

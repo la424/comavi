@@ -8,7 +8,10 @@
 > v7.1 grading-rubric correction; §18 records the v7.3 BRCT pooling that produced the current headline.**
 >
 > **CURRENT AUTHORITATIVE HEADLINE (t = 2.5, 61-variant canonical set) — see §18:**
-> mechanism-consistency **0.72** (0.7193, graded n = 57); structural agreement **0.76** (99/131 = 0.7557).
+> mechanism-consistency **0.72** (0.7193, graded n = 57); structural agreement **0.76**
+> (99/130 = 0.7615 on the same graded population; 99/131 = 0.7557 over all 61 rows, which is
+> the population the per-axis decomposition uses — tier 34/47, monomer 21/27, fold 20/25,
+> binding 24/32). Quote 99/130 as the headline and 99/131 only alongside the decomposition.
 > *Superseded, do not cite: 0.7234 / n=47 and 92/120 = 0.7667 (§15); 0.7083 / n=48 and 92/121 (§13).*
 > Canonical dataset: `scored_61var_canonical.csv`.
 >
