@@ -139,8 +139,14 @@ def main():
             (f"{ab['specificity']:.3f}", "ablated specificity"),
             (f"Fisher p = {ab['fisher_p']:.4f}", "ablated Fisher p"),
             (f"p = {ab['within_system_permutation_p']:.3f}", "ablated permutation p"),
-            *[(r["variant"], f"variant demoted by ablation: {r['variant']}")
-              for r in tc["variants_demoted_by_ablation"] if r["expected_mech_class"] != SILENT],
+            # Every demoted variant must be named, silent ones included. The
+            # earlier version of this audit excluded silent demotions, which is
+            # precisely how the manuscript came to report three demotions when
+            # the ablation produces four: the omitted variant (CALM1 D96V) is
+            # silent, and its single demotion is the whole apparent specificity
+            # gain. Excluding that class made the omission unauditable.
+            *[(r["variant"], f"variant demoted by ablation ({r['expected_mech_class']}): {r['variant']}")
+              for r in tc["all_demotions"]],
         ]
         # The sensitivity-invariance identity must never be reported as a finding.
         forbidden_extra = [
@@ -177,6 +183,33 @@ def main():
 
     fsec, ftext = flat(sec), flat(text)
     fails = []
+
+    # The demotion COUNT cannot be audited as a substring: "4 variants" occurs
+    # inside "Tier 3-4 variants", so a plain containment test passes even when
+    # the prose says three. Parse the number the prose actually states and
+    # compare it to the computed list. This is the check that would have caught
+    # the original three-vs-four error.
+    if tc is not None:
+        n_expected = len(tc["all_demotions"])
+        WORDS = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
+                 "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10}
+        m_dem = re.search(r"demotes\s+([A-Za-z]+|\d+)\s+variants", fsec)
+        if m_dem is None:
+            fails.append(
+                "MISSING in §3.12: the ablation sentence no longer states how many "
+                f"variants are demoted (expected {n_expected})"
+            )
+        else:
+            tok = m_dem.group(1).lower()
+            n_stated = WORDS.get(tok, int(tok) if tok.isdigit() else None)
+            if n_stated != n_expected:
+                fails.append(
+                    f"WRONG COUNT in §3.12: prose says {m_dem.group(1)!r} variants "
+                    f"demoted; the ablation demotes {n_expected} "
+                    f"({len(tc['structural_demotions'])} structural + "
+                    f"{len(tc['silent_demotions'])} silent: "
+                    f"{[r['variant'] for r in tc['all_demotions']]})"
+                )
     for needle, label in required:
         if flat(needle) not in fsec:
             fails.append(f"MISSING in §3.12: {label!r} -- expected literal {needle!r}")

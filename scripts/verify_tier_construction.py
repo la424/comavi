@@ -142,6 +142,20 @@ def exact_within_system_perm(pop, strong_col):
     return float(sum(p for s, p in tot.items() if s >= obs)), obs
 
 
+def _demotion_records(pop, structural=None):
+    """Variants demoted from strong to weak tier when the interface bonus is zeroed.
+
+    structural=True  -> ground-truth structural variants (each one a sensitivity loss)
+    structural=False -> ground-truth silent variants (each one a specificity gain)
+    structural=None  -> both, in one list
+    """
+    m = pop["strong_tier"] & ~pop["strong_no_iface"]
+    if structural is not None:
+        m &= pop["structural_gt"] if structural else ~pop["structural_gt"]
+    cols = ["variant", "system", "expected_mech_class", "comavi_tier", "tier_no_iface"]
+    return pop.loc[m, cols].sort_values("variant").to_dict("records")
+
+
 def screen_stats(pop, strong_col):
     S = pop["structural_gt"]
     a = int((pop[strong_col] & S).sum())
@@ -214,10 +228,15 @@ def main():
         },
         "screen_full_tier": screen_stats(pop, "strong_tier"),
         "screen_interface_bonus_zeroed": screen_stats(pop, "strong_no_iface"),
-        "variants_demoted_by_ablation": pop.loc[
-            pop["strong_tier"] & ~pop["strong_no_iface"],
-            ["variant", "system", "expected_mech_class", "comavi_tier", "tier_no_iface"],
-        ].to_dict("records"),
+        # Demotions are split by ground-truth class because the two halves carry
+        # opposite meanings: demoting a structural variant is a sensitivity LOSS,
+        # demoting a silent one is the entire apparent specificity GAIN. Reporting
+        # only the structural half makes the specificity rise look like a general
+        # improvement. Consumers must be able to reach either half without
+        # re-deriving the class filter.
+        "structural_demotions": _demotion_records(pop, structural=True),
+        "silent_demotions": _demotion_records(pop, structural=False),
+        "all_demotions": _demotion_records(pop, structural=None),
     }
 
     # ---- identity check 1: sensitivity invariance is forced, not observed -----
@@ -352,7 +371,11 @@ def main():
               f"{s['strong_structural'] + s['weak_structural']}) spec={s['specificity']} "
               f"fisher={s['fisher_p']} perm={s['within_system_permutation_p']}")
     print("demoted by ablation:",
-          [f"{r['variant']}({r['system']})" for r in out["variants_demoted_by_ablation"]])
+          f"{len(out['all_demotions'])} total = "
+          f"{len(out['structural_demotions'])} structural "
+          f"{[r['variant'] for r in out['structural_demotions']]} + "
+          f"{len(out['silent_demotions'])} silent "
+          f"{[r['variant'] for r in out['silent_demotions']]}")
     print("sensitivity removed by requiring strong tier:",
           out["sensitivity_invariance_is_identity"]["structural_variants_removed_by_requiring_strong_tier"])
     g = out["specificity_gain"]["by_threshold"]["t25"]

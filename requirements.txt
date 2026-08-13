@@ -1,7 +1,13 @@
-# COMAVI Python dependencies (Python 3.9+; developed on 3.14)
-# Pin exact versions for a frozen environment with: pip freeze > requirements.lock
+# COMAVI Python dependencies (developed and verified on Python 3.11)
+# Pin an exact environment with: pip freeze > requirements.lock
+#
+# Verification only needs pandas/numpy/scipy/openpyxl -- it reads the committed
+# stored inputs. biopython and pyyaml are needed to run the pipeline itself
+# (structure loading and config I/O). FoldX 5.1 is proprietary and must be
+# supplied separately; see README.
 pandas
 numpy
-biopython
+scipy
 openpyxl
+biopython
 pyyaml

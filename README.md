@@ -1,6 +1,7 @@
 # COMAVI — Complex-Aware Variant Impact Scoring
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21284083.svg)](https://doi.org/10.5281/zenodo.21284083)
+[![verify](https://github.com/la424/comavi/actions/workflows/verify.yml/badge.svg)](https://github.com/la424/comavi/actions/workflows/verify.yml)
 
 COMAVI is a FoldX-based structural variant-interpretation pipeline. Most structural
 variant-effect tools score a mutation against a single protein in isolation. But
@@ -200,6 +201,34 @@ python verification/verify_stage6.py \
 
 All three arguments are required. Expected result: `11/11` checks `[ OK ]`.
 See **`verification/README.md`** for what each check covers.
+
+### The re-deriving track, and why it is the one that matters
+
+Add `--canonical` to re-derive the scored table from the shipped scorer and compare
+it against the committed copy, rather than checking the committed copy against
+hardcoded expectations:
+
+```bash
+python verification/verify_stage6.py \
+  --intermediate inputs/intermediate/comavi_v7_results_with_nbhd.csv \
+  --am inputs/AM_variants_comavi_mechanism_test.xlsx \
+  --scripts-dir scripts \
+  --canonical reference_outputs/scored_61var_canonical.csv
+```
+
+Expected result: `41/41` checks `[ OK ]`.
+
+The 11-check track is a smoke test. Because it compares stored columns against
+expectations written by hand, it passes even when the shipped code can no longer
+regenerate the stored table — which is not hypothetical: a gating bug in the tier
+axis (a missing-value truthiness error that admitted single-chain BRCT rows into
+tier grading) once persisted here while every check reported success. Only the
+re-deriving track can detect a scorer/table divergence, so it runs on every push
+via `.github/workflows/verify.yml`, together with `verify_denominators.py`,
+`verify_tier_construction.py` and `verify_v30_reconciliation.py`.
+
+Run the re-deriving track after any change to the canonical table, the scorer,
+the tier formula, or the concordance logic.
 
 ## Benchmark results
 

@@ -53,7 +53,7 @@
   "fisher_p": 0.006546,
   "within_system_permutation_p": 0.1294
  },
- "variants_demoted_by_ablation": [
+ "structural_demotions": [
   {
    "variant": "E542K",
    "system": "pi3k",
@@ -74,11 +74,43 @@
    "expected_mech_class": "mixed_structural",
    "comavi_tier": "Tier 2",
    "tier_no_iface": "Tier 3"
-  },
+  }
+ ],
+ "silent_demotions": [
   {
    "variant": "D96V",
    "system": "cam_cav12",
    "expected_mech_class": "structurally_silent",
+   "comavi_tier": "Tier 2",
+   "tier_no_iface": "Tier 3"
+  }
+ ],
+ "all_demotions": [
+  {
+   "variant": "D96V",
+   "system": "cam_cav12",
+   "expected_mech_class": "structurally_silent",
+   "comavi_tier": "Tier 2",
+   "tier_no_iface": "Tier 3"
+  },
+  {
+   "variant": "E542K",
+   "system": "pi3k",
+   "expected_mech_class": "mixed_structural",
+   "comavi_tier": "Tier 2",
+   "tier_no_iface": "Tier 3"
+  },
+  {
+   "variant": "E545K",
+   "system": "pi3k",
+   "expected_mech_class": "mixed_structural",
+   "comavi_tier": "Tier 2",
+   "tier_no_iface": "Tier 3"
+  },
+  {
+   "variant": "W37Y",
+   "system": "hemoglobin_tetramer",
+   "expected_mech_class": "mixed_structural",
    "comavi_tier": "Tier 2",
    "tier_no_iface": "Tier 3"
   }

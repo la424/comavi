@@ -1,0 +1,71 @@
+name: verify
+
+# Runs the re-deriving verification track on every push and pull request.
+#
+# Why the --canonical flag is mandatory here rather than optional: the default
+# 11-check track compares stored columns against hardcoded expectations, so it
+# passes even when the shipped scorer can no longer regenerate the stored table.
+# That is not hypothetical -- it is exactly how a gating bug in the tier axis
+# survived in this repository while every public check reported success. The
+# canonical track re-derives the table from the scorer and compares, which is
+# the only configuration that can catch a scorer/table divergence.
+#
+# No FoldX: every job below reads the committed stored inputs. FoldX is needed
+# to regenerate those inputs from structures, not to verify them.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Re-deriving verification track (mandatory)
+        run: |
+          python verification/verify_stage6.py \
+            --intermediate inputs/intermediate/comavi_v7_results_with_nbhd.csv \
+            --am inputs/AM_variants_comavi_mechanism_test.xlsx \
+            --scripts-dir scripts \
+            --canonical reference_outputs/scored_61var_canonical.csv
+
+      - name: Denominator reconciliation
+        run: python scripts/verify_denominators.py
+
+      - name: Tier construction and interface-bonus ablation
+        run: python scripts/verify_tier_construction.py
+
+      - name: Reconciliation of the internal-validation numbers
+        run: python scripts/verify_v30_reconciliation.py
+
+      # The two audits below read manuscript prose. The manuscript is withheld
+      # until preprint/submission, so on a public clone they print an
+      # explanation and exit 0 rather than failing. They are included so the
+      # workflow does not silently stop covering them once the paper is public.
+      - name: Manuscript literal audits (skip cleanly when prose is absent)
+        run: |
+          python scripts/audit_evidence_claims.py
+          python scripts/audit_tier_energy_claims.py
+
+      - name: Confirm no regenerated output drifted from its committed copy
+        run: |
+          if ! git diff --quiet -- reference_outputs/; then
+            echo "::error::A verification script rewrote a file in reference_outputs/."
+            echo "The committed outputs no longer match what the shipped code produces."
+            git diff --stat -- reference_outputs/
+            exit 1
+          fi
+          echo "All regenerated outputs match their committed copies."
