@@ -10,8 +10,11 @@ Figure artifacts are resolved through the host artifact store when
 available, otherwise from a local figures/ directory.
 
 Usage:
-    python scripts/build_manuscript_docx.py docs/COMAVI_manuscript_v22.md \
-           docs/COMAVI_manuscript_v22.docx
+    python scripts/build_manuscript_docx.py <input.md> <output.docx>
+
+The manuscript sources themselves are withheld from this repository until
+preprint/submission; this converter is general and works on any markdown
+following the conventions above.
 """
 import json
 import re

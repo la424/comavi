@@ -242,8 +242,8 @@
   "rule": "F2 \u2014 both correct, different definitions, never reconciled; every use states which is in force"
  },
  "threshold_canonical": 2.5,
- "canonical_source": "/Users/lukearnce/mavis_release/reference_outputs/scored_61var_canonical.csv",
- "repo_commit": "8e8ea23",
+ "canonical_source": "reference_outputs/scored_61var_canonical.csv",
+ "repo_commit": "regenerate: git rev-parse --short HEAD",
  "canonical_sha256": "03f69f15c3961312739a6007cae84fa7edcc240220540b69dfbe80afbe85c975",
  "tier_gradient_note": "on the 61-variant canonical set restricted to pathogenic/benign with a tier assigned (n=49). The older 12/12, 13/16, 7/10, 2/6 gradient was the 44-variant PPI-only set and is SUPERSEDED.",
  "AM_labeled_n": 47,

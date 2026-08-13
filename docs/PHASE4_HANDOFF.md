@@ -45,7 +45,7 @@
 
 ### Prerequisites
 - Python 3.14 virtualenv at `~/comavi_v7/.venv/` with pandas, numpy, openpyxl, biopython, scikit-learn
-- FoldX 5.1 binary at `/Users/lukearnce/Downloads/foldx5_Mac_0/foldx_20270131` (path set in `comavi_v7/config.py`; edit if different)
+- FoldX 5.1 binary (proprietary; supply your own — see README). Set its path in `comavi_v7/config.py`.
 - Structure files in `inputs/raw/structures/` (AlphaFold monomer .pdb files + complex multimer PDBs)
 
 ### Phase 4 step-by-step

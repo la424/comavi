@@ -73,8 +73,9 @@ The reporting decision instead: keep the convention, report the fold arm at
 0.55 (n = 10), and name its four errors explicitly (V1736A and R755W as genuine
 misses; R1751Q and L1664P as sub-threshold measured destabilizations where
 FoldX agrees with the physics). The scale-compression result is reported in the
-Discussion as the reason the conventions differ. See
-docs/COMAVI_section_fold_arm_and_calibration.md.
+Discussion as the reason the conventions differ. The fold-arm convention, its
+0.55 (n = 10) operating point and the four named errors are documented in
+docs/COMAVI_v7_canonical_benchmark_ledger.md.
 """
 from __future__ import annotations
 

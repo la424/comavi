@@ -100,6 +100,15 @@ archive/                 development history — one-off derivation/grading scri
                           and superseded data; NOT part of the operating pipeline
 ```
 
+**Not in this repository:** the manuscript sources and the lab-meeting slides are
+withheld until preprint/submission. Nothing needed to reproduce the numbers depends
+on them — every value they report is regenerated from `reference_outputs/` by the
+scripts in `scripts/` and checked by `verification/`. Two audit scripts
+(`audit_evidence_claims.py`, `audit_tier_energy_claims.py`) exist to verify that the
+manuscript's literals match generated data; without the manuscript present they
+report `[SKIP]` and exit cleanly. The claims themselves are documented in
+`docs/COMAVI_v7_canonical_benchmark_ledger.md`.
+
 ## Installation
 
 ```bash

@@ -42,3 +42,12 @@ dist/
 # AHA fellowship working files — unrelated to the COMAVI methods repo
 AHA_docx_diagnostic/
 AHA_harmonized_citations/
+
+# Manuscript and presentation sources — withheld until preprint/submission.
+# The reproducibility package (pipeline, canonical outputs, ledger, audits) is
+# complete without them; see README. Do not commit these.
+COMAVI_manuscript_v*.md
+docs/COMAVI_manuscript_v*
+docs/COMAVI_section_*.md
+docs/COMAVI_outline_v*.md
+docs/COMAVI_lab_meeting.pptx
