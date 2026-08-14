@@ -2,28 +2,30 @@ cff-version: 1.2.0
 message: "If you use COMAVI, please cite it as below."
 title: "COMAVI: Complex-Aware Variant Impact Scoring"
 abstract: >-
-  A FoldX-based pipeline for interpreting protein variants in multimeric context.
-  COMAVI evaluates variant disruptiveness in the appropriate protein complex and
-  resolves the specific mechanism of disruption via a three-axis delta-delta-G
-  framework (monomer fold / fold-in-complex / binding interface), with pLDDT
-  gating and a four-way concordance framework. It reports structural disruption
-  and its mechanism, separately from pathogenicity.
+  A FoldX-based pipeline for interpreting missense variants in multimeric context. COMAVI
+  evaluates three energetic outputs—isolated-subunit folding, assembly-context folding, and
+  binding-interface disruption—and reports an energy-free structural-context tier. It separates
+  structural mechanism and context from pathogenicity and includes a frozen 61-variant benchmark
+  and reproducibility suite.
 authors:
-  - family-names: Arnce
-    given-names: Luke
-    affiliation: "Indiana University School of Medicine"
-    orcid: "https://orcid.org/0000-0002-1259-6468"
-  - family-names: Ware
-    given-names: Stephanie M.
-    affiliation: "Indiana University School of Medicine"
+- family-names: Arnce
+  given-names: Luke
+  affiliation: "Indiana University School of Medicine"
+  orcid: "https://orcid.org/0000-0002-1259-6468"
+- family-names: Ware
+  given-names: Stephanie M.
+  affiliation: "Indiana University School of Medicine"
 license: MIT
 repository-code: "https://github.com/la424/comavi"
 doi: "10.5281/zenodo.21284083"
-version: "2.0-methods"
-date-released: "2026-07-28"
+version: "2.1-methods"
+date-released: "2026-08-14"
 keywords:
-  - variant interpretation
-  - FoldX
-  - AlphaFold
-  - protein-protein interaction
-  - congenital heart disease
+- missense variant interpretation
+- FoldX
+- AlphaFold
+- protein-protein interaction
+- protein stability
+- protein complexes
+- structural bioinformatics
+type: software
