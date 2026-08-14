@@ -309,10 +309,35 @@ def main():
             .groupby("system").agg(n=("fires", "size"), f=("fires", "sum"), fs=("_fs", "sum")))
     _P = _per.reindex(systems).fillna(0).astype(int)      # systems with no silent rows contribute 0
     _N, _F, _FS = _P["n"].values, _P["f"].values, _P["fs"].values
-    _idx = rng.integers(0, len(systems), size=(200000, len(systems)))
-    _n = _N[_idx].sum(1)
-    _num = (_F[_idx] - _FS[_idx]).sum(1)
-    gains = _num[_n > 0] / _n[_n > 0]
+    # One code path computes the gains, so the self-check below exercises the
+    # SAME function the reported numbers come from. (A check that re-derives the
+    # formula in its own expression is worthless: it passes while the line that
+    # actually runs is broken. That mistake was made here once and caught by a
+    # negative control, hence this structure.)
+    def _gains_from(idx):
+        _n = _N[idx].sum(1)
+        _num = (_F[idx] - _FS[idx]).sum(1)
+        return _num[_n > 0] / _n[_n > 0]
+
+    # The identity is a claim about this code, so it is tested, not asserted in
+    # a comment: 40 draws are recomputed the slow way (rebuild the resampled
+    # frame, take the two specificities) and must agree with _gains_from to
+    # floating point. If a future edit breaks the integer form, this fails here
+    # rather than silently shifting a number the manuscript quotes.
+    _chk = np.random.default_rng(20260814)
+    for _ in range(40):
+        _pick = _chk.integers(0, len(systems), len(systems))
+        _R = pd.concat([_sil[_sil["system"] == systems[i]] for i in _pick], ignore_index=True)
+        if len(_R) == 0:
+            continue
+        _slow = (float((~(_R["fires"] & _R["strong_tier"])).mean())
+                 - float((~_R["fires"]).mean()))
+        _fast = _gains_from(_pick.reshape(1, -1))
+        assert len(_fast) == 1 and abs(_slow - _fast[0]) < 1e-12, (
+            f"vectorized bootstrap diverged from the reference loop: "
+            f"{_slow!r} vs {_fast!r}")
+
+    gains = _gains_from(rng.integers(0, len(systems), size=(200000, len(systems))))
     out["specificity_gain"] = {
         "by_threshold": gain_rows,
         # Two decimals: this is the reportable precision (see draw-count note
