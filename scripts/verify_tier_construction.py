@@ -356,17 +356,35 @@ def main():
     }
 
     # ---- evidence-restricted views -----------------------------------------
+    # SEMANTICS ARE LOAD-BEARING AND WERE PREVIOUSLY AMBIGUOUS. A variant commits
+    # one to three axes, each with its own evidence_type/directness row in the
+    # ledger, so "restrict to E1-E3" has two non-equivalent readings:
+    #   ANY  -- at least one committed axis is E1-E3  (permissive; n = 42)
+    #   ALL  -- every committed axis is E1-E3         (strict;     n = 27)
+    # The key was formerly named "E1_E3_only" while computing ANY, which reads as
+    # the strict view and differs from it by 15 variants and 0.04 specificity.
+    # Prose that says "all committed axes" must quote the ALL row. Both are
+    # emitted under unambiguous names; the old names are retained as aliases of
+    # the ANY view so existing consumers keep their meaning.
     led = pd.read_csv(LEDGER)
     strict = {"E1_quantitative_energetic", "E2_quantitative_functional", "E3_qualitative_experimental"}
+    dircpl = {"direct", "coupled"}
     best = (led.groupby(["system", "variant"])
-            .agg(has_e13=("evidence_type", lambda s: bool(set(s) & strict)),
-                 direct=("evidence_directness", lambda s: bool({"direct", "coupled"} & set(s))))
+            .agg(any_e13=("evidence_type", lambda s: bool(set(s) & strict)),
+                 all_e13=("evidence_type", lambda s: set(s) <= strict),
+                 any_direct=("evidence_directness", lambda s: bool(dircpl & set(s))),
+                 all_direct=("evidence_directness", lambda s: set(s) <= dircpl))
             .reset_index())
     pv = pop.merge(best, on=["system", "variant"], how="left")
     ev = {}
     for lab, mask in [("all", pd.Series(True, index=pv.index)),
-                      ("E1_E3_only", pv["has_e13"].fillna(False)),
-                      ("direct_or_coupled_only", pv["direct"].fillna(False))]:
+                      ("any_axis_E1_E3", pv["any_e13"].fillna(False)),
+                      ("all_axes_E1_E3", pv["all_e13"].fillna(False)),
+                      ("any_axis_direct_or_coupled", pv["any_direct"].fillna(False)),
+                      ("all_axes_direct_or_coupled", pv["all_direct"].fillna(False)),
+                      # Back-compatible aliases: these names historically meant ANY.
+                      ("E1_E3_only", pv["any_e13"].fillna(False)),
+                      ("direct_or_coupled_only", pv["any_direct"].fillna(False))]:
         sub = pv[mask]
         a = int((sub["strong_tier"] & sub["structural_gt"]).sum())
         b = int((~sub["strong_tier"] & sub["structural_gt"]).sum())
@@ -374,8 +392,24 @@ def main():
         dd = int((~sub["strong_tier"] & ~sub["structural_gt"]).sum())
         ev[lab] = {"n": len(sub), "sensitivity": round(a / (a + b), 3),
                    "specificity": round(dd / (c + dd), 3), "weak_tier_structural": b,
-                   "fisher_p": float(f"{fisher_exact([[a, c], [b, dd]])[1]:.3g}")}
+                   "fisher_p": float(f"{fisher_exact([[a, c], [b, dd]])[1]:.3g}"),
+                   "quantifier": ("n/a" if lab == "all"
+                                  else "all" if lab.startswith("all_") else "any")}
+    assert ev["E1_E3_only"]["n"] == ev["any_axis_E1_E3"]["n"], "alias drifted from ANY view"
+    assert ev["direct_or_coupled_only"]["n"] == ev["any_axis_direct_or_coupled"]["n"], (
+        "alias drifted from ANY view")
+    assert ev["all_axes_E1_E3"]["n"] < ev["any_axis_E1_E3"]["n"], (
+        "ALL view is not a strict subset of ANY -- quantifier logic is wrong")
     out["evidence_restricted_views"] = ev
+    # A third sensitivity view -- "fully context-representable" -- is described in
+    # draft prose but CANNOT be regenerated: neither the evidence ledger nor the
+    # canonical scored table carries a context-representability field, so no
+    # number for it is emitted here and none may be quoted as gated.
+    out["evidence_restricted_views_unavailable"] = {
+        "context_representable_only": (
+            "not computable from shipped data; no context-representability column "
+            "exists in COMAVI_evidence_ledger.csv or scored_61var_canonical.csv")
+    }
 
     # ---- same-cohort structural-mechanism detection AUCs --------------------
     tiern = {"Tier 1": 1, "Tier 2": 2, "Tier 3": 3, "Tier 4": 4}

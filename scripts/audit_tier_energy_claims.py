@@ -167,11 +167,49 @@ def main():
             *[(r["variant"], f"variant demoted by ablation ({r['expected_mech_class']}): {r['variant']}")
               for r in tc["all_demotions"]],
         ]
+        # Evidence-restricted sensitivity views. Gated CONDITIONALLY on which
+        # quantifier the prose commits to, because "restrict to E1-E3" has two
+        # non-equivalent readings that differ by 15 variants (see the semantics
+        # note in verify_tier_construction.py). A draft saying "all committed
+        # axes" must quote the ALL row; one saying "at least one axis" the ANY
+        # row. Hardcoding either would fail the other legitimate wording.
+        # Each entry: (ALL-quantifier trigger, ANY-quantifier trigger, keys).
+        # BOTH triggers must be specific to a restricted-view sentence. An earlier
+        # version keyed the ANY branch on the bare word "committed", which occurs
+        # throughout the evidence section, so the gate demanded restricted-view
+        # numbers from a manuscript that never claimed the view at all.
+        erv = tc.get("evidence_restricted_views", {})
+        for all_trig, any_trig, allkey, anykey in [
+            ("committed axes are all", "at least one committed axis",
+             "all_axes_E1_E3", "any_axis_E1_E3"),
+            ("every committed axis to be direct or coupled",
+             "any committed axis is direct or coupled",
+             "all_axes_direct_or_coupled", "any_axis_direct_or_coupled"),
+        ]:
+            # Trigger on `sec`, not `text`: required literals are searched inside
+            # §3.12, so a trigger found elsewhere in the paper would demand
+            # numbers in a section that never makes the claim.
+            key = (allkey if all_trig in sec
+                   else anykey if any_trig in sec else None)
+            if key and key in erv:
+                v = erv[key]
+                required += [
+                    (f"n = {v['n']}", f"{key} cohort size"),
+                    (f"{v['specificity']:.3f}", f"{key} specificity"),
+                ]
+        # A "context-representable" view is not computable from shipped data, so
+        # no number may be attributed to it. These literals were quoted in a
+        # circulated draft; they are ungated by construction and must not appear.
+        ungated_context_view = [
+            ("n = 45", "ungated context-representable cohort size"),
+            ("0.571", "ungated context-representable specificity"),
+        ]
         # The sensitivity-invariance identity must never be reported as a finding.
         forbidden_extra = [
             ("without losing sensitivity", "sensitivity identity stated as an empirical result"),
             ("at no cost in sensitivity", "sensitivity identity stated as an empirical result"),
             ("no sensitivity cost", "sensitivity identity stated as an empirical result"),
+            *ungated_context_view,
         ]
     else:
         tc, forbidden_extra = None, []

@@ -290,22 +290,60 @@
    "sensitivity": 1.0,
    "specificity": 0.567,
    "weak_tier_structural": 0,
-   "fisher_p": 6.85e-05
+   "fisher_p": 6.85e-05,
+   "quantifier": "n/a"
+  },
+  "any_axis_E1_E3": {
+   "n": 42,
+   "sensitivity": 1.0,
+   "specificity": 0.56,
+   "weak_tier_structural": 0,
+   "fisher_p": 0.000121,
+   "quantifier": "any"
+  },
+  "all_axes_E1_E3": {
+   "n": 27,
+   "sensitivity": 1.0,
+   "specificity": 0.6,
+   "weak_tier_structural": 0,
+   "fisher_p": 0.00111,
+   "quantifier": "all"
+  },
+  "any_axis_direct_or_coupled": {
+   "n": 40,
+   "sensitivity": 1.0,
+   "specificity": 0.565,
+   "weak_tier_structural": 0,
+   "fisher_p": 0.000107,
+   "quantifier": "any"
+  },
+  "all_axes_direct_or_coupled": {
+   "n": 25,
+   "sensitivity": 1.0,
+   "specificity": 0.615,
+   "weak_tier_structural": 0,
+   "fisher_p": 0.00165,
+   "quantifier": "all"
   },
   "E1_E3_only": {
    "n": 42,
    "sensitivity": 1.0,
    "specificity": 0.56,
    "weak_tier_structural": 0,
-   "fisher_p": 0.000121
+   "fisher_p": 0.000121,
+   "quantifier": "any"
   },
   "direct_or_coupled_only": {
    "n": 40,
    "sensitivity": 1.0,
    "specificity": 0.565,
    "weak_tier_structural": 0,
-   "fisher_p": 0.000107
+   "fisher_p": 0.000107,
+   "quantifier": "any"
   }
+ },
+ "evidence_restricted_views_unavailable": {
+  "context_representable_only": "not computable from shipped data; no context-representability column exists in COMAVI_evidence_ledger.csv or scored_61var_canonical.csv"
  },
  "detection_auc": {
   "energy": 0.861,
