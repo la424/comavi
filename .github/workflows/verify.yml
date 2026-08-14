@@ -51,7 +51,12 @@ jobs:
       - name: Reconciliation of the internal-validation numbers
         run: python scripts/verify_v30_reconciliation.py
 
-      # The two audits below read manuscript prose. The manuscript is withheld
+      # Self-tests for the shared literal matcher. These need no manuscript and
+      # so run on every clone, public or not.
+      - name: Literal matcher self-tests
+        run: python scripts/audit_match.py
+
+      # The audits below read manuscript prose. The manuscript is withheld
       # until preprint/submission, so on a public clone they print an
       # explanation and exit 0 rather than failing. They are included so the
       # workflow does not silently stop covering them once the paper is public.
@@ -59,6 +64,13 @@ jobs:
         run: |
           python scripts/audit_evidence_claims.py
           python scripts/audit_tier_energy_claims.py
+
+      # An audit that passes on correct prose proves nothing. This mutation-tests
+      # every gate: corrupt one value at a time and require the audit to reject
+      # it. Measured at 45/45 non-binding before the matcher fix, so it guards a
+      # property that has already failed in this repo.
+      - name: Audits actually bind their values (mutation test)
+        run: python scripts/verify_audit_binding.py
 
       - name: Confirm no regenerated output drifted from its committed copy
         run: |

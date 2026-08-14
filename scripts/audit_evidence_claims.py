@@ -12,6 +12,9 @@ import json
 import pathlib
 import sys
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from audit_match import check_literal, weak_needle  # noqa: E402
+
 REPO = pathlib.Path(__file__).resolve().parent.parent
 MS = REPO / "docs" / "COMAVI_manuscript_v22.md"
 LED = REPO / "reference_outputs" / "COMAVI_evidence_ledger_summary.json"
@@ -123,10 +126,21 @@ def main() -> int:
         (f"{tier['specificity_ci'][0]}", "screen specificity CI lower bound"),
     ]
 
-    fails = [label for needle, label in checks if needle not in text]
+    # Boundary-aware matching (see scripts/audit_match.py): a plain `needle in
+    # text` test passes when prose states a MORE precise value than the data
+    # supports, because "0.903" is contained in "0.9039". Mutation-testing found
+    # every digit-ending gate here non-binding under plain containment.
+    fails = []
     for needle, label in checks:
-        if needle not in text:
-            print(f"MISSING [{label}]: {needle!r}", file=sys.stderr)
+        why = weak_needle(needle)
+        if why is not None:
+            print(f"UNGATEABLE [{label}]: {why}", file=sys.stderr)
+            fails.append(label)
+            continue
+        problem = check_literal(text, needle)
+        if problem is not None:
+            print(f"MISSING [{label}]: {problem}", file=sys.stderr)
+            fails.append(label)
 
     # Forbidden: the retired prose that claimed evidence grading without data.
     forbidden = [

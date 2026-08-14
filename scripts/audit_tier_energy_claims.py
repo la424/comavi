@@ -22,6 +22,9 @@ import pathlib
 import re
 import sys
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from audit_match import check_literal, weak_needle  # noqa: E402
+
 REPO = pathlib.Path(__file__).resolve().parent.parent
 MS = REPO / "docs" / "COMAVI_manuscript_v22.md"
 JSON = REPO / "reference_outputs" / "COMAVI_tier_energy_gating.json"
@@ -76,10 +79,16 @@ def main():
 
     required = [
         # --- population ---
-        (f"{j['population_n']} ", "population size"),
+        (f"Across the {j['population_n']} tier-carrying variants", "population size"),
         # --- marginal screen: the section's headline ---
         (f"{m['strong_structural']} structurally-mechanistic", "marginal structural count"),
-        (f"{m['weak_structural']}", "marginal weak-tier structural count"),
+        # The zero cell is the section's core claim, so it must be gated on the
+        # sentence that asserts it. A bare "0" needle matched inside every
+        # decimal in the section and constrained nothing.
+        (f"none of the {m['weak_n']} Tier 3\u20134 variants has a structural mechanism"
+         if m["weak_structural"] == 0 else
+         f"{m['weak_structural']} of the {m['weak_n']} Tier 3\u20134 variants",
+         "marginal weak-tier structural count (zero cell)"),
         (f"{m['strong_structural']}/{m['strong_structural']}", "recall as fraction"),
         (f"{m['sensitivity_ci'][0]:.3f}", "recall CI lower"),
         (f"{m['specificity']:.3f}", "specificity"),
@@ -98,7 +107,7 @@ def main():
         (f"+{m['cluster_bootstrap_rate_diff_ci'][1]:.3f}", "cluster bootstrap CI upper"),
         # --- recall decomposition ---
         (f"{m['structural_by_class']['ppi_destab_mechanism']} of the {m['strong_structural']}", "interface-bonus share"),
-        (f"{m['non_ppi_structural_n']}", "non-PPI structural count"),
+        (f"remaining {m['non_ppi_structural_n']} reach Tier", "non-PPI structural count"),
         (f"{m['structural_by_class']['mixed_structural']} mixed-structural", "mixed-structural count"),
         (f"{m['fold_mechanism_n']} fold-mechanism", "fold-mechanism count"),
         # --- stratified sweep table ---
@@ -220,15 +229,49 @@ def main():
                     f"{len(tc['silent_demotions'])} silent: "
                     f"{[r['variant'] for r in tc['all_demotions']]})"
                 )
+    # Boundary-aware matching (see scripts/audit_match.py). Plain containment
+    # cannot see prose that overstates precision -- "0.757" sits inside
+    # "0.7571" -- and mutation-testing found all 35 digit-ending gates below
+    # non-binding before this change. `weak_needle` rejects needles that carry
+    # no context to gate ("0", "11"), which must be given surrounding prose.
     for needle, label in required:
-        if flat(needle) not in fsec:
-            fails.append(f"MISSING in §3.12: {label!r} -- expected literal {needle!r}")
+        why = weak_needle(needle)
+        if why is not None:
+            fails.append(f"UNGATEABLE §3.12 check {label!r}: {why}")
+        else:
+            problem = check_literal(fsec, flat(needle))
+            if problem is not None:
+                fails.append(f"BAD LITERAL in §3.12: {label!r} -- {problem}")
     for needle, label in forbidden_global + forbidden_extra:
         if flat(needle) in ftext:
             fails.append(f"STALE literal survives in manuscript: {label!r} -- {needle!r}")
     for needle, label in forbidden_in_section:
         if flat(needle) in fsec:
             fails.append(f"STALE literal survives in §3.12: {label!r} -- {needle!r}")
+
+    # --- propagation: the same screen restated OUTSIDE §3.12 ---
+    # The section gate above deliberately reads only §3.12, so a headline value
+    # copied into the Abstract or Discussion was gated nowhere. No audit read the
+    # abstract at all until this block. Needles here carry surrounding prose so a
+    # coincidental digit collision with an unrelated quantity (the threshold
+    # sweep also produces 0.600, structural agreement also produces 0.757)
+    # cannot satisfy them.
+    fabs = flat(section(text, "## Abstract", "## 1. Introduction"))
+    propagated = [
+        (f"{m['specificity']:.3f} specificity", "screen specificity restated in Abstract"),
+        (f"all {m['strong_structural']} structurally-mechanistic variants",
+         "screen recall restated in Abstract"),
+        (f"none of the {m['weak_n']} Tier 3\u20134 variants",
+         "screen zero cell restated in Abstract"),
+    ]
+    for needle, label in propagated:
+        why = weak_needle(needle)
+        if why is not None:
+            fails.append(f"UNGATEABLE Abstract check {label!r}: {why}")
+            continue
+        problem = check_literal(fabs, flat(needle))
+        if problem is not None:
+            fails.append(f"BAD LITERAL in Abstract: {label!r} -- {problem}")
 
     # Structural invariant the prose asserts: the stratified weak cells are
     # subsets of a marginal zero cell. If that ever stops holding, the prose's
@@ -239,7 +282,8 @@ def main():
 
     for f in fails:
         print(f"  {f}")
-    print(f"\n{len(required)} required literals, "
+    print(f"\n{len(required)} required literals in §3.12, "
+          f"{len(propagated)} propagated into the Abstract, "
           f"{len(forbidden_global) + len(forbidden_in_section) + len(forbidden_extra)} forbidden literals, "
           f"{len(fails)} failure(s)")
     sys.exit(1 if fails else 0)
