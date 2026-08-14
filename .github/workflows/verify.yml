@@ -24,6 +24,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # verify_provenance_pins.py resolves commit hashes cited in shipped
+          # files against origin/main.  The default depth=1 checkout has no
+          # ancestry, so that check would skip rather than run.
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:
@@ -70,6 +75,13 @@ jobs:
         run: |
           python scripts/audit_evidence_claims.py
           python scripts/audit_tier_energy_claims.py
+
+      # Numeric audits cannot see this class of defect: a commit hash cited in
+      # a shipped file that a reader cannot fetch. No number changes when a
+      # history rewrite orphans a pinned commit, so every other check passes
+      # while the reproduction instruction is dead. Requires fetch-depth: 0.
+      - name: Provenance pins resolve for a reader
+        run: python scripts/verify_provenance_pins.py
 
       # An audit that passes on correct prose proves nothing. This mutation-tests
       # every gate: corrupt one value at a time and require the audit to reject
