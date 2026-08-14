@@ -247,7 +247,9 @@
   "fold_mechanism_n": 2,
   "fold_mechanism_all_strong_tier": true,
   "fisher_p": 6.851e-05,
-  "within_system_permutation_p": 0.0097,
+  "within_system_permutation_p": 0.0095,
+  "within_system_permutation_p_monte_carlo_check": 0.0097,
+  "within_system_permutation_method": "exact (convolved hypergeometrics)",
   "cluster_bootstrap_rate_diff_ci": [
    0.3448,
    0.75

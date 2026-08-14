@@ -16,6 +16,8 @@ REPO = pathlib.Path(__file__).resolve().parent.parent
 MS = REPO / "docs" / "COMAVI_manuscript_v22.md"
 LED = REPO / "reference_outputs" / "COMAVI_evidence_ledger_summary.json"
 STRAT = REPO / "reference_outputs" / "COMAVI_evidence_stratified_agreement.json"
+LEDGER = REPO / "reference_outputs" / "COMAVI_numbers_ledger.json"
+TIER = REPO / "reference_outputs" / "COMAVI_tier_construction.json"
 
 E1 = "E1_quantitative_energetic"
 E2 = "E2_quantitative_functional"
@@ -36,6 +38,8 @@ def main() -> int:
     text = MS.read_text()
     led = json.loads(LED.read_text())
     st = json.loads(STRAT.read_text())
+    nl = json.loads(LEDGER.read_text())
+    tier = json.loads(TIER.read_text())["screen_full_tier"]
     typ, dirn = led["by_evidence_type"], led["by_directness"]
     acc, crude, strat = st["accounting"], st["crude"], st["stratified"]
     by_type = st["by_evidence_type"]
@@ -102,6 +106,21 @@ def main() -> int:
          "E2 agreement"),
         (f"{round(led['frac_inferred']*100)}% of committed axes are inferred",
          "limitation inferred pct"),
+        # ---- §3.14 the AlphaMissense comparison must state BOTH AUCs.
+        # The accuracy gap is the premise of the orthogonality argument, not a
+        # concession to it: quoting AM's 0.903 while dropping the tier's 0.769
+        # turns an honest comparison into an unfalsifiable claim of
+        # complementarity. A v30-lineage draft did exactly that and passed every
+        # check, because these two literals were gated only in the deck audit.
+        (f"{nl['AM_auc']}", "AlphaMissense AUC"),
+        (f"{nl['tier_auc_on_AM_set']}", "tier AUC on the AM set (the gap)"),
+        # ---- §3.12 tier screen: the system-level conditioning is what makes the
+        # perfect-recall screen more than a small-sample accident. Report the
+        # EXACT enumerated permutation p from verify_tier_construction.py, never
+        # the 20k Monte-Carlo estimate in analyze_tier_energy_gating.py.
+        (f"{tier['within_system_permutation_p']}", "exact within-system permutation p"),
+        (f"{tier['sensitivity_ci'][0]}", "screen sensitivity CI lower bound"),
+        (f"{tier['specificity_ci'][0]}", "screen specificity CI lower bound"),
     ]
 
     fails = [label for needle, label in checks if needle not in text]

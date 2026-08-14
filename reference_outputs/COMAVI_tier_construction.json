@@ -274,9 +274,15 @@
   },
   "reference_t25_cluster_bootstrap_ci": [
    0.0,
-   0.233
+   0.24
   ],
-  "fraction_resamples_no_gain": 0.114
+  "reference_t25_cluster_bootstrap_ci_raw_3dp": [
+   0.0,
+   0.24
+  ],
+  "cluster_bootstrap_n_draws": 200000,
+  "fraction_resamples_no_gain": 0.1145,
+  "fraction_resamples_no_gain_pct_reportable": 11
  },
  "evidence_restricted_views": {
   "all": {
@@ -306,12 +312,12 @@
   "tier": 0.89,
   "combined_zsum": 0.947,
   "delta_combined_minus_energy_ci": [
-   0.009,
-   0.156
+   0.011,
+   0.159
   ],
   "delta_combined_minus_tier_ci": [
    -0.008,
-   0.139
+   0.14
   ],
   "note": "Same-cohort, not externally validated. The tier's interface bonus is partly definitional for structural class (15/17), so the combination gain is not independent of ground truth."
  }

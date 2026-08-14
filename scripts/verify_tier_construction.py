@@ -287,22 +287,47 @@ def main():
             "energy_only_variants": eo["variant"].tolist(),
         }
     ref = pop.assign(fires=pop["p1_ddg_concordance_t25"].isin(FIRING_LABELS))
-    gains = []
-    for _ in range(4000):
-        pick = rng.choice(systems, len(systems), replace=True)
-        R = pd.concat([ref[ref["system"] == s] for s in pick], ignore_index=True)
-        sil = R[~R["structural_gt"]]
-        if len(sil) == 0:
-            continue
-        spec_energy = float((~sil["fires"]).mean())
-        spec_convergent = float((~(sil["fires"] & sil["strong_tier"])).mean())
-        gains.append(spec_convergent - spec_energy)
-    gains = np.array(gains)
+    # 200,000 draws, not 4,000. The gain is a ratio of small integers, so its
+    # bootstrap distribution is discrete and the 97.5th percentile sits between
+    # adjacent atoms (6/25 = 0.240, 7/29 = 0.241, 8/33 = 0.242). Measured seed
+    # spread of the upper bound: 0.017 at 4,000 draws, 0.003 at 20,000, 0.001 at
+    # 200,000. The manuscript had quoted the low end of the 4,000-draw noise
+    # band (+0.233) as though it were the estimate. The no-gain FRACTION is the
+    # binding constraint on draw count, not the bound: at 20,000 draws it lands
+    # on 0.1096-0.1177 and so rounds to 11% or 12% depending on seed, while at
+    # 200,000 it is 0.1135-0.1147 and rounds to 11% for every seed. Reported
+    # precision is therefore two decimals on the interval and a whole percent
+    # on the fraction; the third decimal of either is not reportable.
+    # Vectorized, and algebraically identical to the per-draw loop it replaces:
+    #   gain = (1 - fs/n) - (1 - f/n) = (f - fs)/n
+    # over the resampled silent rows, where n counts silent rows, f those whose
+    # energy rule fires, and fs those that fire AND are strong-tier. Only these
+    # three per-system integers matter, so a draw is a sum over sampled systems.
+    # The loop form took >10 min at 20,000 draws; this takes under a second.
+    _sil = ref[~ref["structural_gt"]]
+    _per = (_sil.assign(_fs=_sil["fires"] & _sil["strong_tier"])
+            .groupby("system").agg(n=("fires", "size"), f=("fires", "sum"), fs=("_fs", "sum")))
+    _P = _per.reindex(systems).fillna(0).astype(int)      # systems with no silent rows contribute 0
+    _N, _F, _FS = _P["n"].values, _P["f"].values, _P["fs"].values
+    _idx = rng.integers(0, len(systems), size=(200000, len(systems)))
+    _n = _N[_idx].sum(1)
+    _num = (_F[_idx] - _FS[_idx]).sum(1)
+    gains = _num[_n > 0] / _n[_n > 0]
     out["specificity_gain"] = {
         "by_threshold": gain_rows,
-        "reference_t25_cluster_bootstrap_ci": [round(float(np.percentile(gains, 2.5)), 3),
-                                              round(float(np.percentile(gains, 97.5)), 3)],
-        "fraction_resamples_no_gain": round(float((gains <= 0).mean()), 3),
+        # Two decimals: this is the reportable precision (see draw-count note
+        # above). The 3-dp raw values are kept alongside for provenance only and
+        # must not be quoted in prose.
+        "reference_t25_cluster_bootstrap_ci": [round(float(np.percentile(gains, 2.5)), 2),
+                                               round(float(np.percentile(gains, 97.5)), 2)],
+        "reference_t25_cluster_bootstrap_ci_raw_3dp": [round(float(np.percentile(gains, 2.5)), 3),
+                                                       round(float(np.percentile(gains, 97.5)), 3)],
+        "cluster_bootstrap_n_draws": 200000,
+        # 4 dp, not 3: the value sits at ~0.1147, and a 3-dp store (0.115)
+        # double-rounds to 12% when a consumer multiplies by 100, while the
+        # unrounded value is 11%. Prose quotes the whole percent below.
+        "fraction_resamples_no_gain": round(float((gains <= 0).mean()), 4),
+        "fraction_resamples_no_gain_pct_reportable": round(float((gains <= 0).mean()) * 100),
     }
 
     # ---- evidence-restricted views -----------------------------------------

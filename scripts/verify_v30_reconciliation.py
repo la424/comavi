@@ -167,6 +167,19 @@ def main():
     check("bootstrap CI low", round(float(np.percentile(gains, 2.5)), 5), 0.0)
     check("bootstrap CI high", round(float(np.percentile(gains, 97.5)), 5), 0.24242)
     check("fraction zero-or-negative gain", round(float((gains <= 0).mean()), 5), 0.11355)
+    # These 5-dp values are an exact-reproduction check on THIS script's pinned
+    # seed and draw count -- they are not reportable precision and must never be
+    # quoted in prose. verify_tier_construction.py owns the reportable figures
+    # (2 dp on the interval, whole percent on the fraction); assert the two
+    # independent estimators still agree there, so neither can drift unnoticed.
+    _sg = json.loads((REPO / "reference_outputs" / "COMAVI_tier_construction.json")
+                     .read_text())["specificity_gain"]
+    check("agrees with canonical CI high (2 dp)",
+          round(float(np.percentile(gains, 97.5)), 2),
+          _sg["reference_t25_cluster_bootstrap_ci"][1])
+    check("agrees with canonical no-gain pct",
+          round(float((gains <= 0).mean()) * 100),
+          _sg["fraction_resamples_no_gain_pct_reportable"])
 
     print("\nheadline agreement decomposition")
     axis_n, axis_d = {}, {}

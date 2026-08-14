@@ -60,6 +60,11 @@ def main():
     text = MS.read_text()
     sec = section(text, "### 3.12 ", "### 3.13 ")
 
+    # The specificity-gain bootstrap lives in tier_construction.json, not the
+    # gating output. It was ungated in prose until now, which is how a stale
+    # 4,000-draw bound (+0.233) survived in §3.12 after the estimator moved to
+    # 20,000 draws (+0.24). Gate the reportable 2-dp interval, never the 3-dp raw.
+    sg = json.loads(TC.read_text())["specificity_gain"]
     m = j["marginal_tier_screen"]
     c = j["classifier"]
     sw = j["sweep"]
@@ -84,6 +89,11 @@ def main():
         (f"{m['n_systems_in_weak_cell']} of the {j['population_systems']} systems", "weak-cell system coverage"),
         (f"{m['n_systems_with_both_strata']} systems carry both", "both-strata system count"),
         (f"p = {m['within_system_permutation_p']:.4f}", "within-system permutation p"),
+        (f"[{sg['reference_t25_cluster_bootstrap_ci'][0]:.2f}, "
+         f"+{sg['reference_t25_cluster_bootstrap_ci'][1]:.2f}]",
+         "specificity-gain cluster bootstrap CI (2 dp)"),
+        (f"{sg['fraction_resamples_no_gain_pct_reportable']}% of resamples",
+         "fraction of resamples with no gain"),
         (f"+{m['cluster_bootstrap_rate_diff_ci'][0]:.3f}", "cluster bootstrap CI lower"),
         (f"+{m['cluster_bootstrap_rate_diff_ci'][1]:.3f}", "cluster bootstrap CI upper"),
         # --- recall decomposition ---

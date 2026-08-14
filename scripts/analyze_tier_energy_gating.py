@@ -39,6 +39,17 @@ REPO = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "scripts"))
 import apply_concordance_v5 as ac  # noqa: E402
 
+# The within-system permutation p-value has a closed form: under H0 the
+# structural labels are exchangeable within each system, so the strong-tier cell
+# count is a sum of independent hypergeometrics. verify_tier_construction.py
+# convolves them exactly. This script previously estimated the same quantity by
+# 20,000 Monte-Carlo draws, which agreed to within one standard error but
+# shipped a SECOND value for ONE statistic in a second reference output -- and
+# the manuscript then quoted the estimate rather than the exact value. Import
+# the exact function so there is one number with one provenance; the MC draws
+# are retained below purely as an independent cross-check.
+from verify_tier_construction import exact_within_system_perm  # noqa: E402
+
 CANON = REPO / "reference_outputs" / "scored_61var_canonical.csv"
 OUT = REPO / "reference_outputs" / "COMAVI_tier_energy_gating.json"
 
@@ -269,7 +280,19 @@ def main():
     marg["fold_mechanism_all_strong_tier"] = bool(fold_only.strong_tier.all())
 
     marg["fisher_p"] = float(f"{fisher_from_cells(marg):.3e}")
-    marg["within_system_permutation_p"] = round(float((strat_null >= obs_strong_structural).mean()), 4)
+    exact_p, exact_obs = exact_within_system_perm(pop, "strong_tier")
+    assert exact_obs == obs_strong_structural, (
+        f"exact enumeration saw {exact_obs} strong-tier structural variants, "
+        f"this script saw {obs_strong_structural} -- populations have diverged")
+    mc_p = float((strat_null >= obs_strong_structural).mean())
+    # Guard against silent divergence: MC standard error at p~0.01, n=20000 is
+    # ~0.0007, so a gap beyond 0.005 means the two are no longer the same test.
+    assert abs(mc_p - exact_p) < 0.005, (
+        f"exact p={exact_p:.5f} and Monte-Carlo p={mc_p:.5f} disagree beyond "
+        f"sampling error -- the two implementations have drifted apart")
+    marg["within_system_permutation_p"] = round(exact_p, 4)
+    marg["within_system_permutation_p_monte_carlo_check"] = round(mc_p, 4)
+    marg["within_system_permutation_method"] = "exact (convolved hypergeometrics)"
     marg["cluster_bootstrap_rate_diff_ci"] = [round(float(np.percentile(diffs, 2.5)), 4),
                                               round(float(np.percentile(diffs, 97.5)), 4)]
     out["marginal_tier_screen"] = marg
