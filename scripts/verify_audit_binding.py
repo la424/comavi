@@ -30,6 +30,7 @@ from __future__ import annotations
 
 import json
 import pathlib
+import re
 import shutil
 import subprocess
 import sys
@@ -64,29 +65,95 @@ def needles(script: str, anchor: str, var: str, work: pathlib.Path):
     return json.loads(out.read_text())
 
 
+def _overstate(needle: str) -> str | None:
+    """Return ``needle`` with its last digit run extended by one digit.
+
+    Handles both ``"99/131"`` (digit tail) and ``"Tier 2 72%"`` (unit tail):
+    in each case the resulting string is a DIFFERENT quantity that plain
+    containment would still accept.
+    """
+    runs = list(re.finditer(r"\d", needle))
+    if not runs:
+        return None
+    k = runs[-1].end()
+    return needle[:k] + "9" + needle[k:]
+
+
+def readme_arm(work: pathlib.Path, audit) -> tuple[int, list[str]]:
+    """Mutation-test the README gate.
+
+    Unlike the manuscript arms this runs in EVERY checkout, public included,
+    because README.md is never withheld. It is therefore the only binding
+    coverage a public clone gets, which is exactly the checkout where a stale
+    headline would be most visible.
+    """
+    rm = work / "README.md"
+    if not rm.exists() or not (work / "scripts" / "audit_readme_claims.py").exists():
+        return 0, []
+    orig = rm.read_text()
+    gates = needles("audit_readme_claims", "    fails = []", "required", work)
+
+    lo = orig.index("## Benchmark results")
+    hi = orig.find("\n## ", lo + 5)
+    hi = hi if hi > 0 else len(orig)
+    span = orig[lo:hi]
+    flat = " ".join(span.split())
+
+    tested, failures = 0, []
+    for needle, label in gates:
+        n = str(needle)
+        if n not in flat:
+            continue
+        bad = _overstate(n)
+        if bad is None:
+            continue
+        # Rewrite on the flattened span so hard-wrapped phrases still match;
+        # the audit flattens too, so this is faithful to what it reads.
+        tested += 1
+        rm.write_text(orig[:lo] + flat.replace(n, bad, 1) + orig[hi:])
+        if not audit("audit_readme_claims"):
+            failures.append(f"audit_readme_claims: gate {label!r} ({n!r}) does not bind -- "
+                            f"README could state {bad!r} and the audit passes")
+        rm.write_text(orig)
+
+    assert rm.read_text() == orig, "scratch README not restored"
+    return tested, failures
+
+
 def main() -> int:
     with tempfile.TemporaryDirectory() as td:
         work = pathlib.Path(td) / "repo"
         shutil.copytree(REPO, work, ignore=shutil.ignore_patterns(
             ".git", "_work", "verification_output", "__pycache__", "*.pyc"))
-        ms = work / MS_REL
-        if not ms.exists():
-            print(f"SKIP: {MS_REL} is withheld from this checkout; "
-                  "audit-binding cannot be tested here.")
-            return 0
-        orig = ms.read_text()
 
         def audit(script: str) -> bool:
-            """True if the audit REJECTS the current manuscript."""
+            """True if the audit REJECTS the current working tree."""
             return subprocess.run([sys.executable, f"scripts/{script}.py"], cwd=work,
                                   capture_output=True, text=True).returncode != 0
+
+        # README first: it is present even when the manuscript is withheld.
+        rm_tested, rm_failures = readme_arm(work, audit)
+
+        ms = work / MS_REL
+        if not ms.exists():
+            for f in rm_failures:
+                print(f"  NON-BINDING  {f}")
+            print(f"\naudit-binding: {rm_tested} README gates mutation-tested, "
+                  f"{len(rm_failures)} non-binding")
+            print(f"SKIP: {MS_REL} is withheld from this checkout; "
+                  "manuscript audit-binding cannot be tested here.")
+            if rm_failures:
+                print("FAIL: a README gate is decoration, not a check", file=sys.stderr)
+                return 1
+            return 0
+        orig = ms.read_text()
 
         specs = [
             ("audit_evidence_claims", "    fails = []", "checks", None),
             ("audit_tier_energy_claims", "    for needle, label in required:", "required", SEC),
         ]
 
-        failures, tested = [], 0
+        failures, tested = list(rm_failures), rm_tested
         for script, anchor, var, scope in specs:
             gates = needles(script, anchor, var, work)
             if scope is None:

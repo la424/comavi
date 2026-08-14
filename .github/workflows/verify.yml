@@ -56,6 +56,12 @@ jobs:
       - name: Literal matcher self-tests
         run: python scripts/audit_match.py
 
+      # The README restates every headline the paper reports, and it is the
+      # file most readers see first. It ships in every clone, so unlike the
+      # manuscript audits this one genuinely runs on a public checkout.
+      - name: README headline numbers match generated data
+        run: python scripts/audit_readme_claims.py
+
       # The audits below read manuscript prose. The manuscript is withheld
       # until preprint/submission, so on a public clone they print an
       # explanation and exit 0 rather than failing. They are included so the

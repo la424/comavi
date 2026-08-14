@@ -11,3 +11,15 @@ scipy
 openpyxl
 biopython
 pyyaml
+
+# Required to regenerate reference_outputs/COMAVI_audit_gate_sweep.csv, whose
+# Benjamini-Hochberg-adjusted p-values appear in the manuscript's gate-sweep
+# table. Without it build_audit_corrections.py cannot run and those adjusted
+# values are not reproducible from source.
+statsmodels
+
+# Figure, deck and DOCX builders only -- not needed to verify any result.
+# Listed so a reader who wants to regenerate the presentation artifacts is not
+# left guessing:
+#   python-pptx, pillow  -> build_lab_meeting_deck.py, audit_deck_numbers.py
+#   python-docx          -> build_manuscript_docx.py
