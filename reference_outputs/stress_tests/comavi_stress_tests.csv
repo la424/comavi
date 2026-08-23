@@ -1,0 +1,11 @@
+test,observed,null_mean,null_sd,p_value
+permutation null (MC),0.7193,0.4789,0.0497,0.0005
+permutation null (SA),0.75,0.5336,0.0444,0.0005
+leave-one-system-out (MC range),0.7193,0.7037-0.7500,,
+leave-one-system-out (SA range),0.75,0.7360-0.7667,,
+replicate noise (MC),0.7193,0.7207,0.0133,
+replicate noise (SA),0.75,0.7478,0.004,
+bootstrap 95% CI (MC),0.7193,"[0.614, 0.819]",,
+bootstrap 95% CI (SA),0.75,"[0.676, 0.823]",,
+cluster bootstrap 95% CI (MC),0.7193,"[0.625, 0.821]",,
+cluster bootstrap 95% CI (SA),0.75,"[0.696, 0.818]",,

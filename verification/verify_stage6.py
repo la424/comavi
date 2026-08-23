@@ -51,14 +51,14 @@ EXPECTED_V5 = {
 # tandem-BRCT structure; these are the same 2 the published measured-vs-FoldX
 # correlation excludes, via role_in_cohort == 'fold_intact_function_lost').
 #
-# Structural agreement 120 -> 131 gradeable axes: +12 monomer axes from the
+# Structural agreement 131 -> 133 all-row outputs: +12 monomer axes from the
 # cohort, less 1 (R1699L, whose monomer CI is indistinguishable from 0). The
 # cohort contributes NO tier axis — the tier is undefined without a partner
 # chain, and grading it was scoring a NaN as "did not fire" (v7.3 fix (d)).
 EXPECTED_CANONICAL = {
     'structural_agreement': {
-        't10': (94, 131), 't15': (99, 131), 't20': (99, 131),
-        't25': (99, 131), 'tSAP': (97, 131),
+        't10': (94, 133), 't15': (99, 133), 't20': (99, 133),
+        't25': (99, 133), 'tSAP': (97, 133),
     },
     'mech_consistency': {
         't10': 0.579, 't15': 0.649, 't20': 0.684,
@@ -68,7 +68,7 @@ EXPECTED_CANONICAL = {
     # Four-way decomposition of the t=2.5 headline (ledger §13).
     # monomer 16 -> 27 gradeable: +12 cohort rows, -1 CI-excluded (R1699L).
     'axis_decomposition_t25': {
-        'monomer': (21, 27), 'fold': (20, 25),
+        'monomer': (21, 28), 'fold': (20, 26),
         'binding': (24, 32), 'tier': (34, 47),
     },
     # Tier pathogenicity gradient — carries no expected_mech_class term, so

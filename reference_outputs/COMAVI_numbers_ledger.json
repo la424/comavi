@@ -7,13 +7,13 @@
   ],
   "fold": [
    20,
-   25,
-   0.8
+   26,
+   0.7692
   ],
   "monomer": [
    21,
-   27,
-   0.7778
+   28,
+   0.75
   ],
   "tier": [
    34,
@@ -23,9 +23,9 @@
  },
  "SA_total": [
   99,
-  131
+  133
  ],
- "SA": 0.7557,
+ "SA": 0.7444,
  "MC": 0.7193,
  "MC_n": 57,
  "N_variants": 61,
@@ -204,8 +204,8 @@
   0.8182
  ],
  "SA_cluster_ci95": [
-  0.7042,
-  0.8211
+  0.6963,
+  0.8182
  ],
  "bootstrap_n": 2000,
  "bootstrap_unit": "system (cluster)",
@@ -244,7 +244,7 @@
  "threshold_canonical": 2.5,
  "canonical_source": "reference_outputs/scored_61var_canonical.csv",
  "repo_commit": "regenerate: git rev-parse --short HEAD",
- "canonical_sha256": "03f69f15c3961312739a6007cae84fa7edcc240220540b69dfbe80afbe85c975",
+ "canonical_sha256": "88cee917d00ea6705e851b59b7551ef8211052011768a732462ee59ef45031bb",
  "tier_gradient_note": "on the 61-variant canonical set restricted to pathogenic/benign with a tier assigned (n=49). The older 12/12, 13/16, 7/10, 2/6 gradient was the 44-variant PPI-only set and is SUPERSEDED.",
  "AM_labeled_n": 47,
  "AM_labeled_labels": {

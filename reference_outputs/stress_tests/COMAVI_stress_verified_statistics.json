@@ -1,0 +1,107 @@
+{
+  "analysis": "COMAVI primary-continuity stress tests",
+  "draws": {
+    "cluster_seed": 8,
+    "system_cluster_bootstrap": 2000,
+    "variant_bootstrap": 2000
+  },
+  "files": {
+    "canonical_sha256": "88cee917d00ea6705e851b59b7551ef8211052011768a732462ee59ef45031bb",
+    "stress_draws_sha256": "e0ea8a75d9b3e60431035691a0dc45f958a5d1177f1cce553df40f33988be2ae",
+    "stress_script_sha256": "bef39363f2102bce36d90ff7232e9be9c45b4c2ed5f39049bcc735a6ead9e7cc",
+    "stress_summary_sha256": "2995945bd6da7709b486faeb130b323ee5eafd556493a7234049819981634020"
+  },
+  "observed": {
+    "mechanism_consistency": 0.7192982456140351,
+    "structural_agreement": 0.75
+  },
+  "population": {
+    "all_row_structural_agreement": [
+      99,
+      133
+    ],
+    "canonical_rows": 61,
+    "mechanism_graded_variants": 57,
+    "primary_structural_agreement": [
+      99,
+      132
+    ],
+    "system_labels": [
+      "brca1_bard1",
+      "pi3k",
+      "mlh1_pms2",
+      "msh2_msh6",
+      "vhl_elonginc",
+      "kras_craf",
+      "hemoglobin_dimer",
+      "hemoglobin_tetramer",
+      "troponin_ic",
+      "cam_cav12",
+      "smad4_smad3",
+      "brca1_brct",
+      "cfh_c3b",
+      "vwf_gpiba"
+    ],
+    "systems": 14
+  },
+  "system_cluster_ci95": {
+    "mc": {
+      "full_precision": [
+        0.625,
+        0.8205128205128205
+      ],
+      "reportable_3": [
+        0.625,
+        0.821
+      ],
+      "rounded_4": [
+        0.625,
+        0.8205
+      ]
+    },
+    "sa": {
+      "full_precision": [
+        0.6962939521800281,
+        0.8182014106583072
+      ],
+      "reportable_3": [
+        0.696,
+        0.818
+      ],
+      "rounded_4": [
+        0.6963,
+        0.8182
+      ]
+    }
+  },
+  "variant_bootstrap_ci95": {
+    "mc": {
+      "full_precision": [
+        0.6139859346642469,
+        0.8189655172413793
+      ],
+      "reportable_3": [
+        0.614,
+        0.819
+      ],
+      "rounded_4": [
+        0.614,
+        0.819
+      ]
+    },
+    "sa": {
+      "full_precision": [
+        0.6764602319801161,
+        0.8230882352941176
+      ],
+      "reportable_3": [
+        0.676,
+        0.823
+      ],
+      "rounded_4": [
+        0.6765,
+        0.8231
+      ]
+    }
+  }
+}

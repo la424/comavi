@@ -232,38 +232,79 @@ the tier formula, or the concordance logic.
 
 ## Benchmark results
 
-On the 61-variant benchmark spanning 14 systems (49 PPI variants across 13 complexes
-plus the 12-variant BRCA1-BRCT monomer-fold supplement; Pipeline 1, t = 2.5):
+COMAVI exposes two complementary outputs:
 
-| Metric | Value |
-|---|---|
-| structural_agreement | **0.76** (99/130 on the graded population; threshold sweep 0.72–0.76) |
-| mech_consistency | **0.72** (0.7193, graded n=57) |
+1. **ISDS-v1** ranks variants by the combined strength of continuous energetic
+   and structural-context evidence for a modeled structural disruption.
+2. The **mechanism profile** preserves the separate monomer-fold,
+   complex-context, and binding predictions needed to interpret the proposed
+   lesion and choose a follow-up experiment.
 
-Both headline metrics are reported on the same population — the 57 variants with a
-gradeable mechanism, excluding the two whose curated mechanism is unobservable on the
-deposited structure (`unobservable_variants()`). Scoring structural_agreement over all
-61 rows instead gives 99/131 = 0.756.
+ISDS-v1 is a unitless prioritization index. It is not a pathogenicity
+probability, a calibrated probability of structural disruption, or an
+externally validated classifier. This release does not establish a binary
+ISDS cutoff.
 
-Per-axis decomposition of structural_agreement (all 61 rows, so denominators sum to
-131 rather than 130): structural-evidence tier 34/47, monomer-fold ΔΔG 21/27,
-complex-fold ΔΔG 20/25, binding ΔΔG 24/32 — each axis between 0.72 and 0.80, i.e. no
-single axis carries the headline.
+The literature-curated resource contains 61 variants across 14 protein
+systems. Fifty-seven variants are gradeable for whole-variant mechanism
+localization. The 47 tier-carrying interaction variants form the primary
+structural-prioritization population.
 
-Both arms of the benchmark are graded on the same metrics: the 49 PPI variants and the
-12-variant BRCA1-BRCT fold cohort are pooled, the latter contributing 10 graded mechanism
-rows (2 are ungraded by construction — their curated mechanism is loss of a peptide-binding
-site, unobservable on the partner-free deposited structure). Ledger §18.
+### Mechanism localization
 
-The structural-evidence tier is a monotonic pathogenicity gradient with no ΔΔG term:
-Tier 1 100% → Tier 2 72% → Tier 3 70% → Tier 4 43% pathogenic (Spearman ρ = −0.40,
-p = 0.0044). See `docs/COMAVI_v7_canonical_benchmark_ledger.md` §12 for the full 61-set recompute.
+At the 2.5 kcal/mol reproducibility reference, whole-variant
+mechanism-pattern agreement was 0.72 (0.7193, graded n=57), with a weighted total of 41/57.
 
-Pipeline 1 (Grantham severity × contact count, **no ΔΔG term**) is a calibrated
-structural-evidence-**strength** gradient that complements — rather than competes
-with — the ΔΔG mechanism call. The neighborhood/Pipeline-2 variant was tested and
-**rejected** (it degraded the gradient); it is retained as a tested alternative under
-`archive/derivation/`. The canonical derivation lives in `docs/COMAVI_v7_canonical_benchmark_ledger.md`.
+Direction-aware agreement across energetic axes in the primary 57-variant
+population was 65/85 = 0.765:
+
+- monomer-fold: 21/27;
+- complex-context: 20/26;
+- binding: 24/32.
+
+The historical four-output `structural_agreement` aggregate is retained as a
+continuity and denominator audit rather than as the primary mechanism result.
+On the same 57-variant population it is 99/132 = 0.750. With all 61 resource
+rows retained, it is 99/133 = 0.744.
+
+The all-row decomposition is tier 34/47, monomer-fold ΔΔG 21/28,
+complex-fold ΔΔG 20/26, and binding ΔΔG 24/32; denominators sum to 133.
+The one additional all-row axis is the monomer-fold axis of BRCA1 R1699Q,
+which is retained in the resource but excluded from whole-variant grading by
+its curated role.
+
+### Structural-disruption prioritization
+
+On the 47-variant prioritization population, comprising 17 committed modeled
+structural mechanisms and 30 variants curated to lack a committed lesion on
+the modeled axes:
+
+- ISDS-v1 ROC AUC 0.943;
+- average precision 0.818;
+- energetic component ROC AUC 0.857;
+- structural-context component ROC AUC 0.890;
+- system-cluster ROC AUC 95% interval 0.858–1.000.
+
+The ranking reflects the intended limited-budget use case:
+
+- Top 10: 9 structural-mechanism variants;
+- Top 20: 16/17;
+- Top 25: 17/17.
+
+These are internal, system-aware benchmark results. They do not establish
+external generalization or a validated decision cutoff.
+
+### Structural-context tier
+
+The structural-context tier contains no ΔΔG term. In the 49 tier-carrying
+interaction variants, the observed pathogenic fractions were Tier 1 100%,
+Tier 2 72%, Tier 3 70%, and Tier 4 43% (Spearman ρ = −0.40,
+p = 0.0044).
+
+The tier is reported with its components because interface membership
+materially contributes to its performance. ISDS-v1, the tier components, the
+signed energetic axes, the thresholded mechanism calls, and the complete
+mechanism profile should therefore remain visible together.
 
 ## Inputs
 

@@ -1,10 +1,15 @@
 # Denominator reconciliation — adjudicating the external review
 
+
+<!-- COMAVI_CURRENT_RESULTS_BANNER -->
+> **Current denominator reconciliation.** The primary population contains 57 mechanism-gradeable variants and 132 applicable structural outputs; the all-row canonical audit contains 133 structural outputs. The current totals are 99/132 for the primary continuity convention and 99/133 when all 61 resource rows are retained. See [`COMAVI_current_results.md`](COMAVI_current_results.md). The detailed adjudication below is retained as a historical pre-A636P record.
+<!-- /COMAVI_CURRENT_RESULTS_BANNER -->
+
 Every number below was regenerated from `reference_outputs/scored_61var_canonical.csv`
 through the shipped pipeline (`scripts/apply_concordance_v5.py`), not transcribed.
 Reproduce with `scripts/verify_denominators.py`.
 
-## Summary of adjudication
+## Historical adjudication record (pre-A636P correction)
 
 | # | Claim from external review | Verdict | Evidence |
 |---|---|---|---|

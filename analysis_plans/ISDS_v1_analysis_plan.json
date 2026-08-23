@@ -1,0 +1,108 @@
+{
+  "analysis_id": "COMAVI-ISDS-v1-2026-08-21",
+  "bootstrap": {
+    "draws": 10000,
+    "interval": "percentile",
+    "invalid_draw_policy": "omit draws lacking either outcome class and report valid draw count",
+    "resampling_unit": "protein_system",
+    "seed": 20260821
+  },
+  "disclosure": {
+    "development_status": "The benchmark was examined while ISDS was conceptualized. The fixed formula was selected for interpretability, batch invariance, and deployability and frozen before the locked final run.",
+    "validation_status": "Internal, system-aware benchmark evaluation; not external validation."
+  },
+  "formula": {
+    "aggregation": "maximum across valid evaluable axes",
+    "context_component": "(4 - tier_number) / 3",
+    "cutoff_statement": "no binary ISDS cutoff is selected or validated in this study",
+    "direction_policy": "absolute magnitude enters ISDS; signed energies remain in the mechanism profile",
+    "energy_anchors_kcal_mol": {
+      "binding": 3.5,
+      "complex_context": 2.9,
+      "monomer": 2.9
+    },
+    "integrated_score": "0.5 * energy_component + 0.5 * context_component",
+    "missing_policy": "ISDS is NA unless at least one energy axis and a valid structural-context tier are available",
+    "per_axis_ratio": "abs(delta_delta_G_axis) / axis_anchor",
+    "probability_statement": "ISDS is a unitless prioritization index, not a probability",
+    "soft_saturation": "R / (1 + R)",
+    "threshold_policy": "the binary mechanism-call threshold is not applied inside ISDS",
+    "version": "ISDS-v1"
+  },
+  "populations": {
+    "mechanism_localization": "57 whole-variant-gradeable variants",
+    "resource": "61 variants across 14 systems",
+    "structural_prioritization": "47 interaction variants with a tier and a structural-mechanism-versus-no-modeled-lesion label"
+  },
+  "primary_comparators": [
+    "ISDS-v1",
+    "energy_component",
+    "context_component",
+    "maximum_absolute_energy",
+    "tier_strength",
+    "interface_status_alone",
+    "tier_without_interface_bonus"
+  ],
+  "primary_endpoint": {
+    "negative": "no committed lesion on the modeled COMAVI axes",
+    "positive": "committed modeled structural mechanism"
+  },
+  "primary_metrics": [
+    "roc_auc",
+    "average_precision",
+    "system_cluster_bootstrap_95pct_interval",
+    "paired_auc_difference_vs_energy",
+    "paired_auc_difference_vs_context",
+    "top_k_precision_and_recovery_at_5_10_15_20_25",
+    "leave_one_system_out_influence",
+    "score_band_enrichment"
+  ],
+  "purpose": {
+    "localization": "Preserve the separate monomer-fold, complex-context, and binding-interface mechanism profile.",
+    "prioritization": "Rank variants by combined energetic and structural-context evidence for a modeled structural disruption."
+  },
+  "score_bands": [
+    [
+      0.0,
+      0.2
+    ],
+    [
+      0.2,
+      0.4
+    ],
+    [
+      0.4,
+      0.6
+    ],
+    [
+      0.6,
+      0.8
+    ],
+    [
+      0.8,
+      1.0000001
+    ]
+  ],
+  "sensitivity_formulas": [
+    "hard_cap_energy",
+    "exponential_saturation",
+    "smooth_norm_saturation",
+    "common_2.5_energy_anchors",
+    "energy_weight_0.4",
+    "energy_weight_0.6",
+    "tier_without_interface_bonus",
+    "interface_status_context",
+    "cohort_z_combination_for_historical_comparison_only"
+  ],
+  "software_fields": [
+    "isds_v1",
+    "isds_energy_component",
+    "isds_context_component",
+    "isds_energy_ratio_uncapped",
+    "isds_dominant_axis",
+    "isds_dominant_partner",
+    "isds_available",
+    "isds_version"
+  ],
+  "status": "locked_before_final_run"
+}

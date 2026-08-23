@@ -77,7 +77,7 @@ for _t in TAGS:
 # headline and is shown separately (Fig. 2), so assert the four close to it.
 _hd = sum(SWEEP["t2.5"][k][1] for k in ("monomer", "fold", "binding", "tier"))
 _hn = sum(SWEEP["t2.5"][k][0] for k in ("monomer", "fold", "binding", "tier"))
-assert (_hn, _hd) == (99, 131), f"panel a decomposition {_hn}/{_hd} != headline 99/131"
+assert (_hn, _hd) == (99, 133), f"panel a decomposition {_hn}/{_hd} != all-row continuity total 99/133"
 
 _ND = {k: SWEEP["t2.5"][k][1] for k in ("monomer", "fold", "binding")}
 AXINFO = [("monomer", f"Monomer-fold (n={_ND['monomer']})", C_MONO),

@@ -12,9 +12,9 @@ Panel b: fraction pathogenic per structural-evidence tier, with Wilson score
 Both panels recompute from reference_outputs/scored_61var_canonical.csv rather
 than hard-coding, and print the computed values so a run self-verifies against
 docs/COMAVI_v7_canonical_benchmark_ledger.md §17 (v7.3, current):
-  MC/SA sweep  t1.0 0.579/0.718 · t1.5 0.649/0.756 · t2.0 0.684/0.756 ·
-               t2.5 0.719/0.756 · tSAP 0.711/0.740   (SA denominator 131,
-               MC graded n = 57 with the BRCA1-BRCT cohort pooled in)
+  MC/SA sweep  t1.0 0.579/0.707 · t1.5 0.649/0.744 · t2.0 0.684/0.744 ·
+               t2.5 0.719/0.744 · tSAP 0.711/0.729   (all-row SA denominator 133;
+               primary continuity denominator 132; MC graded n = 57)
   tier         T1 14/14 · T2 13/18 · T3 7/10 · T4 3/7;
                Fisher OR 3.78 p 0.080; Spearman rho -0.400 p 0.0044
 

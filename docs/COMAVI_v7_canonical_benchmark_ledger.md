@@ -1,5 +1,10 @@
 # COMAVI v7 — Canonical Benchmark Ledger (post-verification, post-relaxed-tier, post-BRCT-expansion, post-interface-expansion)
 
+
+<!-- COMAVI_CURRENT_RESULTS_BANNER -->
+> **Current authority.** The post-A636P canonical record, 99/132 primary continuity aggregate, 99/133 all-row denominator audit, verified stress intervals, and ISDS-v1 results are summarized in [`COMAVI_current_results.md`](COMAVI_current_results.md). This ledger retains the earlier v7 derivation history.
+<!-- /COMAVI_CURRENT_RESULTS_BANNER -->
+
 > **v7 update (fold-neutral interface disruptors).** The benchmark has been extended from 56→61 variants
 > (12→14 systems) by adding two interface systems whose pathogenic variants disrupt a protein–protein
 > interface with the **monomer fold intact** — **VWF A1–GPIbα** (PDB 1SQ0) and **CFH FH1-4–C3b** (PDB 2WII) —
@@ -7,7 +12,7 @@
 > for the interface-resolution claim. **§12–13 record the v7 expansion and recompute; §15 records the
 > v7.1 grading-rubric correction; §18 records the v7.3 BRCT pooling that produced the current headline.**
 >
-> **CURRENT AUTHORITATIVE HEADLINE (t = 2.5, 61-variant canonical set) — see §18:**
+> **HISTORICAL v7.3 HEADLINE — superseded by COMAVI_current_results.md:**
 > mechanism-consistency **0.72** (0.7193, graded n = 57); structural agreement **0.76**
 > (99/130 = 0.7615 on the same graded population; 99/131 = 0.7557 over all 61 rows, which is
 > the population the per-axis decomposition uses — tier 34/47, monomer 21/27, fold 20/25,

@@ -1,0 +1,125 @@
+name: ISDS-v1 release checks
+
+on:
+  push:
+    paths:
+      - 'README.md'
+      - 'docs/**'
+      - 'figures/isds_v1/**'
+      - 'scripts/**'
+      - 'verification/**'
+      - 'reference_outputs/**'
+      - 'analysis_plans/**'
+      - 'data/analysis_inputs/isds_v1/**'
+      - 'requirements*.txt'
+      - '.github/workflows/isds-v1.yml'
+  pull_request:
+    paths:
+      - 'README.md'
+      - 'docs/**'
+      - 'figures/isds_v1/**'
+      - 'scripts/**'
+      - 'verification/**'
+      - 'reference_outputs/**'
+      - 'analysis_plans/**'
+      - 'data/analysis_inputs/isds_v1/**'
+      - 'requirements*.txt'
+      - '.github/workflows/isds-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install runtime dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+          python -m pip check
+
+      - name: Compile release code
+        run: |
+          python -m py_compile \
+            scripts/comavi_v7/isds.py \
+            scripts/comavi_v7/pipeline.py \
+            scripts/add_isds_v1.py \
+            scripts/analyze_isds_v1.py \
+            scripts/update_canonical_isds_v1.py \
+            scripts/build_current_results_summary.py \
+            scripts/audit_readme_claims.py \
+            scripts/verify_denominators.py \
+            scripts/verify_v30_reconciliation.py \
+            verification/stress_tests.py \
+            verification/verify_stress_statistics.py \
+            verification/verify_isds_result_csv.py
+
+      - name: Run ISDS unit and migration tests
+        run: |
+          python -m unittest \
+            verification.test_isds_v1 \
+            verification.test_isds_output_contract \
+            verification.test_update_canonical_isds_v1
+
+      - name: Verify committed ISDS and stress outputs
+        run: |
+          python verification/verify_isds_result_csv.py \
+            reference_outputs/scored_61var_canonical.csv
+          python verification/verify_stress_statistics.py
+          python scripts/build_current_results_summary.py --check
+
+      - name: Run numerical and README consistency audits
+        run: |
+          python scripts/verify_v30_reconciliation.py
+          python scripts/audit_readme_claims.py
+          python scripts/verify_audit_binding.py
+          python scripts/verify_denominators.py
+          python scripts/verify_tier_construction.py
+          git diff --exit-code -- \
+            reference_outputs/COMAVI_tier_construction.json
+
+      - name: Re-derive and verify the canonical benchmark
+        run: |
+          output_dir="$(mktemp -d)"
+          python verification/verify_stage6.py \
+            --intermediate inputs/intermediate/comavi_v7_results_with_nbhd.csv \
+            --am inputs/AM_variants_comavi_mechanism_test.xlsx \
+            --scripts-dir scripts \
+            --canonical reference_outputs/scored_61var_canonical.csv \
+            --output-dir "$output_dir"
+
+      - name: Verify release checksum manifests
+        run: |
+          (
+            cd reference_outputs/isds_v1
+            sha256sum -c SHA256SUMS.txt
+          )
+          (
+            cd reference_outputs/stress_tests
+            sha256sum -c SHA256SUMS.txt
+          )
+          (
+            cd figures/isds_v1
+            sha256sum -c SHA256SUMS.txt
+          )
+
+      - name: Confirm canonical updater is idempotent
+        run: |
+          temp_dir="$(mktemp -d)"
+          python scripts/update_canonical_isds_v1.py \
+            --input reference_outputs/scored_61var_canonical.csv \
+            --output "$temp_dir/canonical.csv" \
+            --audit "$temp_dir/audit.csv" \
+            --summary "$temp_dir/summary.json"
+          cmp reference_outputs/scored_61var_canonical.csv \
+              "$temp_dir/canonical.csv"

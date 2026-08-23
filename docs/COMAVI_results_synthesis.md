@@ -1,6 +1,11 @@
 # COMAVI — Results Synthesis for the Two Papers
 
-> ## ⚑ CURRENT STATE — v7 / 61-variant canonical benchmark (supersedes the tagged body below)
+
+<!-- COMAVI_CURRENT_RESULTS_BANNER -->
+> **Current numerical authority.** Post-A636P and ISDS-v1 results are generated in [`COMAVI_current_results.md`](COMAVI_current_results.md). The v7/v7.3 numerical blocks retained below are historical derivation records and are superseded whenever they conflict with that file.
+<!-- /COMAVI_CURRENT_RESULTS_BANNER -->
+
+> ## Historical v7 state — superseded by COMAVI_current_results.md
 >
 > The tagged synthesis that follows was a v6-era verification pass against the **44/56-variant**
 > files. The benchmark was subsequently expanded to the **61-variant canonical set** (added the

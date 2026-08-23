@@ -189,10 +189,10 @@ def main():
                 continue
             axis_n[k] = axis_n.get(k, 0) + v[0]
             axis_d[k] = axis_d.get(k, 0) + v[1]
-    for k, want in [("tier", (34, 47)), ("monomer", (21, 27)),
-                    ("fold", (20, 25)), ("binding", (24, 32))]:
+    for k, want in [("tier", (34, 47)), ("monomer", (21, 28)),
+                    ("fold", (20, 26)), ("binding", (24, 32))]:
         check(f"{k} axis", (axis_n[k], axis_d[k]), want)
-    check("all-rows four-output", (sum(axis_n.values()), sum(axis_d.values())), (99, 131))
+    check("all-rows four-output", (sum(axis_n.values()), sum(axis_d.values())), (99, 133))
 
     unobs = set(ac.unobservable_variants())
     graded = df[~df.variant.isin(unobs)]
@@ -201,7 +201,7 @@ def main():
         got = ac.compute_structural_agreement(r, partners, 2.5, 2.5, 2.5)
         if got:
             gn += got[0]; gd += got[1]
-    check("primary four-output (unobservable excluded)", (gn, gd), (99, 130))
+    check("primary four-output (unobservable excluded)", (gn, gd), (99, 132))
 
     gmap = {"consistent": 1.0, "partial": 0.5, "inconsistent": 0.0}
     mc = graded.mech_consistency_t25.map(lambda v: gmap.get(str(v).lower())).dropna()

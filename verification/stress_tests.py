@@ -19,9 +19,12 @@ TWO CONVENTIONS THAT MUST BE HONOURED (both cost real debugging time):
      partner chains. They must be filtered out or the structural-agreement
      denominator inflates.
 
-  2. Grading applies ONLY to the interaction rows. The BRCA1-BRCT fold-expansion
-     rows are deliberately excluded from PPI grading (`expected_mech_class` is
-     NaN for them); including them also inflates the denominator.
+  2. The full 61-row canonical resource is loaded. The score() function applies
+     one primary continuity population to both metrics by excluding variants
+     returned by unobservable_variants(). This yields 57 whole-variant grades
+     and 132 applicable structural outputs. The separate all-row denominator
+     audit contains 133 outputs.
+
 
 The permutation null permutes the ground-truth block AS A UNIT. Shuffling each
 ground-truth column independently would fabricate mechanism profiles that never
@@ -62,21 +65,13 @@ def clean_partners(df, ac):
 
 
 def interaction_rows(df):
-    """Rows the stress tests perturb — the WHOLE canonical table.
+    """Return the complete canonical resource used by the stress tests.
 
-    v7.3: the BRCT fold-expansion cohort is POOLED into both headlines, so
-    there is no longer a subset to select. The old selector ("a row is graded
-    iff expected_mech_class is populated") was a proxy that held only while the
-    cohort was ungraded; pooling populated that column and the proxy silently
-    admitted all 12 rows, including the 2 that are ungraded by construction.
-
-    The two headlines have DIFFERENT row sets and must not be conflated:
-      * mechanism-consistency excludes the unobservable-mechanism rows
-        (they have no gradeable mechanism), n = 57;
-      * structural agreement includes them (agreement grades per-AXIS against
-        per-axis ground truth, and those rows still carry a measured monomer
-        ΔΔG that the pipeline either matches or misses), 131 axes.
-    score() applies the mechanism exclusion; both run over this same frame.
+    The legacy function name is retained for compatibility. Population
+    selection occurs in score(): both metrics exclude variants returned by
+    unobservable_variants(), yielding 57 mechanism grades and 132 applicable
+    structural outputs. The all-row 99/133 aggregate is a separate denominator
+    audit and is not the stress-test headline.
     """
     return df.copy()
 
@@ -98,13 +93,12 @@ def score(df, ac, partners, tag="t25", thr=T25, recall_mech=False):
             lambda r: ac.classify_mechanism_at(r, partners, thr[0]), axis=1)
     d["expected_mech_class"] = d.apply(ac.derive_expected_mech_class, axis=1)
     axis_status = {i: ac.classify_axis_status(r) for i, r in d.iterrows()}
-    # v7.4: rows whose curated mechanism is unobservable on the deposited
-    # structure are excluded from BOTH metrics, so mechanism-consistency and
-    # structural agreement are computed on the same population. Prior releases
-    # excluded them from mechanism only, letting one such row contribute a
-    # testable axis to the structural-agreement denominator (131 vs 130) while
-    # contributing no grade. Both figures are arithmetically correct; the shared
-    # population is the convention the manuscript reports.
+    # Primary continuity convention: variants whose curated mechanism cannot
+    # be represented by the deposited structure are excluded from both metrics.
+    # The complete canonical resource contains 99/133 agreeing outputs. R1699Q
+    # contributes the sole additional all-row monomer output; excluding it and
+    # R1699L yields 99/132 over the same 57 variants used for whole-variant
+    # mechanism grading.
     unobs = ac.unobservable_variants()
     grades = []
     for i, r in d.iterrows():
@@ -324,6 +318,14 @@ def main():
              mc_null=mc_null, sa_null=sa_null,
              noise_mc=noise[:, 0], noise_sa=noise[:, 1], noise_flips=noise[:, 2],
              boot_mc=bm, boot_sa=bs,
+             cluster_mc=np.asarray(cbm, dtype=float),
+             cluster_sa=np.asarray(cbs, dtype=float),
+             seed_cluster=np.array([SEED_CLUSTER], dtype=int),
+             cluster_system_count=np.array([len(systems)], dtype=int),
+             cluster_systems=np.asarray(systems, dtype=str),
+             mc_n=np.array([mc_n], dtype=int),
+             sa_numerator=np.array([sa_num], dtype=int),
+             sa_denominator=np.array([sa_den], dtype=int),
              mc_obs=np.array([mc_obs]), sa_obs=np.array([sa_obs]),
              p_mc=np.array([p_mc]), p_sa=np.array([p_sa]))
 
