@@ -1,0 +1,62 @@
+system,gene,variant,mech_t25,flip_rate
+troponin_ic,tnni3,R145Q,Multimer fold destabilization at interface,0.482
+pi3k,pik3ca,H1047R,Structural variant — contact-driven (DDG neutral),0.288
+cam_cav12,calm1,D96V,Interface variant (DDG neutral),0.124
+pi3k,pik3r1,N564D,Multimer fold + PPI destabilization,0.05
+smad4_smad3,smad4,R361C,Both fold + PPI destabilization,0.03
+brca1_brct,,R1699Q,No structural effect detected,0.028
+mlh1_pms2,mlh1,L749P,Multimer fold destabilization at interface,0.024
+msh2_msh6,msh2,G674R,Both fold destabilization,0.016
+troponin_ic,tnni3,R145G,Multimer fold destabilization at interface,0.004
+cfh_c3b,cfh,R78G,Multimer fold + PPI destabilization,0.0
+brca1_brct,,Y1853C,Monomer fold destabilization,0.0
+troponin_ic,tnni3,R162W,Interface variant (DDG neutral),0.0
+troponin_ic,tnni3,P82S,No structural effect detected,0.0
+vwf_gpiba,vwf,R1334Q,Multimer fold + PPI destabilization,0.0
+cam_cav12,calm1,N98S,No structural effect detected,0.0
+cam_cav12,calm1,F142L,Interface variant (DDG neutral),0.0
+smad4_smad3,smad4,D351H,Both fold destabilization,0.0
+cfh_c3b,cfh,I62V,Structural variant — contact-driven (DDG neutral),0.0
+smad4_smad3,smad4,I500T,Structural variant — contact-driven (DDG neutral),0.0
+smad4_smad3,smad4,I500V,No structural effect detected,0.0
+brca1_brct,,A1843P,Monomer fold destabilization,0.0
+brca1_brct,,R1699L,No structural effect detected,0.0
+brca1_brct,,V1736A,No structural effect detected,0.0
+brca1_brct,,M1783T,Monomer fold destabilization,0.0
+brca1_brct,,V1808A,Monomer fold destabilization,0.0
+brca1_brct,,V1665M,Monomer fold destabilization,0.0
+brca1_brct,,R1751Q,No structural effect detected,0.0
+brca1_brct,,L1664P,No structural effect detected,0.0
+brca1_brct,,M1663K,No structural effect detected,0.0
+brca1_brct,,P1806A,No structural effect detected,0.0
+cfh_c3b,cfh,R53H,No structural effect detected,0.0
+brca1_bard1,brca1,V11G,Multimer fold destabilization at interface,0.0
+hemoglobin_tetramer,hbb,W37G,Multimer fold + PPI destabilization,0.0
+hemoglobin_tetramer,hbb,N102T,Interface variant (DDG neutral),0.0
+hemoglobin_tetramer,hbb,W37E,Multimer fold + PPI destabilization,0.0
+brca1_bard1,brca1,K45R,No structural effect detected,0.0
+brca1_bard1,brca1,E100Q,No structural effect detected,0.0
+pi3k,pik3ca,E542K,Multimer fold destabilization at interface,0.0
+pi3k,pik3ca,E545K,PPI stabilization,0.0
+pi3k,pik3r1,M326I,No structural effect detected,0.0
+mlh1_pms2,mlh1,Q542L,Interface variant (DDG neutral),0.0
+mlh1_pms2,mlh1,R755W,PPI stabilization,0.0
+mlh1_pms2,mlh1,V384D,Interface variant (DDG neutral),0.0
+mlh1_pms2,pms2,G857A,Interface variant (DDG neutral),0.0
+mlh1_pms2,mlh1,H718Y,No structural effect detected,0.0
+mlh1_pms2,mlh1,K618E,Structural variant — burial-driven (DDG neutral),0.0
+msh2_msh6,msh2,A636P,Both fold destabilization,0.0
+msh2_msh6,msh2,C697F,Both fold destabilization,0.0
+msh2_msh6,msh2,N127S,Structural variant — contact-driven (DDG neutral),0.0
+msh2_msh6,msh2,G322D,No structural effect detected,0.0
+vhl_elonginc,vhl,L158Q,Multimer fold + PPI destabilization,0.0
+vhl_elonginc,vhl,W117R,Both fold destabilization,0.0
+vhl_elonginc,vhl,Y98H,Structural variant — contact-driven (DDG neutral),0.0
+kras_craf,kras,G12D,No structural effect detected,0.0
+kras_craf,kras,G12V,No structural effect detected,0.0
+kras_craf,kras,Q61H,No structural effect detected,0.0
+hemoglobin_dimer,hbb,E6V,No structural effect detected,0.0
+hemoglobin_tetramer,hbb,W37Y,Multimer fold destabilization at interface,0.0
+hemoglobin_tetramer,hbb,W37A,Multimer fold + PPI destabilization,0.0
+brca1_bard1,brca1,C61G,Multimer fold destabilization,0.0
+vwf_gpiba,vwf,A1381T,Structural variant — contact-driven (DDG neutral),0.0

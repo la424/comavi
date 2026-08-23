@@ -31,6 +31,7 @@ from .foldx_runner import compute_three_axis_ddg, _REPAIRED_CACHE
 from .mechanism import (
     compute_disruption_score, assign_tier, compute_evaluability, classify_mechanism,
 )
+from .isds import add_isds_v1_columns
 
 
 def run_pipeline(
@@ -190,6 +191,11 @@ def run_pipeline(
     df["comavi_tier"] = df["comavi_score"].apply(assign_tier)
     df = compute_evaluability(df, partner_labels)
 
+    # Cohort-independent structural-disruption prioritization. This shared
+    # engine is used by benchmark, CHD, and live/external evaluation drivers,
+    # so all three output the same versioned ISDS fields.
+    df = add_isds_v1_columns(df, partner_labels)
+
     # v5: multi-threshold mechanism classification
     # Compute mech calls at five thresholds:
     #   - 4 uniform (1.0, 1.5, 2.0, 2.5)
@@ -218,6 +224,8 @@ def run_pipeline(
     df["comavi_external_evidence_flag"] = df["comavi_external_evidence_flag_t10"]
 
     if verbose:
+        n_isds = int(df["isds_available"].fillna(False).astype(bool).sum())
+        print(f"\n  ISDS-v1 available: {n_isds}/{len(df)}")
         print(f"\n  Mechanism distribution at t=1.0 (comavi_mechanism):")
         print(df["comavi_mechanism"].value_counts().to_string())
         print(f"\n  Mechanism distribution at Sapozhnikov per-axis:")

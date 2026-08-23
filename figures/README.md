@@ -1,5 +1,17 @@
 # COMAVI main figures (methods/benchmark paper, 61-variant set)
 
+<!-- COMAVI_ISDS_V1_FIGURE_BANNER -->
+
+## Current publication figure suite
+
+The current COMAVI figures are under [`isds_v1/`](isds_v1/), with alt text,
+checksums, plotting source, and a regeneration command. Their numerical source
+is [`../docs/COMAVI_current_results.md`](../docs/COMAVI_current_results.md).
+
+The older top-level `COMAVI_Figure*.png` files, `manifest.json`, and scripts
+under `src/` are retained as the historical pre-ISDS figure suite.
+
+
 Publication figures for the COMAVI methods/benchmark manuscript, regenerated on the
 canonical 61-variant benchmark (14 systems). See
 `../docs/COMAVI_v7_canonical_benchmark_ledger.md` §12 for the recompute record and

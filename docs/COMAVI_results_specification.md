@@ -1,5 +1,10 @@
 # COMAVI — Results Specification
 
+
+<!-- COMAVI_CURRENT_RESULTS_BANNER -->
+> **Current numerical authority.** Use [`COMAVI_current_results.md`](COMAVI_current_results.md) for current benchmark populations, denominators, intervals, and ISDS-v1 results. Numerical tables below are retained as historical design and review records unless repeated in the current-results file.
+<!-- /COMAVI_CURRENT_RESULTS_BANNER -->
+
 **What each result is, what it means, and how it should be interpreted.**
 
 Canonical basis: `reference_outputs/scored_61var_canonical.csv` at the canonical

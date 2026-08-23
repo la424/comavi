@@ -491,15 +491,14 @@ def main():
     # differ only in whether the ungraded-by-construction BRCT variants are
     # dropped before the per-axis denominator is accumulated.
     #
-    #   99/131 = 0.7557  — every row in the canonical table
-    #   99/130 = 0.7615  — rows excluding unobservable_variants()
+    #   99/133 = 0.7444  — every row in the canonical resource
+    #   99/132 = 0.7500  — the primary 57-variant continuity population
     #
-    # R1699Q contributes one testable axis but no grade, because its curated
-    # role in the BRCT cohort is ungraded-by-construction; R1699L contributes
-    # neither. Mechanism-consistency already excludes both (n = 57), so the
-    # exclusion is the convention that makes the two headline metrics share a
-    # population. We adopt 99/130 and report the alternative here so that a
-    # reader meeting 0.7557 in an earlier draft can reconcile it.
+    # R1699Q contributes one testable monomer axis but no whole-variant grade;
+    # R1699L contributes neither. Excluding the ungraded-by-construction BRCT
+    # pair therefore removes one axis. The primary manuscript convention is
+    # 99/132, while 99/133 is retained for all-row canonical re-derivation and
+    # denominator transparency.
     # ------------------------------------------------------------------
     sa_hit_excl = sa_tot_excl = sa_hit_all = sa_tot_all = 0
     for _, r in df.iterrows():
@@ -529,9 +528,9 @@ def main():
         "all_rows_hits": int(sa_hit_all),
         "all_rows_tested": int(sa_tot_all),
         "all_rows": round(sa_hit_all / sa_tot_all, 4),
-        "convention": ("primary excludes unobservable_variants() so that "
-                       "structural agreement and mechanism-consistency share "
-                       "the same 59-row population"),
+        "convention": ("primary excludes unobservable_variants(); both metrics "
+                       "use the same 57-variant population, with 132 applicable "
+                       "structural outputs"),
         "unobservable": sorted(unobs),
     }
 

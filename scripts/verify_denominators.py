@@ -69,16 +69,39 @@ def main():
                 tot[k] = (a + n, b + d)
         return tot
 
-    t_all, t_int, t_brct = tally(df), tally(df[~brct]), tally(df[brct])
+    t_all = tally(df)
+    t_primary = tally(df[graded])
+    t_int = tally(df[~brct])
+    t_brct = tally(df[brct])
     for k in t_all:
         check(f"{k}: interaction + BRCT == all",
               (t_int[k][0] + t_brct[k][0], t_int[k][1] + t_brct[k][1]), t_all[k])
-    check("aggregate structural agreement",
-          (sum(v[0] for v in t_all.values()), sum(v[1] for v in t_all.values())),
-          (99, 131))
+    check("all-row structural agreement",
+          (sum(v[0] for v in t_all.values()),
+           sum(v[1] for v in t_all.values())),
+          (99, 133))
+    check("primary 57-variant structural agreement",
+          (sum(v[0] for v in t_primary.values()),
+           sum(v[1] for v in t_primary.values())),
+          (99, 132))
     check("interaction-only structural agreement",
-          (sum(v[0] for v in t_int.values()), sum(v[1] for v in t_int.values())),
-          (92, 120))
+          (sum(v[0] for v in t_int.values()),
+           sum(v[1] for v in t_int.values())),
+          (92, 122))
+
+    expected_primary_axes = {
+        "monomer": (21, 27),
+        "fold": (20, 26),
+        "binding": (24, 32),
+        "tier": (34, 47),
+    }
+
+    for axis, expected in expected_primary_axes.items():
+        check(
+            f"primary axis {axis}",
+            t_primary[axis],
+            expected,
+        )
 
     print("\n[4] REVIEW CLAIM: BRCT graded under a binary convention")
     # The ungraded-by-construction set is removed upstream of the rubric, by

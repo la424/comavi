@@ -1,0 +1,9 @@
+{
+  "figure1_unified_comavi_workflow.png": "Workflow diagram showing a missense variant and structure feeding four native COMAVI calculations. The outputs branch into ISDS-v1 for prioritization and a signed multi-axis mechanism profile for assay selection. Pathogenicity remains separate.",
+  "figure2_population_map.png": "Population flow from a 61-variant resource to 57 mechanism-gradeable variants and 47 tier-carrying structural-prioritization variants, with four ungraded scope or commitment cases shown separately.",
+  "figure3_mechanism_localization.png": "Two horizontal bar charts showing direction-aware agreement for monomer, complex-context, binding, and all energetic axes, and whole-variant mechanism-pattern scores for the full, interaction, and BRCT populations.",
+  "figure4_isds_definition_performance.png": "Four panels showing the soft-saturating energetic transformation, ISDS distributions by structural-mechanism class, ROC curves for ISDS and its components, and top-k precision and recovery.",
+  "figure5_context_components_and_states.png": "Two panels comparing sensitivity and specificity of interface, no-interface tier, and full tier screens, and counts of structural mechanisms and negatives across convergent, energy-only, context-only, and neither states.",
+  "figure6_threshold_tradeoff.png": "Two panels showing mechanism recovery falling and correct rejection rising across five decision thresholds, and the corresponding decline in measured destabilizing effects recovered.",
+  "figure7_alphamissense_isds_mechanism.png": "Two scatterplots compare AlphaMissense score with ISDS and its energy component; a horizontal bar chart shows descriptive pathogenicity AUCs for AlphaMissense, ISDS, energy, and context."
+}

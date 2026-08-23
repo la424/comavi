@@ -1,5 +1,10 @@
 # COMAVI — Pre-Publication Checkpoint
 
+
+<!-- COMAVI_CURRENT_RESULTS_BANNER -->
+> **Current release checkpoint.** The authoritative post-A636P/ISDS-v1 results and denominator conventions are generated in [`COMAVI_current_results.md`](COMAVI_current_results.md). Any earlier v7/v7.3 numerical checkpoint below is historical.
+<!-- /COMAVI_CURRENT_RESULTS_BANNER -->
+
 > ## ⚑ HISTORICAL DOCUMENT — superseded by the v7 / 61-variant canonical set
 >
 > **This checkpoint is dated 2026-07-01 and records the v6-era (44/56-variant) state of the

@@ -1,0 +1,6 @@
+isds_band,n_variants,n_structural_mechanism,structural_mechanism_fraction,systems,variants
+0.00-<0.20,6,0,0.0,brca1_bard1;cam_cav12;cfh_c3b;kras_craf;pi3k;troponin_ic,R53H;Q61H;P82S;M326I;E100Q;N98S
+0.20-<0.40,10,0,0.0,brca1_bard1;hemoglobin_dimer;kras_craf;mlh1_pms2;msh2_msh6;smad4_smad3;troponin_ic;vwf_gpiba,R145Q;G12D;A1381T;V384D;H718Y;I500V;E6V;G12V;K45R;G322D
+0.40-<0.60,14,3,0.21428571428571427,cam_cav12;cfh_c3b;hemoglobin_tetramer;mlh1_pms2;msh2_msh6;pi3k;smad4_smad3;troponin_ic;vhl_elonginc,F142L;E542K;L158Q;W37Y;H1047R;I500T;D96V;N127S;A636P;Y98H;K618E;G857A;R145G;I62V
+0.60-<0.80,8,6,0.75,brca1_bard1;hemoglobin_tetramer;mlh1_pms2;msh2_msh6;pi3k,V11G;R755W;L749P;Q542L;G674R;E545K;N564D;N102T
+0.80-1.00,9,8,0.8888888888888888,brca1_bard1;cfh_c3b;hemoglobin_tetramer;msh2_msh6;smad4_smad3;vwf_gpiba,C697F;D351H;W37G;R361C;C61G;W37A;W37E;R78G;R1334Q
