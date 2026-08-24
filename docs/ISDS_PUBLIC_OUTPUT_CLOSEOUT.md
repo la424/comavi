@@ -92,3 +92,21 @@ The real FoldX calculation, rather than the version flag, is the runtime
 validation used for this release.
 
 <!-- CHD_RUNTIME_VALIDATION_V1 -->
+
+## Cross-platform regeneration
+
+The committed CHD derivative remains bound by its SHA-256 manifest.
+Regeneration in continuous integration is checked independently against the
+committed derivative.
+
+CSV regeneration is compared semantically rather than by raw bytes because
+equivalent floating-point values may receive different final decimal
+representations across supported platforms. The comparison still requires
+identical schema, column order, row order, missingness, and nonnumeric text.
+Numeric cells must agree within an absolute tolerance of 1e-12. The parsed
+JSON summary and the normalized Markdown report must match exactly.
+
+A genuine numerical, textual, ordering, or schema difference fails the check
+and reports the affected row and column.
+
+<!-- CHD_SEMANTIC_REPRODUCIBILITY_V1 -->

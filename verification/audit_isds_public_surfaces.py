@@ -70,6 +70,25 @@ def main() -> None:
         ],
     )
 
+    failures += require_text(
+        repo
+        / "verification"
+        / "verify_chd_migration_reproducibility.py",
+        [
+            "CHD MIGRATION REPRODUCIBILITY: PASS",
+            "maximum_numeric_delta",
+            "byte_identical",
+        ],
+    )
+    failures += require_text(
+        repo / ".github/workflows/isds-v1.yml",
+        [
+            "# CHD_SEMANTIC_REPRODUCIBILITY_V1",
+            "verification/verify_chd_migration_reproducibility.py",
+            "verification.test_chd_migration_reproducibility",
+        ],
+    )
+
     if failures:
         print("ISDS PUBLIC-SURFACE AUDIT: FAIL")
         for failure in failures:
@@ -82,6 +101,7 @@ def main() -> None:
     print("Benchmark evaluation display: PASS")
     print("Public ISDS report builder: PASS")
     print("Output-surface verifier: PASS")
+    print("Cross-platform migration reproducibility: PASS")
     print("README user workflow: PASS")
     print("CI closeout gates: PASS")
     print("ISDS PUBLIC-SURFACE AUDIT: PASS")
