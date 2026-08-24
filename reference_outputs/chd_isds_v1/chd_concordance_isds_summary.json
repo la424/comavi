@@ -1,0 +1,36 @@
+{
+  "existing_isds_schema": false,
+  "input_file": "chd_concordance_results_FIXED.csv",
+  "input_sha256": "00568515ff0b97264679477880c38ee01238129bb554541f8f7bde88d6738460",
+  "isds_available_rows": 101,
+  "isds_unavailable_rows": 283,
+  "isds_version": "ISDS-v1",
+  "outputs": {
+    "full_csv": "chd_concordance_with_isds_v1.csv",
+    "markdown_report": "chd_concordance_isds_report.md",
+    "prioritized_csv": "chd_concordance_prioritized.csv"
+  },
+  "partner_labels": [
+    "actin",
+    "cdh2",
+    "ctnnb1",
+    "dvl2",
+    "gli3",
+    "kpna1",
+    "kpna6",
+    "mdfi",
+    "rock2",
+    "shroom3",
+    "tcf7l1",
+    "zic3"
+  ],
+  "rows": 384,
+  "stored_vs_recomputed_audit": {
+    "all_fields_match": true,
+    "failing_fields": [],
+    "maximum_numeric_delta": 0.0,
+    "note": "Input had no ISDS fields; fields were added from the shared formula.",
+    "tolerance": 1e-08
+  },
+  "systems": 10
+}

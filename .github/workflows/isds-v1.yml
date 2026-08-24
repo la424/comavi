@@ -62,14 +62,20 @@ jobs:
             scripts/verify_v30_reconciliation.py \
             verification/stress_tests.py \
             verification/verify_stress_statistics.py \
-            verification/verify_isds_result_csv.py
+            verification/verify_isds_result_csv.py \
+            scripts/build_isds_variant_report.py \
+            scripts/run_chd_variants.py \
+            verification/verify_isds_output_surfaces.py \
+            verification/audit_isds_public_surfaces.py
 
       - name: Run ISDS unit and migration tests
         run: |
           python -m unittest \
             verification.test_isds_v1 \
             verification.test_isds_output_contract \
-            verification.test_update_canonical_isds_v1
+            verification.test_update_canonical_isds_v1 \
+            verification.test_isds_variant_report \
+            verification.test_chd_variant_runner
 
       - name: Verify committed ISDS and stress outputs
         run: |
@@ -77,6 +83,45 @@ jobs:
             reference_outputs/scored_61var_canonical.csv
           python verification/verify_stress_statistics.py
           python scripts/build_current_results_summary.py --check
+          python verification/audit_isds_public_surfaces.py
+          temp_dir="$(mktemp -d)"
+          python scripts/build_isds_variant_report.py \
+            verification/fixtures/chd_isds_public/chd_fixture.csv \
+            --out-dir "$temp_dir" \
+            --prefix chd_fixture
+          python verification/verify_isds_output_surfaces.py \
+            --require-available \
+            "$temp_dir/chd_fixture_with_isds_v1.csv"
+          # ISDS_PUBLIC_CLOSEOUT_V1
+          tracked_chd_dir="reference_outputs/chd_isds_v1"
+          regenerated_chd_dir="$(mktemp -d)"
+          python scripts/build_isds_variant_report.py \
+            reference_outputs/chd_concordance_results_FIXED.csv \
+            --out-dir "$regenerated_chd_dir" \
+            --prefix chd_concordance \
+            --top-n 50
+          for file in \
+            chd_concordance_with_isds_v1.csv \
+            chd_concordance_prioritized.csv \
+            chd_concordance_isds_summary.json \
+            chd_concordance_isds_report.md
+          do
+            cmp \
+              "$tracked_chd_dir/$file" \
+              "$regenerated_chd_dir/$file"
+          done
+          python verification/verify_isds_output_surfaces.py \
+            --require-available \
+            "$tracked_chd_dir/chd_concordance_with_isds_v1.csv"
+          (
+            cd "$tracked_chd_dir"
+            sha256sum -c SHA256SUMS.txt
+          )
+          # CHD_TRACKED_MIGRATION_V1
+          python verification/verify_chd_structure_contract.py \
+            --config configs/chd_systems.yaml \
+            --manifest reference_outputs/chd_isds_v1/chd_structure_manifest.json
+          # CHD_STRUCTURE_CONTRACT_V1
 
       - name: Run numerical and README consistency audits
         run: |

@@ -1,0 +1,180 @@
+{
+  "authority_commit": "215874ed0721e592fa4160df9c5f2915760546b1",
+  "config_file": "configs/chd_systems.yaml",
+  "config_sha256": "6a4a02b0d53c7f217c3360e06bd618968ec1213181b802ab1c7c5e319b1fd8f3",
+  "file_count": 34,
+  "files": [
+    {
+      "filename": "fold_cdh2_model_0.cif",
+      "sha256": "1eb149fc7565ffb25bf9104481fd157eeb7dcdc19e762cb493f42bf2edfedf21",
+      "size_bytes": 584104
+    },
+    {
+      "filename": "fold_cdh2_model_0.pdb",
+      "sha256": "44eb54df2e3ff007dc9d7b694e63831af42d2f6f449d5d5096a1bb2af156288c",
+      "size_bytes": 1068095
+    },
+    {
+      "filename": "fold_ctnnb1_model_0.cif",
+      "sha256": "33c5999fc060d8c187350a1f6a78c54b7c69ee163cce5e81d327f17609901ba2",
+      "size_bytes": 493190
+    },
+    {
+      "filename": "fold_ctnnb1_model_0.pdb",
+      "sha256": "14da02860b0ea6c6b5009e6738a9fbc190be06b1f53c22b5370c2571d52e65c1",
+      "size_bytes": 910319
+    },
+    {
+      "filename": "fold_dvl2_model_0.cif",
+      "sha256": "1c7bcbb57f64f12eb7c0b25cb4a2deec1a47d2656a12d3c737281e020b411d74",
+      "size_bytes": 457950
+    },
+    {
+      "filename": "fold_dvl2_model_0.pdb",
+      "sha256": "3a096914e94f2761b7faa8820f534143209a7ec93306c5942195d445fefde30d",
+      "size_bytes": 843439
+    },
+    {
+      "filename": "fold_shroom3_actin_chain_model_0.cif",
+      "sha256": "742aae2e2880ced08bf782a40c482c010284368f832803fbb5f88ba30023ff54",
+      "size_bytes": 2042033
+    },
+    {
+      "filename": "fold_shroom3_actin_chain_model_0.pdb",
+      "sha256": "c514cc5338eb479bf9756d1eb97008fe6921430e510bd5867f7fb9820567ed14",
+      "size_bytes": 3651641
+    },
+    {
+      "filename": "fold_shroom3_cdh2_cytoplasmic_domain.pdb",
+      "sha256": "62685806bf367aa2d1b78ed89eecaab8f57cbe2b27772cf5d06a4c141ce8b62a",
+      "size_bytes": 2509057
+    },
+    {
+      "filename": "fold_shroom3_ctnnb1_model_0.cif",
+      "sha256": "8ca43e97d94caa1a136f82be527931734fac567c63f992145b88400e19211c79",
+      "size_bytes": 1806882
+    },
+    {
+      "filename": "fold_shroom3_ctnnb1_model_0.pdb",
+      "sha256": "4a3dce5fd631076f4aa865dfd65508be619e4208ee75c4a8edcfb11df70e9859",
+      "size_bytes": 3228321
+    },
+    {
+      "filename": "fold_shroom3_dvl2_model_0.cif",
+      "sha256": "6a9b59066d84a03b0c05eaa6eb34fa1d07f94c46a74b4febf9dbe082b02485f3",
+      "size_bytes": 1770142
+    },
+    {
+      "filename": "fold_shroom3_dvl2_model_0.pdb",
+      "sha256": "c308c6d80cfd0cdadf32034352875ead8783f7fc9da103d99c7caa6317574a09",
+      "size_bytes": 3161441
+    },
+    {
+      "filename": "fold_shroom3_model_0.cif",
+      "sha256": "5f8cf39c34470e5518956937b0e8f56f3e5211c8e7fb69516ac2a8164ce11788",
+      "size_bytes": 1314686
+    },
+    {
+      "filename": "fold_shroom3_model_0.pdb",
+      "sha256": "591daaff17abc6f7f197dd0028bfd61c2fcb535e19a43654af137858869cac02",
+      "size_bytes": 2318145
+    },
+    {
+      "filename": "fold_shroom3_rock2_model_0.pdb",
+      "sha256": "b5a2003345a013fb28a90a20f1f781c367e131a10ba2eb99ab48bafaec791e42",
+      "size_bytes": 2149011
+    },
+    {
+      "filename": "fold_zic3_gli3_model_0.cif",
+      "sha256": "a9cf21a4efcbc70d3b8266b68d0dd73c4ff1f414c105355ba0684b38b9538fcb",
+      "size_bytes": 1319327
+    },
+    {
+      "filename": "fold_zic3_gli3_model_0.pdb",
+      "sha256": "a9ebe8c1a40abaa796b14e5c653a560b57dcf1ab26351bb88ad734bee75a274f",
+      "size_bytes": 2352041
+    },
+    {
+      "filename": "fold_zic3_kpna1_model_0.cif",
+      "sha256": "007918e2a52e70186259d2635cea57c949a2e0c22d8aba28c27262906c8fd2dd",
+      "size_bytes": 638904
+    },
+    {
+      "filename": "fold_zic3_kpna1_model_0.pdb",
+      "sha256": "1862dd8f0a50d6e7b5e607c3f72affce641e9d32db51eeb420c599d940518783",
+      "size_bytes": 1183767
+    },
+    {
+      "filename": "fold_zic3_kpna6_model_0.cif",
+      "sha256": "18863b0837c18e3434f2e910d2cb0d6a6c1e2ad2c085e71934175a255fd87215",
+      "size_bytes": 637684
+    },
+    {
+      "filename": "fold_zic3_kpna6_model_0.pdb",
+      "sha256": "f0737794534e7fc291bd6276f5a4eece518463f4f3d84ff7fada15204db8c9ee",
+      "size_bytes": 1181487
+    },
+    {
+      "filename": "fold_zic3_mdfi_model_0.cif",
+      "sha256": "18cbd9a42b361f75edda3204fe24f2997ca56e697e4201a96e7452bfc4b1acb5",
+      "size_bytes": 437070
+    },
+    {
+      "filename": "fold_zic3_mdfi_model_0.pdb",
+      "sha256": "a60903e46e67e9a22aaa466c08ffd1947b5a69b69ff9cd54005a7acbb8e10b93",
+      "size_bytes": 803462
+    },
+    {
+      "filename": "fold_zic3_model_0.cif",
+      "sha256": "92f4cc1c33919532034b6477b80a26275703ddc6c0f954349654933ac587f852",
+      "size_bytes": 296330
+    },
+    {
+      "filename": "fold_zic3_model_0.pdb",
+      "sha256": "b2d3e91ab34015759d386fd0b9d2c5fbd90d98a12918f1fd44c35325ef95ae64",
+      "size_bytes": 541719
+    },
+    {
+      "filename": "fold_zic3_tcf7l1_model_0.cif",
+      "sha256": "814f1e710ea064d9f424a5e90ea9a313e62598e0b758b5a9b16672c409997ad9",
+      "size_bytes": 655116
+    },
+    {
+      "filename": "fold_zic3_tcf7l1_model_0.pdb",
+      "sha256": "966ac7cf48031f6119d9511c2b88b40db9a8293fce70aa36497d1b452dfca156",
+      "size_bytes": 1212191
+    },
+    {
+      "filename": "gli3.pdb",
+      "sha256": "a40fc1234eed4cce1a9559da0c97ea9a1c29764913fe15bf86bcb80f5d6c165f",
+      "size_bytes": 978560
+    },
+    {
+      "filename": "kpna1.pdb",
+      "sha256": "7ce0ef7e406e0b0d207d37226ab8d5206c5e988ddc434e2353aaf8cd999379fb",
+      "size_bytes": 349514
+    },
+    {
+      "filename": "kpna6.pdb",
+      "sha256": "955b4827c07ac0e060fb5a81de43e91ed881c0b668994bf07c4587b8b2cfc375",
+      "size_bytes": 348299
+    },
+    {
+      "filename": "mdfi.pdb",
+      "sha256": "8abf400b02a4da6a45db1f0cb4e649c7e4553d562900fac91d317f6a13cca3f8",
+      "size_bytes": 144908
+    },
+    {
+      "filename": "rock2.pdb",
+      "sha256": "6ec5d339b72df3fb2e695b2a53991b846a98a562f79e368e092dd3e596ada3e6",
+      "size_bytes": 926153
+    },
+    {
+      "filename": "tcf7l1.pdb",
+      "sha256": "8cb80419060fa7f4f0d477f2bd60b72d0205a2db45c594c24d59a88984e660db",
+      "size_bytes": 364985
+    }
+  ],
+  "notes": "Path-free hashes for the historical CHD structure package validated with the current GitHub configuration. The structure files are supplied separately.",
+  "schema_version": "CHD-structure-manifest-v1"
+}
