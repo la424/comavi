@@ -1,0 +1,3 @@
+system,gene,variant,comavi_tier,ddg_monomer,ddg_monomer_confident,ddg_fold_partner,ddg_binding_partner,ddg_partner_confident,existing_output
+CHD_fixture,GENE1,A1V,Tier 2,1.45,True,2.90,3.50,True,preserved
+CHD_fixture,GENE2,G2D,Tier 4,0.10,True,0.20,0.30,True,preserved

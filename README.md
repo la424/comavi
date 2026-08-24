@@ -186,6 +186,41 @@ python run.py --config my_systems.yaml --variants my_variants.csv \
 harder cases (x-ray/NMR, position offsets, non-standard chains, multi-chain complexes). Full
 walkthrough: **docs/adding_your_own_genes.md**.
 
+
+<!-- ISDS_PUBLIC_WORKFLOW_V1 -->
+## Verify and report a completed variant run
+
+New benchmark, CHD, live, and generic runs use the same shared engine and
+therefore emit the nine versioned ISDS-v1 fields. For a new CHD-focused batch,
+use the public wrapper around the generic runner:
+
+```bash
+export FOLDX_BINARY=/path/to/foldx
+python scripts/run_chd_variants.py \
+  --variants INPUT.csv \
+  --structures structures \
+  --out results/my_chd_batch
+```
+
+The wrapper writes `structural_results.csv`, independently verifies the ISDS-v1
+fields, and creates a complete augmented table, prioritized table, JSON audit,
+and Markdown report under `results/my_chd_batch/isds_v1_report/`.
+
+For arbitrary genes, run `run.py` with a custom YAML config, then apply the same
+verification and report tools:
+
+```bash
+python verification/verify_isds_output_surfaces.py --require-available \
+  results/my_run/structural_results.csv
+python scripts/build_isds_variant_report.py \
+  results/my_run/structural_results.csv \
+  --out-dir results/my_run/isds_v1_report
+```
+
+ISDS-v1 is a unitless structural-disruption prioritization index, not a
+pathogenicity probability or a validated binary decision rule. Retain its
+components, signed mechanism profile, operating point, and model-scope fields.
+
 ## Quick self-test (no FoldX required)
 
 The framework's headline metrics can be reproduced from cached intermediates

@@ -129,6 +129,22 @@ def main():
                     "structural_disruption_detected_t10"]
     if "comavi_mechanism_corrected_t10" in pv.columns:
         display_cols.append("comavi_mechanism_corrected_t10")
+    # ISDS-v1 public-output display
+    isds_display_cols = [
+        "isds_v1",
+        "isds_energy_component",
+        "isds_context_component",
+        "isds_energy_ratio_uncapped",
+        "isds_dominant_axis",
+        "isds_dominant_partner",
+        "isds_dominant_signed_ddg",
+        "isds_available",
+        "isds_version",
+    ]
+    display_cols.extend(
+        column for column in isds_display_cols
+        if column in pv.columns and column not in display_cols
+    )
     with pd.option_context("display.max_columns", None, "display.width", 200,
                             "display.max_colwidth", 50):
         print(pv[display_cols].to_string(index=False))
