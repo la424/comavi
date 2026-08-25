@@ -89,6 +89,26 @@ def main() -> None:
         ],
     )
 
+    failures += require_text(
+        repo / "notebooks" / "COMAVI_colab.ipynb",
+        [
+            "aeeaa3956b26edd67115083941954727316ca997",
+            "MONOMER_OFFSET_OVERRIDES",
+            "MULTIMER_OFFSET_OVERRIDES",
+            "ARBITRARY-VARIANT OUTPUT CONTRACT: PASS",
+            "build_isds_variant_report.py",
+            "verify_isds_output_surfaces.py",
+        ],
+    )
+    failures += require_text(
+        repo / "verification" / "verify_colab_notebook_contract.py",
+        [
+            "COLAB NOTEBOOK CONTRACT: PASS",
+            "Residue-numbering override contract: PASS",
+        ],
+    )
+    # COLAB_PUBLIC_CLOSEOUT_V1
+
     if failures:
         print("ISDS PUBLIC-SURFACE AUDIT: FAIL")
         for failure in failures:
@@ -102,6 +122,7 @@ def main() -> None:
     print("Public ISDS report builder: PASS")
     print("Output-surface verifier: PASS")
     print("Cross-platform migration reproducibility: PASS")
+    print("Public Colab notebook contract: PASS")
     print("README user workflow: PASS")
     print("CI closeout gates: PASS")
     print("ISDS PUBLIC-SURFACE AUDIT: PASS")
