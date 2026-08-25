@@ -17,6 +17,18 @@ structures, runs COMAVI, and shows per-variant mechanism cards.
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/la424/comavi/blob/main/notebooks/COMAVI_colab.ipynb)
 
+
+<!-- COLAB_PUBLIC_CLOSEOUT_V1 -->
+### Public Colab workflow
+
+The browser notebook runs the generic `run.py` path for user-supplied genes and
+missense variants. It reports both the ISDS-v1 priority score and the signed
+mechanism profile, validates residue identity before FoldX scoring, supports
+explicit per-gene monomer and multimer numbering offsets, and produces a
+verified downloadable report bundle. A factory-fresh two-variant HBB smoke test
+and its limitations are recorded in
+[`docs/COLAB_PUBLIC_WORKFLOW_VALIDATION.md`](docs/COLAB_PUBLIC_WORKFLOW_VALIDATION.md).
+
 ## Start here
 
 New to this repository? You don't need to run anything to see what COMAVI produces.

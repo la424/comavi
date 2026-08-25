@@ -5,6 +5,7 @@ on:
     paths:
       - 'README.md'
       - 'docs/**'
+      - 'notebooks/**'
       - 'figures/isds_v1/**'
       - 'scripts/**'
       - 'verification/**'
@@ -17,6 +18,7 @@ on:
     paths:
       - 'README.md'
       - 'docs/**'
+      - 'notebooks/**'
       - 'figures/isds_v1/**'
       - 'scripts/**'
       - 'verification/**'
@@ -67,6 +69,7 @@ jobs:
             scripts/run_chd_variants.py \
             verification/verify_isds_output_surfaces.py \
             verification/verify_chd_migration_reproducibility.py \
+            verification/verify_colab_notebook_contract.py \
             verification/audit_isds_public_surfaces.py
 
       - name: Run ISDS unit and migration tests
@@ -77,7 +80,8 @@ jobs:
             verification.test_update_canonical_isds_v1 \
             verification.test_isds_variant_report \
             verification.test_chd_variant_runner \
-            verification.test_chd_migration_reproducibility
+            verification.test_chd_migration_reproducibility \
+            verification.test_colab_notebook_contract
 
       - name: Verify committed ISDS and stress outputs
         run: |
@@ -86,6 +90,9 @@ jobs:
           python verification/verify_stress_statistics.py
           python scripts/build_current_results_summary.py --check
           python verification/audit_isds_public_surfaces.py
+          python verification/verify_colab_notebook_contract.py \
+            notebooks/COMAVI_colab.ipynb
+          # COLAB_PUBLIC_CLOSEOUT_V1
           temp_dir="$(mktemp -d)"
           python scripts/build_isds_variant_report.py \
             verification/fixtures/chd_isds_public/chd_fixture.csv \

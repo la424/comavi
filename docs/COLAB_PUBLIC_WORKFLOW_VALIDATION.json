@@ -1,0 +1,265 @@
+{
+  "bundle_sha256": "a89dea7eb64b7a6079cb2ffb01cf6a62257613cc88fb84b3f8f628cfe2325844",
+  "checks": [
+    {
+      "detail": "12 files",
+      "label": "zip inventory exact",
+      "passed": true
+    },
+    {
+      "detail": "{('hbb', 'E', 6, 'V'), ('hbb', 'E', 6, 'A')}",
+      "label": "two input variants",
+      "passed": true
+    },
+    {
+      "detail": "{('hbb', 'E', 6, 'V'), ('hbb', 'E', 6, 'A')}",
+      "label": "two output rows",
+      "passed": true
+    },
+    {
+      "detail": "{'hbb_hba1'}",
+      "label": "one system",
+      "passed": true
+    },
+    {
+      "detail": "{-1}",
+      "label": "monomer offset applied",
+      "passed": true
+    },
+    {
+      "detail": "{0}",
+      "label": "multimer offset applied",
+      "passed": true
+    },
+    {
+      "detail": "{7}",
+      "label": "monomer maps to residue 7",
+      "passed": true
+    },
+    {
+      "detail": "{6}",
+      "label": "complex maps to residue 6",
+      "passed": true
+    },
+    {
+      "detail": "",
+      "label": "residue identity all match",
+      "passed": true
+    },
+    {
+      "detail": "",
+      "label": "structure evaluable",
+      "passed": true
+    },
+    {
+      "detail": "",
+      "label": "multimer evaluable",
+      "passed": true
+    },
+    {
+      "detail": "",
+      "label": "ddg evaluable",
+      "passed": true
+    },
+    {
+      "detail": "[nan, nan]",
+      "label": "no FoldX errors",
+      "passed": true
+    },
+    {
+      "detail": "[0.5662, 0.1942]",
+      "label": "ddg_monomer finite",
+      "passed": true
+    },
+    {
+      "detail": "[0.6981, 0.2245]",
+      "label": "ddg_fold_hba1 finite",
+      "passed": true
+    },
+    {
+      "detail": "[0.0041, 0.003]",
+      "label": "ddg_binding_hba1 finite",
+      "passed": true
+    },
+    {
+      "detail": "[5, 5]",
+      "label": "five monomer FoldX replicates per variant",
+      "passed": true
+    },
+    {
+      "detail": "set()",
+      "label": "nine ISDS fields present",
+      "passed": true
+    },
+    {
+      "detail": "[True, True]",
+      "label": "ISDS available 2/2",
+      "passed": true
+    },
+    {
+      "detail": "{'ISDS-v1'}",
+      "label": "ISDS version current",
+      "passed": true
+    },
+    {
+      "detail": "['E6V', 'E6A']",
+      "label": "priority order E6V then E6A",
+      "passed": true
+    },
+    {
+      "detail": "{'all_fields_match': True, 'failing_fields': [], 'maximum_numeric_delta': 0.0, 'tolerance': 1e-08}",
+      "label": "report recomputation exact",
+      "passed": true
+    },
+    {
+      "detail": "{'comavi_commit': 'aeeaa3956b26edd67115083941954727316ca997', 'isds_version': 'ISDS-v1', 'input_variants': '2', 'output_rows': '2', 'isds_available_rows': '2'}",
+      "label": "provenance commit",
+      "passed": true
+    },
+    {
+      "detail": "{'comavi_commit': 'aeeaa3956b26edd67115083941954727316ca997', 'isds_version': 'ISDS-v1', 'input_variants': '2', 'output_rows': '2', 'isds_available_rows': '2'}",
+      "label": "provenance row counts",
+      "passed": true
+    },
+    {
+      "detail": "",
+      "label": "run log contains Residue-identity check passed: 4 axis position(s)",
+      "passed": true
+    },
+    {
+      "detail": "",
+      "label": "run log contains Structure-provenance check passed",
+      "passed": true
+    },
+    {
+      "detail": "",
+      "label": "run log contains Total FoldX failures: 0",
+      "passed": true
+    },
+    {
+      "detail": "",
+      "label": "run log contains ISDS-v1 available: 2/2",
+      "passed": true
+    },
+    {
+      "detail": "",
+      "label": "run log contains Done: 2 rows",
+      "passed": true
+    },
+    {
+      "detail": "0 bytes",
+      "label": "stderr empty",
+      "passed": true
+    },
+    {
+      "detail": "[]",
+      "label": "augmented table preserves all raw columns",
+      "passed": true
+    },
+    {
+      "detail": "numeric=[], text=[], max_delta=0.0",
+      "label": "augmented table preserves raw values",
+      "passed": true
+    }
+  ],
+  "provenance": {
+    "comavi_commit": "aeeaa3956b26edd67115083941954727316ca997",
+    "input_variants": "2",
+    "isds_available_rows": "2",
+    "isds_version": "ISDS-v1",
+    "output_rows": "2"
+  },
+  "result_rows": [
+    {
+      "alt_aa": "V",
+      "comavi_mechanism": "No structural effect detected",
+      "comavi_mechanism_partner": null,
+      "comavi_mechanism_partner_t10": null,
+      "comavi_mechanism_partner_t25": null,
+      "comavi_mechanism_partner_tSAP": null,
+      "comavi_mechanism_t10": "No structural effect detected",
+      "comavi_mechanism_t25": "No structural effect detected",
+      "comavi_mechanism_tSAP": "No structural effect detected",
+      "comavi_score": 2.0,
+      "comavi_tier": "Tier 3",
+      "ddg_binding_hba1": 0.0041,
+      "ddg_binding_hbb": null,
+      "ddg_fold_hba1": 0.6981,
+      "ddg_fold_hbb": null,
+      "ddg_monomer": 0.5662,
+      "foldx_errors": null,
+      "gene": "hbb",
+      "isds_available": true,
+      "isds_context_component": 0.33333333,
+      "isds_dominant_axis": "complex_context",
+      "isds_dominant_partner": "hba1",
+      "isds_dominant_signed_ddg": 0.6981,
+      "isds_energy_component": 0.19401907,
+      "isds_energy_ratio_uncapped": 0.24072414,
+      "isds_v1": 0.2636762,
+      "isds_version": "ISDS-v1",
+      "position": 6,
+      "ref_aa": "E",
+      "system": "hbb_hba1",
+      "variant": "E6V"
+    },
+    {
+      "alt_aa": "A",
+      "comavi_mechanism": "No structural effect detected",
+      "comavi_mechanism_partner": null,
+      "comavi_mechanism_partner_t10": null,
+      "comavi_mechanism_partner_t25": null,
+      "comavi_mechanism_partner_tSAP": null,
+      "comavi_mechanism_t10": "No structural effect detected",
+      "comavi_mechanism_t25": "No structural effect detected",
+      "comavi_mechanism_tSAP": "No structural effect detected",
+      "comavi_score": 1.0,
+      "comavi_tier": "Tier 4",
+      "ddg_binding_hba1": 0.003,
+      "ddg_binding_hbb": null,
+      "ddg_fold_hba1": 0.2245,
+      "ddg_fold_hbb": null,
+      "ddg_monomer": 0.1942,
+      "foldx_errors": null,
+      "gene": "hbb",
+      "isds_available": true,
+      "isds_context_component": 0.0,
+      "isds_dominant_axis": "complex_context",
+      "isds_dominant_partner": "hba1",
+      "isds_dominant_signed_ddg": 0.2245,
+      "isds_energy_component": 0.0718515,
+      "isds_energy_ratio_uncapped": 0.07741379,
+      "isds_v1": 0.03592575,
+      "isds_version": "ISDS-v1",
+      "position": 6,
+      "ref_aa": "E",
+      "system": "hbb_hba1",
+      "variant": "E6A"
+    }
+  ],
+  "summary": {
+    "existing_isds_schema": true,
+    "input_file": "structural_results.csv",
+    "input_sha256": "28a9b15f5bbc4a76164bd0a7d366b2d132869b2836acbd937faa79107f80c748",
+    "isds_available_rows": 2,
+    "isds_unavailable_rows": 0,
+    "isds_version": "ISDS-v1",
+    "outputs": {
+      "full_csv": "comavi_variants_with_isds_v1.csv",
+      "markdown_report": "comavi_variants_isds_report.md",
+      "prioritized_csv": "comavi_variants_prioritized.csv"
+    },
+    "partner_labels": [
+      "hba1",
+      "hbb"
+    ],
+    "rows": 2,
+    "stored_vs_recomputed_audit": {
+      "all_fields_match": true,
+      "failing_fields": [],
+      "maximum_numeric_delta": 0.0,
+      "tolerance": 1e-08
+    },
+    "systems": 1
+  }
+}
