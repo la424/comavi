@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify the public COMAVI Colab notebook's static runtime contract."""
+"""Verify the public COMAVI Colab notebook and setup-wizard contract."""
 
 from __future__ import annotations
 
@@ -9,7 +9,8 @@ import json
 import re
 from pathlib import Path
 
-CURRENT_PUBLIC_REF = "aeeaa3956b26edd67115083941954727316ca997"
+DEFAULT_PUBLIC_REF = "main"
+SETUP_WIZARD_VERSION = "COMAVI-Setup-v1"
 ISDS_FIELDS = {
     "isds_version",
     "isds_available",
@@ -27,6 +28,7 @@ STALE_REFS = {
     "7aaa32b",
     "feature/isds-v1",
     "feature/chd-isds-public-closeout",
+    "feature/colab-public-closeout",
 }
 
 
@@ -43,7 +45,6 @@ def require(condition: bool, message: str) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("notebook", type=Path)
-    parser.add_argument("--expected-ref", default=CURRENT_PUBLIC_REF)
     args = parser.parse_args()
 
     path = args.notebook.resolve()
@@ -67,9 +68,12 @@ def main() -> None:
                 f"Code cell {index} does not parse: {error}"
             ) from error
 
-    require(args.expected_ref in all_text, f"Notebook does not pin expected public ref {args.expected_ref}.")
-    require("COMAVI_REF" in code_text, "Notebook lacks COMAVI_REF.")
+    require(
+        re.search(r'COMAVI_REF\s*=\s*["\']main["\']', code_text) is not None,
+        "Notebook does not default to the current public main branch.",
+    )
     require("resolved_commit" in code_text, "Notebook does not record the resolved commit.")
+    require("comavi_commit=" in code_text, "Result provenance lacks the resolved COMAVI commit.")
     require(
         re.search(r"REPO\s*/\s*[\"']run\.py[\"']", code_text) is not None,
         "Notebook does not invoke the generic run.py entry point.",
@@ -81,23 +85,47 @@ def main() -> None:
     for field in ISDS_FIELDS:
         require(field in all_text, f"Notebook does not expose or validate ISDS field {field}.")
 
-    require("build_isds_variant_report.py" in code_text, "Notebook does not build the public ISDS report.")
-    require("verify_isds_output_surfaces.py" in code_text, "Notebook does not verify the public output contract.")
-    require("ARBITRARY-VARIANT OUTPUT CONTRACT: PASS" in code_text, "Notebook lacks its variant-output assertion.")
-    require("COMAVI_variant_results_bundle.zip" in code_text, "Notebook lacks a downloadable verified result bundle.")
-    require("EXPERIMENTAL_CHAIN_MAP" in code_text, "Notebook lacks explicit experimental chain mapping.")
-    require("COLABFOLD_RELEASE" in code_text and "v1.6.1" in code_text, "Notebook does not pin ColabFold v1.6.1.")
+    required_tokens = {
+        "setup-wizard module": "comavi_setup_wizard",
+        "new-system mode": "Create a new system",
+        "prepared-bundle mode": "Use prepared system bundle(s)",
+        "bundle merger": "merge_setup_bundles",
+        "prepared current-variant revalidation": "revalidate_prepared_systems",
+        "automatic chain assessment": "rank_structure_candidates",
+        "monomer assessment": "assess_monomer_set",
+        "complex assessment": "assess_structure",
+        "traffic-light preflight": "TRAFFIC-LIGHT PREFLIGHT: PASS",
+        "setup bundle": "COMAVI_system_setup_bundle.zip",
+        "input-numbering override": "INPUT_NUMBERING_OVERRIDES",
+        "chain override": "COMPLEX_CHAIN_OVERRIDES",
+        "monomer offset override": "MONOMER_OFFSET_OVERRIDES",
+        "multimer offset override": "MULTIMER_OFFSET_OVERRIDES",
+        "yellow confirmation": "CONFIRM_YELLOW_PREFLIGHT",
+        "biological-context confirmation": "CONFIRM_BIOLOGICAL_CONTEXT",
+        "Google Drive FoldX": "Google Drive path",
+        "plain-language cards": "render_plain_language_cards",
+        "plain-language table": "comavi_plain_language_summary.csv",
+        "arbitrary-variant assertion": "ARBITRARY-VARIANT OUTPUT CONTRACT: PASS",
+        "public report": "build_isds_variant_report.py",
+        "output verifier": "verify_isds_output_surfaces.py",
+        "result bundle": "COMAVI_variant_results_bundle.zip",
+        "ColabFold pin": "v1.6.1",
+    }
+    missing_tokens = [label for label, token in required_tokens.items() if token not in all_text]
+    require(not missing_tokens, f"Notebook lacks setup-wizard elements: {missing_tokens}")
 
-    for token in (
-        "MONOMER_OFFSET_OVERRIDES",
-        "MULTIMER_OFFSET_OVERRIDES",
-        "NUMBERING OFFSET CONTRACT: PASS",
-        "structure_position = submitted_position - offset",
-        "monomer_offsets=",
-        "multimer_offsets=",
-        "gene_chain_map=",
-    ):
-        require(token in all_text, f"Notebook lacks numbering/provenance contract token: {token}")
+    require(
+        "--skip-numbering-check" not in all_text,
+        "Notebook exposes the unsafe numbering-check bypass.",
+    )
+    require(
+        "Biological context is not automatable" in all_text,
+        "Notebook does not state the limit of automatic structure selection.",
+    )
+    require(
+        "Homomers and repeated copies" in all_text,
+        "Notebook does not disclose the repeated-chain limitation.",
+    )
 
     stale = sorted(token for token in STALE_REFS if token in all_text)
     require(not stale, f"Notebook contains stale release references: {stale}")
@@ -110,16 +138,23 @@ def main() -> None:
     ]
     require(not uncleared, f"Notebook contains executed output state in cells: {uncleared}")
 
+    metadata_version = notebook.get("metadata", {}).get("comavi_setup_wizard_version")
+    require(
+        metadata_version == SETUP_WIZARD_VERSION,
+        f"Notebook metadata wizard version differs: {metadata_version!r}",
+    )
+
     print(f"Notebook: {path}")
     print(f"Cells: {len(cells)} ({len(markdown_cells)} Markdown, {len(code_cells)} code)")
-    print(f"Pinned COMAVI ref: {args.expected_ref}")
+    print(f"Default COMAVI ref: {DEFAULT_PUBLIC_REF}")
+    print(f"Setup wizard: {SETUP_WIZARD_VERSION}")
     print(f"ISDS fields: {len(ISDS_FIELDS)}")
-    print("Generic runner: PASS")
-    print("Variant input contract: PASS")
-    print("Residue-numbering override contract: PASS")
+    print("Generic arbitrary-variant runner: PASS")
+    print("Automatic sequence, chain, and numbering mapping: PASS")
+    print("Prepared-bundle current-variant revalidation and multi-system reuse: PASS")
+    print("Traffic-light preflight and fail-safe stops: PASS")
     print("Priority-score and mechanism-profile outputs: PASS")
-    print("Public report and output verifier: PASS")
-    print("Experimental/PDB and ColabFold routes: STATIC PASS")
+    print("Plain-language cards and public reports: PASS")
     print("COLAB NOTEBOOK CONTRACT: PASS")
 
 

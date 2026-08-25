@@ -23,3 +23,6 @@ statsmodels
 # left guessing:
 #   python-pptx, pillow  -> build_lab_meeting_deck.py, audit_deck_numbers.py
 #   python-docx          -> build_manuscript_docx.py
+
+# PDB/mmCIF parsing and sequence-aware Colab system setup
+gemmi

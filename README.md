@@ -414,3 +414,16 @@ See `CITATION.cff`.
 ## License
 
 MIT — see `LICENSE`.
+
+<!-- COMAVI_SETUP_WIZARD_V1 -->
+### Plug-and-play system setup
+
+The Colab notebook now includes a sequence-aware setup wizard. It ranks chain
+assignments, infers uniform numbering offsets, checks every submitted residue,
+and presents a traffic-light preflight before FoldX. A reviewed system can be
+saved as `COMAVI_system_setup_bundle.zip`; collaborators can upload one or more
+bundles and score new variants without editing Python or YAML. Prepared bundles
+are revalidated against each new variant batch and their offsets are rebuilt for
+the current numbering convention. See
+[`docs/COMAVI_SYSTEM_SETUP_WIZARD.md`](docs/COMAVI_SYSTEM_SETUP_WIZARD.md) for
+supported cases and explicit limits.

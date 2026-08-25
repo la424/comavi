@@ -92,7 +92,9 @@ def main() -> None:
     failures += require_text(
         repo / "notebooks" / "COMAVI_colab.ipynb",
         [
-            "aeeaa3956b26edd67115083941954727316ca997",
+            "COMAVI_REF",
+            "resolved_commit",
+            "comavi_commit=",
             "MONOMER_OFFSET_OVERRIDES",
             "MULTIMER_OFFSET_OVERRIDES",
             "ARBITRARY-VARIANT OUTPUT CONTRACT: PASS",
@@ -104,10 +106,49 @@ def main() -> None:
         repo / "verification" / "verify_colab_notebook_contract.py",
         [
             "COLAB NOTEBOOK CONTRACT: PASS",
-            "Residue-numbering override contract: PASS",
+            "Automatic sequence, chain, and numbering mapping: PASS",
+            "Prepared-bundle current-variant revalidation and multi-system reuse: PASS",
         ],
     )
     # COLAB_PUBLIC_CLOSEOUT_V1
+
+    failures += require_text(
+        repo / "notebooks" / "comavi_setup_wizard.py",
+        [
+            "COMAVI-Setup-v1",
+            "rank_structure_candidates",
+            "create_system_setup_bundle",
+            "merge_setup_bundles",
+            "revalidate_prepared_systems",
+            "render_plain_language_cards",
+        ],
+    )
+    failures += require_text(
+        repo / "notebooks" / "COMAVI_colab.ipynb",
+        [
+            "Use prepared system bundle(s)",
+            "TRAFFIC-LIGHT PREFLIGHT: PASS",
+            "COMAVI_system_setup_bundle.zip",
+            "revalidate_prepared_systems",
+            "CONFIRM_BIOLOGICAL_CONTEXT",
+            "render_plain_language_cards",
+        ],
+    )
+    failures += require_text(
+        repo / "verification" / "verify_colab_setup_wizard_contract.py",
+        [
+            "SETUP WIZARD CONTRACT: PASS",
+            "Historical-to-reference numbering reconciliation: PASS",
+        ],
+    )
+    failures += require_text(
+        repo / ".github" / "workflows" / "isds-v1.yml",
+        [
+            "verification.test_colab_setup_wizard",
+            "verification/verify_colab_setup_wizard_contract.py",
+        ],
+    )
+    # COMAVI_SETUP_WIZARD_V1
 
     if failures:
         print("ISDS PUBLIC-SURFACE AUDIT: FAIL")
@@ -123,6 +164,7 @@ def main() -> None:
     print("Output-surface verifier: PASS")
     print("Cross-platform migration reproducibility: PASS")
     print("Public Colab notebook contract: PASS")
+    print("Plug-and-play system setup wizard: PASS")
     print("README user workflow: PASS")
     print("CI closeout gates: PASS")
     print("ISDS PUBLIC-SURFACE AUDIT: PASS")
