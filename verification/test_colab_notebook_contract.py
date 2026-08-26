@@ -84,6 +84,16 @@ class TestColabNotebookContract(unittest.TestCase):
             result = self.run_verifier(candidate)
             self.assertNotEqual(result.returncode, 0)
 
+    def test_missing_config_derived_provenance_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            candidate = Path(directory) / "missing_config_provenance.ipynb"
+            self.mutated_notebook(
+                "build_config_provenance",
+                "removed_config_provenance",
+                candidate,
+            )
+            result = self.run_verifier(candidate)
+            self.assertNotEqual(result.returncode, 0)
 
     def test_missing_biological_context_confirmation_fails(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

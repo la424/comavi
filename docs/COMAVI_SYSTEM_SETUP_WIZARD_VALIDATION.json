@@ -2,10 +2,10 @@
   "artifact": "COMAVI system-setup wizard",
   "automated_tests": {
     "independent_contract_test": 1,
-    "notebook_contract_tests": 7,
+    "notebook_contract_tests": 8,
     "result": "pass",
-    "setup_module_tests": 8,
-    "total_candidate_tests": 16
+    "setup_module_tests": 9,
+    "total_candidate_tests": 18
   },
   "live_validation": {
     "new_wizard_live_matrix": "pending",

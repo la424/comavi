@@ -1556,6 +1556,85 @@ def revalidate_prepared_systems(
     return output_config_path, combined_preflight, reports
 
 
+def build_config_provenance(config_path: str | Path) -> dict[str, Any]:
+    """Build compact run provenance from the exact executed configuration.
+
+    Single-system runs retain the original flat maps and scalar complex fields.
+    Multi-system runs use system-scoped maps so repeated genes or distinct
+    complexes cannot overwrite one another in the compact provenance record.
+    The full system-scoped representation is always returned as
+    ``system_configurations``.
+    """
+    config = yaml.safe_load(Path(config_path).read_text(encoding="utf-8"))
+    systems = _systems_mapping(config)
+    if not systems:
+        raise ValueError("Config contains no systems for provenance.")
+
+    system_configurations: dict[str, dict[str, Any]] = {}
+    for system_name, raw_system in systems.items():
+        if not isinstance(raw_system, Mapping):
+            raise ValueError(
+                f"System configuration {system_name!r} is not a mapping."
+            )
+        system = dict(raw_system)
+        structure_type = system.get("structure_type")
+        if structure_type in (None, ""):
+            raise ValueError(
+                f"System configuration {system_name!r} lacks structure_type."
+            )
+        gene_config = _system_gene_mapping(system)
+        gene_chain_map: dict[str, str] = {}
+        monomer_offsets: dict[str, int] = {}
+        multimer_offsets: dict[str, int] = {}
+        for gene, settings in gene_config.items():
+            chain = settings.get("chain")
+            if chain in (None, ""):
+                raise ValueError(
+                    f"System configuration {system_name!r} lacks a chain for {gene!r}."
+                )
+            gene_chain_map[gene] = str(chain)
+            for field, destination in (
+                ("monomer_offset", monomer_offsets),
+                ("multimer_offset", multimer_offsets),
+            ):
+                value = settings.get(field, 0)
+                try:
+                    destination[gene] = int(value)
+                except (TypeError, ValueError) as error:
+                    raise ValueError(
+                        f"System configuration {system_name!r} has a non-integer "
+                        f"{field} for {gene!r}: {value!r}."
+                    ) from error
+        system_configurations[str(system_name)] = {
+            "complex_structure_type": str(structure_type),
+            "complex_structure": _system_complex_filename(system),
+            "gene_chain_map": gene_chain_map,
+            "monomer_offsets": monomer_offsets,
+            "multimer_offsets": multimer_offsets,
+        }
+
+    field_names = (
+        "monomer_offsets",
+        "multimer_offsets",
+        "complex_structure_type",
+        "complex_structure",
+        "gene_chain_map",
+    )
+    if len(system_configurations) == 1:
+        only_system = next(iter(system_configurations.values()))
+        compact = {field: only_system[field] for field in field_names}
+    else:
+        compact = {
+            field: {
+                system_name: values[field]
+                for system_name, values in system_configurations.items()
+            }
+            for field in field_names
+        }
+    compact["system_configurations"] = system_configurations
+    return compact
+
+
 def genes_from_config(config_path: str | Path) -> list[str]:
     config = yaml.safe_load(Path(config_path).read_text(encoding="utf-8"))
     systems = _systems_mapping(config)

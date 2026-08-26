@@ -283,6 +283,75 @@ class TestSetupWizard(unittest.TestCase):
             self.assertEqual(set(preflight["system"]), {"hbb_hba1"})
             self.assertIn(reports["hbb_hba1"]["status"], {"green", "yellow"})
 
+    def test_config_provenance_is_exact_and_system_scoped(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            config = root / "config.yaml"
+            config.write_text(
+                yaml.safe_dump(
+                    {
+                        "systems": {
+                            "hbb_hba1": {
+                                "structure_type": "PDB",
+                                "pdb_file": "2HHB.pdb",
+                                "genes": {
+                                    "hbb": {
+                                        "chain": "B",
+                                        "monomer_pdb": "hbb.pdb",
+                                        "monomer_offset": 0,
+                                        "multimer_offset": 1,
+                                    },
+                                    "hba1": {
+                                        "chain": "A",
+                                        "monomer_pdb": "hba1.pdb",
+                                        "multimer_offset": 1,
+                                    },
+                                },
+                            }
+                        }
+                    },
+                    sort_keys=False,
+                ),
+                encoding="utf-8",
+            )
+            single = wizard.build_config_provenance(config)
+            self.assertEqual(single["monomer_offsets"], {"hbb": 0, "hba1": 0})
+            self.assertEqual(single["multimer_offsets"], {"hbb": 1, "hba1": 1})
+            self.assertEqual(single["gene_chain_map"], {"hbb": "B", "hba1": "A"})
+            self.assertEqual(single["complex_structure_type"], "PDB")
+            self.assertEqual(single["complex_structure"], "2HHB.pdb")
+
+            systems = yaml.safe_load(config.read_text(encoding="utf-8"))["systems"]
+            systems["second_system"] = {
+                "structure_type": "AF",
+                "complex_file": "second.pdb",
+                "genes": {
+                    "g": {
+                        "chain": "C",
+                        "monomer_file": "g.pdb",
+                        "monomer_offset": -2,
+                        "multimer_offset": 3,
+                    }
+                },
+            }
+            config.write_text(
+                yaml.safe_dump({"systems": systems}, sort_keys=False),
+                encoding="utf-8",
+            )
+            multiple = wizard.build_config_provenance(config)
+            self.assertEqual(
+                multiple["monomer_offsets"],
+                {"hbb_hba1": {"hbb": 0, "hba1": 0}, "second_system": {"g": -2}},
+            )
+            self.assertEqual(
+                multiple["complex_structure"],
+                {"hbb_hba1": "2HHB.pdb", "second_system": "second.pdb"},
+            )
+            self.assertEqual(
+                multiple["system_configurations"]["second_system"]["gene_chain_map"],
+                {"g": "C"},
+            )
+
     def test_plain_language_cards_do_not_create_probability_claims(self) -> None:
         results = pd.DataFrame(
             [

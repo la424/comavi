@@ -91,6 +91,8 @@ def main() -> None:
         "prepared-bundle mode": "Use prepared system bundle(s)",
         "bundle merger": "merge_setup_bundles",
         "prepared current-variant revalidation": "revalidate_prepared_systems",
+        "config-derived run provenance": "build_config_provenance",
+        "system-scoped run provenance": "system_configurations=",
         "automatic chain assessment": "rank_structure_candidates",
         "monomer assessment": "assess_monomer_set",
         "complex assessment": "assess_structure",

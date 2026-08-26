@@ -63,6 +63,7 @@ def main() -> None:
         "create_system_setup_bundle",
         "merge_setup_bundles",
         "revalidate_prepared_systems",
+        "build_config_provenance",
         "read_fasta",
         "render_plain_language_cards",
     }

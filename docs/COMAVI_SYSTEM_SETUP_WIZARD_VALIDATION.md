@@ -12,9 +12,9 @@ The candidate passed:
 - Python compilation of the setup module and verification tools;
 - notebook JSON and Python-syntax validation;
 - static notebook-contract verification;
-- seven notebook mutation tests that require current public behavior and reject
+- eight notebook mutation tests that require current public behavior and reject
   stale, incomplete, or unsafe variants;
-- eight setup-module unit tests covering:
+- nine setup-module unit tests covering:
   - historical HBB numbering inference;
   - automatic two-gene chain assignment;
   - distinct monomer/multimer offset derivation;
@@ -23,6 +23,7 @@ The candidate passed:
   - traffic-light preflight generation;
   - setup-bundle hash verification, reference-sequence merging, and multi-bundle merging;
   - current-batch revalidation of prepared structures with rebuilt offsets;
+  - config-derived, system-scoped run provenance for prepared and multi-system runs;
   - plain-language result cards without probability claims;
 - an independent synthetic setup-wizard contract test.
 
