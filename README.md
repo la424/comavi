@@ -12,8 +12,9 @@ variant disruptiveness should be evaluated **in the appropriate multimer**, and 
 doing so resolves the **specific mechanism** of disruption rather than emitting a
 single undifferentiated score.
 
-**Try it in your browser (no install):** a guided Colab notebook fetches or predicts the
-structures, runs COMAVI, and shows per-variant mechanism cards.
+**Try it in your browser (no install):** the guided Colab notebook helps retrieve,
+upload, or optionally predict the required structures, runs COMAVI, and shows
+per-variant mechanism cards.
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/la424/comavi/blob/main/notebooks/COMAVI_colab.ipynb)
 
@@ -31,28 +32,44 @@ and its limitations are recorded in
 
 ## Start here
 
-New to this repository? You don't need to run anything to see what COMAVI produces.
+Choose the path that matches what you want to do:
 
-1. **See the results at a glance** — open [`reference_outputs/COMAVI_results_summary.xlsx`](reference_outputs/COMAVI_results_summary.xlsx),
-   an 11-sheet workbook with the per-variant calls, the benchmark metrics, and the
-   tier gradient. A narrative version is in `reference_outputs/COMAVI_results_summary.docx`.
-2. **See the figures** — the five manuscript figures are in [`figures/`](figures/),
-   with a one-line description of each in [`figures/README.md`](figures/README.md).
-3. **See the underlying data** — every scored variant is in
-   [`reference_outputs/scored_61var_canonical.csv`](reference_outputs/scored_61var_canonical.csv)
-   (the canonical 61-variant benchmark).
-4. **Want the full method and provenance?** — `docs/COMAVI_v7_canonical_benchmark_ledger.md`
-   is the authoritative record; `docs/COMAVI_results_synthesis.md` is the plain-language walkthrough.
-5. **Want to run it?** — start with [`examples/`](examples/README.md): a complete
-   worked input set (HBB–HBA1 sickle-cell E6V, x-ray 2HHB) that validates end to
-   end **without a FoldX licence**, plus the frozen values it should reproduce.
-   Then see [Installation](#installation) and [The three pipelines](#the-three-pipelines),
-   or try the browser Colab above (no install).
+1. **Run your variants in a browser** — open the Colab notebook above. It is the
+   recommended first-run path and requires no local Python installation.
+2. **Check a local installation** — follow the [copy-and-paste installation and
+   dry-run](#installation). The HBB–HBA1 example validates configuration,
+   structures, and variant expansion without invoking FoldX.
+3. **Configure your own genes or reuse a prepared system** — use the
+   [setup wizard](docs/COMAVI_SYSTEM_SETUP_WIZARD.md) in Colab, or follow
+   [Run it on your own genes](#run-it-on-your-own-genes) for the command line.
+4. **Browse the published results** — open
+   [`reference_outputs/COMAVI_results_summary.xlsx`](reference_outputs/COMAVI_results_summary.xlsx)
+   for the per-variant calls and benchmark metrics, or see the indexed
+   [`figures/`](figures/README.md) and
+   [`reference_outputs/scored_61var_canonical.csv`](reference_outputs/scored_61var_canonical.csv).
+5. **Reproduce or audit the study** — start with the
+   [documentation index](docs/README.md), the
+   [canonical benchmark ledger](docs/COMAVI_v7_canonical_benchmark_ledger.md),
+   and the [no-FoldX self-test](#quick-self-test-no-foldx-required).
+
+<!-- COMAVI_SETUP_WIZARD_V1 -->
+### Plug-and-play system setup
+
+The Colab notebook includes a sequence-aware setup wizard. It ranks chain
+assignments, infers uniform numbering offsets, checks every submitted residue,
+and presents a traffic-light preflight before FoldX. A reviewed system can be
+saved as `COMAVI_system_setup_bundle.zip`; collaborators can upload one or more
+bundles and score new variants without editing Python or YAML. Prepared bundles
+are revalidated against each new variant batch and their offsets are rebuilt for
+the current numbering convention. See the
+[system-setup guide](docs/COMAVI_SYSTEM_SETUP_WIZARD.md) for supported cases and
+explicit limits.
 
 ## What it does
 
 For each missense variant, COMAVI computes a **three-axis ΔΔG** profile against
-AlphaFold structures using FoldX, decomposing the structural effect by mechanism:
+supplied monomer and complex structures using FoldX. Complexes may be experimental
+structures or predicted models; COMAVI decomposes their structural effect by mechanism:
 
 - `ddg_monomer` — destabilization of the isolated subunit's fold
 - `ddg_fold_{partner}` — destabilization of that subunit's fold *within the complex*
@@ -105,8 +122,8 @@ reference_outputs/       canonical result files:
                            COMAVI_results_summary.xlsx  (11-sheet overview) + .docx narrative
                            concordance CSVs, collapsed CHD outputs
 data/                    reference inputs (UniProt domain ranges, variant–domain map)
-docs/                    benchmark ledger, results synthesis, methods, design notes,
-                          CHECKPOINT_pre_publication.md
+docs/                    user, methods, validation, and maintainer documentation;
+                          start with docs/README.md
 supplement/              BRCA1-BRCT monomer-fold supplement (measured ΔG data + scoring)
 verification/            self-test that reproduces the headline metrics
 archive/                 development history — one-off derivation/grading scripts
@@ -124,24 +141,55 @@ report `[SKIP]` and exit cleanly. The claims themselves are documented in
 
 ## Installation
 
+COMAVI is developed and verified on Python 3.11. This local smoke test installs
+the dependencies, fetches the worked-example structures, and validates the full
+configuration path without calling FoldX:
+
 ```bash
-pip install -r requirements.txt        # pandas, numpy, biopython, openpyxl, pyyaml
+git clone https://github.com/la424/comavi.git
+cd comavi
+
+python3.11 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+
+python examples/hemoglobin_dimer/fetch_structures.py \
+  --out examples/hemoglobin_dimer/structures
+python run.py \
+  --config examples/hemoglobin_dimer/systems.yaml \
+  --variants examples/hemoglobin_dimer/variants.csv \
+  --structures examples/hemoglobin_dimer/structures \
+  --out results/hbb_dry_run \
+  --dry-run
 ```
 
-Two external dependencies are **not** bundled (see "Inputs"):
+On Windows PowerShell, activate the environment with
+`.venv\Scripts\Activate.ps1` instead of `source .venv/bin/activate`.
+
+The dry run checks dependency installation, configuration parsing, structure
+resolution, residue identity, and variant expansion. Full energetic scoring also
+requires the following external inputs:
 
 1. **FoldX 5.x** — proprietary, free for academics from https://foldxsuite.crg.eu/.
    Download your own copy and point COMAVI at it:
    ```bash
    export FOLDX_BINARY=/path/to/foldx
    ```
-2. **AlphaFold structures** — you supply monomer + multimer predictions for your
-   proteins (the pipeline consumes structures; it does not predict them).
+2. **Protein structures** — the command-line runner consumes supplied monomer and
+   complex structures. The Colab workflow can retrieve monomers and experimental
+   complexes, accept AlphaFold Server uploads, or use optional ColabFold.
+
+For the complete worked example, including full FoldX scoring and comparison with
+the frozen reference result, see [`examples/README.md`](examples/README.md).
 
 ## The three pipelines
 
-All three share one engine; they differ only in input and in whether external
-tools are layered on.
+These are the study-reproduction routes. New users scoring their own variants
+should normally use the Colab notebook or the
+[generic `run.py` route](#run-it-on-your-own-genes) instead. All three study routes
+share one engine; they differ only in input and in whether external tools are
+layered on.
 
 **1. Benchmark** (61-variant canonical set: 49 PPI across 13 complexes + 12 BRCA1-BRCT)
 ```bash
@@ -195,8 +243,8 @@ python run.py --config my_systems.yaml --variants my_variants.csv \
 ```
 
 `configs/chd_systems.yaml` is a worked example; `configs/benchmark_systems.yaml` covers the
-harder cases (x-ray/NMR, position offsets, non-standard chains, multi-chain complexes). Full
-walkthrough: **docs/adding_your_own_genes.md**.
+harder cases (x-ray/NMR, position offsets, non-standard chains, multi-chain complexes). See
+the full [adding-your-own-genes walkthrough](docs/adding_your_own_genes.md).
 
 
 <!-- ISDS_PUBLIC_WORKFLOW_V1 -->
@@ -355,22 +403,25 @@ mechanism profile should therefore remain visible together.
 
 ## Inputs
 
-**Variant CSV** (one row per variant). Minimal columns for structural scoring:
+**Variant CSV** (one row per variant). The first four fields are required for
+structural scoring; `system` is optional:
 
 | column | meaning |
 |---|---|
 | `gene` | gene symbol (matches the system config) |
 | `ref_aa`, `position`, `alt_aa` | reference AA, 1-based residue, alternate AA |
-| `system` | which PPI system / partner set (defined in the config) |
+| `system` *(optional)* | target a specific configured PPI system; if omitted, the generic runner expands the variant across matching systems |
 
 The full concordance step additionally uses `AlphaMissense`, `AlphaMissense_pathogenicity`,
 and `franklin` columns. System → partner/structure mappings are defined in
 `scripts/comavi_v7/build_chd_config.py` (CHD) and `comavi_v7/config.py` (benchmark);
 adapt these for your own proteins.
 
-**Structures.** Place AlphaFold monomer + multimer PDBs under `./structures`,
-named per the system config. Monomers are downloadable from the AlphaFold DB by
-UniProt ID; multimers must be predicted (AlphaFold Server / ColabFold / AlphaFold-Multimer).
+**Structures.** The command-line runner expects monomer and complex coordinate
+files under the selected structures directory, named as defined in the system
+config. Complexes may be experimental biological assemblies or predicted models.
+The Colab workflow can retrieve monomers and candidate experimental complexes,
+or accept AlphaFold Server and optional ColabFold models.
 
 ## CHD data provenance & required acknowledgment
 
@@ -402,10 +453,16 @@ DOI linked from this README, which also keeps a citable record of the exact inpu
 
 ## Caveats
 
-- "Bring your own structures + FoldX": COMAVI consumes AlphaFold structures and a
-  user-supplied FoldX binary; it does not generate structures.
+- **Command line:** bring your own structures and licensed FoldX binary.
+  **Colab:** use the guided retrieval, upload, and optional prediction routes;
+  FoldX is still supplied by the user and is never bundled.
 - Variants in disordered / low-pLDDT regions are structurally **unevaluable**
   regardless of substitution severity — this is reported, not silently dropped.
+
+## Contributing
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the supported environment, validation
+commands, and reproducible bug-report checklist.
 
 ## Citation
 
@@ -414,16 +471,3 @@ See `CITATION.cff`.
 ## License
 
 MIT — see `LICENSE`.
-
-<!-- COMAVI_SETUP_WIZARD_V1 -->
-### Plug-and-play system setup
-
-The Colab notebook now includes a sequence-aware setup wizard. It ranks chain
-assignments, infers uniform numbering offsets, checks every submitted residue,
-and presents a traffic-light preflight before FoldX. A reviewed system can be
-saved as `COMAVI_system_setup_bundle.zip`; collaborators can upload one or more
-bundles and score new variants without editing Python or YAML. Prepared bundles
-are revalidated against each new variant batch and their offsets are rebuilt for
-the current numbering convention. See
-[`docs/COMAVI_SYSTEM_SETUP_WIZARD.md`](docs/COMAVI_SYSTEM_SETUP_WIZARD.md) for
-supported cases and explicit limits.
