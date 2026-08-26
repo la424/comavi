@@ -1,0 +1,47 @@
+{
+  "artifact": "COMAVI system-setup wizard",
+  "automated_tests": {
+    "independent_contract_test": 1,
+    "notebook_contract_tests": 9,
+    "result": "pass",
+    "setup_module_tests": 9,
+    "total_candidate_tests": 19
+  },
+  "live_validation": {
+    "new_wizard_live_matrix": "pending",
+    "previous_notebook_hbb_two_variant_run": "pass"
+  },
+  "not_yet_plug_and_play": [
+    "homomers or repeated copies of the same gene",
+    "non-uniform residue numbering",
+    "automatic biological-state selection",
+    "ambiguous isoform selection"
+  ],
+  "required_live_matrix": [
+    "experimental heterodimer with offset",
+    "variants in both genes",
+    "AlphaFold Server heterodimer",
+    "ColabFold heterodimer",
+    "two-partner complex",
+    "truncated uniform-offset construct",
+    "non-uniform numbering rejection",
+    "uncovered-variant rejection",
+    "prepared-bundle reuse",
+    "two-bundle multi-system batch"
+  ],
+  "runtime_dependencies": {
+    "gemmi": "PDB/mmCIF parsing and residue-level sequence mapping"
+  },
+  "source_public_merge_commit": "5b344fbc95e1342082528805df9b00ae3853feb7",
+  "status": "implementation_candidate",
+  "supported": [
+    "new variants in prepared systems with current-batch residue revalidation",
+    "one configured gene per chain in heteromeric systems",
+    "variants in hub or partners",
+    "experimental PDB and predicted-complex routes",
+    "uniform numbering offsets",
+    "prepared-bundle reuse with offset rebuilding",
+    "multi-system reuse from multiple bundles"
+  ],
+  "version": "COMAVI-Setup-v1"
+}

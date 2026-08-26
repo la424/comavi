@@ -70,6 +70,8 @@ jobs:
             verification/verify_isds_output_surfaces.py \
             verification/verify_chd_migration_reproducibility.py \
             verification/verify_colab_notebook_contract.py \
+            notebooks/comavi_setup_wizard.py \
+            verification/verify_colab_setup_wizard_contract.py \
             verification/audit_isds_public_surfaces.py
 
       - name: Run ISDS unit and migration tests
@@ -81,7 +83,8 @@ jobs:
             verification.test_isds_variant_report \
             verification.test_chd_variant_runner \
             verification.test_chd_migration_reproducibility \
-            verification.test_colab_notebook_contract
+            verification.test_colab_notebook_contract \
+            verification.test_colab_setup_wizard
 
       - name: Verify committed ISDS and stress outputs
         run: |
@@ -92,6 +95,8 @@ jobs:
           python verification/audit_isds_public_surfaces.py
           python verification/verify_colab_notebook_contract.py \
             notebooks/COMAVI_colab.ipynb
+          python verification/verify_colab_setup_wizard_contract.py
+          # COMAVI_SETUP_WIZARD_V1
           # COLAB_PUBLIC_CLOSEOUT_V1
           temp_dir="$(mktemp -d)"
           python scripts/build_isds_variant_report.py \
