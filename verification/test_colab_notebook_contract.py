@@ -95,6 +95,17 @@ class TestColabNotebookContract(unittest.TestCase):
             result = self.run_verifier(candidate)
             self.assertNotEqual(result.returncode, 0)
 
+    def test_missing_rerun_output_cleanup_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            candidate = Path(directory) / "missing_rerun_cleanup.ipynb"
+            self.mutated_notebook(
+                "shutil.rmtree(OUT)",
+                "removed_rerun_cleanup(OUT)",
+                candidate,
+            )
+            result = self.run_verifier(candidate)
+            self.assertNotEqual(result.returncode, 0)
+
     def test_missing_biological_context_confirmation_fails(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             candidate = Path(directory) / "missing_context_confirmation.ipynb"

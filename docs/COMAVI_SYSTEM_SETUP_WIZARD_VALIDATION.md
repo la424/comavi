@@ -12,7 +12,7 @@ The candidate passed:
 - Python compilation of the setup module and verification tools;
 - notebook JSON and Python-syntax validation;
 - static notebook-contract verification;
-- eight notebook mutation tests that require current public behavior and reject
+- nine notebook mutation tests that require current public behavior and reject
   stale, incomplete, or unsafe variants;
 - nine setup-module unit tests covering:
   - historical HBB numbering inference;
@@ -26,6 +26,10 @@ The candidate passed:
   - config-derived, system-scoped run provenance for prepared and multi-system runs;
   - plain-language result cards without probability claims;
 - an independent synthetic setup-wizard contract test.
+
+The notebook clears its dedicated generated-output directory immediately before
+each structural run so rerunning the Colab cell cannot accumulate FoldX run
+records or alter uncertainty statistics with stale files.
 
 ## Existing live evidence retained
 

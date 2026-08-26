@@ -78,6 +78,14 @@ def main() -> None:
         re.search(r"REPO\s*/\s*[\"']run\.py[\"']", code_text) is not None,
         "Notebook does not invoke the generic run.py entry point.",
     )
+    require(
+        re.search(
+            r"if\s+OUT\.exists\(\):\s*\n\s+shutil\.rmtree\(OUT\)",
+            code_text,
+        )
+        is not None,
+        "Notebook does not clear generated output before a rerun.",
+    )
     require("run_chd.py" not in code_text, "Notebook is incorrectly tied to run_chd.py.")
 
     for field in ("gene", "ref_aa", "position", "alt_aa"):
@@ -152,6 +160,7 @@ def main() -> None:
     print(f"Setup wizard: {SETUP_WIZARD_VERSION}")
     print(f"ISDS fields: {len(ISDS_FIELDS)}")
     print("Generic arbitrary-variant runner: PASS")
+    print("Rerun-safe output isolation: PASS")
     print("Automatic sequence, chain, and numbering mapping: PASS")
     print("Prepared-bundle current-variant revalidation and multi-system reuse: PASS")
     print("Traffic-light preflight and fail-safe stops: PASS")
