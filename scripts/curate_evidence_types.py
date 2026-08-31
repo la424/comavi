@@ -215,6 +215,12 @@ put("mlh1_pms2", "K618E", "binding", E3, "coupled",
 put("msh2_msh6", "G674R", "binding", E3, "direct",
     "MSH6 binding preserved by co-IP; MMR lost via Walker-A ATPase defect",
     C_JIA)
+put("msh2_msh6", "A636P", "monomer", E3, "direct",
+    "MSH2 expression/stability preserved; ATPase mismatch binding/release defect",
+    C_OLLILA)
+put("msh2_msh6", "A636P", "fold_complex", E3, "direct",
+    "MSH2-MSH6 interaction intact; ATPase mismatch binding/release defect",
+    C_OLLILA)
 put("msh2_msh6", "A636P", "binding", E3, "direct",
     "MSH2-MSH6 interaction intact; ATPase mismatch binding/release defect",
     C_OLLILA)

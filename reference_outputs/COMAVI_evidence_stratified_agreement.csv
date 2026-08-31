@@ -33,6 +33,8 @@ mlh1_pms2,H718Y,fold,1,1,fold_complex,fold_complex,E5_inferred_no_axis_assay,inf
 mlh1_pms2,K618E,monomer,1,1,monomer,monomer,E5_inferred_no_axis_assay,inferred,neutral,False
 mlh1_pms2,K618E,fold,1,1,fold_complex,fold_complex,E5_inferred_no_axis_assay,inferred,neutral,False
 msh2_msh6,G674R,binding,1,1,binding,binding,E3_qualitative_experimental,direct,neutral,False
+msh2_msh6,A636P,monomer,0,1,monomer,monomer,E3_qualitative_experimental,direct,neutral,False
+msh2_msh6,A636P,fold,0,1,fold_complex,fold_complex,E3_qualitative_experimental,direct,neutral,False
 msh2_msh6,A636P,binding,1,1,binding,binding,E3_qualitative_experimental,direct,neutral,False
 msh2_msh6,C697F,binding,1,1,binding,binding,E3_qualitative_experimental,direct,neutral,False
 msh2_msh6,N127S,binding,1,1,binding,binding,E3_qualitative_experimental,direct,neutral,False

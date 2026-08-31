@@ -68,6 +68,8 @@ mlh1_pms2,V384D,binding,neutral,E3_qualitative_experimental,coupled,Reclassified
 mlh1_pms2,V384D,fold_complex,neutral,E5_inferred_no_axis_assay,inferred,No assembly-context stability measurement; token inferred from the intact monomer fold,InSiGHT expert-panel reclassification; rs63750447 AF ~8.9% EAS
 mlh1_pms2,V384D,monomer,neutral,E5_inferred_no_axis_assay,inferred,No subunit-stability assay; token inferred,InSiGHT expert-panel reclassification; rs63750447 AF ~8.9% EAS
 msh2_msh6,A636P,binding,neutral,E3_qualitative_experimental,direct,MSH2-MSH6 interaction intact; ATPase mismatch binding/release defect,Ollila 2008 Hum Mutat 29:1355 (PMID 18951462); Ollila 2006 Gastroenterology (PMID 17101317)
+msh2_msh6,A636P,fold_complex,neutral,E3_qualitative_experimental,direct,MSH2-MSH6 interaction intact; ATPase mismatch binding/release defect,Ollila 2008 Hum Mutat 29:1355 (PMID 18951462); Ollila 2006 Gastroenterology (PMID 17101317)
+msh2_msh6,A636P,monomer,neutral,E3_qualitative_experimental,direct,MSH2 expression/stability preserved; ATPase mismatch binding/release defect,Ollila 2008 Hum Mutat 29:1355 (PMID 18951462); Ollila 2006 Gastroenterology (PMID 17101317)
 msh2_msh6,C697F,binding,neutral,E3_qualitative_experimental,direct,"ATPase catalytic defect, protein stable, interaction intact",Ollila 2008 Hum Mutat 29:1355 (PMID 18951462); Ollila 2006 Gastroenterology (PMID 17101317)
 msh2_msh6,G322D,binding,neutral,E3_qualitative_experimental,direct,MMR-proficient with interaction intact; gnomAD ~1.9%,Ollila 2008 Hum Mutat 29:1355 (PMID 18951462); Ollila 2006 Gastroenterology (PMID 17101317)
 msh2_msh6,G674R,binding,neutral,E3_qualitative_experimental,direct,MSH6 binding preserved by co-IP; MMR lost via Walker-A ATPase defect,Jia 2021

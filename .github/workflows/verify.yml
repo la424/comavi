@@ -37,7 +37,20 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          # The unchanged evidence-stratification generator uses pandas 2.x
+          # merge-suffix behavior; pandas 3 rejects that historical pattern.
+          python -m pip install -r requirements.txt 'pandas<3'
+
+      - name: Compile evidence-ledger gate
+        run: |
+          python -m py_compile \
+            scripts/curate_evidence_types.py \
+            scripts/analyze_evidence_stratified_agreement.py \
+            verification/verify_evidence_ledger.py \
+            verification/test_evidence_ledger.py
+
+      - name: Mutation-test evidence-ledger gate
+        run: python -m unittest verification.test_evidence_ledger
 
       - name: Re-deriving verification track (mandatory)
         run: |
@@ -49,6 +62,17 @@ jobs:
 
       - name: Denominator reconciliation
         run: python scripts/verify_denominators.py
+
+      - name: Evidence-ledger reconciliation
+        run: |
+          python scripts/curate_evidence_types.py
+          python scripts/analyze_evidence_stratified_agreement.py
+          python verification/verify_evidence_ledger.py
+          git diff --exit-code -- \
+            reference_outputs/COMAVI_evidence_ledger.csv \
+            reference_outputs/COMAVI_evidence_ledger_summary.json \
+            reference_outputs/COMAVI_evidence_stratified_agreement.csv \
+            reference_outputs/COMAVI_evidence_stratified_agreement.json
 
       - name: Tier construction and interface-bonus ablation
         run: python scripts/verify_tier_construction.py

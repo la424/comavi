@@ -1,11 +1,11 @@
 {
  "threshold": 2.5,
  "accounting": {
-  "n_committed_axes": 107,
-  "n_ddg_axes_gradeable": 84,
+  "n_committed_axes": 109,
+  "n_ddg_axes_gradeable": 86,
   "n_committed_but_gated_out": 23,
   "n_tier_axes_gradeable": 47,
-  "n_total_gradeable": 131,
+  "n_total_gradeable": 133,
   "note": "Committed axes carry ground truth; a committed axis is gradeable only if the prediction also clears confidence and internal-CI gating. The difference is the cost of those gates, not missing curation."
  },
  "crude": {
@@ -13,15 +13,15 @@
   "quant_n": 33,
   "quant_rate": 0.636,
   "soft_ok": 44,
-  "soft_n": 51,
-  "soft_rate": 0.863,
-  "OR": 0.278,
-  "p": 0.0307
+  "soft_n": 53,
+  "soft_rate": 0.83,
+  "OR": 0.358,
+  "p": 0.0692
  },
  "token_composition_by_grade": {
   "soft": {
    "destab": 9,
-   "neutral": 42,
+   "neutral": 44,
    "stab": 0
   },
   "quantitative": {
@@ -46,10 +46,10 @@
     "quant_ok": 7,
     "quant_n": 8,
     "soft_ok": 38,
-    "soft_n": 42,
+    "soft_n": 44,
     "quant_rate": 0.875,
-    "soft_rate": 0.905,
-    "OR": 0.737,
+    "soft_rate": 0.864,
+    "OR": 1.105,
     "p": 1.0
    },
    "stab": {
@@ -58,9 +58,9 @@
     "n": 1
    }
   },
-  "OR_mantel_haenszel": 0.711,
-  "chi2": 0.027,
-  "p": 0.8694
+  "OR_mantel_haenszel": 0.816,
+  "chi2": 0.0,
+  "p": 0.9838
  },
  "by_evidence_type": {
   "E1_quantitative_energetic": {
@@ -75,8 +75,8 @@
   },
   "E3_qualitative_experimental": {
    "ok": 22,
-   "n": 26,
-   "rate": 0.846
+   "n": 28,
+   "rate": 0.786
   },
   "E4_population_frequency": {
    "ok": 6,
@@ -97,8 +97,8 @@
   },
   "direct": {
    "ok": 36,
-   "n": 51,
-   "rate": 0.706
+   "n": 53,
+   "rate": 0.679
   },
   "inferred": {
    "ok": 22,

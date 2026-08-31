@@ -1,30 +1,30 @@
 {
- "n_committed_axes": 107,
+ "n_committed_axes": 109,
  "n_variants": 59,
  "n_systems": 14,
  "by_evidence_type": {
-  "E3_qualitative_experimental": 34,
+  "E3_qualitative_experimental": 36,
   "E1_quantitative_energetic": 29,
   "E5_inferred_no_axis_assay": 24,
   "E2_quantitative_functional": 11,
   "E4_population_frequency": 9
  },
  "by_directness": {
-  "direct": 63,
+  "direct": 65,
   "inferred": 33,
   "coupled": 9,
   "off_axis": 2
  },
  "by_axis": {
   "binding": 47,
-  "monomer": 32,
-  "fold_complex": 28
+  "monomer": 33,
+  "fold_complex": 29
  },
  "n_energetic_direct": 24,
- "frac_energetic": 0.271,
- "frac_quantitative": 0.3738,
- "frac_direct": 0.5888,
- "frac_inferred": 0.2243,
+ "frac_energetic": 0.2661,
+ "frac_quantitative": 0.367,
+ "frac_direct": 0.5963,
+ "frac_inferred": 0.2202,
  "type_by_axis": {
   "binding": {
    "E3_qualitative_experimental": 23,
@@ -35,7 +35,7 @@
   },
   "fold_complex": {
    "E5_inferred_no_axis_assay": 13,
-   "E3_qualitative_experimental": 6,
+   "E3_qualitative_experimental": 7,
    "E1_quantitative_energetic": 5,
    "E4_population_frequency": 3,
    "E2_quantitative_functional": 1
@@ -43,7 +43,7 @@
   "monomer": {
    "E1_quantitative_energetic": 14,
    "E5_inferred_no_axis_assay": 9,
-   "E3_qualitative_experimental": 5,
+   "E3_qualitative_experimental": 6,
    "E4_population_frequency": 3,
    "E2_quantitative_functional": 1
   }
