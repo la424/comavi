@@ -1,5 +1,6 @@
 variant,system,expected_mech_class,truth_struct,max_abs_ddg,favours_low,g_t10,g_t15,g_t20,g_t25,g_tSAP
 K618E,mlh1_pms2,structurally_silent,False,1.1737,False,0.0,1.0,1.0,1.0,1.0
+H718Y,mlh1_pms2,structurally_silent,False,1.2012,False,0.0,1.0,1.0,1.0,1.0
 V1736A,brca1_brct,fold_mechanism,True,1.2414,True,1.0,0.0,0.0,0.0,0.0
 Y98H,vhl_elonginc,structurally_silent,False,1.285,False,0.0,1.0,1.0,1.0,1.0
 R53H,cfh_c3b,structurally_silent,False,1.3156,False,0.0,1.0,1.0,1.0,1.0

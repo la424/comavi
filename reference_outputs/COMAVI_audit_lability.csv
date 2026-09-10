@@ -13,8 +13,9 @@ L749P,mlh1_pms2,ppi_destab_mechanism,True,True,5.1714,1.0,1.0,0.5,0.5,0.5
 R755W,mlh1_pms2,fold_mechanism,True,False,9.6643,0.0,0.0,0.0,0.0,0.0
 V384D,mlh1_pms2,structurally_silent,False,True,1.5634,0.0,0.0,1.0,1.0,1.0
 G857A,mlh1_pms2,structurally_silent,False,False,0.9481,1.0,1.0,1.0,1.0,1.0
-H718Y,mlh1_pms2,fold_mechanism,True,False,1.2012,0.0,0.0,0.0,0.0,0.0
+H718Y,mlh1_pms2,structurally_silent,False,True,1.2012,0.0,1.0,1.0,1.0,1.0
 K618E,mlh1_pms2,structurally_silent,False,True,1.1737,0.0,1.0,1.0,1.0,1.0
+G674R,msh2_msh6,structurally_silent,False,False,3.9881,0.0,0.0,0.0,0.0,0.0
 A636P,msh2_msh6,structurally_silent,False,False,5.3805,0.0,0.0,0.0,0.0,0.0
 C697F,msh2_msh6,ppi_destab_mechanism,True,False,15.2559,0.5,0.5,0.5,0.5,0.5
 N127S,msh2_msh6,structurally_silent,False,True,1.4817,0.0,1.0,1.0,1.0,1.0
@@ -23,6 +24,7 @@ L158Q,vhl_elonginc,mixed_structural,True,True,2.9118,1.0,1.0,1.0,1.0,0.5
 Y98H,vhl_elonginc,structurally_silent,False,True,1.285,0.0,1.0,1.0,1.0,1.0
 G12D,kras_craf,ppi_destab_mechanism,True,True,2.2859,0.5,0.5,0.5,0.0,0.0
 G12V,kras_craf,ppi_destab_mechanism,True,False,0.4266,0.0,0.0,0.0,0.0,0.0
+Q61H,kras_craf,structurally_silent,False,False,0.7045,1.0,1.0,1.0,1.0,1.0
 E6V,hemoglobin_dimer,structurally_silent,False,False,0.8044,1.0,1.0,1.0,1.0,1.0
 W37Y,hemoglobin_tetramer,mixed_structural,True,True,2.8501,1.0,1.0,0.5,0.5,0.5
 W37A,hemoglobin_tetramer,mixed_structural,True,False,6.1596,1.0,1.0,1.0,1.0,1.0
@@ -38,6 +40,7 @@ F142L,cam_cav12,structurally_silent,False,False,0.706,1.0,1.0,1.0,1.0,1.0
 D351H,smad4_smad3,ppi_destab_mechanism,True,False,12.1121,0.5,0.5,0.5,0.5,0.5
 R361C,smad4_smad3,ppi_destab_mechanism,True,False,7.427,1.0,1.0,1.0,1.0,1.0
 I500T,smad4_smad3,structurally_silent,False,True,1.6233,0.0,0.0,1.0,1.0,1.0
+I500V,smad4_smad3,structurally_silent,False,False,0.9476,1.0,1.0,1.0,1.0,1.0
 Y1853C,brca1_brct,fold_mechanism,True,False,3.3869,1.0,1.0,1.0,1.0,1.0
 A1843P,brca1_brct,fold_mechanism,True,False,6.4287,1.0,1.0,1.0,1.0,1.0
 V1736A,brca1_brct,fold_mechanism,True,True,1.2414,1.0,0.0,0.0,0.0,0.0

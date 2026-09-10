@@ -25,8 +25,8 @@ mlh1_pms2,V384D,fold,1,1,fold_complex,fold_complex,E5_inferred_no_axis_assay,inf
 mlh1_pms2,V384D,binding,1,1,binding,binding,E3_qualitative_experimental,coupled,neutral,False
 mlh1_pms2,G857A,monomer,1,1,monomer,monomer,E4_population_frequency,inferred,neutral,False
 mlh1_pms2,G857A,fold,1,1,fold_complex,fold_complex,E4_population_frequency,inferred,neutral,False
-mlh1_pms2,H718Y,monomer,0,1,monomer,monomer,E5_inferred_no_axis_assay,inferred,destab,False
 mlh1_pms2,H718Y,fold,1,1,fold_complex,fold_complex,E5_inferred_no_axis_assay,inferred,neutral,False
+msh2_msh6,G674R,binding,1,1,binding,binding,E3_qualitative_experimental,direct,neutral,False
 msh2_msh6,A636P,monomer,0,1,monomer,monomer,E3_qualitative_experimental,direct,neutral,False
 msh2_msh6,A636P,fold,0,1,fold_complex,fold_complex,E3_qualitative_experimental,direct,neutral,False
 msh2_msh6,A636P,binding,1,1,binding,binding,E3_qualitative_experimental,direct,neutral,False
@@ -37,6 +37,7 @@ vhl_elonginc,L158Q,fold,1,1,fold_complex,fold_complex,E3_qualitative_experimenta
 vhl_elonginc,L158Q,binding,1,1,binding,binding,E3_qualitative_experimental,direct,destab,False
 vhl_elonginc,Y98H,fold,1,1,fold_complex,fold_complex,E3_qualitative_experimental,direct,neutral,False
 kras_craf,G12D,binding,0,1,binding,binding,E3_qualitative_experimental,direct,destab,False
+kras_craf,Q61H,binding,1,1,binding,binding,E3_qualitative_experimental,direct,neutral,False
 hemoglobin_dimer,E6V,monomer,1,1,monomer,monomer,E3_qualitative_experimental,direct,neutral,False
 hemoglobin_dimer,E6V,fold,1,1,fold_complex,fold_complex,E3_qualitative_experimental,direct,neutral,False
 hemoglobin_dimer,E6V,binding,1,1,binding,binding,E3_qualitative_experimental,direct,neutral,False

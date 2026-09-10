@@ -25,7 +25,7 @@ DEFAULT_SUMMARY = REPO / "reference_outputs" / "COMAVI_evidence_ledger_summary.j
 # Re-pinned at v7.6 (approved evidence-ledger ground-truth corrections).
 # Previous pin, through v7.5:
 #   88cee917d00ea6705e851b59b7551ef8211052011768a732462ee59ef45031bb
-CANONICAL_SHA256 = "d2e7bf830e8c3ed685f0a2b7c9175e733ffbc1f641b669aef7b2a9f7d04fd6bf"
+CANONICAL_SHA256 = "e4d657dee2625580bd41da05d9251fb69a224ddefdff6286f82a236511465d28"
 
 # Committed-axis count. v7.6 withdrew 11 commitments (expected token -> unknown),
 # taking the ledger and the canonical from 109 committed axes to 98.

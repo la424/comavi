@@ -2,31 +2,31 @@
  "denominators": {
   "n_rows": 61,
   "n_unobservable": 2,
-  "n_graded": 55,
-  "n_committed": 54,
-  "n_structural": 29,
-  "n_silent": 25,
+  "n_graded": 57,
+  "n_committed": 57,
+  "n_structural": 28,
+  "n_silent": 29,
   "note": "graded == committed == 57; the 2 class-uncommitted variants carry no grade, so every headline denominator coincides."
  },
- "headline_MC_t25": 0.6759,
- "threshold_averaged_MC": 0.6426,
- "threshold_averaged_MC_balanced": 0.6468,
- "R1_crossover_structural_weight": 0.607,
- "R1_benchmark_actual_weight": 0.537,
+ "headline_MC_t25": 0.693,
+ "threshold_averaged_MC": 0.6579,
+ "threshold_averaged_MC_balanced": 0.6571,
+ "R1_crossover_structural_weight": 0.563,
+ "R1_benchmark_actual_weight": 0.491,
  "R2_lability": {
-  "n_committed": 54,
-  "n_stable": 34,
-  "n_labile": 20,
-  "grades_monotone_in_threshold": 54,
+  "n_committed": 57,
+  "n_stable": 36,
+  "n_labile": 21,
+  "grades_monotone_in_threshold": 57,
   "direction_is_forced": true,
   "labile_structural_n": 9,
-  "labile_silent_n": 11,
+  "labile_silent_n": 12,
   "labile_structural_median_ddg": 2.912,
-  "labile_silent_median_ddg": 1.623,
-  "stable_structural_median_ddg": 4.148,
-  "stable_silent_median_ddg": 0.682,
-  "mannwhitney_U": 87.0,
-  "mannwhitney_p": 0.00494
+  "labile_silent_median_ddg": 1.593,
+  "stable_structural_median_ddg": 4.729,
+  "stable_silent_median_ddg": 0.706,
+  "mannwhitney_U": 96.0,
+  "mannwhitney_p": 0.00319
  },
  "R3_model_free": {
   "definition": "real destabilizer = |measured| >= 1.0 kcal/mol",
@@ -45,32 +45,32 @@
   "residue_collapsed_2x2": [
    [
     11,
-    1
+    2
    ],
    [
     0,
     2
    ]
   ],
-  "residue_collapsed_fisher_p": 0.033,
+  "residue_collapsed_fisher_p": 0.0571,
   "systems_with_both_tier_strata_among_firing": 1,
   "n_systems_among_firing": 10,
-  "fisher_p_if_1_weak_were_structural": 0.0564,
-  "fisher_p_if_2_weak_were_structural": 0.3137,
+  "fisher_p_if_1_weak_were_structural": 0.097,
+  "fisher_p_if_2_weak_were_structural": 0.4221,
   "fisher_p_if_3_weak_were_structural": 1.0,
   "bh_firing_adj": {
-   "t10": 0.0122,
-   "t15": 0.0122,
-   "t20": 0.0122,
-   "t25": 0.0122,
-   "tSAP": 0.05
+   "t10": 0.0257,
+   "t15": 0.0257,
+   "t20": 0.0257,
+   "t25": 0.0257,
+   "tSAP": 0.0882
   },
   "bh_silent_adj": {
    "t10": 1.0,
-   "t15": 1.0,
-   "t20": 1.0,
-   "t25": 1.0,
-   "tSAP": 1.0
+   "t15": 0.7203,
+   "t20": 0.7203,
+   "t25": 0.7203,
+   "tSAP": 0.6497
   },
   "n_surviving_bh_05": 4
  },
@@ -117,67 +117,67 @@
  "tradeoff_bootstrap": {
   "variant_boot_recall_ci": [
    [
-    0.552,
-    0.828
+    0.571,
+    0.839
    ],
    [
-    0.517,
-    0.793
+    0.536,
+    0.821
    ],
    [
-    0.431,
-    0.724
+    0.464,
+    0.75
    ],
    [
-    0.397,
-    0.672
+    0.411,
+    0.696
    ],
    [
-    0.345,
-    0.621
+    0.357,
+    0.643
    ]
   ],
   "variant_boot_reject_ci": [
    [
-    0.24,
-    0.64
+    0.276,
+    0.621
    ],
    [
-    0.4,
-    0.8
+    0.448,
+    0.793
    ],
    [
-    0.6,
-    0.92
+    0.586,
+    0.897
    ],
    [
-    0.68,
-    0.96
+    0.69,
+    0.966
    ],
    [
-    0.72,
-    1.0
+    0.724,
+    0.966
    ]
   ],
   "p_recall_drops": 1.0,
   "p_reject_rises": 1.0,
-  "p_curves_cross": 0.9763,
+  "p_curves_cross": 0.9903,
   "cluster_p_recall_drops": 1.0,
   "cluster_p_reject_rises": 1.0,
   "cluster_recall_ci_t10": [
-   0.519,
-   0.817
+   0.553,
+   0.821
   ],
   "cluster_reject_ci_tSAP": [
-   0.778,
+   0.733,
    1.0
   ],
   "note": "Per-variant grades are monotone in threshold by construction, so the bootstrap confirms the MAGNITUDE of the tradeoff, not its shape."
  },
  "tier_ablation": {
-  "n_graded": 54,
-  "mc_with_tier": 0.6759,
-  "mc_without_tier": 0.6759,
+  "n_graded": 57,
+  "mc_with_tier": 0.693,
+  "mc_without_tier": 0.693,
   "delta": 0.0,
   "n_labels_changed": 7,
   "n_grades_changed": 0,
@@ -187,38 +187,38 @@
   "n_boot": 10000,
   "seed": 42,
   "resample_unit": "system",
-  "recall_t10": 0.69,
+  "recall_t10": 0.714,
   "recall_t10_ci": [
-   0.524,
-   0.818
+   0.569,
+   0.822
   ],
-  "recall_tSAP": 0.483,
+  "recall_tSAP": 0.5,
   "recall_tSAP_ci": [
-   0.315,
-   0.635
+   0.333,
+   0.641
   ],
-  "rejection_t10": 0.44,
+  "rejection_t10": 0.448,
   "rejection_t10_ci": [
-   0.276,
-   0.625
+   0.286,
+   0.652
   ],
-  "rejection_tSAP": 0.88,
+  "rejection_tSAP": 0.862,
   "rejection_tSAP_ci": [
-   0.778,
+   0.735,
    1.0
   ],
   "p_tradeoff": 0.9998
  },
  "structural_agreement": {
-  "sap_hits": 82,
-  "sap_tested": 121,
-  "sap": 0.6777,
-  "primary_hits": 84,
-  "primary_tested": 121,
-  "primary": 0.6942,
-  "all_rows_hits": 84,
-  "all_rows_tested": 122,
-  "all_rows": 0.6885,
+  "sap_hits": 87,
+  "sap_tested": 124,
+  "sap": 0.7016,
+  "primary_hits": 89,
+  "primary_tested": 124,
+  "primary": 0.7177,
+  "all_rows_hits": 89,
+  "all_rows_tested": 125,
+  "all_rows": 0.712,
   "convention": "primary excludes unobservable_variants(); both metrics use the same 57-variant population, with 132 applicable structural outputs",
   "unobservable": [
    "R1699L",

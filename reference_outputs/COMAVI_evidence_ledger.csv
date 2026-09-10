@@ -45,12 +45,12 @@ hemoglobin_tetramer,W37Y,binding,destab,E1_quantitative_energetic,direct,Equilib
 hemoglobin_tetramer,W37Y,fold_complex,destab,E1_quantitative_energetic,coupled,"Same assembly-energy measurement; the fold-in-complex token is a coupled reading of the assembly ddG, not an independent subunit-stability measurement",Kiger / Kwiatkowski Biochemistry 1998 (PMID 9521754 equilibrium assembly dG; PMID 9521753 kinetics)
 kras_craf,G12D,binding,destab,E3_qualitative_experimental,direct,WT-like RAF1 binding; impaired GTP hydrolysis. G12 is 13.6 A from RAF1,Hunter 2015
 kras_craf,G12V,binding,destab,E3_qualitative_experimental,direct,WT-like RAF1 binding; impaired GTP hydrolysis,Hunter 2015
+kras_craf,Q61H,binding,neutral,E3_qualitative_experimental,direct,Preserved RAF binding; switch-II hydrolysis defect. Q61 is 11.1 A from RAF1,Hunter 2015
 mlh1_pms2,G857A,binding,neutral,E4_population_frequency,inferred,gnomAD AF 28%; ClinVar BA1 stand-alone benign,gnomAD; ClinVar BA1
 mlh1_pms2,G857A,fold_complex,neutral,E4_population_frequency,inferred,gnomAD AF 28%; ClinVar BA1 stand-alone benign,gnomAD; ClinVar BA1
 mlh1_pms2,G857A,monomer,neutral,E4_population_frequency,inferred,gnomAD AF 28%; ClinVar BA1 stand-alone benign,gnomAD; ClinVar BA1
 mlh1_pms2,H718Y,binding,neutral,E2_quantitative_functional,coupled,Proficient MMR implies the MLH1-PMS2 interaction survived,Raevaara 2005 (MMR activity)
 mlh1_pms2,H718Y,fold_complex,neutral,E5_inferred_no_axis_assay,inferred,No assembly-context stability measurement; token inferred from the intact monomer fold,Raevaara 2005 (MMR activity)
-mlh1_pms2,H718Y,monomer,destab,E5_inferred_no_axis_assay,inferred,No subunit-stability assay; token inferred,Raevaara 2005 (MMR activity)
 mlh1_pms2,K618E,binding,neutral,E3_qualitative_experimental,coupled,Non-damaging in functional assay,Drost 2019 (functional assay)
 mlh1_pms2,L749P,binding,destab,E2_quantitative_functional,direct,PMS2 co-IP 30% of WT,"Kosinski 2010 (PMS2 co-IP, MMR activity)"
 mlh1_pms2,Q542L,binding,destab,E2_quantitative_functional,direct,PMS2 co-IP 54% of WT,"Kosinski 2010 (PMS2 co-IP, MMR activity)"
@@ -65,6 +65,7 @@ msh2_msh6,A636P,fold_complex,neutral,E3_qualitative_experimental,direct,MSH2-MSH
 msh2_msh6,A636P,monomer,neutral,E3_qualitative_experimental,direct,MSH2 expression/stability preserved; ATPase mismatch binding/release defect,Ollila 2008 Hum Mutat 29:1355 (PMID 18951462); Ollila 2006 Gastroenterology (PMID 17101317)
 msh2_msh6,C697F,binding,destab,E3_qualitative_experimental,direct,"ATPase catalytic defect, protein stable, interaction intact",Ollila 2008 Hum Mutat 29:1355 (PMID 18951462); Ollila 2006 Gastroenterology (PMID 17101317)
 msh2_msh6,G322D,binding,neutral,E3_qualitative_experimental,direct,MMR-proficient with interaction intact; gnomAD ~1.9%,Ollila 2008 Hum Mutat 29:1355 (PMID 18951462); Ollila 2006 Gastroenterology (PMID 17101317)
+msh2_msh6,G674R,binding,neutral,E3_qualitative_experimental,direct,MSH6 binding preserved by co-IP; MMR lost via Walker-A ATPase defect,Jia 2021
 msh2_msh6,N127S,binding,neutral,E3_qualitative_experimental,direct,"MSH6 IP, bandshift and MMR all WT-like",Ollila 2008 Hum Mutat 29:1355 (PMID 18951462); Ollila 2006 Gastroenterology (PMID 17101317)
 pi3k,E542K,binding,destab,E3_qualitative_experimental,direct,"Disrupts the nSH2 inhibitory contact, releasing autoinhibition",Zhao & Vogt 2008 PNAS
 pi3k,E542K,monomer,neutral,E5_inferred_no_axis_assay,inferred,No subunit-stability assay; token inferred; helical-domain hotspot taken as fold-neutral,Zhao & Vogt 2008 PNAS
@@ -80,7 +81,6 @@ pi3k,N564D,binding,neutral,E3_qualitative_experimental,direct,"Retains p110 bind
 pi3k,N564D,fold_complex,neutral,E5_inferred_no_axis_assay,inferred,No assembly-context stability measurement; token inferred from the intact monomer fold,Wu / Jaiswal 2009
 pi3k,N564D,monomer,neutral,E5_inferred_no_axis_assay,inferred,No subunit-stability assay; token inferred,Wu / Jaiswal 2009
 smad4_smad3,D351H,binding,destab,E3_qualitative_experimental,direct,Abolished phospho-Smad2/3 interaction by co-IP,De Bosscher 2004 (co-IP)
-smad4_smad3,I500V,binding,stab,E5_inferred_no_axis_assay,inferred,Post-translational mechanism (reduced ubiquitination -> protein stabilization); no interface measurement,Le Goff 2011
 smad4_smad3,R361C,binding,destab,E3_qualitative_experimental,direct,Completely abolished R-Smad interaction,Lanauze 2021 (co-IP)
 troponin_ic,P82S,binding,neutral,E4_population_frequency,inferred,AF ~3% African-American: benign by frequency,Frazier 2008; gnomAD
 troponin_ic,P82S,fold_complex,neutral,E4_population_frequency,inferred,AF ~3% African-American: benign by frequency,Frazier 2008; gnomAD

@@ -1,25 +1,25 @@
 {
  "n_graded": 59,
- "n_committed": 54,
+ "n_committed": 57,
  "class_balance": {
-  "structural": 29,
-  "silent": 25
+  "structural": 28,
+  "silent": 29
  },
- "threshold_averaged_MC": 0.6309,
- "threshold_averaged_balanced_MC": 0.647,
- "n_threshold_stable": 35,
- "n_threshold_labile": 24,
- "pooled_MC_swing": 0.102,
- "balanced_MC_swing": 0.122,
+ "threshold_averaged_MC": 0.6579,
+ "threshold_averaged_balanced_MC": 0.657,
+ "n_threshold_stable": 36,
+ "n_threshold_labile": 23,
+ "pooled_MC_swing": 0.114,
+ "balanced_MC_swing": 0.11,
  "labile_split": {
   "structural_favouring_low": 9,
   "structural_favouring_high": 0,
   "silent_favouring_low": 0,
-  "silent_favouring_high": 11
+  "silent_favouring_high": 12
  },
  "median_max_ddg": {
   "labile_favouring_low": 2.91,
-  "labile_favouring_high": 1.62
+  "labile_favouring_high": 1.59
  },
  "calibration_fits": {
   "benchmark_n": 15,
