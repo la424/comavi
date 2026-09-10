@@ -373,8 +373,21 @@ def main() -> int:
 
     extra = set(ASSIGN) - {(r.system, r.variant, r.axis)
                            for r in led.itertuples()}
-    if extra:
-        print(f"ASSIGN entries for non-committed axes: {sorted(extra)}",
+    # An ASSIGN entry for an axis the canonical marks `unknown` is expected when that
+    # axis was deliberately withdrawn (v7.6/v7.7): the curated evidence record is kept
+    # on purpose as the audit trail for why the axis is ungraded. Only unexplained
+    # entries are a curation error.
+    withdrawn = set()
+    wpath = REPO / "reference_outputs" / "COMAVI_evidence_ledger_withdrawn_v76.csv"
+    if wpath.exists():
+        w = pd.read_csv(wpath)
+        withdrawn = {(r.system, r.variant, r.axis) for r in w.itertuples()}
+    unexplained = sorted(extra - withdrawn)
+    if extra & withdrawn:
+        print(f"note: {len(extra & withdrawn)} ASSIGN entries retained for withdrawn "
+              f"axes (audit trail); not committed", file=sys.stderr)
+    if unexplained:
+        print(f"ASSIGN entries for non-committed axes: {unexplained}",
               file=sys.stderr)
         return 1
 
