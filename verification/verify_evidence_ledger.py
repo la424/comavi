@@ -22,7 +22,14 @@ REPO = Path(__file__).resolve().parent.parent
 DEFAULT_CANONICAL = REPO / "reference_outputs" / "scored_61var_canonical.csv"
 DEFAULT_LEDGER = REPO / "reference_outputs" / "COMAVI_evidence_ledger.csv"
 DEFAULT_SUMMARY = REPO / "reference_outputs" / "COMAVI_evidence_ledger_summary.json"
-CANONICAL_SHA256 = "88cee917d00ea6705e851b59b7551ef8211052011768a732462ee59ef45031bb"
+# Re-pinned at v7.6 (approved evidence-ledger ground-truth corrections).
+# Previous pin, through v7.5:
+#   88cee917d00ea6705e851b59b7551ef8211052011768a732462ee59ef45031bb
+CANONICAL_SHA256 = "d2e7bf830e8c3ed685f0a2b7c9175e733ffbc1f641b669aef7b2a9f7d04fd6bf"
+
+# Committed-axis count. v7.6 withdrew 11 commitments (expected token -> unknown),
+# taking the ledger and the canonical from 109 committed axes to 98.
+COMMITTED_AXIS_COUNT = 98
 
 AXES = {
     "monomer": "expected_ddg_monomer",
@@ -201,14 +208,17 @@ def verify(canonical: Path, ledger: Path, summary: Path) -> list[str]:
         evidence_map = None
 
     if canonical_map is not None:
-        if len(canonical_map) != 109:
+        if len(canonical_map) != COMMITTED_AXIS_COUNT:
             failures.append(
-                f"canonical committed-axis count {len(canonical_map)} != 109"
+                f"canonical committed-axis count {len(canonical_map)} "
+                f"!= {COMMITTED_AXIS_COUNT}"
             )
 
     if evidence_map is not None:
-        if len(evidence_map) != 109:
-            failures.append(f"ledger record count {len(evidence_map)} != 109")
+        if len(evidence_map) != COMMITTED_AXIS_COUNT:
+            failures.append(
+                f"ledger record count {len(evidence_map)} != {COMMITTED_AXIS_COUNT}"
+            )
 
         for key, row in sorted(evidence_map.items()):
             if row["expected_token"] not in COMMITTED:
@@ -296,7 +306,7 @@ def main() -> None:
     counts = Counter(row["axis"] for row in ledger_rows)
     print(
         "PASS evidence ledger synchronization/completeness: "
-        "109/109 canonical commitments; "
+        f"{len(ledger_rows)}/{COMMITTED_AXIS_COUNT} canonical commitments; "
         f"monomer={counts['monomer']}, "
         f"fold_complex={counts['fold_complex']}, "
         f"binding={counts['binding']}; "

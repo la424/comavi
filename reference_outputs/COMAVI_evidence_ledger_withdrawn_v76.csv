@@ -1,0 +1,12 @@
+system,variant,axis,expected_token,evidence_type,evidence_directness,evidence_basis,evidence_citation,withdrawn_by,withdrawal_reason
+cam_cav12,D96V,binding,neutral,E2_quantitative_functional,off_axis,"Ca2+ affinity at EF-hand III is measured, but no IQ-motif binding measurement exists; the binding token is inferred from preserved target engagement",Crotti 2013,v7.6,GateC(B stands)
+cam_cav12,F142L,binding,neutral,E3_qualitative_experimental,coupled,C-domain Ca2+ binding impaired while RyR2 inhibition is preserved -- engagement retained at a homologous IQ-type site,Hwang 2014 (PMC5270481),v7.6,GateC(B stands)
+cam_cav12,N98S,binding,neutral,E2_quantitative_functional,off_axis,"Ca2+ affinity at EF-hand III is measured, but no IQ-motif binding measurement exists; the binding token is inferred from preserved target engagement",Crotti 2013,v7.6,GateC(B stands)
+kras_craf,Q61H,binding,neutral,E3_qualitative_experimental,direct,Preserved RAF binding; switch-II hydrolysis defect. Q61 is 11.1 A from RAF1,Hunter 2015,v7.6,USER adjudication (conflicts GateD)
+mlh1_pms2,K618E,fold_complex,neutral,E5_inferred_no_axis_assay,inferred,No assembly-context stability measurement; token inferred from the intact monomer fold,Drost 2019 (functional assay),v7.6,GateD override
+mlh1_pms2,K618E,monomer,neutral,E5_inferred_no_axis_assay,inferred,No subunit-stability assay; token inferred,Drost 2019 (functional assay),v7.6,GateD override
+mlh1_pms2,L749P,fold_complex,destab,E5_inferred_no_axis_assay,inferred,Proline substitution presumed fold-destabilizing; no stability assay,"Kosinski 2010 (PMS2 co-IP, MMR activity)",v7.6,GateC(B stands)
+msh2_msh6,G674R,binding,neutral,E3_qualitative_experimental,direct,MSH6 binding preserved by co-IP; MMR lost via Walker-A ATPase defect,Jia 2021,v7.6,GateD override
+pi3k,E542K,fold_complex,destab,E3_qualitative_experimental,direct,"Disrupts the nSH2 inhibitory contact, releasing autoinhibition",Zhao & Vogt 2008 PNAS,v7.6,GateC(B stands)
+pi3k,E545K,fold_complex,destab,E3_qualitative_experimental,direct,"Disrupts the nSH2 inhibitory contact, releasing autoinhibition",Zhao & Vogt 2008 PNAS,v7.6,GateC(B stands)
+smad4_smad3,I500T,binding,neutral,E5_inferred_no_axis_assay,inferred,Post-translational mechanism (reduced ubiquitination -> protein stabilization); no interface measurement,Le Goff 2011,v7.6,GateD override

@@ -1,0 +1,19 @@
+decision_unit_id,system,variant,axis,column,live_token_backlog,live_token_canonical,gateB_token,gateCD,final_token,final_source,deferred,is_token_change,confidence,gateB_status,live_matches_backlog
+D03,cam_cav12,D96V,binding,expected_ddg_binding,neutral,neutral,unknown,GateC: approved as source-cleared,unknown,GateC(B stands),False,True,HIGH,APPROVE_CANDIDATE_FIELDS,True
+D04,cam_cav12,F142L,binding,expected_ddg_binding,neutral,neutral,unknown,GateC: approved as source-cleared,unknown,GateC(B stands),False,True,MEDIUM_HIGH,APPROVE_WITH_MODIFICATION,True
+D05,cam_cav12,N98S,binding,expected_ddg_binding,neutral,neutral,unknown,GateC: approved as source-cleared,unknown,GateC(B stands),False,True,HIGH,APPROVE_WITH_MODIFICATION,True
+D09,kras_craf,G12D,binding,expected_ddg_binding,neutral,neutral,destab,GateC: approved as source-cleared,destab,GateC(B stands),False,True,HIGH,APPROVE_CANDIDATE_FIELDS,True
+D09,kras_craf,G12V,binding,expected_ddg_binding,neutral,neutral,destab,GateC: approved as source-cleared,destab,GateC(B stands),False,True,HIGH,APPROVE_CANDIDATE_FIELDS,True
+D09,kras_craf,Q61H,binding,expected_ddg_binding,neutral,neutral,stab,"GateD: DOWNGRADED to metadata-only, token stays neutral",unknown,USER adjudication (conflicts GateD),False,True,MEDIUM_HIGH,APPROVE_STATE_SCOPED,True
+D11,mlh1_pms2,H718Y,monomer,expected_ddg_monomer,neutral,neutral,destab,GateC: approved as source-cleared,destab,GateC(B stands),False,True,HIGH,APPROVE_WITH_MODIFICATION,True
+D12,mlh1_pms2,K618E,binding,expected_ddg_binding,neutral,neutral,unknown,"GateD: RESOLVED by exact 2025 MAVE -> neutral, regrade direct (this session)",neutral,GateD override,False,False,HIGH,APPROVE_CANDIDATE_FIELDS,True
+D12,mlh1_pms2,K618E,fold_complex,expected_ddg_fold_complex,neutral,neutral,unknown,"GateD: -> unknown (this session, in patch)",unknown,GateD override,False,True,HIGH,APPROVE_CANDIDATE_FIELDS,True
+D12,mlh1_pms2,K618E,monomer,expected_ddg_monomer,neutral,neutral,unknown,"GateD: -> unknown (this session, in patch)",unknown,GateD override,False,True,HIGH,APPROVE_CANDIDATE_FIELDS,True
+D13,mlh1_pms2,L749P,fold_complex,expected_ddg_fold_complex,destab,destab,unknown,GateC: approved as source-cleared,unknown,GateC(B stands),False,True,HIGH,APPROVE_CANDIDATE_FIELDS,True
+D18,msh2_msh6,C697F,binding,expected_ddg_binding,neutral,neutral,destab,GateC: approved as source-cleared,destab,GateC(B stands),False,True,HIGH,APPROVE_CANDIDATE_FIELDS,True
+D19,msh2_msh6,G674R,binding,expected_ddg_binding,neutral,neutral,unknown,GateD: APPROVE_REMOVE_COMMITMENT -> unknown (NOT executed),unknown,GateD override,False,True,HIGH,APPROVE_CANDIDATE_FIELDS,True
+D20,pi3k,E542K,fold_complex,expected_ddg_fold_complex,destab,destab,unknown,GateC: approved as source-cleared,unknown,GateC(B stands),False,True,HIGH,APPROVE_CANDIDATE_FIELDS,True
+D20,pi3k,E545K,fold_complex,expected_ddg_fold_complex,destab,destab,unknown,GateC: approved as source-cleared,unknown,GateC(B stands),False,True,HIGH,APPROVE_CANDIDATE_FIELDS,True
+D24,smad4_smad3,I500T,binding,expected_ddg_binding,neutral,neutral,unknown,GateD: APPROVE_REMOVE_COMMITMENT -> unknown (NOT executed),unknown,GateD override,False,True,HIGH,APPROVE_CANDIDATE_FIELDS,True
+D24,smad4_smad3,I500V,binding,expected_ddg_binding,neutral,neutral,stab,GateC: approved as source-cleared,stab,GateC(B stands),False,True,HIGH,APPROVE_WITH_MODIFICATION,True
+D27,vhl_elonginc,L158Q,monomer,expected_ddg_monomer,,unknown,UNCOMMITTED,GateC: approved as source-cleared,UNCOMMITTED,GateC(B stands),True,False,HIGH,DEFER,False

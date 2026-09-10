@@ -1,52 +1,51 @@
 {
- "n_committed_axes": 109,
- "n_variants": 59,
- "n_systems": 14,
- "by_evidence_type": {
-  "E3_qualitative_experimental": 36,
-  "E1_quantitative_energetic": 29,
-  "E5_inferred_no_axis_assay": 24,
-  "E2_quantitative_functional": 11,
-  "E4_population_frequency": 9
- },
- "by_directness": {
-  "direct": 65,
-  "inferred": 33,
-  "coupled": 9,
-  "off_axis": 2
- },
- "by_axis": {
-  "binding": 47,
-  "monomer": 33,
-  "fold_complex": 29
- },
- "n_energetic_direct": 24,
- "frac_energetic": 0.2661,
- "frac_quantitative": 0.367,
- "frac_direct": 0.5963,
- "frac_inferred": 0.2202,
- "type_by_axis": {
-  "binding": {
-   "E3_qualitative_experimental": 23,
-   "E1_quantitative_energetic": 10,
-   "E2_quantitative_functional": 9,
-   "E4_population_frequency": 3,
-   "E5_inferred_no_axis_assay": 2
+  "n_committed_axes": 98,
+  "n_variants": 53,
+  "n_systems": 13,
+  "by_evidence_type": {
+    "E3_qualitative_experimental": 31,
+    "E5_inferred_no_axis_assay": 20,
+    "E2_quantitative_functional": 9,
+    "E1_quantitative_energetic": 29,
+    "E4_population_frequency": 9
   },
-  "fold_complex": {
-   "E5_inferred_no_axis_assay": 13,
-   "E3_qualitative_experimental": 7,
-   "E1_quantitative_energetic": 5,
-   "E4_population_frequency": 3,
-   "E2_quantitative_functional": 1
+  "by_directness": {
+    "direct": 61,
+    "inferred": 29,
+    "coupled": 8
   },
-  "monomer": {
-   "E1_quantitative_energetic": 14,
-   "E5_inferred_no_axis_assay": 9,
-   "E3_qualitative_experimental": 6,
-   "E4_population_frequency": 3,
-   "E2_quantitative_functional": 1
-  }
- },
- "note": "Denominator is COMMITTED axes (expected_ddg_* in {destab,neutral,stab}); unknown/not_applicable axes are not scored and carry no ground truth to characterize."
+  "by_axis": {
+    "binding": 41,
+    "fold_complex": 25,
+    "monomer": 32
+  },
+  "n_energetic_direct": 24,
+  "frac_energetic": 0.2959,
+  "frac_quantitative": 0.3878,
+  "frac_direct": 0.6224,
+  "frac_inferred": 0.2041,
+  "type_by_axis": {
+    "monomer": {
+      "E3_qualitative_experimental": 6,
+      "E5_inferred_no_axis_assay": 8,
+      "E1_quantitative_energetic": 14,
+      "E4_population_frequency": 3,
+      "E2_quantitative_functional": 1
+    },
+    "fold_complex": {
+      "E3_qualitative_experimental": 5,
+      "E5_inferred_no_axis_assay": 11,
+      "E1_quantitative_energetic": 5,
+      "E4_population_frequency": 3,
+      "E2_quantitative_functional": 1
+    },
+    "binding": {
+      "E3_qualitative_experimental": 20,
+      "E2_quantitative_functional": 7,
+      "E1_quantitative_energetic": 10,
+      "E4_population_frequency": 3,
+      "E5_inferred_no_axis_assay": 1
+    }
+  },
+  "note": "Denominator is COMMITTED axes (expected_ddg_* in {destab,neutral,stab}); unknown/not_applicable axes are not scored and carry no ground truth to characterize."
 }

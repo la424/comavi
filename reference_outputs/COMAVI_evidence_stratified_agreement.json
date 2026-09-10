@@ -1,32 +1,32 @@
 {
  "threshold": 2.5,
  "accounting": {
-  "n_committed_axes": 109,
-  "n_ddg_axes_gradeable": 86,
-  "n_committed_but_gated_out": 23,
-  "n_tier_axes_gradeable": 47,
-  "n_total_gradeable": 133,
+  "n_committed_axes": 98,
+  "n_ddg_axes_gradeable": 77,
+  "n_committed_but_gated_out": 21,
+  "n_tier_axes_gradeable": 45,
+  "n_total_gradeable": 122,
   "note": "Committed axes carry ground truth; a committed axis is gradeable only if the prediction also clears confidence and internal-CI gating. The difference is the cost of those gates, not missing curation."
  },
  "crude": {
-  "quant_ok": 21,
-  "quant_n": 33,
-  "quant_rate": 0.636,
-  "soft_ok": 44,
-  "soft_n": 53,
-  "soft_rate": 0.83,
-  "OR": 0.358,
-  "p": 0.0692
+  "quant_ok": 20,
+  "quant_n": 32,
+  "quant_rate": 0.625,
+  "soft_ok": 34,
+  "soft_n": 45,
+  "soft_rate": 0.756,
+  "OR": 0.539,
+  "p": 0.3124
  },
  "token_composition_by_grade": {
   "soft": {
    "destab": 9,
-   "neutral": 44,
+   "neutral": 36,
    "stab": 0
   },
   "quantitative": {
    "destab": 24,
-   "neutral": 8,
+   "neutral": 7,
    "stab": 1
   }
  },
@@ -35,21 +35,21 @@
    "destab": {
     "quant_ok": 14,
     "quant_n": 24,
-    "soft_ok": 6,
+    "soft_ok": 4,
     "soft_n": 9,
     "quant_rate": 0.583,
-    "soft_rate": 0.667,
-    "OR": 0.7,
-    "p": 1.0
+    "soft_rate": 0.444,
+    "OR": 1.75,
+    "p": 0.6968
    },
    "neutral": {
-    "quant_ok": 7,
-    "quant_n": 8,
-    "soft_ok": 38,
-    "soft_n": 44,
-    "quant_rate": 0.875,
-    "soft_rate": 0.864,
-    "OR": 1.105,
+    "quant_ok": 6,
+    "quant_n": 7,
+    "soft_ok": 30,
+    "soft_n": 36,
+    "quant_rate": 0.857,
+    "soft_rate": 0.833,
+    "OR": 1.2,
     "p": 1.0
    },
    "stab": {
@@ -58,9 +58,9 @@
     "n": 1
    }
   },
-  "OR_mantel_haenszel": 0.816,
-  "chi2": 0.0,
-  "p": 0.9838
+  "OR_mantel_haenszel": 1.549,
+  "chi2": 0.121,
+  "p": 0.7282
  },
  "by_evidence_type": {
   "E1_quantitative_energetic": {
@@ -69,14 +69,14 @@
    "rate": 0.72
   },
   "E2_quantitative_functional": {
-   "ok": 3,
-   "n": 8,
-   "rate": 0.375
+   "ok": 2,
+   "n": 7,
+   "rate": 0.286
   },
   "E3_qualitative_experimental": {
-   "ok": 22,
-   "n": 28,
-   "rate": 0.786
+   "ok": 16,
+   "n": 23,
+   "rate": 0.696
   },
   "E4_population_frequency": {
    "ok": 6,
@@ -84,31 +84,26 @@
    "rate": 1.0
   },
   "E5_inferred_no_axis_assay": {
-   "ok": 16,
-   "n": 19,
-   "rate": 0.842
+   "ok": 12,
+   "n": 16,
+   "rate": 0.75
   }
  },
  "by_directness": {
   "coupled": {
-   "ok": 6,
-   "n": 7,
-   "rate": 0.857
+   "ok": 5,
+   "n": 6,
+   "rate": 0.833
   },
   "direct": {
-   "ok": 36,
-   "n": 53,
-   "rate": 0.679
+   "ok": 31,
+   "n": 49,
+   "rate": 0.633
   },
   "inferred": {
-   "ok": 22,
-   "n": 25,
-   "rate": 0.88
-  },
-  "off_axis": {
-   "ok": 1,
-   "n": 1,
-   "rate": 1.0
+   "ok": 18,
+   "n": 22,
+   "rate": 0.818
   }
  },
  "interpretation": "The crude contrast is confounded: quantitative measurement was sought for destabilizers, while qualitative and inferred tokens are predominantly neutral. Stratified by expected token the association is absent, so evidence grade does not explain the headline agreement."
