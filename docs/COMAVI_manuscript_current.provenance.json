@@ -1,0 +1,38 @@
+{
+  "file": "docs/COMAVI_manuscript_current.docx",
+  "role": "paper of record - combined manuscript and supplement",
+  "sha256": "aecdceac590695f83c235af38015cf301e631acb57eb5cdb8db029a6a836e2be",
+  "size_bytes": 3160929,
+  "authoring": {
+    "application": "Microsoft Office Word",
+    "app_version": "16.0000",
+    "template": "Normal.dotm",
+    "editing_minutes": 672,
+    "pages": 23,
+    "words": 11477,
+    "revision": 4,
+    "modified": "2026-08-25T14:38:00Z"
+  },
+  "structure": {
+    "paragraphs": 246,
+    "tables": 15,
+    "inline_images": 11,
+    "styles": {
+      "Normal": 179,
+      "Caption": 26,
+      "Heading 2": 25,
+      "Heading 1": 14,
+      "Title": 1,
+      "Heading 3": 1
+    }
+  },
+  "generated": false,
+  "note": "Hand-authored in Word; NOT produced by scripts/build_manuscript_docx.py (that builder emits 'Light Grid Accent 1' tables and no Caption/Title styles). Edit surgically at run level; every target numeric string was verified to sit intact within a single run.",
+  "data_state_at_capture": {
+    "canonical": "reference_outputs/scored_61var_canonical.csv",
+    "canonical_sha256_pre_v76": "88cee917d00ea6705e851b59b7551ef8211052011768a732462ee59ef45031bb",
+    "canonical_sha256_corrected": "d2e7bf830e8c3ed685f0a2b7c9175e733ffbc1f641b669aef7b2a9f7d04fd6bf",
+    "manuscript_reflects": "pre_v76"
+  },
+  "captured_utc": "2026-09-10T14:09:56+00:00"
+}
