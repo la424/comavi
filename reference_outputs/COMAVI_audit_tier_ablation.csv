@@ -13,18 +13,16 @@ L749P,mlh1_pms2,Multimer fold destabilization at interface,Multimer fold destabi
 R755W,mlh1_pms2,PPI stabilization,PPI stabilization,False,0.0,0.0,False
 V384D,mlh1_pms2,Interface variant (DDG neutral),Interface variant (DDG neutral),False,1.0,1.0,False
 G857A,mlh1_pms2,Interface variant (DDG neutral),Interface variant (DDG neutral),False,1.0,1.0,False
-H718Y,mlh1_pms2,No structural effect detected,No structural effect detected,False,1.0,1.0,False
+H718Y,mlh1_pms2,No structural effect detected,No structural effect detected,False,0.0,0.0,False
 K618E,mlh1_pms2,Structural variant — burial-driven (DDG neutral),No structural effect detected,True,1.0,1.0,False
-G674R,msh2_msh6,Both fold destabilization,Both fold destabilization,False,0.0,0.0,False
 A636P,msh2_msh6,Both fold destabilization,Both fold destabilization,False,0.0,0.0,False
-C697F,msh2_msh6,Both fold destabilization,Both fold destabilization,False,0.0,0.0,False
+C697F,msh2_msh6,Both fold destabilization,Both fold destabilization,False,0.5,0.5,False
 N127S,msh2_msh6,Structural variant — contact-driven (DDG neutral),No structural effect detected,True,1.0,1.0,False
 G322D,msh2_msh6,No structural effect detected,No structural effect detected,False,1.0,1.0,False
 L158Q,vhl_elonginc,Multimer fold + PPI destabilization,Multimer fold + PPI destabilization,False,1.0,1.0,False
 Y98H,vhl_elonginc,Structural variant — contact-driven (DDG neutral),No structural effect detected,True,1.0,1.0,False
-G12D,kras_craf,No structural effect detected,No structural effect detected,False,1.0,1.0,False
-G12V,kras_craf,No structural effect detected,No structural effect detected,False,1.0,1.0,False
-Q61H,kras_craf,No structural effect detected,No structural effect detected,False,1.0,1.0,False
+G12D,kras_craf,No structural effect detected,No structural effect detected,False,0.0,0.0,False
+G12V,kras_craf,No structural effect detected,No structural effect detected,False,0.0,0.0,False
 E6V,hemoglobin_dimer,No structural effect detected,No structural effect detected,False,1.0,1.0,False
 W37Y,hemoglobin_tetramer,Multimer fold destabilization at interface,Multimer fold destabilization at interface,False,0.5,0.5,False
 W37A,hemoglobin_tetramer,Multimer fold + PPI destabilization,Multimer fold + PPI destabilization,False,1.0,1.0,False
@@ -40,7 +38,6 @@ F142L,cam_cav12,Interface variant (DDG neutral),Interface variant (DDG neutral),
 D351H,smad4_smad3,Both fold destabilization,Both fold destabilization,False,0.5,0.5,False
 R361C,smad4_smad3,Both fold + PPI destabilization,Both fold + PPI destabilization,False,1.0,1.0,False
 I500T,smad4_smad3,Structural variant — contact-driven (DDG neutral),No structural effect detected,True,1.0,1.0,False
-I500V,smad4_smad3,No structural effect detected,No structural effect detected,False,1.0,1.0,False
 Y1853C,brca1_brct,Monomer fold destabilization,Monomer fold destabilization,False,1.0,1.0,False
 A1843P,brca1_brct,Monomer fold destabilization,Monomer fold destabilization,False,1.0,1.0,False
 V1736A,brca1_brct,No structural effect detected,No structural effect detected,False,0.0,0.0,False
