@@ -10,8 +10,8 @@ records remain in the repository but do not override this file.
 - **61 variants** across **14 protein systems**.
 - **57 variants** are gradeable for whole-variant mechanism-pattern agreement.
 - **47 interaction variants** form the structural-prioritization population:
-  **17** committed modeled structural mechanisms and
-  **30** variants curated to lack a committed lesion on the
+  **20** committed modeled structural mechanisms and
+  **27** variants curated to lack a committed lesion on the
   modeled COMAVI axes.
 - ISDS-v1 is available for
   **49/61**
@@ -62,23 +62,23 @@ The committed stress-test analysis uses 2,000 variant-bootstrap draws and
 systems with seed 8.
 
 - mechanism-consistency variant-bootstrap 95% CI:
-  **[0.614, 0.819]**;
+  **[0.586, 0.793]**;
 - mechanism-consistency system-cluster 95% CI:
-  **[0.625, 0.821]**;
+  **[0.604, 0.79]**;
 - structural-agreement variant-bootstrap 95% CI:
-  **[0.676, 0.823]**;
+  **[0.634, 0.797]**;
 - structural-agreement system-cluster 95% CI:
-  **[0.696, 0.818]**;
+  **[0.65, 0.791]**;
 - structural-agreement leave-one-system-out range:
-  **0.7360-0.7667**;
+  **0.7009-0.7321**;
 - structural-agreement permutation null:
-  observed **0.7500** versus
-  **0.5336 ±
-  0.0444**,
+  observed **0.7177** versus
+  **0.5347 ±
+  0.0464**,
   **p = 0.0005**;
 - replicate-noise structural agreement:
-  **0.7478 ±
-  0.0040**.
+  **0.7154 ±
+  0.0042**.
 
 The complete summary and raw seeded draws are stored under
 `reference_outputs/stress_tests/`.
@@ -88,17 +88,17 @@ The complete summary and raw seeded draws are stored under
 On the 47-variant prioritization population:
 
 - ISDS-v1 ROC AUC:
-  **0.9431**;
+  **0.9167**;
 - ISDS-v1 average precision:
-  **0.8182**;
+  **0.9227**;
 - Top 10:
-  **9**
+  **10**
   structural-mechanism variants;
 - Top 20:
-  **16/17**
+  **17/20**
   recovered;
 - Top 25:
-  **17/17**
+  **18/20**
   recovered.
 
 These are internal, system-aware benchmark results. ISDS-v1 is a unitless

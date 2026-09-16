@@ -55,21 +55,34 @@ EXPECTED_V5 = {
 # cohort, less 1 (R1699L, whose monomer CI is indistinguishable from 0). The
 # cohort contributes NO tier axis — the tier is undefined without a partner
 # chain, and grading it was scoring a NaN as "did not fire" (v7.3 fix (d)).
+# v7.7 re-pin: the v7.6 ledger correction reaching the derived layer. The
+# all-row denominator moves 133 -> 125 because eleven withdrawn commitments
+# (expected token -> unknown) left eight axes with no computable output.
+# Mechanism consistency is UNCHANGED at t10/t15/t20 and moves only at the
+# reference threshold and above, which scripts/build_threshold_operating_points.py
+# independently reproduces.
+#
+# These expectations are the one thing that would reveal a scorer/table
+# divergence, so they are not re-pinned on this script's word alone: every value
+# below is independently reproduced from the same canonical by
+# scripts/verify_v30_reconciliation.py, scripts/verify_denominators.py,
+# scripts/build_numbers_ledger.py and scripts/audit_evidence_claims.py.
 EXPECTED_CANONICAL = {
     'structural_agreement': {
-        't10': (94, 133), 't15': (99, 133), 't20': (99, 133),
-        't25': (99, 133), 'tSAP': (97, 133),
+        't10': (85, 125), 't15': (88, 125), 't20': (89, 125),
+        't25': (89, 125), 'tSAP': (87, 125),
     },
     'mech_consistency': {
         't10': 0.579, 't15': 0.649, 't20': 0.684,
-        't25': 0.719, 'tSAP': 0.711,
+        't25': 0.693, 'tSAP': 0.684,
     },
     'mech_graded_n': 57,
     # Four-way decomposition of the t=2.5 headline (ledger §13).
     # monomer 16 -> 27 gradeable: +12 cohort rows, -1 CI-excluded (R1699L).
+    # v7.7: each axis loses the rows whose expectation was withdrawn.
     'axis_decomposition_t25': {
-        'monomer': (21, 28), 'fold': (20, 26),
-        'binding': (24, 32), 'tier': (34, 47),
+        'monomer': (19, 26), 'fold': (17, 22),
+        'binding': (20, 30), 'tier': (33, 47),
     },
     # Tier pathogenicity gradient — carries no expected_mech_class term, so
     # neither the v7.1 correction nor v7.3 pooling may move it.
