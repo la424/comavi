@@ -200,8 +200,9 @@ ax=axes[0,1]
 neg=pv[~pv.structural_ground_truth.astype(bool)].isds_v1
 pos=pv[pv.structural_ground_truth.astype(bool)].isds_v1
 bins=np.linspace(0,1,11)
-ax.hist(neg,bins=bins,alpha=.75,label='No modeled lesion (n=30)',color=BLUE)
-ax.hist(pos,bins=bins,alpha=.78,label='Structural mechanism (n=17)',color=ORANGE)
+_pp=summary['population']
+ax.hist(neg,bins=bins,alpha=.75,label=f"No modeled lesion (n={_pp['negative']})",color=BLUE)
+ax.hist(pos,bins=bins,alpha=.78,label=f"Structural mechanism (n={_pp['positive']})",color=ORANGE)
 ax.set_xlabel('ISDS-v1'); ax.set_ylabel('Variants'); ax.set_title('Higher scores enrich modeled structural mechanisms',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False,fontsize=8.8); panel_label(ax,'b')
 # c ROC/PR
 ax=axes[1,0]
@@ -214,7 +215,7 @@ ax.set_xlabel('False-positive rate'); ax.set_ylabel('True-positive rate'); ax.se
 ax=axes[1,1]
 t=topk[topk.score.eq('isds_v1')]
 ax.plot(t.k,t.precision_at_k,'o-',color=TEAL,linewidth=2.2,label='Precision among top k')
-ax.plot(t.k,t.recovery_at_k,'s-',color=ORANGE,linewidth=2.2,label='Fraction of 17 mechanisms recovered')
+ax.plot(t.k,t.recovery_at_k,'s-',color=ORANGE,linewidth=2.2,label=f"Fraction of {_pp['positive']} mechanisms recovered")
 ax.set_xticks(t.k); ax.set_ylim(0,1.05); ax.set_xlabel('Experimental budget, k variants'); ax.set_ylabel('Fraction'); ax.set_title('Top-ranked variants concentrate structural mechanisms',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False,fontsize=8.7); ax.grid(alpha=.2); panel_label(ax,'d')
 fig.suptitle('ISDS-v1 is a fixed prioritization index, not a probability or validated binary classifier',fontsize=15.5,fontweight='bold',color=NAVY,y=.995)
 fig.tight_layout(rect=[0,0,1,.97],h_pad=3,w_pad=2.5)
@@ -224,7 +225,13 @@ save(fig,'figure4_isds_definition_performance.png')
 fig,axes=plt.subplots(1,2,figsize=(12.0,5.2))
 ax=axes[0]
 labels=['Interface status alone','Tier without interface bonus','Full Tier 1-2']
-sens=[15/17,14/17,1.0]; spec=[23/30,18/30,17/30]
+# Screen performance read from the analysis summary, which computes it from the
+# tier comparator. These were literals here (and, independently, in
+# analyze_isds_v1.py) until v7.7, so the ledger correction left this panel
+# plotting 17 positives against a comparator that had 20.
+_cb={r['screen']:r for r in summary['component_binary_baselines']}
+_ord=['interface_status_alone','tier_without_interface_bonus','full_tier_1_2']
+sens=[_cb[k]['sensitivity'] for k in _ord]; spec=[_cb[k]['specificity'] for k in _ord]
 x=np.arange(3); width=.35
 ax.bar(x-width/2,sens,width,color=ORANGE,label='Sensitivity')
 ax.bar(x+width/2,spec,width,color=BLUE,label='Specificity')
@@ -234,7 +241,9 @@ for i,(a,b) in enumerate(zip(sens,spec)):
 panel_label(ax,'a')
 ax=axes[1]
 states=['Convergent','Energy only','Context only','Neither']
-struct=np.array([15,0,2,0]); neg=np.array([3,3,10,14]); x=np.arange(4)
+_fs=summary['four_state_agreement']
+assert _fs is not None, 'four_state_agreement missing from ISDS_v1_summary.json — re-run analyze_isds_v1.py'
+struct=np.array(_fs['structural']); neg=np.array(_fs['no_lesion']); x=np.arange(4)
 ax.bar(x-.18,struct,.36,color=ORANGE,label='Structural mechanism')
 ax.bar(x+.18,neg,.36,color=BLUE,label='No modeled lesion')
 ax.set_xticks(x,['Convergent','Energy\nonly','Context\nonly','Neither']); ax.set_ylabel('Variants'); ax.set_ylim(0,16.5); ax.set_title('Discrete evidence states remain interpretable',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False,fontsize=8.8); ax.grid(axis='y',alpha=.2)

@@ -374,17 +374,17 @@ On the 47-variant prioritization population, comprising 17 committed modeled
 structural mechanisms and 30 variants curated to lack a committed lesion on
 the modeled axes:
 
-- ISDS-v1 ROC AUC 0.943;
-- average precision 0.818;
-- energetic component ROC AUC 0.857;
-- structural-context component ROC AUC 0.890;
-- system-cluster ROC AUC 95% interval 0.858–1.000.
+- ISDS-v1 ROC AUC 0.917;
+- average precision 0.923;
+- energetic component ROC AUC 0.846;
+- structural-context component ROC AUC 0.857;
+- system-cluster ROC AUC 95% interval 0.783–0.996.
 
 The ranking reflects the intended limited-budget use case:
 
-- Top 10: 9 structural-mechanism variants;
-- Top 20: 16/17;
-- Top 25: 17/17.
+- Top 10: 10 structural-mechanism variants;
+- Top 20: 17/20;
+- Top 25: 18/20.
 
 These are internal, system-aware benchmark results. They do not establish
 external generalization or a validated decision cutoff.

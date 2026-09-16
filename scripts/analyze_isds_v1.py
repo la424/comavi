@@ -807,13 +807,51 @@ def main() -> None:
         sens_rows.append({'formula': col, 'roc_auc': roc, 'average_precision': ap, 'spearman_vs_isds_v1': rho, 'n_unique_scores': int(df[col].round(12).nunique())})
     pd.DataFrame(sens_rows).sort_values('roc_auc', ascending=False).to_csv(OUT / 'ISDS_v1_formula_sensitivities.csv', index=False)
 
-    # Tier/component baselines in their original binary form.
-    component_binary = pd.DataFrame([
-        {'screen': 'interface_status_alone', 'tp': 15, 'fn': 2, 'fp': 7, 'tn': 23, 'sensitivity': 15/17, 'specificity': 23/30, 'ppv': 15/22},
-        {'screen': 'tier_without_interface_bonus', 'tp': 14, 'fn': 3, 'fp': 12, 'tn': 18, 'sensitivity': 14/17, 'specificity': 18/30, 'ppv': 14/26},
-        {'screen': 'full_tier_1_2', 'tp': 17, 'fn': 0, 'fp': 13, 'tn': 17, 'sensitivity': 1.0, 'specificity': 17/30, 'ppv': 17/30},
-    ])
+    # Tier/component baselines in their original binary form. COMPUTED from the
+    # tier comparator, never hardcoded: these three rows were frozen literals
+    # here through v7.7 (15/17, 14/17, 1.0 against 17 positives), so the ledger
+    # correction left both this table and figures/isds_v1 panel a stale while
+    # every other number in this file regenerated correctly.
+    _tier_no = (df['tier_number'] if 'tier_number' in df.columns
+                else df['reported_tier'].str.extract(r'(\d)').astype(int)[0])
+    _screens = [
+        ('interface_status_alone', df['interface_partner_count'] > 0),
+        ('tier_without_interface_bonus', df['no_interface_score'] >= 3),
+        ('full_tier_1_2', _tier_no <= 2),
+    ]
+    _yb = y.astype(bool)
+    component_rows = []
+    for name, positive in _screens:
+        positive = positive.astype(bool)
+        tp = int((positive & _yb).sum())
+        fn = int((~positive & _yb).sum())
+        fp = int((positive & ~_yb).sum())
+        tn = int((~positive & ~_yb).sum())
+        component_rows.append({
+            'screen': name, 'tp': tp, 'fn': fn, 'fp': fp, 'tn': tn,
+            'sensitivity': tp / (tp + fn) if tp + fn else float('nan'),
+            'specificity': tn / (fp + tn) if fp + tn else float('nan'),
+            'ppv': tp / (tp + fp) if tp + fp else float('nan')})
+    component_binary = pd.DataFrame(component_rows)
     component_binary.to_csv(OUT / 'ISDS_v1_component_binary_baselines.csv', index=False)
+
+    # Four-state energy/context agreement at the reference threshold, for
+    # figures/isds_v1 panel b. Also previously a pair of literals in the figure.
+    # Same firing definition the tier verifiers use.
+    _FIRING = ('concordant_disruption', 'ddg_only')
+    _conc = next((c for c in ('p1_ddg_concordance_t25',
+                              'p1_ddg_concordance_t25_canonical')
+                  if c in df.columns), None)
+    four_state = None
+    if _conc is not None:
+        _f = df[_conc].isin(_FIRING).astype(bool)
+        _s = (_tier_no <= 2).astype(bool)
+        four_state = {
+            'labels': ['Convergent', 'Energy only', 'Context only', 'Neither'],
+            'structural': [int((_f & _s & _yb).sum()), int((_f & ~_s & _yb).sum()),
+                           int((~_f & _s & _yb).sum()), int((~_f & ~_s & _yb).sum())],
+            'no_lesion': [int((_f & _s & ~_yb).sum()), int((_f & ~_s & ~_yb).sum()),
+                          int((~_f & _s & ~_yb).sum()), int((~_f & ~_s & ~_yb).sum())]}
 
     # AlphaMissense comparison on the complete 47-variant phenotype-labelled set.
     # This population is not identical to the 47-variant structural-prioritization set.
@@ -894,6 +932,8 @@ def main() -> None:
         'analysis_id': 'COMAVI-ISDS-v1-2026-08-21',
         'formula_version': ISDS_VERSION,
         'population': {'n': len(df), 'positive': int(y.sum()), 'negative': int((1-y).sum()), 'systems': int(df.system.nunique())},
+        'component_binary_baselines': component_rows,
+        'four_state_agreement': four_state,
         'observed': {
             'isds_roc_auc': isds_row['roc_auc'],
             'isds_average_precision': isds_row['average_precision'],
