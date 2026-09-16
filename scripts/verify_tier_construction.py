@@ -439,7 +439,9 @@ def main():
         "delta_combined_minus_tier_ci": [round(float(np.percentile(dt, 2.5)), 3),
                                          round(float(np.percentile(dt, 97.5)), 3)],
         "note": ("Same-cohort, not externally validated. The tier's interface bonus "
-                 "is partly definitional for structural class (15/17), so the "
+                 f"is partly definitional for structural class "
+                 f"({out['interface_bonus_reach']['structural_with_bonus']}/"
+                 f"{out['interface_bonus_reach']['structural_total']}), so the "
                  "combination gain is not independent of ground truth."),
     }
 

@@ -27,31 +27,31 @@ value is 0.49155647.
 At the 2.5 kcal/mol reproducibility reference:
 
 - weighted whole-variant mechanism-pattern agreement is
-  **41/57 = 0.7193**;
+  **41/57 = 0.6930**;
 - direction-aware agreement across the three energetic axes is
-  **65/85 =
-  0.7647**;
+  **56/77 =
+  0.7273**;
 - monomer-fold agreement is
-  **21/27**;
+  **19/25**;
 - complex-context agreement is
-  **20/26**;
+  **17/22**;
 - binding agreement is
-  **24/32**.
+  **20/30**.
 
 The four-output continuity aggregate, which adds the structural-context tier,
 is:
 
-- **99/132 =
-  0.7500** on the primary 57-variant
+- **89/124 =
+  0.7177** on the primary 57-variant
   population;
-- **99/133 =
-  0.7444** when all 61 resource rows are retained.
+- **89/125 =
+  0.7120** when all 61 resource rows are retained.
 
 The all-row decomposition is tier
-34/47, monomer fold
-21/28, complex context
-20/26, and binding
-24/32. The sole extra all-row
+33/47, monomer fold
+19/26, complex context
+17/22, and binding
+20/30. The sole extra all-row
 output is the monomer-fold output of BRCA1 R1699Q, which is retained in the
 resource but excluded from whole-variant grading by its curated role.
 

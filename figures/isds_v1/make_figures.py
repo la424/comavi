@@ -118,7 +118,8 @@ arrow(ax,0.24,0.52,0.34,0.34)
 box(ax,(0.34,0.55),(0.25,0.27),'57 mechanism-gradeable','Whole-variant mechanism-pattern score\nThree energetic axes\nInteraction + BRCT systems','#EAF3F8',BLUE,8.8)
 box(ax,(0.34,0.20),(0.25,0.27),'4 ungraded resource cases','2 known mechanisms missing required context\n2 mechanism-uncommitted reference cases','#F5F5F5',GRAY,8.7)
 arrow(ax,0.59,0.69,0.70,0.69)
-box(ax,(0.70,0.55),(0.26,0.27),'47 structural-prioritization','Tier-carrying interaction variants\n17 modeled structural mechanisms\n30 variants with no committed modeled lesion','#E9F6F2',TEAL,8.8)
+_pop=json.load(open(AN/'ISDS_v1_summary.json'))['population']
+box(ax,(0.70,0.55),(0.26,0.27),f"{_pop['n']} structural-prioritization",f"Tier-carrying interaction variants\n{_pop['positive']} modeled structural mechanisms\n{_pop['negative']} variants with no committed modeled lesion",'#E9F6F2',TEAL,8.8)
 ax.text(0.34,0.12,'Other analysis subsets are defined once and referenced consistently: 15 direct-energy comparators, 44 measured destabilizers, and 47 AlphaMissense complete cases.',fontsize=9.3,color=GRAY)
 save(fig,'figure2_population_map.png')
 
@@ -126,18 +127,37 @@ save(fig,'figure2_population_map.png')
 summary=json.load(open(AN/'ISDS_v1_summary.json'))
 fig, axes=plt.subplots(1,2,figsize=(11.8,5.2),gridspec_kw={'width_ratios':[1.2,1]})
 ax=axes[0]
-labels=['Monomer fold','Complex context','Binding','All energetic axes']
-vals=[21/27,20/26,24/32,65/85]
-nums=['21/27','20/26','24/32','65/85']
+labels=['Monomer fold','Complex context','Binding','All energetic axes',
+        'Structural-context tier']
+# Read the Figure 2 anchors from the analysis summary, which computes them from
+# the canonical. They were duplicated literals here until v7.7, so a ledger
+# correction left this panel plotting a stale partition.
+#
+# PRIMARY convention (the 57 mechanism-gradeable variants) — the same population
+# panel b plots and the manuscript caption quotes. The summary also carries the
+# all-row convention under 'all_row'; mixing the two is what desynchronised this
+# panel from its caption (19/26 plotted against 19/25 quoted).
+_mlv=summary['mechanism_localization_final_values']
+assert _mlv['convention'].startswith('primary'), _mlv['convention']
+def _nv(key):
+    frac=_mlv[key].split(' = ')[0]
+    a,b=frac.split('/')
+    return frac, float(a)/float(b)
+nums,vals=zip(*[_nv(k) for k in ('monomer_agreement','complex_context_agreement',
+                                 'binding_agreement','all_energetic_agreement',
+                                 'tier_agreement')])
+nums,vals=list(nums),list(vals)
 y=np.arange(len(labels))
-bars=ax.barh(y,vals,color=[BLUE,TEAL,ORANGE,NAVY],height=.58)
+bars=ax.barh(y,vals,color=[BLUE,TEAL,ORANGE,NAVY,PURPLE],height=.58)
 ax.set_yticks(y,labels); ax.invert_yaxis(); ax.set_xlim(0,1.03); ax.set_xlabel('Direction-aware agreement')
 ax.set_title('Physical axes remain separate',loc='left',fontweight='bold',color=NAVY)
 ax.grid(axis='x',alpha=.2)
 for bar,val,n in zip(bars,vals,nums): ax.text(val+.015,bar.get_y()+bar.get_height()/2,f'{n}  ({val:.3f})',va='center',fontsize=9.5,fontweight='bold')
 panel_label(ax,'a')
 ax=axes[1]
-vals=[41/57,34/47,7/10]
+_pnums,vals=zip(*[_nv(k) for k in ('whole_variant_score','interaction_subset_score',
+                                   'brct_subset_score')])
+_pnums,vals=list(_pnums),list(vals)
 labels=['All gradeable variants','Interaction subset','BRCT fold subset']
 colors=[NAVY,TEAL,PURPLE]
 y=np.arange(3)
@@ -145,8 +165,19 @@ bars=ax.barh(y,vals,color=colors,height=.58)
 ax.set_yticks(y,labels); ax.invert_yaxis(); ax.set_xlim(0,1.03); ax.set_xlabel('Whole-variant pattern score')
 ax.set_title('Mechanism localization across systems',loc='left',fontweight='bold',color=NAVY)
 ax.grid(axis='x',alpha=.2)
-for bar,val,n in zip(bars,vals,['41/57','34/47','7/10']): ax.text(val+.015,bar.get_y()+bar.get_height()/2,f'{n}  ({val:.3f})',va='center',fontsize=9.5,fontweight='bold')
-ax.text(0.02,-0.22,'System-cluster 95% CI for the primary score: 0.625-0.821',transform=ax.transAxes,fontsize=9.2,color=GRAY)
+for bar,val,n in zip(bars,vals,_pnums): ax.text(val+.015,bar.get_y()+bar.get_height()/2,f'{n}  ({val:.3f})',va='center',fontsize=9.5,fontweight='bold')
+# Cluster (whole-system) bootstrap CI, read from the stress-test output rather
+# than pinned in this source. Test E resamples systems as clusters and is the
+# honest interval; test D resamples variants and understates it, so the row is
+# selected explicitly.
+_REPO=Path(__file__).resolve().parents[2]
+_stress=_REPO/'verification_output'/'comavi_stress_tests.csv'
+assert _stress.is_file(), f'{_stress} missing — run verification/stress_tests.py --out-dir verification_output first'
+_sb=pd.read_csv(_stress)
+_row=_sb[_sb['test'].eq('cluster bootstrap 95% CI (MC)')]
+assert len(_row)==1, f'expected one cluster-bootstrap MC row, found {len(_row)}'
+_lo,_hi=[float(x) for x in str(_row.iloc[0]['null_mean']).strip('[]').split(',')]
+ax.text(0.02,-0.22,f'System-cluster 95% CI for the primary score: {_lo:.3f}-{_hi:.3f}',transform=ax.transAxes,fontsize=9.2,color=GRAY)
 panel_label(ax,'b')
 fig.tight_layout(w_pad=3.0)
 save(fig,'figure3_mechanism_localization.png')

@@ -1,0 +1,87 @@
+{
+ "source": "COMAVI_delta_calibration_points.csv",
+ "measured_effects_recovered": {
+  "population": {
+   "n": 44,
+   "in_benchmark": 13,
+   "external": 31,
+   "definition": "|measured| >= 1.0 kcal/mol"
+  },
+  "by_threshold": [
+   {
+    "threshold": "1.0",
+    "recovered": 35,
+    "n": 44,
+    "fraction": 0.795,
+    "cell": "35/44"
+   },
+   {
+    "threshold": "1.5",
+    "recovered": 26,
+    "n": 44,
+    "fraction": 0.591,
+    "cell": "26/44"
+   },
+   {
+    "threshold": "2.0",
+    "recovered": 19,
+    "n": 44,
+    "fraction": 0.432,
+    "cell": "19/44"
+   },
+   {
+    "threshold": "2.5",
+    "recovered": 13,
+    "n": 44,
+    "fraction": 0.295,
+    "cell": "13/44"
+   },
+   {
+    "threshold": "tSAP",
+    "recovered": 12,
+    "n": 44,
+    "fraction": 0.273,
+    "cell": "12/44"
+   }
+  ]
+ },
+ "call_relationships": {
+  "n_comparisons": 63,
+  "reference_threshold": 2.5,
+  "classes": [
+   {
+    "call_relationship": "Agreement",
+    "n": 43,
+    "definition": "Measured and predicted calls agree.",
+    "median_abs_error": 0.84,
+    "examples": [
+     "M1663K",
+     "P1806A",
+     "L1664P"
+    ]
+   },
+   {
+    "call_relationship": "Borderline disagreement",
+    "n": 8,
+    "definition": "Both values lie within 1.0 kcal/mol of 2.5.",
+    "median_abs_error": 0.91,
+    "examples": [
+     "V1665M",
+     "RA59K",
+     "YD29A"
+    ]
+   },
+   {
+    "call_relationship": "Substantive disagreement",
+    "n": 12,
+    "definition": "At least one value lies more than 1.0 kcal/mol from 2.5.",
+    "median_abs_error": 3.02,
+    "examples": [
+     "V1808A",
+     "V1736A",
+     "EA73C"
+    ]
+   }
+  ]
+ }
+}

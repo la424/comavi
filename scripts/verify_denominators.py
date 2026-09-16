@@ -53,8 +53,8 @@ def main():
 
     print("\n[2] Mechanism-consistency by population")
     for label, mask, want in [
-            ("all gradeable n=57", graded, 0.7193),
-            ("interaction n=47", graded & ~brct, 0.7234),
+            ("all gradeable n=57", graded, 0.6930),
+            ("interaction n=47", graded & ~brct, 0.6915),
             ("BRCT core/fold n=10", graded & brct, 0.7000)]:
         s = df.loc[mask, "mech_consistency_t25"].map(GMAP)
         check(label, round(float(s.mean()), 4), want)
@@ -79,21 +79,21 @@ def main():
     check("all-row structural agreement",
           (sum(v[0] for v in t_all.values()),
            sum(v[1] for v in t_all.values())),
-          (99, 133))
+          (89, 125))
     check("primary 57-variant structural agreement",
           (sum(v[0] for v in t_primary.values()),
            sum(v[1] for v in t_primary.values())),
-          (99, 132))
+          (89, 124))
     check("interaction-only structural agreement",
           (sum(v[0] for v in t_int.values()),
            sum(v[1] for v in t_int.values())),
-          (92, 122))
+          (82, 114))
 
     expected_primary_axes = {
-        "monomer": (21, 27),
-        "fold": (20, 26),
-        "binding": (24, 32),
-        "tier": (34, 47),
+        "monomer": (19, 25),
+        "fold": (17, 22),
+        "binding": (20, 30),
+        "tier": (33, 47),
     }
 
     for axis, expected in expected_primary_axes.items():
@@ -159,7 +159,7 @@ def main():
           [regrades["R1699L"], regrades["R1699Q"]], ["consistent", "consistent"])
     pts = df.loc[graded, "mech_consistency_t25"].map(GMAP).sum() + 2.0
     check("MC if both included as structurally silent",
-          round(pts / 59, 4), 0.7288)
+          round(pts / 59, 4), 0.7034)
     print("        -> the exclusion is a curation decision applied upstream of the")
     print("           rubric. It must be stated in Methods, not left implicit.")
 

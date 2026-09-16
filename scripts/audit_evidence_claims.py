@@ -8,9 +8,12 @@ otherwise.
 """
 from __future__ import annotations
 
+import argparse
 import json
 import pathlib
 import sys
+
+import pandas as pd
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from audit_match import check_literal, weak_needle  # noqa: E402
@@ -21,6 +24,7 @@ LED = REPO / "reference_outputs" / "COMAVI_evidence_ledger_summary.json"
 STRAT = REPO / "reference_outputs" / "COMAVI_evidence_stratified_agreement.json"
 LEDGER = REPO / "reference_outputs" / "COMAVI_numbers_ledger.json"
 TIER = REPO / "reference_outputs" / "COMAVI_tier_construction.json"
+LEDGER_CSV = REPO / "reference_outputs" / "COMAVI_evidence_ledger.csv"
 
 E1 = "E1_quantitative_energetic"
 E2 = "E2_quantitative_functional"
@@ -62,66 +66,62 @@ def main() -> int:
     comp = st["token_composition_by_grade"]
     fold_inferred = led["type_by_axis"]["fold_complex"][E5]
     fold_committed = sum(led["type_by_axis"]["fold_complex"].values())
+    # Directness-inferred share of the complex-fold axis. Not in the summary
+    # JSON, so it is read from the committed ledger. Note S2 states BOTH this
+    # (14/25, directness) and fold_inferred (11, evidence type); they are
+    # different quantities and conflating them is how that sentence read
+    # ambiguously through v7.7.
+    _fc = pd.read_csv(LEDGER_CSV)
+    _fc = _fc[_fc["axis"] == "fold_complex"]
+    fold_inferred_directness = int((_fc["evidence_directness"] == "inferred").sum())
 
     checks = [
-        # ---- §2.2 ledger composition
-        (f"{led['n_committed_axes']} axes across {led['n_variants']} variants "
-         f"and {led['n_systems']} systems", "ledger scope"),
-        (f"K_D, Tm; n = {typ[E1]})", "E1 count"),
-        (f"deep-mutational-scan score (n = {typ[E2]})", "E2 count"),
-        (f"natively folded (n = {typ[E3]})", "E3 count"),
-        (f"allele frequency alone (n = {typ[E4]})", "E4 count"),
-        (f"absence of a reported effect (n = {typ[E5]})", "E5 count"),
-        (f"out this axis; n = {dirn['direct']})", "direct count"),
-        (f"interaction survived; n = {dirn['coupled']})", "coupled count"),
-        (f"any structural axis; n = {dirn['off_axis']})", "off-axis count"),
-        (f"no measurement;\nn = {dirn['inferred']})", "inferred count"),
-        (f"**{round(led['frac_quantitative']*100)}% of committed axes rest on a "
-         f"quantitative measurement (E1 or E2) and "
-         f"{round(led['frac_energetic']*100)}% on a directly\nmeasured energy; "
-         f"{round(led['frac_direct']*100)}% are direct, and "
-         f"{round(led['frac_inferred']*100)}% are inferred", "fraction summary"),
-        (f"({fold_inferred} of its {fold_committed} committed axes)",
-         "fold-axis inferred share"),
-        # ---- §3.9 accounting
-        (f"Of\nthe {acc['n_committed_axes']} committed axes, "
-         f"{acc['n_ddg_axes_gradeable']} clear confidence", "gradeable ddG"),
-        (f"with the {acc['n_tier_axes_gradeable']} gradeable tier axes",
-         "gradeable tier"),
-        (f"structural-agreement denominator of {acc['n_total_gradeable']} exactly",
-         "SA denominator"),
-        (f"The {acc['n_committed_but_gated_out']}-axis shortfall", "gated out"),
-        # ---- §3.9 crude contrast
-        (f"| Quantitative (E1–E2) | {crude['quant_ok']}/{crude['quant_n']} | "
-         f"{crude['quant_rate']:.3f} |", "crude quant row"),
-        (f"| Qualitative or inferred (E3–E5) | {crude['soft_ok']}/"
-         f"{crude['soft_n']} | {crude['soft_rate']:.3f} |", "crude soft row"),
-        (f"Odds ratio {crude['OR']:.2f}, Fisher p = {crude['p']:.3f}",
-         "crude OR/p"),
-        # ---- §3.9 confound table
-        (f"| Quantitative (E1–E2) | {comp['quantitative']['destab']} | "
-         f"{comp['quantitative']['neutral']} | "
-         f"{comp['quantitative']['stab']} |", "confound quant row"),
-        (f"| Qualitative or inferred (E3–E5) | {comp['soft']['destab']} | "
-         f"{comp['soft']['neutral']} | {comp['soft']['stab']} |",
-         "confound soft row"),
-        # ---- §3.9 stratified
-        (f"the rates are {strat['per_token']['destab']['quant_rate']:.3f} "
-         f"(quantitative) versus "
-         f"{strat['per_token']['destab']['soft_rate']:.3f}", "destab stratum"),
-        (f"expected-neutral axes {strat['per_token']['neutral']['quant_rate']:.3f}"
-         f" versus {strat['per_token']['neutral']['soft_rate']:.3f}",
-         "neutral stratum"),
-        (f"**OR = {strat['OR_mantel_haenszel']:.2f}, χ² = {strat['chi2']:.2f}, "
-         f"p = {strat['p']:.2f}.**", "Mantel-Haenszel"),
-        # ---- §3.9 E1 subset
-        (f"the {by_type[E1]['n']} gradeable E1 axes", "E1 gradeable n"),
-        (f"agreement is {by_type[E1]['ok']}/{by_type[E1]['n']} = "
-         f"{by_type[E1]['rate']:.3f}", "E1 agreement"),
-        (f"weakest performer at {by_type[E2]['ok']}/{by_type[E2]['n']}",
-         "E2 agreement"),
-        (f"{round(led['frac_inferred']*100)}% of committed axes are inferred",
-         "limitation inferred pct"),
+        # Needles are built from GENERATED values and asserted to appear in the
+        # manuscript text. They were keyed to a §2.2 prose enumeration that no
+        # longer exists (the evidence composition moved into Table S2 and Note
+        # S2), which is why this gate reported nothing for several revisions.
+        # Every needle below is verified present against the adjudicated draft.
+        # ---- Note S2 ledger scope and composition
+        (f"contains {led['n_committed_axes']} committed energetic-axis expectations",
+         "ledger scope"),
+        (f"all {typ[E4]} E4 axes and all {typ[E5]} E5 axes are neutral",
+         "E4/E5 neutrality"),
+        (f"{fold_inferred_directness} of its {fold_committed} committed axes "
+         f"rest on inferred", "fold-complex inferred directness"),
+        (f"and {fold_inferred} are E5 inferred axis states",
+         "fold-complex E5 count"),
+        # ---- Table S2 evidence composition (tab-separated; the extractor
+        # renders Word tables with tabs, so pipe-delimited needles never match)
+        (f"E1 quantitative energetic\t{typ[E1]}\t", "Table S2 E1 axes"),
+        (f"E2 quantitative functional\t{typ[E2]}\t", "Table S2 E2 axes"),
+        (f"E3 qualitative experimental\t{typ[E3]}\t", "Table S2 E3 axes"),
+        (f"E4 population frequency\t{typ[E4]}\t", "Table S2 E4 axes"),
+        (f"E5 inferred\t{typ[E5]}\t", "Table S2 E5 axes"),
+        # ---- Note S2 crude contrast
+        (f"all-row {acc['n_ddg_axes_gradeable']}-axis convention",
+         "gradeable energetic axes"),
+        (f"{crude['quant_ok']}/{crude['quant_n']} = {crude['quant_rate']:.3f} "
+         f"for E1-E2 evidence", "crude quant"),
+        (f"{crude['soft_ok']}/{crude['soft_n']} = {crude['soft_rate']:.3f} "
+         f"for E3-E5 evidence", "crude soft"),
+        (f"(Fisher p = {crude['p']:.3f})", "crude Fisher p"),
+        # ---- Note S2 stratified contrast. The null result is the CLAIM here,
+        # so both strata and the Mantel-Haenszel estimate must be gated: a
+        # stale stratum that still reads null would pass an eyeball check.
+        (f"agreement was {strat['per_token']['destab']['quant_ok']}/"
+         f"{strat['per_token']['destab']['quant_n']} for E1-E2 and "
+         f"{strat['per_token']['destab']['soft_ok']}/"
+         f"{strat['per_token']['destab']['soft_n']} for E3-E5", "destab stratum"),
+        (f"the corresponding rates were "
+         f"{strat['per_token']['neutral']['quant_ok']}/"
+         f"{strat['per_token']['neutral']['quant_n']} and "
+         f"{strat['per_token']['neutral']['soft_ok']}/"
+         f"{strat['per_token']['neutral']['soft_n']}", "neutral stratum"),
+        (f"odds ratio {strat['OR_mantel_haenszel']:.2f} "
+         f"(p = {strat['p']:.2f})", "Mantel-Haenszel"),
+        (f"Among {by_type[E1]['n']} gradeable E1 energetic axes, "
+         f"{by_type[E1]['ok']} agreed ({by_type[E1]['rate']:.3f})",
+         "E1 agreement"),
         # ---- §3.14 the AlphaMissense comparison must state BOTH AUCs.
         # The accuracy gap is the premise of the orthogonality argument, not a
         # concession to it: quoting AM's 0.903 while dropping the tier's 0.769

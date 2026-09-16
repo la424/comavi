@@ -77,7 +77,13 @@ for _t in TAGS:
 # headline and is shown separately (Fig. 2), so assert the four close to it.
 _hd = sum(SWEEP["t2.5"][k][1] for k in ("monomer", "fold", "binding", "tier"))
 _hn = sum(SWEEP["t2.5"][k][0] for k in ("monomer", "fold", "binding", "tier"))
-assert (_hn, _hd) == (99, 133), f"panel a decomposition {_hn}/{_hd} != all-row continuity total 99/133"
+# Cross-check against the released table's OWN stored aggregate, not a frozen
+# literal: a regrade must not be able to leave this assertion guarding a stale
+# total (it did, at 99/133, through v7.6).
+_sn = int(_d["structural_agreement_n_t25"].sum())
+_sd = int(_d["structural_agreement_d_t25"].sum())
+assert (_hn, _hd) == (_sn, _sd), (
+    f"panel a decomposition {_hn}/{_hd} != stored all-row continuity total {_sn}/{_sd}")
 
 _ND = {k: SWEEP["t2.5"][k][1] for k in ("monomer", "fold", "binding")}
 AXINFO = [("monomer", f"Monomer-fold (n={_ND['monomer']})", C_MONO),
@@ -109,9 +115,14 @@ def _ngraded(mask):
 
 # Panel b classes are keyed on `axis_signature` — the direction-explicit,
 # monomer/complex-distinguished restatement of the same ground-truth axis
-# pattern that `expected_mech_class` encodes. The two agree row-for-row (the
-# canonical table carries both); `axis_signature` is used here because the
-# legacy labels collapse fold direction and merge the two fold axes.
+# pattern that `expected_mech_class` encodes. `axis_signature` is used here
+# because the legacy labels collapse fold direction and merge the two fold axes.
+#
+# The two must agree row-for-row on the four core classes. That agreement is
+# ENFORCED below, not assumed: through v7.7 it was asserted only in this comment,
+# and the v7.7 ledger correction updated expected_mech_class on six rows without
+# propagating to axis_signature, so this panel silently plotted a stale partition
+# (32/9/6/10 against a canonical that said 29/12/6/10).
 _CLASSES = [
     ("No structural effect", "#7a7a7a",
      _d["axis_signature"].isin(["no_structural_effect", "uncommitted"])),
@@ -137,6 +148,25 @@ CLASSB = {f"{lbl} (n={_ngraded(m)})": (col, _mc(m)) for lbl, col, m in _CLASSES}
 _tot = sum(_ngraded(m) for _, _, m in _CLASSES)
 _head = int(_d["mech_consistency_t25"].map(_MCMAP).notna().sum())
 assert _tot == _head, f"class denominators {_tot} != headline graded {_head}"
+
+# Enforce the axis_signature <-> expected_mech_class invariant this panel rests on.
+_SIG_CLASS = {"no_structural_effect": "structurally_silent",
+              "complex_fold_and_binding_destab": "mixed_structural",
+              "monomer_fold_and_binding_destab": "mixed_structural",
+              "binding_destab_fold_intact": "ppi_destab_mechanism",
+              "fold_destab_monomer_and_complex": "fold_mechanism",
+              "fold_destab_monomer_only": "fold_mechanism",
+              "fold_destab_complex_only": "fold_mechanism"}
+_CORE = {"structurally_silent", "mixed_structural", "ppi_destab_mechanism",
+         "fold_mechanism"}
+_imp = _d["axis_signature"].map(_SIG_CLASS)
+_viol = _d[_imp.notna() & _d["expected_mech_class"].isin(_CORE)
+           & (_imp != _d["expected_mech_class"])]
+assert _viol.empty, (
+    "axis_signature contradicts expected_mech_class on "
+    f"{len(_viol)} row(s): "
+    + ", ".join(f"{r.system} {r.variant}" for r in _viol.itertuples())
+    + " — run scripts/apply_axis_signature_v77.py")
 
 apply_figure_style()
 fig = plt.figure(figsize=(CW, 4.0))

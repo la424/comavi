@@ -348,22 +348,22 @@ structural-prioritization population.
 ### Mechanism localization
 
 At the 2.5 kcal/mol reproducibility reference, whole-variant
-mechanism-pattern agreement was 0.72 (0.7193, graded n=57), with a weighted total of 41/57.
+mechanism-pattern agreement was 0.69 (0.6930, graded n=57), with a weighted total of 39.5/57.
 
 Direction-aware agreement across energetic axes in the primary 57-variant
-population was 65/85 = 0.765:
+population was 56/77 = 0.727:
 
-- monomer-fold: 21/27;
-- complex-context: 20/26;
-- binding: 24/32.
+- monomer-fold: 19/25;
+- complex-context: 17/22;
+- binding: 20/30.
 
 The historical four-output `structural_agreement` aggregate is retained as a
 continuity and denominator audit rather than as the primary mechanism result.
-On the same 57-variant population it is 99/132 = 0.750. With all 61 resource
-rows retained, it is 99/133 = 0.744.
+On the same 57-variant population it is 89/124 = 0.718. With all 61 resource
+rows retained, it is 89/125 = 0.712.
 
-The all-row decomposition is tier 34/47, monomer-fold ΔΔG 21/28,
-complex-fold ΔΔG 20/26, and binding ΔΔG 24/32; denominators sum to 133.
+The all-row decomposition is tier 33/47, monomer-fold ΔΔG 19/26,
+complex-fold ΔΔG 17/22, and binding ΔΔG 20/30; denominators sum to 125.
 The one additional all-row axis is the monomer-fold axis of BRCA1 R1699Q,
 which is retained in the resource but excluded from whole-variant grading by
 its curated role.

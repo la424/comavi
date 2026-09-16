@@ -560,6 +560,91 @@ def score_band_table(df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+_MC_WEIGHTS = {'consistent': 1.0, 'partial': 0.5, 'inconsistent': 0.0}
+_PARTNER_JUNK = ('_ci95_', '_distinguishable_')
+
+
+def _frac(num: float, den: int) -> str:
+    """Format as the manuscript quotes it: '39.5/57 = 0.693'."""
+    n = f'{num:g}'
+    return f'{n}/{den} = {num / den:.3f}' if den else f'{n}/0 = NA'
+
+
+def mechanism_localization_values(canonical: pd.DataFrame) -> dict:
+    """Figure 2 anchors, derived from the canonical table.
+
+    The per-axis gate is DELEGATED to apply_concordance_v5.structural_agreement_by_axis
+    rather than re-inlined: an earlier hand-mirrored copy of that gate drifted the
+    moment v7.3 backfilled the monomer CI columns.
+    """
+    import apply_concordance_v5 as _ac
+
+    graded = canonical[canonical['mech_consistency_t25'].isin(_MC_WEIGHTS)]
+    pts = graded['mech_consistency_t25'].map(_MC_WEIGHTS).sum()
+
+    partners = [p for p in _ac.discover_partners(canonical)
+                if not any(j in p for j in _PARTNER_JUNK)]
+    specs = dict(_ac.THRESHOLD_SPECS)['t25']
+    if isinstance(specs, dict):
+        thr = (specs['monomer'], specs['fold'], specs['binding'])
+    else:
+        thr = (specs, specs, specs)
+
+    def tally(frame):
+        acc = {k: [0, 0] for k in ('monomer', 'fold', 'binding', 'tier')}
+        for _, row in frame.iterrows():
+            for axis, (a, b) in _ac.structural_agreement_by_axis(
+                    row, partners, *thr).items():
+                acc[axis][0] += a
+                acc[axis][1] += b
+        return acc
+
+    # TWO CONVENTIONS, both correct for their population, reported separately so
+    # a caption can never silently mix them (Figure 2 did, through v7.7):
+    #   primary — the 57 mechanism-gradeable variants, which is what panel b plots
+    #             and what the manuscript quotes (monomer 19/25, energetic 56/77).
+    #   all_row — all 61 rows (monomer 19/26, energetic 56/78).
+    acc = tally(graded)
+    acc_all = tally(canonical)
+
+    def roll(a):
+        en = sum(a[k][0] for k in ('monomer', 'fold', 'binding'))
+        ed = sum(a[k][1] for k in ('monomer', 'fold', 'binding'))
+        return en, ed, en + a['tier'][0], ed + a['tier'][1]
+
+    energetic_n, energetic_d, total_n, total_d = roll(acc)
+    all_en, all_ed, all_tn, all_td = roll(acc_all)
+
+    # Panel b of Figure 2 also splits the pattern score by subset.
+    brct = graded['system'].eq('brca1_brct')
+    inter = graded[~brct]
+    brct_rows = graded[brct]
+
+    return {
+        'whole_variant_score': _frac(pts, len(graded)),
+        'interaction_subset_score': _frac(
+            inter['mech_consistency_t25'].map(_MC_WEIGHTS).sum(), len(inter)),
+        'brct_subset_score': _frac(
+            brct_rows['mech_consistency_t25'].map(_MC_WEIGHTS).sum(), len(brct_rows)),
+        'convention': 'primary (57 mechanism-gradeable variants)',
+        'monomer_agreement': _frac(*acc['monomer']),
+        'complex_context_agreement': _frac(*acc['fold']),
+        'binding_agreement': _frac(*acc['binding']),
+        'tier_agreement': _frac(*acc['tier']),
+        'all_energetic_agreement': _frac(energetic_n, energetic_d),
+        'historical_four_output': _frac(total_n, total_d),
+        'all_row': {
+            'convention': 'all 61 benchmark rows',
+            'monomer_agreement': _frac(*acc_all['monomer']),
+            'complex_context_agreement': _frac(*acc_all['fold']),
+            'binding_agreement': _frac(*acc_all['binding']),
+            'tier_agreement': _frac(*acc_all['tier']),
+            'all_energetic_agreement': _frac(all_en, all_ed),
+            'historical_four_output': _frac(all_tn, all_td),
+        },
+    }
+
+
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -837,14 +922,12 @@ def main() -> None:
         },
         'top_k': topk[topk['score'].eq('isds_v1')].to_dict(orient='records'),
         'score_bands': bands.to_dict(orient='records'),
-        'mechanism_localization_final_values': {
-            'whole_variant_score': '41/57 = 0.719',
-            'monomer_agreement': '21/27 = 0.778',
-            'complex_context_agreement': '20/26 = 0.769',
-            'binding_agreement': '24/32 = 0.750',
-            'all_energetic_agreement': '65/85 = 0.765',
-            'historical_four_output': '99/132 = 0.750',
-        },
+        # Computed from the canonical, never hardcoded: these six strings are the
+        # manuscript's Figure 2 anchors and figures/isds_v1/make_figures.py reads
+        # them from this block. Through v7.7 they were frozen literals here AND
+        # duplicated as literals in the figure, so the v7.7 ledger correction left
+        # both stale (41/57 = 0.719 against a canonical that said 39.5/57 = 0.693).
+        'mechanism_localization_final_values': mechanism_localization_values(canonical),
         'files': {
             'canonical_input_sha256': sha256(canonical_path),
             'a636p_audit_sha256': sha256(a636p_audit_path),
