@@ -22,10 +22,24 @@ REPO = Path(__file__).resolve().parent.parent
 DEFAULT_CANONICAL = REPO / "reference_outputs" / "scored_61var_canonical.csv"
 DEFAULT_LEDGER = REPO / "reference_outputs" / "COMAVI_evidence_ledger.csv"
 DEFAULT_SUMMARY = REPO / "reference_outputs" / "COMAVI_evidence_ledger_summary.json"
-# Re-pinned at v7.6 (approved evidence-ledger ground-truth corrections).
-# Previous pin, through v7.5:
-#   88cee917d00ea6705e851b59b7551ef8211052011768a732462ee59ef45031bb
-CANONICAL_SHA256 = "e4d657dee2625580bd41da05d9251fb69a224ddefdff6286f82a236511465d28"
+# Re-pinned at v7.7 (axis_signature propagation).
+#
+# What authorised the move: the v7.6 ledger correction updated
+# expected_mech_class on six variants but never propagated to axis_signature,
+# the derived direction-explicit restatement of the same information that
+# figures/src/figure3_axis_competency.py keys its class panel on. That panel
+# therefore plotted a partition its own canonical contradicted.
+# scripts/apply_axis_signature_v77.py repairs only rows where axis_signature
+# CONTRADICTS expected_mech_class (exactly those six; --check passes on all 61),
+# leaving the fourteen pre-existing drift rows from v7.2-v7.6 untouched. Headline
+# metrics are unchanged by the repair: mechanism consistency 0.6930, all-row
+# structural agreement 89/125. The invariant is now enforced by assertion in the
+# consuming figure rather than asserted in a comment.
+#
+# Previous pins:
+#   v7.6  e4d657dee2625580bd41da05d9251fb69a224ddefdff6286f82a236511465d28
+#   v7.5  88cee917d00ea6705e851b59b7551ef8211052011768a732462ee59ef45031bb
+CANONICAL_SHA256 = "85ed9f33d182d5c3c338106968d8076ab79883b21f3b930c935dc183271e8c7c"
 
 # Committed-axis count. v7.6 withdrew 11 commitments (expected token -> unknown),
 # taking the ledger and the canonical from 109 committed axes to 98.
