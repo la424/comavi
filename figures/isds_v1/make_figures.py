@@ -69,7 +69,7 @@ def save(fig, name):
     plt.close(fig)
 
 
-def box(ax, xy, wh, title, body, fc, ec, fontsize=9.2):
+def box(ax, xy, wh, title, body, fc, ec, fontsize=9.6):
     x, y = xy; w, h = wh
     p = FancyBboxPatch((x, y), w, h, boxstyle='round,pad=0.012,rounding_size=0.02', facecolor=fc, edgecolor=ec, linewidth=1.4)
     ax.add_patch(p)
@@ -83,22 +83,45 @@ def arrow(ax, x1, y1, x2, y2, color=GRAY):
 
 
 # Figure 1: unified workflow
-fig, ax = plt.subplots(figsize=(12.0, 6.8))
-ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis('off')
-ax.text(0.02, 0.96, 'COMAVI returns a priority score and a mechanism profile from the same structural calculations', fontsize=16, fontweight='bold', color=NAVY, va='top')
-ax.text(0.02, 0.90, 'ISDS-v1 ranks candidates for structural follow-up; the decomposed profile identifies the proposed physical lesion and assay.', fontsize=10.8, color=GRAY, va='top')
+fig, ax = plt.subplots(figsize=(12.0, 6.0))
+ax.set_xlim(0, 1)
+# The internal title was removed (its text duplicated the caption); tighten the
+# y-range to the drawn content so the figure does not ship a blank upper band.
+ax.set_ylim(0.04, 0.94)
+ax.axis('off')
 box(ax, (0.02,0.36),(0.12,0.25),'INPUT','Missense variant\n+ structure',LIGHT,NAVY)
 arrow(ax,0.14,0.485,0.20,0.485)
 # calculation boxes
 ys=[0.68,0.49,0.30,0.11]
 colors=[('#EAF3F8',BLUE),('#E9F6F2',TEAL),('#FFF1E8',ORANGE),('#F1EDFA',PURPLE)]
 titles=['Monomer-fold ΔΔG','Complex-context ΔΔG','Binding-interface ΔΔG','Structural-context tier']
-bodies=['FoldX on isolated subunit','FoldX on assembled coordinates','FoldX interaction energy by partner','Chemistry, contacts, interface, burial, confidence']
+bodies=['FoldX on isolated subunit','FoldX on assembled coordinates','FoldX interaction energy by partner','Chemistry, contacts,\ninterface, burial, confidence']
 for y,(fc,ec),t,b in zip(ys,colors,titles,bodies):
     box(ax,(0.20,y),(0.23,0.14),t,b,fc,ec,8.5)
 # arrows to two outputs
-for y in [0.75,0.56,0.37]: arrow(ax,0.43,y,0.52,0.66,BLUE)
-arrow(ax,0.43,0.18,0.52,0.32,PURPLE)
+# The three energy axes feed BOTH outputs, so they gather on a bracket and the
+# bracket forks: one arm to the priority score (as the energy component), one to
+# the mechanism profile (as the signed per-axis values). The forked arm was the
+# one missing before. isds_v1 = 0.5*(energy + context) -- analyze_isds_v1.py:138.
+BUS_X = 0.475
+for y in [0.75, 0.56, 0.37]:
+    ax.plot([0.43, BUS_X], [y, y], color=BLUE, lw=1.3, solid_capstyle='round', zorder=1)
+ax.plot([BUS_X, BUS_X], [0.37, 0.75], color=BLUE, lw=1.3, solid_capstyle='round', zorder=1)
+arrow(ax, BUS_X, 0.56, 0.52, 0.66, BLUE)
+arrow(ax, BUS_X, 0.56, 0.52, 0.32, BLUE)
+# The structural-context tier feeds the priority score only (the context
+# component), never the mechanism profile. Routed up the outside and into the
+# top of the priority-score box: an earlier route hugged the mechanism-profile
+# box edge and read as terminating there, which is the misreading being fixed.
+# One right-angle crossing with the bracket is legible; a line vanishing behind
+# a box is not.
+TIER_X = 0.455
+ax.plot([0.43, TIER_X], [0.18, 0.18], color=PURPLE, lw=1.3, solid_capstyle='round', zorder=4)
+ax.plot([TIER_X, TIER_X], [0.18, 0.86], color=PURPLE, lw=1.3, solid_capstyle='round', zorder=4)
+ax.plot([TIER_X, 0.62], [0.86, 0.86], color=PURPLE, lw=1.3, solid_capstyle='round', zorder=4)
+# stop at the box edge (y=0.79): the output boxes are drawn after this arrow
+# and would paint over an arrowhead placed inside them.
+arrow(ax, 0.62, 0.86, 0.62, 0.795, PURPLE)
 box(ax,(0.52,0.54),(0.20,0.25),'ISDS-v1','Cohort-independent\nstructural-disruption\npriority score', '#EAF6F5', TEAL, 9.0)
 box(ax,(0.52,0.18),(0.20,0.25),'Mechanism profile','Signed values and calls for\nmonomer fold, complex context,\nand binding', '#EDF3FA', BLUE, 8.7)
 arrow(ax,0.72,0.66,0.79,0.66,TEAL)
@@ -113,13 +136,13 @@ fig, ax = plt.subplots(figsize=(11.5, 5.6))
 ax.set_xlim(0,1); ax.set_ylim(0,1); ax.axis('off')
 ax.text(0.02,0.94,'The resource supports two complementary evaluation tasks',fontsize=16,fontweight='bold',color=NAVY,va='top')
 box(ax,(0.04,0.35),(0.20,0.35),'61-variant resource','14 protein systems\n49 interaction variants\n12 BRCT variants',LIGHT,NAVY,9.1)
-arrow(ax,0.24,0.52,0.34,0.68)
-arrow(ax,0.24,0.52,0.34,0.34)
-box(ax,(0.34,0.55),(0.25,0.27),'57 mechanism-gradeable','Whole-variant mechanism-pattern score\nThree energetic axes\nInteraction + BRCT systems','#EAF3F8',BLUE,8.8)
-box(ax,(0.34,0.20),(0.25,0.27),'4 ungraded resource cases','2 known mechanisms missing required context\n2 mechanism-uncommitted reference cases','#F5F5F5',GRAY,8.7)
-arrow(ax,0.59,0.69,0.70,0.69)
+arrow(ax,0.24,0.52,0.32,0.68)
+arrow(ax,0.24,0.52,0.32,0.34)
+box(ax,(0.32,0.55),(0.29,0.27),'57 mechanism-gradeable','Whole-variant pattern score\nThree energetic axes\nInteraction + BRCT systems','#EAF3F8',BLUE,9.0)
+box(ax,(0.32,0.20),(0.29,0.27),'4 ungraded resource cases','2 mechanisms missing\nrequired context\n2 mechanism-uncommitted\nreference cases','#F5F5F5',DARK,9.0)
+arrow(ax,0.61,0.69,0.66,0.69)
 _pop=json.load(open(AN/'ISDS_v1_summary.json'))['population']
-box(ax,(0.70,0.55),(0.26,0.27),f"{_pop['n']} structural-prioritization",f"Tier-carrying interaction variants\n{_pop['positive']} modeled structural mechanisms\n{_pop['negative']} variants with no committed modeled lesion",'#E9F6F2',TEAL,8.8)
+box(ax,(0.66,0.55),(0.31,0.27),f"{_pop['n']} structural-prioritization",f"Tier-carrying interaction variants\n{_pop['positive']} modeled structural mechanisms\n{_pop['negative']} with no committed lesion",'#E9F6F2',TEAL,9.0)
 ax.text(0.34,0.12,'Other analysis subsets are defined once and referenced consistently: 15 direct-energy comparators, 44 measured destabilizers, and 47 AlphaMissense complete cases.',fontsize=9.3,color=GRAY)
 save(fig,'figure2_population_map.png')
 
@@ -153,7 +176,7 @@ ax.set_yticks(y,labels); ax.invert_yaxis(); ax.set_xlim(0,1.03); ax.set_xlabel('
 ax.set_title('Physical axes remain separate',loc='left',fontweight='bold',color=NAVY)
 ax.grid(axis='x',alpha=.2)
 for bar,val,n in zip(bars,vals,nums): ax.text(val+.015,bar.get_y()+bar.get_height()/2,f'{n}  ({val:.3f})',va='center',fontsize=9.5,fontweight='bold')
-panel_label(ax,'a')
+panel_label(ax, 'A')
 ax=axes[1]
 _pnums,vals=zip(*[_nv(k) for k in ('whole_variant_score','interaction_subset_score',
                                    'brct_subset_score')])
@@ -178,7 +201,7 @@ _row=_sb[_sb['test'].eq('cluster bootstrap 95% CI (MC)')]
 assert len(_row)==1, f'expected one cluster-bootstrap MC row, found {len(_row)}'
 _lo,_hi=[float(x) for x in str(_row.iloc[0]['null_mean']).strip('[]').split(',')]
 ax.text(0.02,-0.22,f'System-cluster 95% CI for the primary score: {_lo:.3f}-{_hi:.3f}',transform=ax.transAxes,fontsize=9.2,color=GRAY)
-panel_label(ax,'b')
+panel_label(ax, 'B')
 fig.tight_layout(w_pad=3.0)
 save(fig,'figure3_mechanism_localization.png')
 
@@ -194,7 +217,7 @@ R=np.linspace(0,8,400); E=R/(1+R)
 ax.plot(R,E,color=TEAL,linewidth=2.5)
 for r in [0.5,1,2,4]: ax.scatter([r],[r/(1+r)],color=NAVY,zorder=3); ax.annotate(f'R={r:g}\nE={r/(1+r):.2f}',(r,r/(1+r)),xytext=(6,8),textcoords='offset points',fontsize=8.5)
 ax.set_xlim(0,8); ax.set_ylim(0,1); ax.set_xlabel('Strongest axis-normalized energetic magnitude, R'); ax.set_ylabel('Energetic component, E = R/(1+R)')
-ax.set_title('Soft saturation preserves high-end ranking',loc='left',fontweight='bold',color=NAVY); ax.grid(alpha=.2); panel_label(ax,'a')
+ax.set_title('Soft saturation preserves high-end ranking',loc='left',fontweight='bold',color=NAVY); ax.grid(alpha=.2); panel_label(ax, 'A')
 # b score distribution
 ax=axes[0,1]
 neg=pv[~pv.structural_ground_truth.astype(bool)].isds_v1
@@ -203,20 +226,20 @@ bins=np.linspace(0,1,11)
 _pp=summary['population']
 ax.hist(neg,bins=bins,alpha=.75,label=f"No modeled lesion (n={_pp['negative']})",color=BLUE)
 ax.hist(pos,bins=bins,alpha=.78,label=f"Structural mechanism (n={_pp['positive']})",color=ORANGE)
-ax.set_xlabel('ISDS-v1'); ax.set_ylabel('Variants'); ax.set_title('Higher scores enrich modeled structural mechanisms',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False,fontsize=8.8); panel_label(ax,'b')
+ax.set_xlabel('ISDS-v1'); ax.set_ylabel('Variants'); ax.set_title('Higher scores enrich modeled structural mechanisms',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False,fontsize=8.8); panel_label(ax, 'B')
 # c ROC/PR
 ax=axes[1,0]
 y=pv.structural_ground_truth.astype(int).to_numpy()
 for col,label,color in [('isds_v1','ISDS-v1',TEAL),('isds_energy_component','Energy component',ORANGE),('isds_context_component','Context component',PURPLE)]:
     fpr,tpr,_=roc_curve(y,pv[col]); auc=float(metrics.loc[metrics.score.eq(col),'roc_auc'].iloc[0]); ax.plot(fpr,tpr,label=f'{label}: AUC {auc:.3f}',color=color,linewidth=2.2)
 ax.plot([0,1],[0,1],'--',color=MID)
-ax.set_xlabel('False-positive rate'); ax.set_ylabel('True-positive rate'); ax.set_title('ISDS-v1 combines complementary evidence',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False,fontsize=8.8); ax.grid(alpha=.2); panel_label(ax,'c')
+ax.set_xlabel('False-positive rate'); ax.set_ylabel('True-positive rate'); ax.set_title('ISDS-v1 combines complementary evidence',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False,fontsize=8.8); ax.grid(alpha=.2); panel_label(ax, 'C')
 # d top k
 ax=axes[1,1]
 t=topk[topk.score.eq('isds_v1')]
 ax.plot(t.k,t.precision_at_k,'o-',color=TEAL,linewidth=2.2,label='Precision among top k')
 ax.plot(t.k,t.recovery_at_k,'s-',color=ORANGE,linewidth=2.2,label=f"Fraction of {_pp['positive']} mechanisms recovered")
-ax.set_xticks(t.k); ax.set_ylim(0,1.05); ax.set_xlabel('Experimental budget, k variants'); ax.set_ylabel('Fraction'); ax.set_title('Top-ranked variants concentrate structural mechanisms',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False,fontsize=8.7); ax.grid(alpha=.2); panel_label(ax,'d')
+ax.set_xticks(t.k); ax.set_ylim(0,1.05); ax.set_xlabel('Experimental budget, k variants'); ax.set_ylabel('Fraction'); ax.set_title('Top-ranked variants concentrate structural mechanisms',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False,fontsize=8.7); ax.grid(alpha=.2); panel_label(ax, 'D')
 fig.suptitle('ISDS-v1 is a fixed prioritization index, not a probability or validated binary classifier',fontsize=15.5,fontweight='bold',color=NAVY,y=.995)
 fig.tight_layout(rect=[0,0,1,.97],h_pad=3,w_pad=2.5)
 save(fig,'figure4_isds_definition_performance.png')
@@ -238,7 +261,7 @@ ax.bar(x+width/2,spec,width,color=BLUE,label='Specificity')
 ax.set_xticks(x,labels,rotation=12,ha='right'); ax.set_ylim(0,1.08); ax.set_ylabel('Fraction'); ax.set_title('The full tier trades specificity for sensitivity',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False); ax.grid(axis='y',alpha=.2)
 for i,(a,b) in enumerate(zip(sens,spec)):
     ax.text(i-width/2,a+.025,f'{a:.3f}',ha='center',fontsize=8.8); ax.text(i+width/2,b+.025,f'{b:.3f}',ha='center',fontsize=8.8)
-panel_label(ax,'a')
+panel_label(ax, 'A')
 ax=axes[1]
 states=['Convergent','Energy only','Context only','Neither']
 _fs=summary['four_state_agreement']
@@ -246,12 +269,12 @@ assert _fs is not None, 'four_state_agreement missing from ISDS_v1_summary.json 
 struct=np.array(_fs['structural']); neg=np.array(_fs['no_lesion']); x=np.arange(4)
 ax.bar(x-.18,struct,.36,color=ORANGE,label='Structural mechanism')
 ax.bar(x+.18,neg,.36,color=BLUE,label='No modeled lesion')
-ax.set_xticks(x,['Convergent','Energy\nonly','Context\nonly','Neither']); ax.set_ylabel('Variants'); ax.set_ylim(0,16.5); ax.set_title('Discrete evidence states remain interpretable',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False,fontsize=8.8); ax.grid(axis='y',alpha=.2)
+ax.set_xticks(x,['Convergent','Energy\nonly','Context\nonly','Neither']); ax.set_ylabel('Variants'); ax.set_ylim(0,18.2); ax.set_title('Discrete evidence states remain interpretable',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False,fontsize=8.8); ax.grid(axis='y',alpha=.2)
 for i,(a,b) in enumerate(zip(struct,neg)):
     if a: ax.text(i-.18,a+.25,str(a),ha='center',fontweight='bold',color=ORANGE)
     if b: ax.text(i+.18,b+.25,str(b),ha='center',fontweight='bold',color=BLUE)
 ax.text(.02,-.19,'States use the 2.5 kcal/mol mechanism-call threshold; they are not defined by an ISDS cutoff.',transform=ax.transAxes,fontsize=8.8,color=GRAY)
-panel_label(ax,'b')
+panel_label(ax, 'B')
 fig.tight_layout(w_pad=3)
 save(fig,'figure5_context_components_and_states.png')
 
@@ -263,13 +286,13 @@ ax=axes[0]
 x=np.arange(5)
 ax.plot(x,recovery,'o-',color=ORANGE,linewidth=2.4,label='Mechanism recovery')
 ax.plot(x,rejection,'s-',color=BLUE,linewidth=2.4,label='Correct rejection')
-ax.set_xticks(x,thresholds); ax.set_ylim(.35,.9); ax.set_xlabel('Decision threshold (kcal/mol)'); ax.set_ylabel('Fraction'); ax.set_title('Threshold choice changes the error tradeoff',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False); ax.grid(alpha=.2); panel_label(ax,'a')
+ax.set_xticks(x,thresholds); ax.set_ylim(.35,.9); ax.set_xlabel('Decision threshold (kcal/mol)'); ax.set_ylabel('Fraction'); ax.set_title('Threshold choice changes the error tradeoff',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False); ax.grid(alpha=.2); panel_label(ax, 'A')
 ax=axes[1]
 measured=[35,26,19,13,12]
 ax.bar(x,measured,color=[GREEN,GREEN,GOLD,NAVY,PURPLE])
 ax.set_xticks(x,thresholds); ax.set_ylim(0,44); ax.set_xlabel('Decision threshold (kcal/mol)'); ax.set_ylabel('Measured destabilizing effects recovered (of 44)'); ax.set_title('Higher thresholds miss more measured effects',loc='left',fontweight='bold',color=NAVY); ax.grid(axis='y',alpha=.2)
 for i,v in enumerate(measured): ax.text(i,v+.8,f'{v}/44',ha='center',fontweight='bold',fontsize=9)
-panel_label(ax,'b')
+panel_label(ax, 'B')
 fig.tight_layout(w_pad=3)
 save(fig,'figure6_threshold_tradeoff.png')
 
@@ -277,13 +300,13 @@ save(fig,'figure6_threshold_tradeoff.png')
 clin=pd.read_csv(AN/'ISDS_v1_alphamissense_common_set.csv')
 fig,axes=plt.subplots(1,3,figsize=(14.2,4.7))
 colors=np.where(clin.clinical_y.eq(1),ORANGE,BLUE)
-ax=axes[0]; ax.scatter(clin['AM pathogenicity'],clin['isds_v1'],c=colors,edgecolor='white',linewidth=.5,s=48); ax.axvspan(.34,.564,color=MID,alpha=.45); ax.set_xlabel('AlphaMissense pathogenicity score'); ax.set_ylabel('ISDS-v1'); ax.set_title('Pathogenicity and structural priority differ',loc='left',fontweight='bold',color=NAVY); ax.grid(alpha=.15); panel_label(ax,'a')
-ax=axes[1]; ax.scatter(clin['AM pathogenicity'],clin['isds_energy_component'],c=colors,edgecolor='white',linewidth=.5,s=48); ax.axvspan(.34,.564,color=MID,alpha=.45); ax.set_xlabel('AlphaMissense pathogenicity score'); ax.set_ylabel('ISDS energetic component'); ax.set_title('Energetic evidence is one component',loc='left',fontweight='bold',color=NAVY); ax.grid(alpha=.15); panel_label(ax,'b')
+ax=axes[0]; ax.scatter(clin['AM pathogenicity'],clin['isds_v1'],c=colors,edgecolor='white',linewidth=.5,s=48); ax.axvspan(.34,.564,color=MID,alpha=.45); ax.set_xlabel('AlphaMissense pathogenicity score'); ax.set_ylabel('ISDS-v1'); ax.set_title('Pathogenicity and structural priority differ',loc='left',fontweight='bold',color=NAVY); ax.grid(alpha=.15); panel_label(ax, 'A')
+ax=axes[1]; ax.scatter(clin['AM pathogenicity'],clin['isds_energy_component'],c=colors,edgecolor='white',linewidth=.5,s=48); ax.axvspan(.34,.564,color=MID,alpha=.45); ax.set_xlabel('AlphaMissense pathogenicity score'); ax.set_ylabel('ISDS energetic component'); ax.set_title('Energetic evidence is one component',loc='left',fontweight='bold',color=NAVY); ax.grid(alpha=.15); panel_label(ax, 'B')
 ax=axes[2]
 labels=['AlphaMissense','ISDS-v1','Energy','Context']; vals=[.902778,.851010,.835859,.768939]; cols=[NAVY,TEAL,ORANGE,PURPLE]
 bars=ax.barh(np.arange(4),vals,color=cols); ax.set_yticks(np.arange(4),labels); ax.invert_yaxis(); ax.set_xlim(.5,1.0); ax.set_xlabel('Pathogenicity AUC (descriptive)'); ax.set_title('COMAVI is not a replacement pathogenicity model',loc='left',fontweight='bold',color=NAVY); ax.grid(axis='x',alpha=.2)
 for b,v in zip(bars,vals): ax.text(v+.008,b.get_y()+b.get_height()/2,f'{v:.3f}',va='center',fontsize=9,fontweight='bold')
-panel_label(ax,'c')
+panel_label(ax, 'C')
 fig.text(.02,.01,'Orange: pathogenic/pathogenic gain-of-function; blue: benign. The gray band marks the AlphaMissense ambiguous range.',fontsize=9,color=GRAY)
 fig.tight_layout(rect=[0,.035,1,1],w_pad=2.4)
 save(fig,'figure7_alphamissense_isds_mechanism.png')

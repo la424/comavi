@@ -22,7 +22,26 @@ REPO = Path(__file__).resolve().parent.parent
 DEFAULT_CANONICAL = REPO / "reference_outputs" / "scored_61var_canonical.csv"
 DEFAULT_LEDGER = REPO / "reference_outputs" / "COMAVI_evidence_ledger.csv"
 DEFAULT_SUMMARY = REPO / "reference_outputs" / "COMAVI_evidence_ledger_summary.json"
-# Re-pinned at v7.7 (axis_signature propagation).
+# Re-pinned at v7.8 (BRCT provenance restoration).
+#
+# What authorised the move: the 12 brca1_brct rows carried NULL `gene` and NULL
+# `structure_source` -- 20% of the benchmark and the entire monomer-fold arm,
+# and the only rows in the table missing either column. Both values were
+# already in the repository (inputs/raw/benchmark_variants_v6.csv: brca1,
+# 1JNX.pdb) and had been dropped between the raw input and the canonical.
+# scripts/apply_brct_provenance_v78.py fills ONLY null cells the raw input
+# supplies, never overwrites a populated cell, and aborts if any metric column
+# moves. No metric reads either column, and the headline numbers are
+# bit-identical after the fill: mechanism consistency 0.6930 (39.5/57),
+# all-row structural agreement 89/125.
+#
+# Nothing detected this gap: no gate reads these two columns. It surfaced only
+# when building the per-variant table reviewers asked for.
+#
+# Previous pin (v7.7, axis_signature propagation):
+#   85ed9f33d182d5c3c338106968d8076ab79883b21f3b930c935dc183271e8c7c
+#
+# --- v7.7 rationale, retained ---
 #
 # What authorised the move: the v7.6 ledger correction updated
 # expected_mech_class on six variants but never propagated to axis_signature,
@@ -39,7 +58,7 @@ DEFAULT_SUMMARY = REPO / "reference_outputs" / "COMAVI_evidence_ledger_summary.j
 # Previous pins:
 #   v7.6  e4d657dee2625580bd41da05d9251fb69a224ddefdff6286f82a236511465d28
 #   v7.5  88cee917d00ea6705e851b59b7551ef8211052011768a732462ee59ef45031bb
-CANONICAL_SHA256 = "85ed9f33d182d5c3c338106968d8076ab79883b21f3b930c935dc183271e8c7c"
+CANONICAL_SHA256 = "fb80b9849d8bdee3ae9b511abf2e6da9656071208eacff5be08e23366ce2d614"
 
 # Committed-axis count. v7.6 withdrew 11 commitments (expected token -> unknown),
 # taking the ledger and the canonical from 109 committed axes to 98.

@@ -1,0 +1,15 @@
+System,Variant gene,Variants,Mechanism-gradeable,Pathogenic,Structure,Model source
+BRCA1 BRCT tandem domain (fold only),BRCA1,12,10,0,1JNX.pdb,Experimental
+BRCA1-BARD1 RING heterodimer,BRCA1,4,4,2,1JM7.pdb,Experimental
+Calmodulin-Ca(v)1.2 IQ domain,CALM1,3,3,3,fold_calm1_cacna1c_model_0.pdb,AlphaFold
+Complement factor H-C3b,CFH,3,3,2,2WII_trim.pdb,Experimental
+Haemoglobin alpha-beta dimer,HBB,1,1,1,2HHB.pdb,Experimental
+Haemoglobin tetramer,HBB,5,5,5,2HHB.pdb,Experimental
+KRAS-CRAF RBD,KRAS,3,3,3,6XI7.pdb,Experimental
+MLH1-PMS2 C-terminal heterodimer,MLH1/PMS2,7,7,3,fold_mlh1_pms2_model_0.pdb,AlphaFold
+MSH2-MSH6 heterodimer,MSH2,5,5,3,fold_msh2_msh6_model_0.pdb,AlphaFold
+PI3K p110alpha-p85alpha,PIK3CA/PIK3R1,5,5,4,fold_pik3ca_pik3r1_model_0.pdb,AlphaFold
+SMAD4-SMAD3 MH2 complex,SMAD4,4,4,4,fold_smad4_smad3_model_0.pdb,AlphaFold
+Troponin I-troponin C,TNNI3,4,3,3,fold_tnni3_tnnc1_model_0.pdb,AlphaFold
+VHL-elongin C,VHL,3,2,3,fold_vhl_tceb1_model_0.pdb,AlphaFold
+VWF A1-GPIb alpha,VWF,2,2,1,1SQ0.pdb,Experimental

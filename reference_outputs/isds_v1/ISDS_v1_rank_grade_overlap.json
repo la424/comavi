@@ -1,0 +1,83 @@
+{
+ "question": "Are the structural mechanisms recovered in the top 20 the same variants whose mechanism pattern COMAVI grades correctly?",
+ "population": {
+  "n_prioritized": 47,
+  "n_structural_truth": 20,
+  "top_k": 20
+ },
+ "recovery": {
+  "structural_in_top_k": 17,
+  "structural_outside_top_k": 3
+ },
+ "mean_grade": {
+  "in_top_k": 0.5882,
+  "outside_top_k": 0.1667
+ },
+ "grade_breakdown_in_top_k": {
+  "consistent": 5,
+  "partial": 10,
+  "inconsistent": 2
+ },
+ "grade_breakdown_outside_top_k": {
+  "consistent": 0,
+  "partial": 1,
+  "inconsistent": 2
+ },
+ "consistent_outside_top_k": [],
+ "inconsistent_inside_top_k": [
+  {
+   "system": "mlh1_pms2",
+   "gene": "mlh1",
+   "variant": "R755W",
+   "rank": 11,
+   "isds_v1": 0.7004,
+   "expected_mech_class": "fold_mechanism",
+   "grade_label": "inconsistent"
+  },
+  {
+   "system": "pi3k",
+   "gene": "pik3ca",
+   "variant": "E545K",
+   "rank": 15,
+   "isds_v1": 0.6182,
+   "expected_mech_class": "ppi_destab_mechanism",
+   "grade_label": "inconsistent"
+  }
+ ],
+ "structural_outside_top_k_detail": [
+  {
+   "system": "hemoglobin_tetramer",
+   "gene": "hbb",
+   "variant": "W37Y",
+   "rank": 21,
+   "isds_v1": 0.5812,
+   "expected_mech_class": "mixed_structural",
+   "grade_label": "partial"
+  },
+  {
+   "system": "kras_craf",
+   "gene": "kras",
+   "variant": "G12D",
+   "rank": 33,
+   "isds_v1": 0.3871,
+   "expected_mech_class": "ppi_destab_mechanism",
+   "grade_label": "inconsistent"
+  },
+  {
+   "system": "kras_craf",
+   "gene": "kras",
+   "variant": "G12V",
+   "rank": 39,
+   "isds_v1": 0.2308,
+   "expected_mech_class": "ppi_destab_mechanism",
+   "grade_label": "inconsistent"
+  }
+ ],
+ "association": {
+  "spearman_rho_score_vs_grade": 0.4823,
+  "spearman_p": 0.0313,
+  "mannwhitney_u_grade_top_vs_rest": 42.0,
+  "mannwhitney_p_one_sided": 0.0301,
+  "note": "n = 20 structural-truth variants with 3 outside the top 20; the descriptive contrast in mean grade carries the claim."
+ }
+}
