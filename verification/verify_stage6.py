@@ -69,12 +69,18 @@ EXPECTED_V5 = {
 # scripts/build_numbers_ledger.py and scripts/audit_evidence_claims.py.
 EXPECTED_CANONICAL = {
     'structural_agreement': {
-        't10': (85, 125), 't15': (88, 125), 't20': (89, 125),
-        't25': (89, 125), 'tSAP': (87, 125),
+        # v7.9: the three reversed binding tokens add +3 correct binding-axis
+        # outputs at every threshold at or above 1.0.
+        't10': (88, 125), 't15': (91, 125), 't20': (92, 125),
+        't25': (92, 125), 'tSAP': (90, 125),
     },
     'mech_consistency': {
+        # v7.9 moved only t25 and tSAP. Below the reference threshold the
+        # three reversed variants already fired on another axis, so their
+        # grade was unchanged there -- the correction bites exactly where
+        # the binding call was the deciding one.
         't10': 0.579, 't15': 0.649, 't20': 0.684,
-        't25': 0.693, 'tSAP': 0.684,
+        't25': 0.719, 'tSAP': 0.711,
     },
     'mech_graded_n': 57,
     # Four-way decomposition of the t=2.5 headline (ledger §13).
@@ -82,7 +88,7 @@ EXPECTED_CANONICAL = {
     # v7.7: each axis loses the rows whose expectation was withdrawn.
     'axis_decomposition_t25': {
         'monomer': (19, 26), 'fold': (17, 22),
-        'binding': (20, 30), 'tier': (33, 47),
+        'binding': (22, 30), 'tier': (34, 47),
     },
     # Tier pathogenicity gradient — carries no expected_mech_class term, so
     # neither the v7.1 correction nor v7.3 pooling may move it.
