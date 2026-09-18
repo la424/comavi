@@ -1,0 +1,161 @@
+{
+ "plddt_gate": {
+  "thresholds": {
+   "strict": 70.0,
+   "relaxed": 50.0
+  },
+  "note": "Both are active in one pipeline: >=50 admits a partner interface, >=70 upgrades ddG confidence to high, and a best pLDDT below 70 or 50 multiplies the tier score by 0.7 or 0.4. config.PLDDT_STRICT and config.PLDDT_RELAXED are unused.",
+  "partner_interfaces": {
+   "n": 59,
+   "at_or_above_strict": 52,
+   "in_relaxed_band_50_70": 7,
+   "below_relaxed": 0
+  },
+  "relaxed_band_members": [
+   {
+    "system": "troponin_ic",
+    "variant": "R145G",
+    "partner": "tnnc1",
+    "plddt": 54.93
+   },
+   {
+    "system": "troponin_ic",
+    "variant": "R145Q",
+    "partner": "tnnc1",
+    "plddt": 54.93
+   },
+   {
+    "system": "mlh1_pms2",
+    "variant": "R755W",
+    "partner": "pms2",
+    "plddt": 57.33
+   },
+   {
+    "system": "smad4_smad3",
+    "variant": "D351H",
+    "partner": "smad3",
+    "plddt": 57.37
+   },
+   {
+    "system": "smad4_smad3",
+    "variant": "R361C",
+    "partner": "smad3",
+    "plddt": 63.52
+   },
+   {
+    "system": "mlh1_pms2",
+    "variant": "V384D",
+    "partner": "pms2",
+    "plddt": 68.55
+   },
+   {
+    "system": "cam_cav12",
+    "variant": "D96V",
+    "partner": "cacna1c",
+    "plddt": 69.45
+   }
+  ],
+  "site_status_counts": {
+   "crystal": 30,
+   "confident": 24,
+   "partial": 7
+  }
+ },
+ "cohort_under_each_regime": {
+  "relaxed_shipped": {
+   "n": 57,
+   "total": 39.5,
+   "mean": 0.693
+  },
+  "strict_confident_site_only": {
+   "n": 50,
+   "total": 36.0,
+   "mean": 0.72
+  },
+  "delta_mean": 0.027,
+  "variants_removed_by_strict": [
+   {
+    "system": "mlh1_pms2",
+    "gene": "mlh1",
+    "variant": "R755W",
+    "expected_mech_class": "fold_mechanism",
+    "mech_consistency_t25": "inconsistent"
+   },
+   {
+    "system": "mlh1_pms2",
+    "gene": "mlh1",
+    "variant": "V384D",
+    "expected_mech_class": "structurally_silent",
+    "mech_consistency_t25": "consistent"
+   },
+   {
+    "system": "troponin_ic",
+    "gene": "tnni3",
+    "variant": "R145G",
+    "expected_mech_class": "structurally_silent",
+    "mech_consistency_t25": "inconsistent"
+   },
+   {
+    "system": "troponin_ic",
+    "gene": "tnni3",
+    "variant": "R145Q",
+    "expected_mech_class": "structurally_silent",
+    "mech_consistency_t25": "inconsistent"
+   },
+   {
+    "system": "cam_cav12",
+    "gene": "calm1",
+    "variant": "D96V",
+    "expected_mech_class": "structurally_silent",
+    "mech_consistency_t25": "consistent"
+   },
+   {
+    "system": "smad4_smad3",
+    "gene": "smad4",
+    "variant": "D351H",
+    "expected_mech_class": "ppi_destab_mechanism",
+    "mech_consistency_t25": "partial"
+   },
+   {
+    "system": "smad4_smad3",
+    "gene": "smad4",
+    "variant": "R361C",
+    "expected_mech_class": "ppi_destab_mechanism",
+    "mech_consistency_t25": "consistent"
+   }
+  ]
+ },
+ "other_strict_relaxed_senses": {
+  "per_axis_energy_votes": {
+   "meaning": "|ddG| threshold, NOT pLDDT",
+   "strict_kcal_mol": 2.0,
+   "relaxed_kcal_mol": 1.0,
+   "counts": {
+    "monomer": {
+     "strict": 10,
+     "relaxed": 17
+    },
+    "fold": {
+     "strict": 23,
+     "relaxed": 31
+    },
+    "binding": {
+     "strict": 11,
+     "relaxed": 14
+    }
+   },
+   "evaluable": {
+    "monomer": 48,
+    "fold": 45,
+    "binding": 32
+   }
+  },
+  "four_way_concordance": {
+   "meaning": "evidence strictness across tier, ddG, AlphaMissense and Franklin; only the ddG voter depends on pLDDT",
+   "mean_fraction": {
+    "strict": 0.5327,
+    "relaxed": 0.6355
+   }
+  }
+ }
+}

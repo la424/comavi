@@ -46,14 +46,15 @@
   ]
  },
  "call_relationships": {
-  "n_comparisons": 63,
+  "n_comparisons": 56,
   "reference_threshold": 2.5,
+  "population": "63 comparisons less the 7-point barnase Glu73 cluster",
   "classes": [
    {
     "call_relationship": "Agreement",
-    "n": 43,
+    "n": 38,
     "definition": "Measured and predicted calls agree.",
-    "median_abs_error": 0.84,
+    "median_abs_error": 0.67,
     "examples": [
      "M1663K",
      "P1806A",
@@ -62,9 +63,9 @@
    },
    {
     "call_relationship": "Borderline disagreement",
-    "n": 8,
-    "definition": "Both values lie within 1.0 kcal/mol of 2.5.",
-    "median_abs_error": 0.91,
+    "n": 7,
+    "definition": "Calls straddle 2.5 kcal/mol but both values sit near it.",
+    "median_abs_error": 0.79,
     "examples": [
      "V1665M",
      "RA59K",
@@ -73,13 +74,13 @@
    },
    {
     "call_relationship": "Substantive disagreement",
-    "n": 12,
-    "definition": "At least one value lies more than 1.0 kcal/mol from 2.5.",
-    "median_abs_error": 3.02,
+    "n": 11,
+    "definition": "Calls straddle 2.5 kcal/mol and at least one value is far from it.",
+    "median_abs_error": 2.96,
     "examples": [
      "V1808A",
      "V1736A",
-     "EA73C"
+     "NA58A"
     ]
    }
   ]

@@ -66,7 +66,10 @@ def set_frame(ax, style="open"):
 def panel_letter(ax, letter, dx=-0.18, dy=1.02, fontsize=None):
     if fontsize is None:
         fontsize = plt.rcParams.get("font.size", 8) + 1
-    ax.text(dx, dy, letter.lower(), transform=ax.transAxes,
+    # PLOS uses uppercase panel labels; this helper forced lowercase, which
+    # silently overrode the call sites and made the figure disagree with its
+    # own caption. Pass the case you want.
+    ax.text(dx, dy, letter, transform=ax.transAxes,
             fontweight="bold", fontsize=fontsize, va="bottom", ha="left")
 
 
@@ -113,7 +116,7 @@ def _pa(ax):
         Patch(facecolor="#f2f2f2",edgecolor="none",label="calls disagree at 2.5")]
     ax.legend(handles=h,loc="upper left",bbox_to_anchor=(-0.012,1.015),frameon=False,fontsize=SECOND,
               handletextpad=0.35,borderpad=0.15,labelspacing=0.3)
-    set_frame(ax); panel_letter(ax,"a")
+    set_frame(ax); panel_letter(ax,"A")
 
 
 def panel_a(ax):
@@ -139,7 +142,7 @@ def panel_b(ax):
     ax.text(-1.3,-6.35,"FoldX under-predicts",fontsize=SECOND,color="#666",va="bottom",ha="left")
     ax.annotate("expected from\nslope 0.43",xy=(7.2,(sl-1)*7.2+ic),xytext=(6.6,-1.15),fontsize=SECOND,
                 color=GREY,ha="center",arrowprops=dict(arrowstyle="-",lw=0.6,color=GREY))
-    set_frame(ax); panel_letter(ax,"b")
+    set_frame(ax); panel_letter(ax,"B")
 
 
 def panel_c(ax):
@@ -160,7 +163,7 @@ def panel_c(ax):
     ax.set_xlim(-0.62,2.95); ax.set_ylim(-0.75,7.0)
     ax.set_ylabel("|FoldX − measured| (kcal/mol)")
     ax.set_title("Only borderline disagreements are\nnear-misses in energy",loc="left")
-    set_frame(ax); panel_letter(ax,"c",dx=-0.24)
+    set_frame(ax); panel_letter(ax,"C",dx=-0.24)
 
 
 fig=plt.figure(figsize=(CW,3.05))

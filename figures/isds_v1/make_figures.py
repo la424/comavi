@@ -6,6 +6,7 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
+import json
 import numpy as np
 import pandas as pd
 from sklearn.metrics import precision_recall_curve, roc_curve
@@ -280,18 +281,28 @@ save(fig,'figure5_context_components_and_states.png')
 
 # Figure 6: threshold tradeoff (panel a/b); existing calibration can remain separate supplementary/main depending layout
 fig,axes=plt.subplots(1,2,figsize=(12,5.0))
+# Panel A was hardcoded through v7.8 and had gone stale at every point
+# (recovery .760/.720/.640/.600/.540 against the committed .714/.679/.607/
+# .554/.500). Read the generator output. Panel B's counts come from
+# build_measured_effect_tables.py and are asserted against it below.
+_top = pd.read_csv(_REPO / 'reference_outputs' / 'COMAVI_threshold_operating_points.csv')
+_top = _top.set_index('threshold').loc[['t10', 't15', 't20', 't25', 'tSAP']]
 thresholds=['1.0','1.5','2.0','2.5','2.9/2.9/3.5']
-recovery=[.760,.720,.640,.600,.540]; rejection=[.438,.594,.719,.812,.844]
+recovery=[float(v) for v in _top.sensitivity]; rejection=[float(v) for v in _top.specificity]
+assert len(recovery) == 5 and len(rejection) == 5
 ax=axes[0]
 x=np.arange(5)
 ax.plot(x,recovery,'o-',color=ORANGE,linewidth=2.4,label='Mechanism recovery')
 ax.plot(x,rejection,'s-',color=BLUE,linewidth=2.4,label='Correct rejection')
 ax.set_xticks(x,thresholds); ax.set_ylim(.35,.9); ax.set_xlabel('Decision threshold (kcal/mol)'); ax.set_ylabel('Fraction'); ax.set_title('Threshold choice changes the error tradeoff',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False); ax.grid(alpha=.2); panel_label(ax, 'A')
 ax=axes[1]
-measured=[35,26,19,13,12]
+_met = json.loads((_REPO / 'reference_outputs' / 'COMAVI_measured_effect_tables.json').read_text())
+measured=[int(r['cell'].split('/')[0]) for r in _met['measured_effects_recovered']['by_threshold']]
+_mdenom=int(_met['measured_effects_recovered']['by_threshold'][0]['cell'].split('/')[1])
+assert len(measured) == 5, measured
 ax.bar(x,measured,color=[GREEN,GREEN,GOLD,NAVY,PURPLE])
-ax.set_xticks(x,thresholds); ax.set_ylim(0,44); ax.set_xlabel('Decision threshold (kcal/mol)'); ax.set_ylabel('Measured destabilizing effects recovered (of 44)'); ax.set_title('Higher thresholds miss more measured effects',loc='left',fontweight='bold',color=NAVY); ax.grid(axis='y',alpha=.2)
-for i,v in enumerate(measured): ax.text(i,v+.8,f'{v}/44',ha='center',fontweight='bold',fontsize=9)
+ax.set_xticks(x,thresholds); ax.set_ylim(0,_mdenom); ax.set_xlabel('Decision threshold (kcal/mol)'); ax.set_ylabel(f'Measured destabilizing effects recovered (of {_mdenom})'); ax.set_title('Higher thresholds miss more measured effects',loc='left',fontweight='bold',color=NAVY); ax.grid(axis='y',alpha=.2)
+for i,v in enumerate(measured): ax.text(i,v+.8,f'{v}/{_mdenom}',ha='center',fontweight='bold',fontsize=9)
 panel_label(ax, 'B')
 fig.tight_layout(w_pad=3)
 save(fig,'figure6_threshold_tradeoff.png')

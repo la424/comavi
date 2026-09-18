@@ -112,7 +112,7 @@ axA.text(0.97, 0.03, f"Spearman \u03c1={rho_a:.2f}\nn={len(graded)}, p={p_a:.3f}
 axA.legend(loc="upper left", frameon=False, handletextpad=0.4,
            borderpad=0.2, labelspacing=0.3, fontsize=SECOND,
            bbox_to_anchor=(-0.01, 1.01))
-panel_letter(axA, "a", dx=-0.20, dy=1.01)
+panel_letter(axA, "A", dx=-0.20, dy=1.01)
 
 # ── Panel b ─────────────────────────────────────────────────────────────────
 axB.plot([-0.6, 10], [-0.6, 10], ls=":", c="0.62", lw=0.9, zorder=1)
@@ -134,7 +134,7 @@ axB.text(0.97, 0.03, f"Spearman \u03c1={rho_b:.2f}\np={p_b:.3f} \u00b7 W37 serie
          fontsize=SECOND, color="#333", linespacing=1.25)
 axB.legend(loc="upper left", frameon=False, handletextpad=0.4, borderpad=0.2,
            fontsize=SECOND, bbox_to_anchor=(-0.01, 1.01))
-panel_letter(axB, "b", dx=-0.20, dy=1.01)
+panel_letter(axB, "B", dx=-0.20, dy=1.01)
 
 fig.suptitle("Predicted vs directly-measured $\\Delta\\Delta$G",
              fontsize=BASE, y=1.0, x=0.012, ha="left", va="top",

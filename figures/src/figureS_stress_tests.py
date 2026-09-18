@@ -116,7 +116,7 @@ def main():
     # the inter-panel gap; pooling also moved the observed MC to the right edge
     # of panel (a), so its annotation now reaches the same gap. Widen it.
     fig.subplots_adjust(left=0.075, right=0.995, top=0.80, bottom=0.20, wspace=0.58)
-    for a, lab in zip(axes, "abc"):
+    for a, lab in zip(axes, "ABC"):
         bb = a.get_position()
         fig.text(bb.x0 - 0.060, bb.y1 + 0.075, lab, fontsize=9,
                  fontweight="bold", va="top", ha="left")

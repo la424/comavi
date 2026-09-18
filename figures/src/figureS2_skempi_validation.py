@@ -94,7 +94,7 @@ ax.annotate(f"$\\rho$ = {rho_b:.2f} (p = {p_b:.3f})\n"
             xy=(0.03, 0.97), xycoords="axes fraction", va="top", ha="left",
             fontsize=7.5, linespacing=1.35)
 
-for letter, ax in zip("ab", axes):
+for letter, ax in zip("AB", axes):
     ax.text(-0.16, 1.06, letter, transform=ax.transAxes,
             fontsize=11, fontweight="bold", va="top", ha="left")
 

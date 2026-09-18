@@ -67,25 +67,41 @@ def recovered(cal: pd.DataFrame) -> dict:
 
 
 def call_relationships(cal: pd.DataFrame) -> dict:
-    """[B] agreement / borderline / substantive disagreement, with median |error|."""
-    t, w = REFERENCE_T, BORDERLINE_WINDOW
-    mcall = cal["measured_kcal"].abs() >= t
-    pcall = cal["foldx_ddg"].abs() >= t
-    err = (cal["foldx_ddg"] - cal["measured_kcal"]).abs()
-    near = (cal["measured_kcal"].abs().sub(t).abs() <= w) & \
-           (cal["foldx_ddg"].abs().sub(t).abs() <= w)
+    """[B] agreement / borderline / substantive disagreement, with median |error|.
 
-    agree = mcall == pcall
-    borderline = ~agree & near
-    substantive = ~agree & ~near
+    Two corrections, both found by auditing the manuscript table against the
+    figure that plots the same quantity (figures/src/figure_delta_calibration.py,
+    panel c):
+
+    [1] POPULATION. The barnase Glu73 buried-charge cluster is a prespecified
+        force-field failure and is excluded here, as the table's own caption and
+        the figure both state. The first version of this generator used all 63
+        rows, which contradicted the caption it was supposed to produce and
+        reported 43/8/12 where the correct answer is 38/7/11.
+
+    [2] CLASSIFICATION. `straddles` and `both_near` are columns of the
+        calibration table. Re-deriving them from a window around the threshold
+        looks equivalent and is not: the re-derivation put 8 comparisons in the
+        borderline class against the stored columns' 7. Read the columns.
+    """
+    t = REFERENCE_T
+    keep = ~cal.get("g73", pd.Series(False, index=cal.index)).fillna(False).astype(bool)
+    cal = cal.loc[keep]
+    err = (cal["foldx_ddg"] - cal["measured_kcal"]).abs()
+    straddles = cal["straddles"].fillna(False).astype(bool)
+    both_near = cal["both_near"].fillna(False).astype(bool)
+
+    agree = ~straddles
+    borderline = straddles & both_near
+    substantive = straddles & ~both_near
 
     out = []
     for name, mask, definition in [
             ("Agreement", agree, "Measured and predicted calls agree."),
             ("Borderline disagreement", borderline,
-             f"Both values lie within {w:.1f} kcal/mol of {t}."),
+             f"Calls straddle {t} kcal/mol but both values sit near it."),
             ("Substantive disagreement", substantive,
-             f"At least one value lies more than {w:.1f} kcal/mol from {t}.")]:
+             f"Calls straddle {t} kcal/mol and at least one value is far from it.")]:
         ex = cal.loc[mask, "variant"].dropna().unique().tolist()
         out.append({"call_relationship": name, "n": int(mask.sum()),
                     "definition": definition,
@@ -94,7 +110,14 @@ def call_relationships(cal: pd.DataFrame) -> dict:
                     "examples": ex[:3]})
     total = sum(r["n"] for r in out)
     assert total == len(cal), f"classes sum to {total}, not {len(cal)}"
-    return {"n_comparisons": len(cal), "reference_threshold": t, "classes": out}
+    # Guard both corrections: the Glu73 exclusion (n) and reading the stored
+    # columns rather than re-deriving them (the class split).
+    assert len(cal) == 56, f"expected 56 non-Glu73 comparisons, got {len(cal)}"
+    got = tuple(r["n"] for r in out)
+    assert got == (38, 7, 11), f"class split {got} != figure panel c (38, 7, 11)"
+    return {"n_comparisons": len(cal), "reference_threshold": t,
+            "population": "63 comparisons less the 7-point barnase Glu73 cluster",
+            "classes": out}
 
 
 def main() -> int:
@@ -102,6 +125,8 @@ def main() -> int:
     ap.add_argument("--out-dir", type=pathlib.Path,
                     default=REPO / "reference_outputs")
     ap.add_argument("--print-only", action="store_true")
+    ap.add_argument("--check", action="store_true",
+                    help="verify the committed record matches a fresh build")
     args = ap.parse_args()
 
     cal = load()
@@ -121,6 +146,17 @@ def main() -> int:
         print(f"      {c['call_relationship']:26} n={c['n']:3}  "
               f"median |error| {c['median_abs_error']} kcal/mol  "
               f"e.g. {', '.join(c['examples'][:2])}")
+
+    if args.check:
+        committed = args.out_dir / "COMAVI_measured_effect_tables.json"
+        if not committed.exists():
+            print("FAIL: %s missing" % committed.name)
+            return 1
+        if json.loads(committed.read_text()) != result:
+            print("FAIL: %s differs from a fresh build" % committed.name)
+            return 1
+        print("PASS: measured-effect tables match a fresh build")
+        return 0
 
     if not args.print_only:
         args.out_dir.mkdir(parents=True, exist_ok=True)
