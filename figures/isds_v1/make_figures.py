@@ -211,7 +211,19 @@ pv=pd.read_csv(AN/'ISDS_v1_per_variant.csv')
 metrics=pd.read_csv(AN/'ISDS_v1_primary_metrics.csv')
 topk=pd.read_csv(AN/'ISDS_v1_top_k.csv')
 boot=pd.read_csv(AN/'ISDS_v1_system_cluster_bootstrap_summary.csv')
-fig,axes=plt.subplots(2,2,figsize=(12.2,9.2))
+# PLOS Computational Biology requires one file per numbered figure. This block
+# used to emit a single four-panel composite whose panels A and C were cited as
+# S4 Fig while B and D were cited as Fig 6 -- one image serving two figures,
+# which cannot ship. It now writes two two-panel files:
+#
+#   figure6_priority_recovery.png    Fig 6   score distribution + top-k recovery
+#   figureS4_priority_definition.png S4 Fig  energy transformation + component ROC
+#
+# The former composite also carried an internal suptitle duplicating its
+# caption, the defect flagged on the workflow schematic; it is not reproduced.
+fig_s4,ax_s4=plt.subplots(1,2,figsize=(11.8,4.9))
+fig_f6,ax_f6=plt.subplots(1,2,figsize=(12.6,4.9))
+axes={(0,0):ax_s4[0],(1,0):ax_s4[1],(0,1):ax_f6[0],(1,1):ax_f6[1]}
 # a transform
 ax=axes[0,0]
 R=np.linspace(0,8,400); E=R/(1+R)
@@ -219,6 +231,7 @@ ax.plot(R,E,color=TEAL,linewidth=2.5)
 for r in [0.5,1,2,4]: ax.scatter([r],[r/(1+r)],color=NAVY,zorder=3); ax.annotate(f'R={r:g}\nE={r/(1+r):.2f}',(r,r/(1+r)),xytext=(6,8),textcoords='offset points',fontsize=8.5)
 ax.set_xlim(0,8); ax.set_ylim(0,1); ax.set_xlabel('Strongest axis-normalized energetic magnitude, R'); ax.set_ylabel('Energetic component, E = R/(1+R)')
 ax.set_title('Soft saturation preserves high-end ranking',loc='left',fontweight='bold',color=NAVY); ax.grid(alpha=.2); panel_label(ax, 'A')
+# Fig 6 panel A: score distribution
 # b score distribution
 ax=axes[0,1]
 neg=pv[~pv.structural_ground_truth.astype(bool)].isds_v1
@@ -227,27 +240,34 @@ bins=np.linspace(0,1,11)
 _pp=summary['population']
 ax.hist(neg,bins=bins,alpha=.75,label=f"No modeled lesion (n={_pp['negative']})",color=BLUE)
 ax.hist(pos,bins=bins,alpha=.78,label=f"Structural mechanism (n={_pp['positive']})",color=ORANGE)
-ax.set_xlabel('ISDS-v1'); ax.set_ylabel('Variants'); ax.set_title('Higher scores enrich modeled structural mechanisms',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False,fontsize=8.8); panel_label(ax, 'B')
+ax.set_xlabel('ISDS-v1'); ax.set_ylabel('Variants'); ax.set_title('Higher scores enrich structural mechanisms',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False,fontsize=8.8); panel_label(ax, 'A')
 # c ROC/PR
 ax=axes[1,0]
 y=pv.structural_ground_truth.astype(int).to_numpy()
 for col,label,color in [('isds_v1','ISDS-v1',TEAL),('isds_energy_component','Energy component',ORANGE),('isds_context_component','Context component',PURPLE)]:
     fpr,tpr,_=roc_curve(y,pv[col]); auc=float(metrics.loc[metrics.score.eq(col),'roc_auc'].iloc[0]); ax.plot(fpr,tpr,label=f'{label}: AUC {auc:.3f}',color=color,linewidth=2.2)
 ax.plot([0,1],[0,1],'--',color=MID)
-ax.set_xlabel('False-positive rate'); ax.set_ylabel('True-positive rate'); ax.set_title('ISDS-v1 combines complementary evidence',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False,fontsize=8.8); ax.grid(alpha=.2); panel_label(ax, 'C')
+ax.set_xlabel('False-positive rate'); ax.set_ylabel('True-positive rate'); ax.set_title('ISDS-v1 combines complementary evidence',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False,fontsize=8.8); ax.grid(alpha=.2); panel_label(ax, 'B')
 # d top k
 ax=axes[1,1]
 t=topk[topk.score.eq('isds_v1')]
 ax.plot(t.k,t.precision_at_k,'o-',color=TEAL,linewidth=2.2,label='Precision among top k')
 ax.plot(t.k,t.recovery_at_k,'s-',color=ORANGE,linewidth=2.2,label=f"Fraction of {_pp['positive']} mechanisms recovered")
-ax.set_xticks(t.k); ax.set_ylim(0,1.05); ax.set_xlabel('Experimental budget, k variants'); ax.set_ylabel('Fraction'); ax.set_title('Top-ranked variants concentrate structural mechanisms',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False,fontsize=8.7); ax.grid(alpha=.2); panel_label(ax, 'D')
-fig.suptitle('ISDS-v1 is a fixed prioritization index, not a probability or validated binary classifier',fontsize=15.5,fontweight='bold',color=NAVY,y=.995)
-fig.tight_layout(rect=[0,0,1,.97],h_pad=3,w_pad=2.5)
-save(fig,'figure4_isds_definition_performance.png')
+ax.set_xticks(t.k); ax.set_ylim(0,1.05); ax.set_xlabel('Experimental budget, k variants'); ax.set_ylabel('Fraction'); ax.set_title('Top-ranked variants concentrate structural mechanisms',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False,fontsize=8.7); ax.grid(alpha=.2); panel_label(ax, 'B')
+for _f in (fig_s4,fig_f6): _f.tight_layout(w_pad=2.6)
+save(fig_s4,'figureS4_priority_definition.png')
+save(fig_f6,'figure6_priority_recovery.png')
 
 # Figure 5: tier components and evidence states
+# S3 Fig is cited as a single-panel screen comparison, so it is written as its
+# own file. The evidence-state panel that shared this composite presents the
+# same counts as S10 Table and is not cited by any caption; it is kept as a
+# repository diagnostic rather than a manuscript figure.
+fig_s3,ax_s3=plt.subplots(figsize=(6.6,4.8))
 fig,axes=plt.subplots(1,2,figsize=(12.0,5.2))
-ax=axes[0]
+for _t in (ax_s3,axes[0]):
+    pass
+ax=ax_s3
 labels=['Interface status alone','Tier without interface bonus','Full Tier 1-2']
 # Screen performance read from the analysis summary, which computes it from the
 # tier comparator. These were literals here (and, independently, in
@@ -262,7 +282,8 @@ ax.bar(x+width/2,spec,width,color=BLUE,label='Specificity')
 ax.set_xticks(x,labels,rotation=12,ha='right'); ax.set_ylim(0,1.08); ax.set_ylabel('Fraction'); ax.set_title('The full tier trades specificity for sensitivity',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False); ax.grid(axis='y',alpha=.2)
 for i,(a,b) in enumerate(zip(sens,spec)):
     ax.text(i-width/2,a+.025,f'{a:.3f}',ha='center',fontsize=8.8); ax.text(i+width/2,b+.025,f'{b:.3f}',ha='center',fontsize=8.8)
-panel_label(ax, 'A')
+fig_s3.tight_layout()
+save(fig_s3,'figureS3_context_comparators.png')
 ax=axes[1]
 states=['Convergent','Energy only','Context only','Neither']
 _fs=summary['four_state_agreement']
@@ -327,7 +348,9 @@ alt = {
 'figure1_unified_comavi_workflow.png':'Workflow diagram showing a missense variant and structure feeding four native COMAVI calculations. The outputs branch into ISDS-v1 for prioritization and a signed multi-axis mechanism profile for assay selection. Pathogenicity remains separate.',
 'figure2_population_map.png':'Population flow from a 61-variant resource to 57 mechanism-gradeable variants and 47 tier-carrying structural-prioritization variants, with four ungraded scope or commitment cases shown separately.',
 'figure3_mechanism_localization.png':'Two horizontal bar charts showing direction-aware agreement for monomer, complex-context, binding, and all energetic axes, and whole-variant mechanism-pattern scores for the full, interaction, and BRCT populations.',
-'figure4_isds_definition_performance.png':'Four panels showing the soft-saturating energetic transformation, ISDS distributions by structural-mechanism class, ROC curves for ISDS and its components, and top-k precision and recovery.',
+'figure6_priority_recovery.png':'Two panels showing ISDS-v1 score distributions for structural-mechanism and no-lesion variants, and precision and recovery as the experimental budget increases.',
+'figureS4_priority_definition.png':'Two panels showing the soft-saturating energetic transformation and structural-prioritization ROC curves for ISDS-v1 and its energy and context components.',
+'figureS3_context_comparators.png':'Sensitivity and specificity of three structural-context screens: interface status alone, the tier without its interface bonus, and the full Tier 1-2 screen.',
 'figure5_context_components_and_states.png':'Two panels comparing sensitivity and specificity of interface, no-interface tier, and full tier screens, and counts of structural mechanisms and negatives across convergent, energy-only, context-only, and neither states.',
 'figure6_threshold_tradeoff.png':'Two panels showing mechanism recovery falling and correct rejection rising across five decision thresholds, and the corresponding decline in measured destabilizing effects recovered.',
 'figure7_alphamissense_isds_mechanism.png':'Two scatterplots compare AlphaMissense score with ISDS and its energy component; a horizontal bar chart shows descriptive pathogenicity AUCs for AlphaMissense, ISDS, energy, and context.'

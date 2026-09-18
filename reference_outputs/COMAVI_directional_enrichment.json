@@ -1,0 +1,49 @@
+{
+ "threshold": 2.5,
+ "firing_definition": "apply_concordance_v5.compute_max_abs_ddg >= threshold; confidence-passing axes only, indistinguishable binding values excluded",
+ "clinical_ground_truth": "curated phenotype; gain-of-function counted as pathogenic",
+ "cohort": {
+  "n": 61,
+  "firing": 27,
+  "silent": 34
+ },
+ "labelled": {
+  "n": 49,
+  "pathogenic": 37,
+  "benign": 12
+ },
+ "table_2x2": {
+  "firing_pathogenic": 22,
+  "firing_benign": 0,
+  "silent_pathogenic": 15,
+  "silent_benign": 12
+ },
+ "fisher": {
+  "odds_ratio": null,
+  "odds_ratio_is_infinite": true,
+  "p_value": 0.000195
+ },
+ "pathogenic_but_silent": {
+  "n": 15,
+  "systems_spanned": 10,
+  "systems_total": 14,
+  "variants": [
+   "PIK3CA H1047R",
+   "MLH1 Q542L",
+   "VHL Y98H",
+   "KRAS G12D",
+   "KRAS G12V",
+   "KRAS Q61H",
+   "HBB E6V",
+   "HBB N102T",
+   "TNNI3 R162W",
+   "CALM1 D96V",
+   "CALM1 N98S",
+   "CALM1 F142L",
+   "SMAD4 I500T",
+   "SMAD4 I500V",
+   "CFH R53H"
+  ]
+ },
+ "interpretation": "Every clinically labelled variant with a firing structural output was pathogenic, so a firing output was never observed on a benign variant here; silence carried both classes. The asymmetry is directional evidence only -- the cohort was selected for mechanism evidence, so these are not expected clinical predictive values."
+}

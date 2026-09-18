@@ -1,0 +1,112 @@
+{
+ "ground_truth": "curated clinical annotation (phenotype); gain-of-function counted as pathogenic",
+ "note": "Clinical ground truth, not the structural ground truth used for COMAVI's mechanism metrics. Unaffected by the v7.6 ledger correction, which changed structural labels only.",
+ "population": {
+  "with_am_class": 49,
+  "clinically_pathogenic": 37,
+  "clinically_benign": 12,
+  "am_class_counts": {
+   "likely_pathogenic": 32,
+   "likely_benign": 11,
+   "ambiguous": 4,
+   "unavailable": 2
+  }
+ },
+ "confident_calls": {
+  "n": 43,
+  "correct": 38,
+  "cell": "38/43",
+  "accuracy": 0.884,
+  "errors": [
+   {
+    "gene": "MLH1",
+    "variant": "V384D",
+    "am_class": "likely_pathogenic",
+    "am_pathogenicity": 0.988,
+    "clinical_annotation": "benign"
+   },
+   {
+    "gene": "MLH1",
+    "variant": "K618E",
+    "am_class": "likely_pathogenic",
+    "am_pathogenicity": 0.649,
+    "clinical_annotation": "benign"
+   },
+   {
+    "gene": "HBB",
+    "variant": "E6V",
+    "am_class": "likely_benign",
+    "am_pathogenicity": 0.223,
+    "clinical_annotation": "pathogenic"
+   },
+   {
+    "gene": "CALM1",
+    "variant": "N98S",
+    "am_class": "likely_benign",
+    "am_pathogenicity": 0.209,
+    "clinical_annotation": "pathogenic"
+   },
+   {
+    "gene": "CFH",
+    "variant": "R53H",
+    "am_class": "likely_benign",
+    "am_pathogenicity": 0.243,
+    "clinical_annotation": "pathogenic"
+   }
+  ]
+ },
+ "thresholded_all": {
+  "n": 49,
+  "correct": 40,
+  "cell": "40/49",
+  "accuracy": 0.816,
+  "threshold": 0.5,
+  "ambiguous_resolved": [
+   {
+    "gene": "PIK3CA",
+    "variant": "H1047R",
+    "am_class": "ambiguous",
+    "am_pathogenicity": 0.538,
+    "clinical_annotation": "pathogenic_gof"
+   },
+   {
+    "gene": "MSH2",
+    "variant": "N127S",
+    "am_class": "ambiguous",
+    "am_pathogenicity": 0.348,
+    "clinical_annotation": "benign"
+   },
+   {
+    "gene": "TNNI3",
+    "variant": "R162W",
+    "am_class": "ambiguous",
+    "am_pathogenicity": 0.411,
+    "clinical_annotation": "pathogenic"
+   },
+   {
+    "gene": "CFH",
+    "variant": "R78G",
+    "am_class": "ambiguous",
+    "am_pathogenicity": 0.398,
+    "clinical_annotation": "pathogenic"
+   }
+  ],
+  "ambiguous_correct": 2,
+  "no_calls_counted_as_errors": [
+   {
+    "gene": "VWF",
+    "variant": "R1334Q",
+    "am_class": "unavailable",
+    "am_pathogenicity": null,
+    "clinical_annotation": "pathogenic"
+   },
+   {
+    "gene": "VWF",
+    "variant": "A1381T",
+    "am_class": "unavailable",
+    "am_pathogenicity": null,
+    "clinical_annotation": "benign"
+   }
+  ]
+ }
+}
