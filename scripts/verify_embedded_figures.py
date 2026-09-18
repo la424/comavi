@@ -57,8 +57,23 @@ CAPTION_RE = re.compile(r"^\s*((?:Fig \d+|S\d+ Fig))\.\s+\S")
 
 
 def pixel_digest(data):
-    """SHA256 over decoded RGB pixels, so lossless re-encoding does not trip."""
-    from PIL import Image
+    """SHA256 over decoded RGB pixels, so lossless re-encoding does not trip.
+
+    Pillow is a hard requirement of this gate, not an optional extra: without a
+    decoder there is no way to tell a re-containered image from a different
+    render, and a byte comparison would raise a false alarm every time the
+    document is opened and saved. Fail loudly rather than silently degrading to
+    a weaker check -- a verification script that quietly stops verifying is
+    worse than one that stops.
+    """
+    try:
+        from PIL import Image
+    except ImportError:
+        raise SystemExit(
+            "FAIL: this gate needs Pillow to decode the embedded images.\n"
+            "  pip install pillow  (it is in requirements.txt)\n"
+            "  Refusing to fall back to a byte comparison, which would fail on "
+            "any document that has been opened and saved.")
     im = Image.open(io.BytesIO(data)).convert("RGB")
     return hashlib.sha256(im.tobytes()).hexdigest(), im.size
 

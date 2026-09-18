@@ -18,11 +18,18 @@ pyyaml
 # values are not reproducible from source.
 statsmodels
 
-# Figure, deck and DOCX builders only -- not needed to verify any result.
-# Listed so a reader who wants to regenerate the presentation artifacts is not
-# left guessing:
-#   python-pptx, pillow  -> build_lab_meeting_deck.py, audit_deck_numbers.py
-#   python-docx          -> build_manuscript_docx.py
+# Required to verify the manuscript. verify_embedded_figures.py compares the
+# figures embedded in the .docx against the files the generators write, and
+# python-docx reads the manuscript text every prose audit checks. These were
+# previously listed as optional presentation dependencies; they are not. The
+# embedded-figure gate is the only check that can see a stale figure inside the
+# document, and without these it cannot run at all.
+pillow
+python-docx
+
+# Figure and deck builders only -- not needed to verify any result. Listed so a
+# reader who wants to regenerate the presentation artifacts is not left guessing:
+#   python-pptx  -> build_lab_meeting_deck.py, audit_deck_numbers.py
 
 # PDB/mmCIF parsing and sequence-aware Colab system setup
 gemmi
