@@ -1,0 +1,12 @@
+manuscript_item,file,caption_title,generator,renumbered_this_pass
+Fig 1,figures/isds_v1/figure1_unified_comavi_workflow.png,COMAVI converts structural calculations into two complementary product,make_figures.py,no
+Fig 2,figures/isds_v1/figure3_mechanism_localization.png,COMAVI recovers literature-defined structural mechanism patterns in th,make_figures.py,no
+Fig 3,figures/isds_v1/figure6_priority_recovery.png,The fixed priority score concentrates modeled structural mechanisms ne,make_figures.py,yes
+Fig 4,figures/isds_v1/figure6_threshold_tradeoff.png,The energy threshold controls the tradeoff between mechanism recovery ,make_figures.py,yes
+Fig 5,figures/COMAVI_Figure_delta_calibration.png,FoldX ranks measured effects but compresses their magnitude. The poole,figures/src/figure_delta_calibration.py,yes
+Fig 6,figures/COMAVI_Figure4_measured_vs_foldx.png,Direct energy anchors for two COMAVI calculations. (A) Predicted isola,figures/src/figure4_measured_vs_foldx.py,yes
+Fig 7,figures/isds_v1/figure7_alphamissense_isds_mechanism.png,"Pathogenicity ranking, structural prioritization, and mechanism interp",make_figures.py,no
+S1 Fig,figures/COMAVI_FigS_stress_tests.png,Benchmark stress tests for whole-variant mechanism-pattern agreement. ,figures/src/figureS_stress_tests.py,no
+S2 Fig,figures/COMAVI_FigureS2_skempi_validation.png,Independent binding-axis validation. (A) Barnase-barstar substitutions,figures/src/figureS2_skempi_validation.py,no
+S3 Fig,figures/isds_v1/figureS3_context_comparators.png,Structural-context comparator performance on the 47-variant prioritiza,make_figures.py,no
+S4 Fig,figures/isds_v1/figureS4_priority_definition.png,Priority-score transformation and component ranking. (A) The soft-satu,make_figures.py,no

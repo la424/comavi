@@ -1,0 +1,75 @@
+{
+ "population": {
+  "n_graded": 57,
+  "curated_silent": 29,
+  "committed_structural": 28,
+  "silent_fraction": 0.5088
+ },
+ "observed": {
+  "score": 0.693,
+  "arm_curated_silent": 0.8276,
+  "arm_committed_structural": 0.5536,
+  "unweighted_mean_of_arms": 0.6906,
+  "note": "The cohort is near-balanced, so the weighted score and the unweighted mean of the two arms agree to within 0.003. The headline is already a balanced measure, not an average dominated by the easier class."
+ },
+ "baselines": {
+  "never_fire": {
+   "mechanism_label": "No structural effect detected",
+   "n_graded": 57,
+   "score": 0.5088,
+   "grade_counts": {
+    "consistent": 29,
+    "inconsistent": 28
+   },
+   "note": "Calls every variant structurally silent. Scores every curated silent variant correct and misses every structural mechanism."
+  },
+  "always_fold_and_ppi": {
+   "mechanism_label": "Both fold + PPI destabilization",
+   "n_graded": 57,
+   "score": 0.4386,
+   "grade_counts": {
+    "consistent": 22,
+    "inconsistent": 29,
+    "partial": 6
+   },
+   "note": "Calls every variant destabilizing on both fold subtypes and binding."
+  },
+  "always_monomer_fold": {
+   "mechanism_label": "Monomer fold destabilization",
+   "n_graded": 57,
+   "score": 0.2807,
+   "grade_counts": {
+    "consistent": 8,
+    "inconsistent": 33,
+    "partial": 16
+   },
+   "note": "Calls every variant a monomer-fold destabilizer."
+  },
+  "always_multimer_fold": {
+   "mechanism_label": "Multimer fold destabilization",
+   "n_graded": 57,
+   "score": 0.2281,
+   "grade_counts": {
+    "inconsistent": 31,
+    "partial": 26
+   },
+   "note": "Calls every variant a complex-context fold destabilizer."
+  },
+  "always_ppi": {
+   "mechanism_label": "PPI destabilization",
+   "n_graded": 57,
+   "score": 0.3333,
+   "grade_counts": {
+    "consistent": 12,
+    "inconsistent": 31,
+    "partial": 14
+   },
+   "note": "Calls every variant an interface destabilizer."
+  }
+ },
+ "best_trivial_strategy": {
+  "key": "never_fire",
+  "score": 0.5088,
+  "margin_over_best_trivial": 0.1842
+ }
+}

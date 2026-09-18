@@ -154,6 +154,18 @@ jobs:
           git diff --exit-code -- \
             reference_outputs/COMAVI_tier_construction.json
 
+      - name: Verify the manuscript's embedded figures match their generators
+        # Every other audit here reads the manuscript's TEXT. A .docx stores its
+        # figures as embedded image parts, which no text audit can see, so
+        # corrected prose sat next to pre-correction images through a full
+        # review. This compares decoded pixels, not file bytes.
+        run: |
+          python scripts/build_rubric_baselines.py --check
+          python scripts/build_detection_vs_attribution.py --check
+          python scripts/build_directional_enrichment.py --check
+          python scripts/build_alphamissense_thresholded_accuracy.py --check
+          python scripts/verify_embedded_figures.py
+
       - name: Re-derive and verify the canonical benchmark
         run: |
           output_dir="$(mktemp -d)"
