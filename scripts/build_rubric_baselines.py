@@ -102,10 +102,19 @@ def build(canon):
                      "arm_curated_silent": round(arm_silent, 4),
                      "arm_committed_structural": round(arm_struct, 4),
                      "unweighted_mean_of_arms": round((arm_silent + arm_struct) / 2, 4),
-                     "note": ("The cohort is near-balanced, so the weighted score and the "
-                              "unweighted mean of the two arms agree to within 0.003. The "
-                              "headline is already a balanced measure, not an average "
-                              "dominated by the easier class.")},
+                     "gap_weighted_minus_balanced": round(
+                         observed - (arm_silent + arm_struct) / 2, 4),
+                     # Interpolated, never typed. The v7.9 correction moved the
+                     # silent fraction from 0.509 to 0.561 and this gap from
+                     # 0.003 to 0.013; a hardcoded "0.003" would have survived
+                     # that change and quietly misdescribed the cohort.
+                     "note": ("The cohort is close to balanced (%.1f%% curated silent), so "
+                              "the weighted score and the unweighted mean of the two arms "
+                              "differ by %.3f. The headline is therefore close to a balanced "
+                              "measure rather than an average dominated by the easier class, "
+                              "but it is not exactly one and both are reported."
+                              % (100 * float(silent.mean()),
+                                 abs(observed - (arm_silent + arm_struct) / 2)))},
         "baselines": baselines,
         "best_trivial_strategy": {
             "key": best_key,
@@ -124,8 +133,23 @@ def main():
     result = build(canon)
 
     p, o = result["population"], result["observed"]
-    assert p["n_graded"] == 57, p["n_graded"]
-    assert abs(o["score"] - o["unweighted_mean_of_arms"]) < 0.01, o
+    assert p["n_graded"] == p["curated_silent"] + p["committed_structural"], p
+
+    # The gap between the weighted score and the balanced mean is exactly the
+    # class imbalance times the difference between the arms. Asserting the
+    # identity checks the arithmetic and cannot go stale; asserting a bound
+    # checks the claim the manuscript makes from it. The bound was 0.01 and
+    # the v7.9 correction pushed the real gap to 0.013 -- the claim weakened
+    # and the manuscript now states the gap rather than calling it negligible.
+    imbalance = abs(p["silent_fraction"] - 0.5)
+    arm_gap = abs(o["arm_curated_silent"] - o["arm_committed_structural"])
+    predicted = imbalance * arm_gap
+    observed_gap = abs(o["score"] - o["unweighted_mean_of_arms"])
+    assert abs(observed_gap - predicted) < 0.002, (observed_gap, predicted, p, o)
+    assert observed_gap < 0.02, (
+        "weighted and balanced scores now differ by %.4f; the manuscript's "
+        "'already a balanced measure' claim no longer holds and must be "
+        "restated, not re-tolerated" % observed_gap)
     # the claim the manuscript will make
     assert result["best_trivial_strategy"]["key"] == "never_fire", result["best_trivial_strategy"]
     assert result["best_trivial_strategy"]["margin_over_best_trivial"] > 0

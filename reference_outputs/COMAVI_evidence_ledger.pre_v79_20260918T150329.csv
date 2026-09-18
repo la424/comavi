@@ -43,8 +43,8 @@ hemoglobin_tetramer,W37G,binding,destab,E1_quantitative_energetic,direct,Equilib
 hemoglobin_tetramer,W37G,fold_complex,destab,E1_quantitative_energetic,coupled,"Same assembly-energy measurement; the fold-in-complex token is a coupled reading of the assembly ddG, not an independent subunit-stability measurement",Kiger / Kwiatkowski Biochemistry 1998 (PMID 9521754 equilibrium assembly dG; PMID 9521753 kinetics)
 hemoglobin_tetramer,W37Y,binding,destab,E1_quantitative_energetic,direct,Equilibrium dimer->tetramer assembly ddG = +2.0 kcal/mol,Kiger / Kwiatkowski Biochemistry 1998 (PMID 9521754 equilibrium assembly dG; PMID 9521753 kinetics)
 hemoglobin_tetramer,W37Y,fold_complex,destab,E1_quantitative_energetic,coupled,"Same assembly-energy measurement; the fold-in-complex token is a coupled reading of the assembly ddG, not an independent subunit-stability measurement",Kiger / Kwiatkowski Biochemistry 1998 (PMID 9521754 equilibrium assembly dG; PMID 9521753 kinetics)
-kras_craf,G12D,binding,neutral,E3_qualitative_experimental,direct,WT-like RAF1 binding; impaired GTP hydrolysis. G12 is 13.6 A from RAF1,Hunter 2015
-kras_craf,G12V,binding,neutral,E3_qualitative_experimental,direct,WT-like RAF1 binding; impaired GTP hydrolysis,Hunter 2015
+kras_craf,G12D,binding,destab,E3_qualitative_experimental,direct,WT-like RAF1 binding; impaired GTP hydrolysis. G12 is 13.6 A from RAF1,Hunter 2015
+kras_craf,G12V,binding,destab,E3_qualitative_experimental,direct,WT-like RAF1 binding; impaired GTP hydrolysis,Hunter 2015
 kras_craf,Q61H,binding,neutral,E3_qualitative_experimental,direct,Preserved RAF binding; switch-II hydrolysis defect. Q61 is 11.1 A from RAF1,Hunter 2015
 mlh1_pms2,G857A,binding,neutral,E4_population_frequency,inferred,gnomAD AF 28%; ClinVar BA1 stand-alone benign,gnomAD; ClinVar BA1
 mlh1_pms2,G857A,fold_complex,neutral,E4_population_frequency,inferred,gnomAD AF 28%; ClinVar BA1 stand-alone benign,gnomAD; ClinVar BA1
@@ -63,7 +63,7 @@ mlh1_pms2,V384D,monomer,neutral,E5_inferred_no_axis_assay,inferred,No subunit-st
 msh2_msh6,A636P,binding,neutral,E3_qualitative_experimental,direct,MSH2-MSH6 interaction intact; ATPase mismatch binding/release defect,Ollila 2008 Hum Mutat 29:1355 (PMID 18951462); Ollila 2006 Gastroenterology (PMID 17101317)
 msh2_msh6,A636P,fold_complex,neutral,E3_qualitative_experimental,direct,MSH2-MSH6 interaction intact; ATPase mismatch binding/release defect,Ollila 2008 Hum Mutat 29:1355 (PMID 18951462); Ollila 2006 Gastroenterology (PMID 17101317)
 msh2_msh6,A636P,monomer,neutral,E3_qualitative_experimental,direct,MSH2 expression/stability preserved; ATPase mismatch binding/release defect,Ollila 2008 Hum Mutat 29:1355 (PMID 18951462); Ollila 2006 Gastroenterology (PMID 17101317)
-msh2_msh6,C697F,binding,neutral,E3_qualitative_experimental,direct,"ATPase catalytic defect, protein stable, interaction intact",Ollila 2008 Hum Mutat 29:1355 (PMID 18951462); Ollila 2006 Gastroenterology (PMID 17101317)
+msh2_msh6,C697F,binding,destab,E3_qualitative_experimental,direct,"ATPase catalytic defect, protein stable, interaction intact",Ollila 2008 Hum Mutat 29:1355 (PMID 18951462); Ollila 2006 Gastroenterology (PMID 17101317)
 msh2_msh6,G322D,binding,neutral,E3_qualitative_experimental,direct,MMR-proficient with interaction intact; gnomAD ~1.9%,Ollila 2008 Hum Mutat 29:1355 (PMID 18951462); Ollila 2006 Gastroenterology (PMID 17101317)
 msh2_msh6,G674R,binding,neutral,E3_qualitative_experimental,direct,MSH6 binding preserved by co-IP; MMR lost via Walker-A ATPase defect,Jia 2021
 msh2_msh6,N127S,binding,neutral,E3_qualitative_experimental,direct,"MSH6 IP, bandshift and MMR all WT-like",Ollila 2008 Hum Mutat 29:1355 (PMID 18951462); Ollila 2006 Gastroenterology (PMID 17101317)

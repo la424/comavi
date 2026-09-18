@@ -310,11 +310,19 @@ def main():
     assert sheets["Variants"].System.nunique() == EXPECTED_SYSTEMS
 
     # The workbook must reproduce the manuscript's headline, or it is not the
-    # same cohort the paper describes.
+    # same cohort the paper describes. Checked against the canonical's own
+    # grades rather than a frozen literal: a literal has to be edited every
+    # time the ground truth legitimately changes, and editing it is exactly
+    # how a guard stops guarding. This version keeps biting across corrections.
     graded = sheets["Outcome"][sheets["Outcome"].Graded]
     total = graded[[c for c in graded.columns if c == "Score t=2.5"]].sum().iloc[0]
-    assert len(graded) == 57, "graded population %d != 57" % len(graded)
-    assert abs(total - 39.5) < 1e-9, "headline score %s != 39.5" % total
+    _W = {"consistent": 1.0, "partial": 0.5, "inconsistent": 0.0}
+    _canon_graded = canon[canon.mech_consistency_t25.isin(_W)]
+    _canon_total = _canon_graded.mech_consistency_t25.map(_W).sum()
+    assert len(graded) == len(_canon_graded), (
+        "graded population %d != canonical %d" % (len(graded), len(_canon_graded)))
+    assert abs(total - _canon_total) < 1e-9, (
+        "workbook headline %s != canonical %s" % (total, _canon_total))
 
     print("Variants   %3d rows x %2d cols" % sheets["Variants"].shape)
     print("Predictions %2d rows x %2d cols" % sheets["Predictions"].shape)

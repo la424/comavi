@@ -5,7 +5,7 @@ Reads the draws written by verification/stress_tests.py. Run that first:
 
     python3 verification/stress_tests.py \
         --canonical reference_outputs/scored_61var_canonical.csv \
-        --scripts-dir scripts --out-dir verification_output
+        --scripts-dir scripts --out-dir reference_outputs/stress_tests
     python3 figures/src/figureS_stress_tests.py
 
 Panel (c) is drawn as a discrete stem plot, not a histogram: mechanism-
@@ -40,7 +40,10 @@ def style():
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--in-dir", default="verification_output")
+    # Defaults to the COMMITTED stress outputs. verification_output/ is
+    # untracked, so defaulting there made this figure unreproducible from a
+    # clean clone and let it render stale values without complaint.
+    ap.add_argument("--in-dir", default="reference_outputs/stress_tests")
     ap.add_argument("--out-dir", default="figures")
     args = ap.parse_args()
 

@@ -148,14 +148,14 @@ require(
 
 require(
     list(population["primary_structural_agreement"])
-    == [89, 124],
-    "primary structural-agreement count differs from 89/124",
+    == [92, 124],
+    "primary structural-agreement count differs from 92/124",
 )
 
 require(
     list(population["all_row_structural_agreement"])
-    == [89, 125],
-    "all-row structural-agreement count differs from 89/125",
+    == [92, 125],
+    "all-row structural-agreement count differs from 92/125",
 )
 
 require(
@@ -166,17 +166,17 @@ require(
 require(
     close(
         observed["mechanism_consistency"],
-        39.5 / 57,
+        41.0 / 57,
     ),
-    "mechanism-consistency point estimate differs from 39.5/57",
+    "mechanism-consistency point estimate differs from 41.0/57",
 )
 
 require(
     close(
         observed["structural_agreement"],
-        89 / 124,
+        92 / 124,
     ),
-    "structural-agreement point estimate differs from 89/124",
+    "structural-agreement point estimate differs from 92/124",
 )
 
 
@@ -288,21 +288,21 @@ require(
 )
 
 require(
-    (archive_sa_n, archive_sa_d) == (89, 124),
+    (archive_sa_n, archive_sa_d) == (92, 124),
     (
         "draw archive structural agreement is "
-        f"{archive_sa_n}/{archive_sa_d}, not 89/124"
+        f"{archive_sa_n}/{archive_sa_d}, not 92/124"
     ),
 )
 
 require(
-    close(archive_mc, 39.5 / 57),
-    "draw archive mechanism point estimate differs from 39.5/57",
+    close(archive_mc, 41.0 / 57),
+    "draw archive mechanism point estimate differs from 41.0/57",
 )
 
 require(
-    close(archive_sa, 89 / 124),
-    "draw archive structural point estimate differs from 89/124",
+    close(archive_sa, 92 / 124),
+    "draw archive structural point estimate differs from 92/124",
 )
 
 require(
@@ -477,14 +477,14 @@ for name, (
 # ---------------------------------------------------------------------
 
 require(
-    ledger.get("SA_total") == [89, 125],
+    ledger.get("SA_total") == [92, 125],
     f"ledger SA_total is {ledger.get('SA_total')!r}",
 )
 
 require(
     close(
         ledger.get("SA"),
-        89 / 125,
+        92 / 125,
         tolerance=5e-5,
     ),
     f"ledger scalar SA is {ledger.get('SA')!r}",
@@ -504,14 +504,14 @@ require(
 
 require(
     ledger.get("SA_by_axis", {}).get("binding", [])[:3]
-    == [20, 30, 0.6667],
-    "ledger binding record differs from 20/30",
+    == [22, 30, 0.7333],
+    "ledger binding record differs from 22/30",
 )
 
 require(
     ledger.get("SA_by_axis", {}).get("tier", [])[:3]
-    == [33, 47, 0.7021],
-    "ledger tier record differs from 33/47",
+    == [34, 47, 0.7234],
+    "ledger tier record differs from 34/47",
 )
 
 expected_cluster_sa = list(
@@ -538,8 +538,8 @@ if "canonical_sha256" in ledger:
 
 print("Canonical rows: 61")
 print("Mechanism population: 57")
-print("Primary structural agreement: 89/124")
-print("All-row structural agreement: 89/125")
+print("Primary structural agreement: 92/124")
+print("All-row structural agreement: 92/125")
 print(
     "Variant-bootstrap SA 95% CI:",
     statistics["variant_bootstrap_ci95"]["sa"]["reportable_3"],

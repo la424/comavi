@@ -10,8 +10,8 @@ records remain in the repository but do not override this file.
 - **61 variants** across **14 protein systems**.
 - **57 variants** are gradeable for whole-variant mechanism-pattern agreement.
 - **47 interaction variants** form the structural-prioritization population:
-  **20** committed modeled structural mechanisms and
-  **27** variants curated to lack a committed lesion on the
+  **17** committed modeled structural mechanisms and
+  **30** variants curated to lack a committed lesion on the
   modeled COMAVI axes.
 - ISDS-v1 is available for
   **49/61**
@@ -27,31 +27,31 @@ value is 0.49155647.
 At the 2.5 kcal/mol reproducibility reference:
 
 - weighted whole-variant mechanism-pattern agreement is
-  **41/57 = 0.6930**;
+  **41/57 = 0.7193**;
 - direction-aware agreement across the three energetic axes is
-  **56/77 =
-  0.7273**;
+  **58/77 =
+  0.7532**;
 - monomer-fold agreement is
   **19/25**;
 - complex-context agreement is
   **17/22**;
 - binding agreement is
-  **20/30**.
+  **22/30**.
 
 The four-output continuity aggregate, which adds the structural-context tier,
 is:
 
-- **89/124 =
-  0.7177** on the primary 57-variant
+- **92/124 =
+  0.7419** on the primary 57-variant
   population;
-- **89/125 =
-  0.7120** when all 61 resource rows are retained.
+- **92/125 =
+  0.7360** when all 61 resource rows are retained.
 
 The all-row decomposition is tier
-33/47, monomer fold
+34/47, monomer fold
 19/26, complex context
 17/22, and binding
-20/30. The sole extra all-row
+22/30. The sole extra all-row
 output is the monomer-fold output of BRCA1 R1699Q, which is retained in the
 resource but excluded from whole-variant grading by its curated role.
 
@@ -62,22 +62,22 @@ The committed stress-test analysis uses 2,000 variant-bootstrap draws and
 systems with seed 8.
 
 - mechanism-consistency variant-bootstrap 95% CI:
-  **[0.586, 0.793]**;
+  **[0.614, 0.819]**;
 - mechanism-consistency system-cluster 95% CI:
-  **[0.604, 0.79]**;
+  **[0.625, 0.821]**;
 - structural-agreement variant-bootstrap 95% CI:
-  **[0.634, 0.797]**;
+  **[0.664, 0.82]**;
 - structural-agreement system-cluster 95% CI:
-  **[0.65, 0.791]**;
+  **[0.682, 0.816]**;
 - structural-agreement leave-one-system-out range:
-  **0.7009-0.7321**;
+  **0.7265-0.7589**;
 - structural-agreement permutation null:
-  observed **0.7177** versus
-  **0.5347 ±
-  0.0464**,
+  observed **0.7419** versus
+  **0.5345 ±
+  0.0461**,
   **p = 0.0005**;
 - replicate-noise structural agreement:
-  **0.7154 ±
+  **0.7396 ±
   0.0042**.
 
 The complete summary and raw seeded draws are stored under
@@ -88,17 +88,17 @@ The complete summary and raw seeded draws are stored under
 On the 47-variant prioritization population:
 
 - ISDS-v1 ROC AUC:
-  **0.9167**;
+  **0.9431**;
 - ISDS-v1 average precision:
-  **0.9227**;
+  **0.8182**;
 - Top 10:
-  **10**
+  **9**
   structural-mechanism variants;
 - Top 20:
-  **17/20**
+  **16/17**
   recovered;
 - Top 25:
-  **18/20**
+  **17/17**
   recovered.
 
 These are internal, system-aware benchmark results. ISDS-v1 is a unitless

@@ -12,22 +12,22 @@
   "pathogenic": 36
  },
  "AM_set_n": 47,
- "MC": 0.693,
+ "MC": 0.7193,
  "MC_cluster_ci95": [
-  0.6038,
-  0.79
+  0.625,
+  0.8205
  ],
  "MC_delta": 0.0,
  "MC_n": 57,
- "MC_tier_ablated": 0.693,
+ "MC_tier_ablated": 0.7193,
  "MC_tier_ablated_n": 57,
  "N_variants": 61,
- "SA": 0.712,
+ "SA": 0.736,
  "SA_by_axis": {
   "binding": [
-   20,
+   22,
    30,
-   0.6667
+   0.7333
   ],
   "fold": [
    17,
@@ -40,17 +40,17 @@
    0.7308
   ],
   "tier": [
-   33,
+   34,
    47,
-   0.7021
+   0.7234
   ]
  },
  "SA_cluster_ci95": [
-  0.65,
-  0.7913
+  0.6818,
+  0.8163
  ],
  "SA_total": [
-  89,
+  92,
   125
  ],
  "annotated_disruptors": {
@@ -68,7 +68,7 @@
  ],
  "bootstrap_n": 2000,
  "bootstrap_unit": "system (cluster)",
- "canonical_sha256": "fb80b9849d8bdee3ae9b511abf2e6da9656071208eacff5be08e23366ce2d614",
+ "canonical_sha256": "aba940a0ad211535b9d6e1d6ce83ca480b0dd4f38b1e14a033d183a9e1833e12",
  "canonical_source": "reference_outputs/scored_61var_canonical.csv",
  "disruptor_definitions": {
   "ANNOTATED": "literature annotation for that axis contains 'destab' (ground-truth side only)",
@@ -150,7 +150,7 @@
   "pathogenic": 20,
   "vus": 2
  },
- "silent_n": 31,
+ "silent_n": 34,
  "silent_pathogenic_by_expected": {
   "fold_mechanism": 2,
   "interface_uncommitted_magnitude": 1,
@@ -209,14 +209,14 @@
   }
  },
  "stress_LOSO_MC_range": [
-  0.6759,
-  0.713
+  0.7037,
+  0.75
  ],
  "stress_noise_label_identical_frac": 0.3,
  "stress_noise_sd": 0.0133,
  "stress_permutation": {
-  "MC_null_mean": 0.4721,
-  "MC_observed": 0.693,
+  "MC_null_mean": 0.4838,
+  "MC_observed": 0.7193,
   "p": 0.0005
  },
  "sweep_discrepancy": "frozen note said 'plateau across t=1.0-2.5'. Canonical: MC RISES monotonically 0.5789->0.6491->0.6842->0.7193 over t=1.0..2.5 then falls to 0.6930 at t=3.0 (NOT a plateau). SA IS a plateau: 0.7557 across t=1.5-2.5, 0.7176 at t=1.0 and t=3.0. Claim must be restated as 'SA plateau; MC peaks at t=2.5'.",

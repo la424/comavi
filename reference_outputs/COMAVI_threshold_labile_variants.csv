@@ -10,7 +10,7 @@ I500T,smad4_smad3,structurally_silent,False,1.6233,False,0.0,0.0,1.0,1.0,1.0
 P1806A,brca1_brct,structurally_silent,False,1.6691,False,0.0,0.0,1.0,1.0,1.0
 D96V,cam_cav12,structurally_silent,False,1.8364,False,0.0,0.0,1.0,1.0,1.0
 G322D,msh2_msh6,structurally_silent,False,2.0405,False,0.0,0.0,0.0,1.0,1.0
-G12D,kras_craf,ppi_destab_mechanism,True,2.2859,True,0.5,0.5,0.5,0.0,0.0
+G12D,kras_craf,structurally_silent,False,2.2859,False,0.0,0.0,0.0,1.0,1.0
 H1047R,pi3k,structurally_silent,False,2.321,False,0.0,0.0,0.0,1.0,1.0
 R145Q,troponin_ic,structurally_silent,False,2.5295,False,0.0,0.0,0.0,0.0,1.0
 W37Y,hemoglobin_tetramer,mixed_structural,True,2.8501,True,1.0,1.0,0.5,0.5,0.5

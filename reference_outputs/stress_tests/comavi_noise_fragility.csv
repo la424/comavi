@@ -4,12 +4,12 @@ pi3k,pik3ca,H1047R,Structural variant — contact-driven (DDG neutral),0.288
 cam_cav12,calm1,D96V,Interface variant (DDG neutral),0.124
 pi3k,pik3r1,N564D,Multimer fold + PPI destabilization,0.05
 smad4_smad3,smad4,R361C,Both fold + PPI destabilization,0.03
-brca1_brct,,R1699Q,No structural effect detected,0.028
+brca1_brct,brca1,R1699Q,No structural effect detected,0.028
 mlh1_pms2,mlh1,L749P,Multimer fold destabilization at interface,0.024
 msh2_msh6,msh2,G674R,Both fold destabilization,0.016
 troponin_ic,tnni3,R145G,Multimer fold destabilization at interface,0.004
 cfh_c3b,cfh,R78G,Multimer fold + PPI destabilization,0.0
-brca1_brct,,Y1853C,Monomer fold destabilization,0.0
+brca1_brct,brca1,Y1853C,Monomer fold destabilization,0.0
 troponin_ic,tnni3,R162W,Interface variant (DDG neutral),0.0
 troponin_ic,tnni3,P82S,No structural effect detected,0.0
 vwf_gpiba,vwf,R1334Q,Multimer fold + PPI destabilization,0.0
@@ -19,16 +19,16 @@ smad4_smad3,smad4,D351H,Both fold destabilization,0.0
 cfh_c3b,cfh,I62V,Structural variant — contact-driven (DDG neutral),0.0
 smad4_smad3,smad4,I500T,Structural variant — contact-driven (DDG neutral),0.0
 smad4_smad3,smad4,I500V,No structural effect detected,0.0
-brca1_brct,,A1843P,Monomer fold destabilization,0.0
-brca1_brct,,R1699L,No structural effect detected,0.0
-brca1_brct,,V1736A,No structural effect detected,0.0
-brca1_brct,,M1783T,Monomer fold destabilization,0.0
-brca1_brct,,V1808A,Monomer fold destabilization,0.0
-brca1_brct,,V1665M,Monomer fold destabilization,0.0
-brca1_brct,,R1751Q,No structural effect detected,0.0
-brca1_brct,,L1664P,No structural effect detected,0.0
-brca1_brct,,M1663K,No structural effect detected,0.0
-brca1_brct,,P1806A,No structural effect detected,0.0
+brca1_brct,brca1,A1843P,Monomer fold destabilization,0.0
+brca1_brct,brca1,R1699L,No structural effect detected,0.0
+brca1_brct,brca1,V1736A,No structural effect detected,0.0
+brca1_brct,brca1,M1783T,Monomer fold destabilization,0.0
+brca1_brct,brca1,V1808A,Monomer fold destabilization,0.0
+brca1_brct,brca1,V1665M,Monomer fold destabilization,0.0
+brca1_brct,brca1,R1751Q,No structural effect detected,0.0
+brca1_brct,brca1,L1664P,No structural effect detected,0.0
+brca1_brct,brca1,M1663K,No structural effect detected,0.0
+brca1_brct,brca1,P1806A,No structural effect detected,0.0
 cfh_c3b,cfh,R53H,No structural effect detected,0.0
 brca1_bard1,brca1,V11G,Multimer fold destabilization at interface,0.0
 hemoglobin_tetramer,hbb,W37G,Multimer fold + PPI destabilization,0.0

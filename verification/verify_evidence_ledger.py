@@ -55,10 +55,24 @@ DEFAULT_SUMMARY = REPO / "reference_outputs" / "COMAVI_evidence_ledger_summary.j
 # structural agreement 89/125. The invariant is now enforced by assertion in the
 # consuming figure rather than asserted in a comment.
 #
+#
+# v7.9 AUTHORISED RE-PIN. scripts/apply_ledger_corrections_v79.py reversed three
+# binding tokens (msh2_msh6 C697F, kras_craf G12D, kras_craf G12V) from destab
+# to neutral. Those three were the only rows in the ledger whose expected_token
+# contradicted its own recorded evidence_basis, which all three state as intact
+# binding; they were introduced by one v7.6 review batch (units D09, D18) that
+# changed the tokens without changing the bases. The contradiction is now
+# enforced by scripts/verify_ledger_token_basis.py rather than left to audit.
+# Headline metrics DO move and the manuscript moves with them: mechanism
+# consistency 0.6930 -> 0.7193, primary structural agreement 89/124 -> 92/124.
+# This pin is updated deliberately, not to silence a failure -- the mismatch it
+# raised was correct and is the only automatic guard on the canonical changing.
+#
 # Previous pins:
+#   v7.8  fb80b9849d8bdee3ae9b511abf2e6da9656071208eacff5be08e23366ce2d614
 #   v7.6  e4d657dee2625580bd41da05d9251fb69a224ddefdff6286f82a236511465d28
 #   v7.5  88cee917d00ea6705e851b59b7551ef8211052011768a732462ee59ef45031bb
-CANONICAL_SHA256 = "fb80b9849d8bdee3ae9b511abf2e6da9656071208eacff5be08e23366ce2d614"
+CANONICAL_SHA256 = "aba940a0ad211535b9d6e1d6ce83ca480b0dd4f38b1e14a033d183a9e1833e12"
 
 # Committed-axis count. v7.6 withdrew 11 commitments (expected token -> unknown),
 # taking the ledger and the canonical from 109 committed axes to 98.

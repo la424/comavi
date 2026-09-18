@@ -3,40 +3,40 @@
   "formula_version": "ISDS-v1",
   "population": {
     "n": 47,
-    "positive": 20,
-    "negative": 27,
+    "positive": 17,
+    "negative": 30,
     "systems": 13
   },
   "component_binary_baselines": [
     {
       "screen": "interface_status_alone",
       "tp": 15,
-      "fn": 5,
+      "fn": 2,
       "fp": 7,
-      "tn": 20,
-      "sensitivity": 0.75,
-      "specificity": 0.7407407407407407,
+      "tn": 23,
+      "sensitivity": 0.8823529411764706,
+      "specificity": 0.7666666666666667,
       "ppv": 0.6818181818181818
     },
     {
       "screen": "tier_without_interface_bonus",
-      "tp": 15,
-      "fn": 5,
-      "fp": 11,
-      "tn": 16,
-      "sensitivity": 0.75,
-      "specificity": 0.5925925925925926,
-      "ppv": 0.5769230769230769
+      "tp": 14,
+      "fn": 3,
+      "fp": 12,
+      "tn": 18,
+      "sensitivity": 0.8235294117647058,
+      "specificity": 0.6,
+      "ppv": 0.5384615384615384
     },
     {
       "screen": "full_tier_1_2",
-      "tp": 18,
-      "fn": 2,
-      "fp": 12,
-      "tn": 15,
-      "sensitivity": 0.9,
-      "specificity": 0.5555555555555556,
-      "ppv": 0.6
+      "tp": 17,
+      "fn": 0,
+      "fp": 13,
+      "tn": 17,
+      "sensitivity": 1.0,
+      "specificity": 0.5666666666666667,
+      "ppv": 0.5666666666666667
     }
   ],
   "four_state_agreement": {
@@ -47,96 +47,96 @@
       "Neither"
     ],
     "structural": [
-      16,
+      15,
       0,
       2,
-      2
+      0
     ],
     "no_lesion": [
-      2,
+      3,
       3,
       10,
-      12
+      14
     ]
   },
   "observed": {
-    "isds_roc_auc": 0.9166666666666666,
-    "isds_average_precision": 0.9226756241694325,
-    "energy_roc_auc": 0.8462962962962963,
-    "context_roc_auc": 0.8574074074074074,
-    "isds_minus_energy_auc": 0.0703703703703703,
-    "isds_minus_context_auc": 0.059259259259259234
+    "isds_roc_auc": 0.9431372549019608,
+    "isds_average_precision": 0.8181799892371737,
+    "energy_roc_auc": 0.8568627450980393,
+    "context_roc_auc": 0.8901960784313726,
+    "isds_minus_energy_auc": 0.08627450980392148,
+    "isds_minus_context_auc": 0.05294117647058816
   },
   "bootstrap": {
     "draws_requested": 10000,
     "seed": 20260821,
     "isds_roc_auc_ci95": [
-      0.7832809711906542,
-      0.9958334417273673
+      0.8582947768550235,
+      1.0
     ],
     "isds_average_precision_ci95": [
-      0.7795044150758527,
-      0.9944444444444444
+      0.5316137566137566,
+      1.0
     ],
     "isds_minus_energy_auc_ci95": [
-      -0.007215073529411736,
-      0.14087106446776604
+      0.010820765256249042,
+      0.15584590141041757
     ],
     "isds_minus_context_auc_ci95": [
-      -0.0024700640490114938,
-      0.1350457302512178
+      -0.016129032258064502,
+      0.1379953917050691
     ],
-    "fraction_isds_gt_energy": 0.9596,
-    "fraction_isds_gt_context": 0.9687,
+    "fraction_isds_gt_energy": 0.9864,
+    "fraction_isds_gt_context": 0.9235,
     "valid_draws": 10000
   },
   "leave_one_system_out": {
-    "roc_auc_min": 0.8999999999999999,
-    "roc_auc_max": 0.9743589743589743,
-    "roc_auc_median": 0.9145833333333334,
-    "average_precision_min": 0.8980228758169935,
-    "average_precision_max": 0.9647185774894754
+    "roc_auc_min": 0.9285714285714286,
+    "roc_auc_max": 0.983529411764706,
+    "roc_auc_median": 0.939655172413793,
+    "average_precision_min": 0.7823082010582011,
+    "average_precision_max": 0.9764301179708209
   },
   "top_k": [
     {
       "score": "isds_v1",
       "k": 5,
       "k_effective": 5,
-      "structural_mechanisms_in_top_k": 5,
-      "precision_at_k": 1.0,
-      "recovery_at_k": 0.25
+      "structural_mechanisms_in_top_k": 4,
+      "precision_at_k": 0.8,
+      "recovery_at_k": 0.23529411764705882
     },
     {
       "score": "isds_v1",
       "k": 10,
       "k_effective": 10,
-      "structural_mechanisms_in_top_k": 10,
-      "precision_at_k": 1.0,
-      "recovery_at_k": 0.5
+      "structural_mechanisms_in_top_k": 9,
+      "precision_at_k": 0.9,
+      "recovery_at_k": 0.5294117647058824
     },
     {
       "score": "isds_v1",
       "k": 15,
       "k_effective": 15,
-      "structural_mechanisms_in_top_k": 14,
-      "precision_at_k": 0.9333333333333333,
-      "recovery_at_k": 0.7
+      "structural_mechanisms_in_top_k": 13,
+      "precision_at_k": 0.8666666666666667,
+      "recovery_at_k": 0.7647058823529411
     },
     {
       "score": "isds_v1",
       "k": 20,
       "k_effective": 20,
-      "structural_mechanisms_in_top_k": 17,
-      "precision_at_k": 0.85,
-      "recovery_at_k": 0.85
+      "structural_mechanisms_in_top_k": 16,
+      "precision_at_k": 0.8,
+      "recovery_at_k": 0.9411764705882353
     },
     {
       "score": "isds_v1",
       "k": 25,
       "k_effective": 25,
-      "structural_mechanisms_in_top_k": 18,
-      "precision_at_k": 0.72,
-      "recovery_at_k": 0.9
+      "structural_mechanisms_in_top_k": 17,
+      "precision_at_k": 0.68,
+      "recovery_at_k": 1.0
     }
   ],
   "score_bands": [
@@ -151,8 +151,8 @@
     {
       "isds_band": "0.20-<0.40",
       "n_variants": 10,
-      "n_structural_mechanism": 2,
-      "structural_mechanism_fraction": 0.2,
+      "n_structural_mechanism": 0,
+      "structural_mechanism_fraction": 0.0,
       "systems": "brca1_bard1;hemoglobin_dimer;kras_craf;mlh1_pms2;msh2_msh6;smad4_smad3;troponin_ic;vwf_gpiba",
       "variants": "R145Q;G12D;A1381T;V384D;H718Y;I500V;E6V;G12V;K45R;G322D"
     },
@@ -175,37 +175,37 @@
     {
       "isds_band": "0.80-1.00",
       "n_variants": 9,
-      "n_structural_mechanism": 9,
-      "structural_mechanism_fraction": 1.0,
+      "n_structural_mechanism": 8,
+      "structural_mechanism_fraction": 0.8888888888888888,
       "systems": "brca1_bard1;cfh_c3b;hemoglobin_tetramer;msh2_msh6;smad4_smad3;vwf_gpiba",
       "variants": "C697F;D351H;W37G;R361C;C61G;W37A;W37E;R78G;R1334Q"
     }
   ],
   "mechanism_localization_final_values": {
-    "whole_variant_score": "39.5/57 = 0.693",
-    "interaction_subset_score": "32.5/47 = 0.691",
+    "whole_variant_score": "41/57 = 0.719",
+    "interaction_subset_score": "34/47 = 0.723",
     "brct_subset_score": "7/10 = 0.700",
     "convention": "primary (57 mechanism-gradeable variants)",
     "monomer_agreement": "19/25 = 0.760",
     "complex_context_agreement": "17/22 = 0.773",
-    "binding_agreement": "20/30 = 0.667",
-    "tier_agreement": "33/47 = 0.702",
-    "all_energetic_agreement": "56/77 = 0.727",
-    "historical_four_output": "89/124 = 0.718",
+    "binding_agreement": "22/30 = 0.733",
+    "tier_agreement": "34/47 = 0.723",
+    "all_energetic_agreement": "58/77 = 0.753",
+    "historical_four_output": "92/124 = 0.742",
     "all_row": {
       "convention": "all 61 benchmark rows",
       "monomer_agreement": "19/26 = 0.731",
       "complex_context_agreement": "17/22 = 0.773",
-      "binding_agreement": "20/30 = 0.667",
-      "tier_agreement": "33/47 = 0.702",
-      "all_energetic_agreement": "56/78 = 0.718",
-      "historical_four_output": "89/125 = 0.712"
+      "binding_agreement": "22/30 = 0.733",
+      "tier_agreement": "34/47 = 0.723",
+      "all_energetic_agreement": "58/78 = 0.744",
+      "historical_four_output": "92/125 = 0.736"
     }
   },
   "files": {
-    "canonical_input_sha256": "85ed9f33d182d5c3c338106968d8076ab79883b21f3b930c935dc183271e8c7c",
+    "canonical_input_sha256": "eb0a90c13aeabe80e1c918090e6de8c2177319cfe56a0d25d925c57ec7c5ebfc",
     "a636p_audit_sha256": "d1a60faac6f5b71765f24d84f785d2c29ea8323be5140e93e44fd68b73e12e23",
     "canonical_isds_audit_sha256": "39ab05d6cc611c9961b0b8d585b9cbefbb06d5bbafbba8b6be121f91b8615d5b",
-    "per_variant_sha256": "f69d7f3b0e51f50ef877e978bf1d2705ddd344e1a1a8303422a6320ca7c946d9"
+    "per_variant_sha256": "dd4d12e32f8f97ca293e477f966f55c898dcb46c67de60442d11992afab66ba9"
   }
 }

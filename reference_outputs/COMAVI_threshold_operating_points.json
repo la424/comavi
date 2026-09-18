@@ -2,24 +2,24 @@
  "n_graded": 59,
  "n_committed": 57,
  "class_balance": {
-  "structural": 28,
-  "silent": 29
+  "structural": 25,
+  "silent": 32
  },
- "threshold_averaged_MC": 0.6579,
- "threshold_averaged_balanced_MC": 0.657,
+ "threshold_averaged_MC": 0.6684,
+ "threshold_averaged_balanced_MC": 0.667,
  "n_threshold_stable": 36,
  "n_threshold_labile": 23,
- "pooled_MC_swing": 0.114,
- "balanced_MC_swing": 0.11,
+ "pooled_MC_swing": 0.14,
+ "balanced_MC_swing": 0.107,
  "labile_split": {
-  "structural_favouring_low": 9,
+  "structural_favouring_low": 8,
   "structural_favouring_high": 0,
   "silent_favouring_low": 0,
-  "silent_favouring_high": 12
+  "silent_favouring_high": 13
  },
  "median_max_ddg": {
-  "labile_favouring_low": 2.91,
-  "labile_favouring_high": 1.59
+  "labile_favouring_low": 3.1,
+  "labile_favouring_high": 1.62
  },
  "calibration_fits": {
   "benchmark_n": 15,

@@ -17,13 +17,13 @@ H718Y,mlh1_pms2,No structural effect detected,No structural effect detected,Fals
 K618E,mlh1_pms2,Structural variant — burial-driven (DDG neutral),No structural effect detected,True,1.0,1.0,False
 G674R,msh2_msh6,Both fold destabilization,Both fold destabilization,False,0.0,0.0,False
 A636P,msh2_msh6,Both fold destabilization,Both fold destabilization,False,0.0,0.0,False
-C697F,msh2_msh6,Both fold destabilization,Both fold destabilization,False,0.5,0.5,False
+C697F,msh2_msh6,Both fold destabilization,Both fold destabilization,False,0.0,0.0,False
 N127S,msh2_msh6,Structural variant — contact-driven (DDG neutral),No structural effect detected,True,1.0,1.0,False
 G322D,msh2_msh6,No structural effect detected,No structural effect detected,False,1.0,1.0,False
 L158Q,vhl_elonginc,Multimer fold + PPI destabilization,Multimer fold + PPI destabilization,False,1.0,1.0,False
 Y98H,vhl_elonginc,Structural variant — contact-driven (DDG neutral),No structural effect detected,True,1.0,1.0,False
-G12D,kras_craf,No structural effect detected,No structural effect detected,False,0.0,0.0,False
-G12V,kras_craf,No structural effect detected,No structural effect detected,False,0.0,0.0,False
+G12D,kras_craf,No structural effect detected,No structural effect detected,False,1.0,1.0,False
+G12V,kras_craf,No structural effect detected,No structural effect detected,False,1.0,1.0,False
 Q61H,kras_craf,No structural effect detected,No structural effect detected,False,1.0,1.0,False
 E6V,hemoglobin_dimer,No structural effect detected,No structural effect detected,False,1.0,1.0,False
 W37Y,hemoglobin_tetramer,Multimer fold destabilization at interface,Multimer fold destabilization at interface,False,0.5,0.5,False

@@ -148,10 +148,17 @@ def main():
     canon = pd.read_csv(CANON, low_memory=False)
     result = build(canon)
 
+    # Structural checks, not frozen literals. The v7.9 ground-truth correction
+    # moved the headline from 39.5 to 41.0 and three literals like the one that
+    # used to sit here all failed at once; bumping them would have removed the
+    # guard. Recomputing the expectation from the canonical keeps it live.
+    _W = {"consistent": 1.0, "partial": 0.5, "inconsistent": 0.0}
+    _g = canon[canon.mech_consistency_t25.isin(_W)]
     p = result["population"]
-    assert p["graded"] == 57, p["graded"]
-    assert p["structural"] + p["silent"] == 57
-    assert abs(result["headline_score"]["total"] - 39.5) < 1e-9
+    assert p["graded"] == len(_g), (p["graded"], len(_g))
+    assert p["structural"] + p["silent"] == p["graded"]
+    assert abs(result["headline_score"]["total"]
+               - _g.mech_consistency_t25.map(_W).sum()) < 1e-9
     # the weakest arm claim in the manuscript rests on this ordering
     means = {k: v["mean_grade"] for k, v in result["per_class"].items()}
     assert min(means, key=means.get) == "ppi_destab_mechanism", means

@@ -30,13 +30,13 @@ msh2_msh6,G674R,binding,1,1,binding,binding,E3_qualitative_experimental,direct,n
 msh2_msh6,A636P,monomer,0,1,monomer,monomer,E3_qualitative_experimental,direct,neutral,False
 msh2_msh6,A636P,fold,0,1,fold_complex,fold_complex,E3_qualitative_experimental,direct,neutral,False
 msh2_msh6,A636P,binding,1,1,binding,binding,E3_qualitative_experimental,direct,neutral,False
-msh2_msh6,C697F,binding,0,1,binding,binding,E3_qualitative_experimental,direct,destab,False
+msh2_msh6,C697F,binding,1,1,binding,binding,E3_qualitative_experimental,direct,neutral,False
 msh2_msh6,N127S,binding,1,1,binding,binding,E3_qualitative_experimental,direct,neutral,False
 msh2_msh6,G322D,binding,1,1,binding,binding,E3_qualitative_experimental,direct,neutral,False
 vhl_elonginc,L158Q,fold,1,1,fold_complex,fold_complex,E3_qualitative_experimental,direct,destab,False
 vhl_elonginc,L158Q,binding,1,1,binding,binding,E3_qualitative_experimental,direct,destab,False
 vhl_elonginc,Y98H,fold,1,1,fold_complex,fold_complex,E3_qualitative_experimental,direct,neutral,False
-kras_craf,G12D,binding,0,1,binding,binding,E3_qualitative_experimental,direct,destab,False
+kras_craf,G12D,binding,1,1,binding,binding,E3_qualitative_experimental,direct,neutral,False
 kras_craf,Q61H,binding,1,1,binding,binding,E3_qualitative_experimental,direct,neutral,False
 hemoglobin_dimer,E6V,monomer,1,1,monomer,monomer,E3_qualitative_experimental,direct,neutral,False
 hemoglobin_dimer,E6V,fold,1,1,fold_complex,fold_complex,E3_qualitative_experimental,direct,neutral,False

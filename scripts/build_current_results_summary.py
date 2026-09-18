@@ -219,17 +219,17 @@ def build_text() -> str:
         ),
     ]
 
-    if all_total != [89, 125]:
+    if all_total != [92, 125]:
         raise RuntimeError(
             f"Unexpected all-row total: {all_total}"
         )
 
-    if primary_total != [89, 124]:
+    if primary_total != [92, 124]:
         raise RuntimeError(
             f"Unexpected primary total: {primary_total}"
         )
 
-    if energetic_primary != [56, 77]:
+    if energetic_primary != [58, 77]:
         raise RuntimeError(
             "Unexpected primary energetic-axis total: "
             f"{energetic_primary}"
@@ -248,7 +248,7 @@ def build_text() -> str:
     if (
         float(mechanism_values.sum()),
         len(mechanism_values),
-    ) != (39.5, 57):
+    ) != (41.0, 57):
         raise RuntimeError(
             "Unexpected mechanism-consistency result."
         )

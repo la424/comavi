@@ -195,8 +195,13 @@ for bar,val,n in zip(bars,vals,_pnums): ax.text(val+.015,bar.get_y()+bar.get_hei
 # honest interval; test D resamples variants and understates it, so the row is
 # selected explicitly.
 _REPO=Path(__file__).resolve().parents[2]
-_stress=_REPO/'verification_output'/'comavi_stress_tests.csv'
-assert _stress.is_file(), f'{_stress} missing — run verification/stress_tests.py --out-dir verification_output first'
+# Reads the COMMITTED stress outputs, not verification_output/. That directory
+# is untracked -- git ls-files returns nothing for it -- so this figure was
+# displaying a cluster CI from a file no one else has, it would abort on a
+# clean clone, and the copy on this machine had been stale for two days and
+# carried pre-correction values. reference_outputs/stress_tests/ is what ships.
+_stress=_REPO/'reference_outputs'/'stress_tests'/'comavi_stress_tests.csv'
+assert _stress.is_file(), f'{_stress} missing — run verification/stress_tests.py --out-dir reference_outputs/stress_tests first'
 _sb=pd.read_csv(_stress)
 _row=_sb[_sb['test'].eq('cluster bootstrap 95% CI (MC)')]
 assert len(_row)==1, f'expected one cluster-bootstrap MC row, found {len(_row)}'

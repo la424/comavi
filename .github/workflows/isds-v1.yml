@@ -154,6 +154,18 @@ jobs:
           git diff --exit-code -- \
             reference_outputs/COMAVI_tier_construction.json
 
+      - name: Verify the ground truth agrees with its own evidence
+        # Every expected token carries a written evidence basis and a citation.
+        # Nothing checked that the two said the same thing, and three did not:
+        # one v7.6 review batch changed three binding tokens from neutral to
+        # destab without changing bases that record intact binding. Those three
+        # propagated into the grading, the prioritization population and the
+        # manuscript before an audit caught them. Reversed in v7.9; this gate
+        # makes the class of error fail loudly instead.
+        run: |
+          python scripts/verify_ledger_token_basis.py
+          python scripts/apply_ledger_corrections_v79.py --check
+
       - name: Verify the manuscript's embedded figures match their generators
         # Every other audit here reads the manuscript's TEXT. A .docx stores its
         # figures as embedded image parts, which no text audit can see, so

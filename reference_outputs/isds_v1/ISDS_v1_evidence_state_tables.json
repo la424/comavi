@@ -1,8 +1,8 @@
 {
  "population": {
   "n": 47,
-  "structural": 20,
-  "no_lesion": 27
+  "structural": 17,
+  "no_lesion": 30
  },
  "firing_definition": [
   "concordant_disruption",
@@ -13,68 +13,68 @@
    "operating_point": "1.0 default",
    "threshold": "t10",
    "Convergent": {
-    "structural": 17,
-    "no_lesion": 8
+    "structural": 16,
+    "no_lesion": 9
    },
    "Energy only": {
-    "structural": 1,
-    "no_lesion": 7
+    "structural": 0,
+    "no_lesion": 8
    },
    "Context only": {
     "structural": 1,
     "no_lesion": 4
    },
    "Neither": {
-    "structural": 1,
-    "no_lesion": 8
+    "structural": 0,
+    "no_lesion": 9
    }
   },
   {
    "operating_point": "1.5",
    "threshold": "t15",
    "Convergent": {
-    "structural": 16,
-    "no_lesion": 5
+    "structural": 15,
+    "no_lesion": 6
    },
    "Energy only": {
-    "structural": 1,
-    "no_lesion": 5
+    "structural": 0,
+    "no_lesion": 6
    },
    "Context only": {
     "structural": 2,
     "no_lesion": 7
    },
    "Neither": {
-    "structural": 1,
-    "no_lesion": 10
+    "structural": 0,
+    "no_lesion": 11
    }
   },
   {
    "operating_point": "2.0",
    "threshold": "t20",
    "Convergent": {
-    "structural": 16,
-    "no_lesion": 3
+    "structural": 15,
+    "no_lesion": 4
    },
    "Energy only": {
-    "structural": 1,
-    "no_lesion": 4
+    "structural": 0,
+    "no_lesion": 5
    },
    "Context only": {
     "structural": 2,
     "no_lesion": 9
    },
    "Neither": {
-    "structural": 1,
-    "no_lesion": 11
+    "structural": 0,
+    "no_lesion": 12
    }
   },
   {
    "operating_point": "2.5 reference",
    "threshold": "t25",
    "Convergent": {
-    "structural": 16,
-    "no_lesion": 2
+    "structural": 15,
+    "no_lesion": 3
    },
    "Energy only": {
     "structural": 0,
@@ -85,16 +85,16 @@
     "no_lesion": 10
    },
    "Neither": {
-    "structural": 2,
-    "no_lesion": 12
+    "structural": 0,
+    "no_lesion": 14
    }
   },
   {
    "operating_point": "tSAP",
    "threshold": "tSAP",
    "Convergent": {
-    "structural": 12,
-    "no_lesion": 2
+    "structural": 11,
+    "no_lesion": 3
    },
    "Energy only": {
     "structural": 0,
@@ -105,8 +105,8 @@
     "no_lesion": 10
    },
    "Neither": {
-    "structural": 2,
-    "no_lesion": 13
+    "structural": 0,
+    "no_lesion": 15
    }
   }
  ],
@@ -115,110 +115,110 @@
    "operating_point": "1.0 default",
    "threshold": "t10",
    "any_energetic_firing": {
-    "tp": 18,
-    "fn": 2,
-    "fp": 15,
-    "tn": 12,
-    "sensitivity": 0.9,
-    "specificity": 0.444,
-    "ppv": 0.545
+    "tp": 16,
+    "fn": 1,
+    "fp": 17,
+    "tn": 13,
+    "sensitivity": 0.941,
+    "specificity": 0.433,
+    "ppv": 0.485
    },
    "convergent_energy_and_tier": {
-    "tp": 17,
-    "fn": 3,
-    "fp": 8,
-    "tn": 19,
-    "sensitivity": 0.85,
-    "specificity": 0.704,
-    "ppv": 0.68
+    "tp": 16,
+    "fn": 1,
+    "fp": 9,
+    "tn": 21,
+    "sensitivity": 0.941,
+    "specificity": 0.7,
+    "ppv": 0.64
    }
   },
   {
    "operating_point": "1.5",
    "threshold": "t15",
    "any_energetic_firing": {
-    "tp": 17,
-    "fn": 3,
-    "fp": 10,
-    "tn": 17,
-    "sensitivity": 0.85,
-    "specificity": 0.63,
-    "ppv": 0.63
+    "tp": 15,
+    "fn": 2,
+    "fp": 12,
+    "tn": 18,
+    "sensitivity": 0.882,
+    "specificity": 0.6,
+    "ppv": 0.556
    },
    "convergent_energy_and_tier": {
-    "tp": 16,
-    "fn": 4,
-    "fp": 5,
-    "tn": 22,
-    "sensitivity": 0.8,
-    "specificity": 0.815,
-    "ppv": 0.762
+    "tp": 15,
+    "fn": 2,
+    "fp": 6,
+    "tn": 24,
+    "sensitivity": 0.882,
+    "specificity": 0.8,
+    "ppv": 0.714
    }
   },
   {
    "operating_point": "2.0",
    "threshold": "t20",
    "any_energetic_firing": {
-    "tp": 17,
-    "fn": 3,
-    "fp": 7,
-    "tn": 20,
-    "sensitivity": 0.85,
-    "specificity": 0.741,
-    "ppv": 0.708
+    "tp": 15,
+    "fn": 2,
+    "fp": 9,
+    "tn": 21,
+    "sensitivity": 0.882,
+    "specificity": 0.7,
+    "ppv": 0.625
    },
    "convergent_energy_and_tier": {
-    "tp": 16,
-    "fn": 4,
-    "fp": 3,
-    "tn": 24,
-    "sensitivity": 0.8,
-    "specificity": 0.889,
-    "ppv": 0.842
+    "tp": 15,
+    "fn": 2,
+    "fp": 4,
+    "tn": 26,
+    "sensitivity": 0.882,
+    "specificity": 0.867,
+    "ppv": 0.789
    }
   },
   {
    "operating_point": "2.5 reference",
    "threshold": "t25",
    "any_energetic_firing": {
-    "tp": 16,
-    "fn": 4,
-    "fp": 5,
-    "tn": 22,
-    "sensitivity": 0.8,
-    "specificity": 0.815,
-    "ppv": 0.762
+    "tp": 15,
+    "fn": 2,
+    "fp": 6,
+    "tn": 24,
+    "sensitivity": 0.882,
+    "specificity": 0.8,
+    "ppv": 0.714
    },
    "convergent_energy_and_tier": {
-    "tp": 16,
-    "fn": 4,
-    "fp": 2,
-    "tn": 25,
-    "sensitivity": 0.8,
-    "specificity": 0.926,
-    "ppv": 0.889
+    "tp": 15,
+    "fn": 2,
+    "fp": 3,
+    "tn": 27,
+    "sensitivity": 0.882,
+    "specificity": 0.9,
+    "ppv": 0.833
    }
   },
   {
    "operating_point": "tSAP",
    "threshold": "tSAP",
    "any_energetic_firing": {
-    "tp": 12,
-    "fn": 8,
-    "fp": 4,
-    "tn": 23,
-    "sensitivity": 0.6,
-    "specificity": 0.852,
-    "ppv": 0.75
+    "tp": 11,
+    "fn": 6,
+    "fp": 5,
+    "tn": 25,
+    "sensitivity": 0.647,
+    "specificity": 0.833,
+    "ppv": 0.688
    },
    "convergent_energy_and_tier": {
-    "tp": 12,
-    "fn": 8,
-    "fp": 2,
-    "tn": 25,
-    "sensitivity": 0.6,
-    "specificity": 0.926,
-    "ppv": 0.857
+    "tp": 11,
+    "fn": 6,
+    "fp": 3,
+    "tn": 27,
+    "sensitivity": 0.647,
+    "specificity": 0.9,
+    "ppv": 0.786
    }
   }
  ]

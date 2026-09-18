@@ -17,13 +17,13 @@ H718Y,mlh1_pms2,structurally_silent,False,True,1.2012,0.0,1.0,1.0,1.0,1.0
 K618E,mlh1_pms2,structurally_silent,False,True,1.1737,0.0,1.0,1.0,1.0,1.0
 G674R,msh2_msh6,structurally_silent,False,False,3.9881,0.0,0.0,0.0,0.0,0.0
 A636P,msh2_msh6,structurally_silent,False,False,5.3805,0.0,0.0,0.0,0.0,0.0
-C697F,msh2_msh6,ppi_destab_mechanism,True,False,15.2559,0.5,0.5,0.5,0.5,0.5
+C697F,msh2_msh6,structurally_silent,False,False,15.2559,0.0,0.0,0.0,0.0,0.0
 N127S,msh2_msh6,structurally_silent,False,True,1.4817,0.0,1.0,1.0,1.0,1.0
 G322D,msh2_msh6,structurally_silent,False,True,2.0405,0.0,0.0,0.0,1.0,1.0
 L158Q,vhl_elonginc,mixed_structural,True,True,2.9118,1.0,1.0,1.0,1.0,0.5
 Y98H,vhl_elonginc,structurally_silent,False,True,1.285,0.0,1.0,1.0,1.0,1.0
-G12D,kras_craf,ppi_destab_mechanism,True,True,2.2859,0.5,0.5,0.5,0.0,0.0
-G12V,kras_craf,ppi_destab_mechanism,True,False,0.4266,0.0,0.0,0.0,0.0,0.0
+G12D,kras_craf,structurally_silent,False,True,2.2859,0.0,0.0,0.0,1.0,1.0
+G12V,kras_craf,structurally_silent,False,False,0.4266,1.0,1.0,1.0,1.0,1.0
 Q61H,kras_craf,structurally_silent,False,False,0.7045,1.0,1.0,1.0,1.0,1.0
 E6V,hemoglobin_dimer,structurally_silent,False,False,0.8044,1.0,1.0,1.0,1.0,1.0
 W37Y,hemoglobin_tetramer,mixed_structural,True,True,2.8501,1.0,1.0,0.5,0.5,0.5

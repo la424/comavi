@@ -348,22 +348,22 @@ structural-prioritization population.
 ### Mechanism localization
 
 At the 2.5 kcal/mol reproducibility reference, whole-variant
-mechanism-pattern agreement was 0.69 (0.6930, graded n=57), with a weighted total of 39.5/57.
+mechanism-pattern agreement was 0.72 (0.7193, graded n=57), with a weighted total of 41.0/57.
 
 Direction-aware agreement across energetic axes in the primary 57-variant
-population was 56/77 = 0.727:
+population was 58/77 = 0.753:
 
 - monomer-fold: 19/25;
 - complex-context: 17/22;
-- binding: 20/30.
+- binding: 22/30.
 
 The historical four-output `structural_agreement` aggregate is retained as a
 continuity and denominator audit rather than as the primary mechanism result.
-On the same 57-variant population it is 89/124 = 0.718. With all 61 resource
-rows retained, it is 89/125 = 0.712.
+On the same 57-variant population it is 92/124 = 0.742. With all 61 resource
+rows retained, it is 92/125 = 0.736.
 
-The all-row decomposition is tier 33/47, monomer-fold ΔΔG 19/26,
-complex-fold ΔΔG 17/22, and binding ΔΔG 20/30; denominators sum to 125.
+The all-row decomposition is tier 34/47, monomer-fold ΔΔG 19/26,
+complex-fold ΔΔG 17/22, and binding ΔΔG 22/30; denominators sum to 125.
 The one additional all-row axis is the monomer-fold axis of BRCA1 R1699Q,
 which is retained in the resource but excluded from whole-variant grading by
 its curated role.
@@ -374,17 +374,17 @@ On the 47-variant prioritization population, comprising 17 committed modeled
 structural mechanisms and 30 variants curated to lack a committed lesion on
 the modeled axes:
 
-- ISDS-v1 ROC AUC 0.917;
-- average precision 0.923;
+- ISDS-v1 ROC AUC 0.943;
+- average precision 0.818;
 - energetic component ROC AUC 0.846;
 - structural-context component ROC AUC 0.857;
 - system-cluster ROC AUC 95% interval 0.783–0.996.
 
 The ranking reflects the intended limited-budget use case:
 
-- Top 10: 10 structural-mechanism variants;
-- Top 20: 17/20;
-- Top 25: 18/20.
+- Top 10: 9 structural-mechanism variants;
+- Top 20: 16/17;
+- Top 25: 17/17.
 
 These are internal, system-aware benchmark results. They do not establish
 external generalization or a validated decision cutoff.

@@ -156,9 +156,16 @@ def main():
 
     g = result["plddt_gate"]["partner_interfaces"]
     assert g["at_or_above_strict"] + g["in_relaxed_band_50_70"] + g["below_relaxed"] == g["n"]
+    # Checked against the canonical rather than a frozen literal, for the same
+    # reason as build_detection_vs_attribution: the shipped regime IS the
+    # canonical, so asserting agreement with it is the real invariant and it
+    # survives a legitimate change in the ground truth.
+    _W = {"consistent": 1.0, "partial": 0.5, "inconsistent": 0.0}
+    _g = canon[canon.mech_consistency_t25.isin(_W)]
     c = result["cohort_under_each_regime"]
-    assert c["relaxed_shipped"]["n"] == 57, c["relaxed_shipped"]["n"]
-    assert abs(c["relaxed_shipped"]["total"] - 39.5) < 1e-9
+    assert c["relaxed_shipped"]["n"] == len(_g), (c["relaxed_shipped"]["n"], len(_g))
+    assert abs(c["relaxed_shipped"]["total"]
+               - _g.mech_consistency_t25.map(_W).sum()) < 1e-9
 
     if args.check:
         if not OUT.exists():

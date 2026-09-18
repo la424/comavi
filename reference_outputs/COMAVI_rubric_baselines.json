@@ -1,35 +1,36 @@
 {
  "population": {
   "n_graded": 57,
-  "curated_silent": 29,
-  "committed_structural": 28,
-  "silent_fraction": 0.5088
+  "curated_silent": 32,
+  "committed_structural": 25,
+  "silent_fraction": 0.5614
  },
  "observed": {
-  "score": 0.693,
-  "arm_curated_silent": 0.8276,
-  "arm_committed_structural": 0.5536,
-  "unweighted_mean_of_arms": 0.6906,
-  "note": "The cohort is near-balanced, so the weighted score and the unweighted mean of the two arms agree to within 0.003. The headline is already a balanced measure, not an average dominated by the easier class."
+  "score": 0.7193,
+  "arm_curated_silent": 0.8125,
+  "arm_committed_structural": 0.6,
+  "unweighted_mean_of_arms": 0.7063,
+  "gap_weighted_minus_balanced": 0.013,
+  "note": "The cohort is close to balanced (56.1% curated silent), so the weighted score and the unweighted mean of the two arms differ by 0.013. The headline is therefore close to a balanced measure rather than an average dominated by the easier class, but it is not exactly one and both are reported."
  },
  "baselines": {
   "never_fire": {
    "mechanism_label": "No structural effect detected",
    "n_graded": 57,
-   "score": 0.5088,
+   "score": 0.5614,
    "grade_counts": {
-    "consistent": 29,
-    "inconsistent": 28
+    "consistent": 32,
+    "inconsistent": 25
    },
    "note": "Calls every variant structurally silent. Scores every curated silent variant correct and misses every structural mechanism."
   },
   "always_fold_and_ppi": {
    "mechanism_label": "Both fold + PPI destabilization",
    "n_graded": 57,
-   "score": 0.4386,
+   "score": 0.386,
    "grade_counts": {
-    "consistent": 22,
-    "inconsistent": 29,
+    "consistent": 19,
+    "inconsistent": 32,
     "partial": 6
    },
    "note": "Calls every variant destabilizing on both fold subtypes and binding."
@@ -37,31 +38,31 @@
   "always_monomer_fold": {
    "mechanism_label": "Monomer fold destabilization",
    "n_graded": 57,
-   "score": 0.2807,
+   "score": 0.2544,
    "grade_counts": {
     "consistent": 8,
-    "inconsistent": 33,
-    "partial": 16
+    "inconsistent": 36,
+    "partial": 13
    },
    "note": "Calls every variant a monomer-fold destabilizer."
   },
   "always_multimer_fold": {
    "mechanism_label": "Multimer fold destabilization",
    "n_graded": 57,
-   "score": 0.2281,
+   "score": 0.2018,
    "grade_counts": {
-    "inconsistent": 31,
-    "partial": 26
+    "inconsistent": 34,
+    "partial": 23
    },
    "note": "Calls every variant a complex-context fold destabilizer."
   },
   "always_ppi": {
    "mechanism_label": "PPI destabilization",
    "n_graded": 57,
-   "score": 0.3333,
+   "score": 0.2807,
    "grade_counts": {
-    "consistent": 12,
-    "inconsistent": 31,
+    "consistent": 9,
+    "inconsistent": 34,
     "partial": 14
    },
    "note": "Calls every variant an interface destabilizer."
@@ -69,7 +70,7 @@
  },
  "best_trivial_strategy": {
   "key": "never_fire",
-  "score": 0.5088,
-  "margin_over_best_trivial": 0.1842
+  "score": 0.5614,
+  "margin_over_best_trivial": 0.1579
  }
 }

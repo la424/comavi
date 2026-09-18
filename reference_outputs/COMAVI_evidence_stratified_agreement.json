@@ -12,16 +12,16 @@
   "quant_ok": 20,
   "quant_n": 32,
   "quant_rate": 0.625,
-  "soft_ok": 36,
+  "soft_ok": 38,
   "soft_n": 46,
-  "soft_rate": 0.783,
-  "OR": 0.463,
-  "p": 0.2003
+  "soft_rate": 0.826,
+  "OR": 0.351,
+  "p": 0.065
  },
  "token_composition_by_grade": {
   "soft": {
-   "destab": 8,
-   "neutral": 38,
+   "destab": 6,
+   "neutral": 40,
    "stab": 0
   },
   "quantitative": {
@@ -36,20 +36,20 @@
     "quant_ok": 14,
     "quant_n": 24,
     "soft_ok": 4,
-    "soft_n": 8,
+    "soft_n": 6,
     "quant_rate": 0.583,
-    "soft_rate": 0.5,
-    "OR": 1.4,
-    "p": 0.7035
+    "soft_rate": 0.667,
+    "OR": 0.7,
+    "p": 1.0
    },
    "neutral": {
     "quant_ok": 6,
     "quant_n": 7,
-    "soft_ok": 32,
-    "soft_n": 38,
+    "soft_ok": 34,
+    "soft_n": 40,
     "quant_rate": 0.857,
-    "soft_rate": 0.842,
-    "OR": 1.125,
+    "soft_rate": 0.85,
+    "OR": 1.059,
     "p": 1.0
    },
    "stab": {
@@ -58,9 +58,9 @@
     "n": 1
    }
   },
-  "OR_mantel_haenszel": 1.3,
-  "chi2": 0.003,
-  "p": 0.9534
+  "OR_mantel_haenszel": 0.826,
+  "chi2": 0.01,
+  "p": 0.919
  },
  "by_evidence_type": {
   "E1_quantitative_energetic": {
@@ -74,9 +74,9 @@
    "rate": 0.286
   },
   "E3_qualitative_experimental": {
-   "ok": 18,
+   "ok": 20,
    "n": 25,
-   "rate": 0.72
+   "rate": 0.8
   },
   "E4_population_frequency": {
    "ok": 6,
@@ -96,9 +96,9 @@
    "rate": 0.833
   },
   "direct": {
-   "ok": 33,
+   "ok": 35,
    "n": 51,
-   "rate": 0.647
+   "rate": 0.686
   },
   "inferred": {
    "ok": 18,

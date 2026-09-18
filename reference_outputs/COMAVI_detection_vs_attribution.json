@@ -2,28 +2,28 @@
  "threshold": 2.5,
  "population": {
   "graded": 57,
-  "structural": 28,
-  "silent": 29
+  "structural": 25,
+  "silent": 32
  },
  "headline_score": {
-  "total": 39.5,
+  "total": 41.0,
   "n": 57,
-  "mean": 0.693
+  "mean": 0.7193
  },
  "detection": {
-  "k": 21,
-  "n": 28,
-  "rate": 0.75
+  "k": 20,
+  "n": 25,
+  "rate": 0.8
  },
  "attribution": {
   "k": 14,
-  "n": 28,
-  "rate": 0.5
+  "n": 25,
+  "rate": 0.56
  },
  "correct_rejection": {
-  "k": 24,
-  "n": 29,
-  "rate": 0.828
+  "k": 26,
+  "n": 32,
+  "rate": 0.812
  },
  "per_class": {
   "fold_mechanism": {
@@ -45,34 +45,29 @@
    "attribution": 5
   },
   "ppi_destab_mechanism": {
-   "n": 12,
-   "mean_grade": 0.4167,
+   "n": 9,
+   "mean_grade": 0.5,
    "consistent": 1,
-   "partial": 8,
-   "inconsistent": 3,
-   "detection": 9,
+   "partial": 7,
+   "inconsistent": 1,
+   "detection": 8,
    "attribution": 4
   },
   "structurally_silent": {
-   "n": 29,
-   "mean_grade": 0.8276,
-   "consistent": 24,
+   "n": 32,
+   "mean_grade": 0.8125,
+   "consistent": 26,
    "partial": 0,
-   "inconsistent": 5,
-   "correct_rejection": 24
+   "inconsistent": 6,
+   "correct_rejection": 26
   }
  },
  "interface_class_diagnosis": {
-  "n": 12,
+  "n": 9,
   "binding_axis_fires": 4,
-  "complex_fold_axis_fires": 8,
+  "complex_fold_axis_fires": 7,
   "note": "For variants curated as pure interface destabilizers the complex-context fold axis fires more often than the binding axis, so the lesion is detected but attributed to the wrong axis. This is the separation the pipeline exists to make and it is where the benchmark is weakest.",
   "large_monomer_effect": [
-   {
-    "gene": "MSH2",
-    "variant": "C697F",
-    "ddg_monomer": 13.29
-   },
    {
     "gene": "SMAD4",
     "variant": "D351H",

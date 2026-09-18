@@ -64,15 +64,15 @@
  "cohort_under_each_regime": {
   "relaxed_shipped": {
    "n": 57,
-   "total": 39.5,
-   "mean": 0.693
+   "total": 41.0,
+   "mean": 0.7193
   },
   "strict_confident_site_only": {
    "n": 50,
-   "total": 36.0,
-   "mean": 0.72
+   "total": 37.5,
+   "mean": 0.75
   },
-  "delta_mean": 0.027,
+  "delta_mean": 0.0307,
   "variants_removed_by_strict": [
    {
     "system": "mlh1_pms2",
