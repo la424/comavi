@@ -14,7 +14,12 @@ binning invents gaps between attainable values.
 """
 
 import argparse
+import sys
 from pathlib import Path
+
+# safe_path is on, so this file's own directory is NOT on sys.path.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import _repro  # noqa: F401,E402  -- deterministic PDF output; see figures/src/_repro.py
 
 import matplotlib
 matplotlib.use("Agg")

@@ -14,6 +14,12 @@ Data source: repository supplement tables (no hardcoded statistics).
 Run from repo root:  python figures/src/figureS2_skempi_validation.py
 """
 import pathlib
+import sys
+
+# safe_path is on, so this file's own directory is NOT on sys.path.
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import _repro  # noqa: F401,E402  -- deterministic PDF output; see figures/src/_repro.py
+
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import pandas as pd

@@ -1,20 +1,10 @@
-"""Shared canvas geometry and font ladder for COMAVI manuscript figures.
+"""Shared canvas geometry, font ladder, and deterministic PDF output.
 
-Why this module exists
-----------------------
-The figures were originally authored at whatever canvas width suited each
-one (7.2, 9.2, 11.6, 13.4, 13.8 in). Every figure then lands in the same
-6.5-inch manuscript text column, so each was scaled by a *different* factor
-(0.90x down to 0.47x) and its type shrank by that same factor. Measured on
-the v22 embeds, effective type ran from 7.3 pt (fine) down to 3.7 pt
-(illegible, and below any journal's floor).
-
-The fix is not to enlarge fonts -- it is to author every figure at ONE
-width, so that the page scale factor is the same for all of them and the
-authored point size is the delivered point size.
-
-    authored at COLUMN_W = 7.2 in  ->  placed at DOC_W = 6.5 in
-    scale 0.903, so an 8.0 pt label is delivered at 7.2 pt.
+Reproducible PDFs
+-----------------
+See _repro, imported below: it pins SOURCE_DATE_EPOCH so the PDF sidecars are
+byte-reproducible and the figure checksum manifests can verify after a
+rebuild.
 
 Font ladder
 -----------
@@ -30,6 +20,8 @@ does not fit at its role's size, the layout gets fixed -- not the size.
 Delivered at 0.903x these are 7.2 / 6.3 / 5.4 pt. The 5.4 pt tick floor is
 the reason no figure may be authored wider than COLUMN_W.
 """
+import _repro  # noqa: F401  -- pins SOURCE_DATE_EPOCH before any savefig
+
 import matplotlib as mpl
 
 # ---- geometry -------------------------------------------------------------

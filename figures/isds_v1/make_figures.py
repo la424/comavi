@@ -2,11 +2,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+import _repro  # noqa: F401  -- deterministic PDF output; see figures/src/_repro.py
 
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
-import json
 import numpy as np
 import pandas as pd
 from sklearn.metrics import precision_recall_curve, roc_curve
@@ -100,36 +103,32 @@ bodies=['FoldX on isolated subunit','FoldX on assembled coordinates','FoldX inte
 for y,(fc,ec),t,b in zip(ys,colors,titles,bodies):
     box(ax,(0.20,y),(0.23,0.14),t,b,fc,ec,8.5)
 # arrows to two outputs
-# The three energy axes feed BOTH outputs, so they gather on a bracket and the
-# bracket forks: one arm to the priority score (as the energy component), one to
-# the mechanism profile (as the signed per-axis values). The forked arm was the
-# one missing before. isds_v1 = 0.5*(energy + context) -- analyze_isds_v1.py:138.
+# ALL FOUR evidence rows feed BOTH outputs. Verified against the tier-ablation
+# record, not asserted: classify_mechanism_at() in apply_concordance_v5.py reads
+# comavi_tier (it selects contact-driven vs burial-driven vocabulary), and
+# blanking the tier changes 7 of 57 mechanism labels. An earlier version of this
+# figure routed the tier to the priority score alone; that was wrong, and the
+# assertion below is what stops it recurring.
+_abl = json.loads((Path(__file__).resolve().parents[2] / 'reference_outputs'
+                   / 'COMAVI_audit_summary.json').read_text())['tier_ablation']
+assert _abl['n_labels_changed'] > 0, (
+    'tier-ablation record says the tier changes no mechanism label; if that is now '
+    'true this figure must be rewired to route the tier to the priority score only')
+# The four rows gather on a single bracket, and the bracket forks to both
+# products: the priority score (energy + context components) and the mechanism
+# profile (signed per-axis values plus the tier's contact/burial vocabulary).
 BUS_X = 0.475
-for y in [0.75, 0.56, 0.37]:
+for y in [0.75, 0.56, 0.37, 0.18]:
     ax.plot([0.43, BUS_X], [y, y], color=BLUE, lw=1.3, solid_capstyle='round', zorder=1)
-ax.plot([BUS_X, BUS_X], [0.37, 0.75], color=BLUE, lw=1.3, solid_capstyle='round', zorder=1)
-arrow(ax, BUS_X, 0.56, 0.52, 0.66, BLUE)
-arrow(ax, BUS_X, 0.56, 0.52, 0.32, BLUE)
-# The structural-context tier feeds the priority score only (the context
-# component), never the mechanism profile. Routed up the outside and into the
-# top of the priority-score box: an earlier route hugged the mechanism-profile
-# box edge and read as terminating there, which is the misreading being fixed.
-# One right-angle crossing with the bracket is legible; a line vanishing behind
-# a box is not.
-TIER_X = 0.455
-ax.plot([0.43, TIER_X], [0.18, 0.18], color=PURPLE, lw=1.3, solid_capstyle='round', zorder=4)
-ax.plot([TIER_X, TIER_X], [0.18, 0.86], color=PURPLE, lw=1.3, solid_capstyle='round', zorder=4)
-ax.plot([TIER_X, 0.62], [0.86, 0.86], color=PURPLE, lw=1.3, solid_capstyle='round', zorder=4)
-# stop at the box edge (y=0.79): the output boxes are drawn after this arrow
-# and would paint over an arrowhead placed inside them.
-arrow(ax, 0.62, 0.86, 0.62, 0.795, PURPLE)
+ax.plot([BUS_X, BUS_X], [0.18, 0.75], color=BLUE, lw=1.3, solid_capstyle='round', zorder=1)
+arrow(ax, BUS_X, 0.465, 0.52, 0.66, BLUE)
+arrow(ax, BUS_X, 0.465, 0.52, 0.32, BLUE)
 box(ax,(0.52,0.54),(0.20,0.25),'ISDS-v1','Cohort-independent\nstructural-disruption\npriority score', '#EAF6F5', TEAL, 9.0)
 box(ax,(0.52,0.18),(0.20,0.25),'Mechanism profile','Signed values and calls for\nmonomer fold, complex context,\nand binding', '#EDF3FA', BLUE, 8.7)
 arrow(ax,0.72,0.66,0.79,0.66,TEAL)
 arrow(ax,0.72,0.30,0.79,0.30,BLUE)
 box(ax,(0.79,0.54),(0.19,0.25),'PRIORITIZE','Rank variants for\nstructural follow-up', '#EEF8F1', GREEN, 9.2)
 box(ax,(0.79,0.18),(0.19,0.25),'LOCALIZE','Select stability, assembly,\nor interaction experiments', '#FFF7E7', GOLD, 9.0)
-ax.text(0.53,0.08,'Pathogenicity evidence remains separate. ISDS-v1 is not a probability, and no binary ISDS cutoff is validated.',fontsize=9.4,color=RED,fontweight='bold')
 save(fig,'figure1_unified_comavi_workflow.png')
 
 # Figure 2: population map
@@ -258,7 +257,10 @@ ax=axes[1,1]
 t=topk[topk.score.eq('isds_v1')]
 ax.plot(t.k,t.precision_at_k,'o-',color=TEAL,linewidth=2.2,label='Precision among top k')
 ax.plot(t.k,t.recovery_at_k,'s-',color=ORANGE,linewidth=2.2,label=f"Fraction of {_pp['positive']} mechanisms recovered")
-ax.set_xticks(t.k); ax.set_ylim(0,1.05); ax.set_xlabel('Experimental budget, k variants'); ax.set_ylabel('Fraction'); ax.set_title('Top-ranked variants concentrate structural mechanisms',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False,fontsize=8.7); ax.grid(alpha=.2); panel_label(ax, 'B')
+# Panel B x axis: 'rank depth', not 'experimental budget'. The budget wording
+# read as a claim about how many experiments a lab can afford, which this panel
+# says nothing about, and the caption now says rank depth. Keep the two in step.
+ax.set_xticks(t.k); ax.set_ylim(0,1.05); ax.set_xlabel('Rank depth, k top-ranked variants'); ax.set_ylabel('Fraction'); ax.set_title('Top-ranked variants concentrate structural mechanisms',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False,fontsize=8.7); ax.grid(alpha=.2); panel_label(ax, 'B')
 for _f in (fig_s4,fig_f6): _f.tight_layout(w_pad=2.6)
 save(fig_s4,'figureS4_priority_definition.png')
 save(fig_f6,'figure6_priority_recovery.png')

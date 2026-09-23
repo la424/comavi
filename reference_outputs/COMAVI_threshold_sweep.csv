@@ -1,0 +1,6 @@
+threshold_tag,threshold_kcal_mol,per_axis_spec,detection_k,detection_n,detection,attribution_k,attribution_n,attribution,correct_rejection_k,correct_rejection_n,correct_rejection,whole_variant_k,whole_variant_n,whole_variant,axis_monomer_k,axis_monomer_n,axis_monomer,axis_fold_k,axis_fold_n,axis_fold,axis_binding_k,axis_binding_n,axis_binding,axis_tier_k,axis_tier_n,axis_tier,structural_agreement_k,structural_agreement_n,structural_agreement
+t10,1.0,True,23,25,0.92,19,25,0.76,5,32,0.1562,33.0,57,0.5789,18,25,0.72,12,22,0.5455,24,30,0.8,34,47,0.7234,88,124,0.7097
+t15,1.5,True,20,25,0.8,17,25,0.68,19,32,0.5938,37.0,57,0.6491,17,25,0.68,16,22,0.7273,24,30,0.8,34,47,0.7234,91,124,0.7339
+t20,2.0,True,20,25,0.8,16,25,0.64,23,32,0.7188,39.0,57,0.6842,19,25,0.76,16,22,0.7273,23,30,0.7667,34,47,0.7234,92,124,0.7419
+t25,2.5,True,20,25,0.8,14,25,0.56,26,32,0.8125,41.0,57,0.7193,19,25,0.76,17,22,0.7727,22,30,0.7333,34,47,0.7234,92,124,0.7419
+tSAP,2.9/2.9/3.5,False,18,25,0.72,12,25,0.48,27,32,0.8438,40.5,57,0.7105,18,25,0.72,16,22,0.7273,22,30,0.7333,34,47,0.7234,90,124,0.7258

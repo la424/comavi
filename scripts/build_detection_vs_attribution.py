@@ -63,6 +63,22 @@ def strongest(row, cols, prefix):
     return max(vals, key=abs) if vals else None
 
 
+def per_axis_thresholds(threshold):
+    """Expand a threshold spec into (monomer, fold, binding).
+
+    Four of the five committed thresholds are scalar; the substitution-adjusted
+    one is per-axis ({'monomer': 2.9, 'fold': 2.9, 'binding': 3.5}). Accepting
+    both here is what lets build() serve the whole committed set, so the
+    threshold sweep is this same computation evaluated at five points rather
+    than a second implementation that agrees at one.
+    """
+    if isinstance(threshold, dict):
+        return (float(threshold["monomer"]), float(threshold["fold"]),
+                float(threshold["binding"]))
+    t = float(threshold)
+    return t, t, t
+
+
 def build(canon, threshold=REFERENCE_T):
     graded = canon[canon.mech_consistency_t25.isin(GRADE_MAP)].copy()
     graded["score"] = graded.mech_consistency_t25.map(GRADE_MAP)
@@ -71,12 +87,16 @@ def build(canon, threshold=REFERENCE_T):
     graded["fold_max"] = [strongest(r, fold_cols, "ddg_fold_") for _, r in graded.iterrows()]
     graded["bind_max"] = [strongest(r, bind_cols, "ddg_binding_") for _, r in graded.iterrows()]
 
-    def fires(v):
-        return bool(pd.notna(v) and abs(float(v)) >= threshold)
+    t_mono, t_fold, t_bind = per_axis_thresholds(threshold)
 
-    graded["mono_fires"] = graded.ddg_monomer.map(fires)
-    graded["fold_fires"] = graded.fold_max.map(fires)
-    graded["bind_fires"] = graded.bind_max.map(fires)
+    def fires_at(t):
+        def f(v):
+            return bool(pd.notna(v) and abs(float(v)) >= t)
+        return f
+
+    graded["mono_fires"] = graded.ddg_monomer.map(fires_at(t_mono))
+    graded["fold_fires"] = graded.fold_max.map(fires_at(t_fold))
+    graded["bind_fires"] = graded.bind_max.map(fires_at(t_bind))
     graded["any_fires"] = graded[["mono_fires", "fold_fires", "bind_fires"]].any(axis=1)
 
     def right_axis(r):

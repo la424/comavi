@@ -1,10 +1,10 @@
-System,Variant gene,Variants,Mechanism-gradeable,Pathogenic,Structure,Model source
+System,Variant gene,Variants,Mechanism-gradeable,Clinically pathogenic,Structure,Model source
 BRCA1 BRCT tandem domain (fold only),BRCA1,12,10,0,1JNX.pdb,Experimental
 BRCA1-BARD1 RING heterodimer,BRCA1,4,4,2,1JM7.pdb,Experimental
 Calmodulin-Ca(v)1.2 IQ domain,CALM1,3,3,3,fold_calm1_cacna1c_model_0.pdb,AlphaFold
 Complement factor H-C3b,CFH,3,3,2,2WII_trim.pdb,Experimental
-Haemoglobin alpha-beta dimer,HBB,1,1,1,2HHB.pdb,Experimental
-Haemoglobin tetramer,HBB,5,5,5,2HHB.pdb,Experimental
+Hemoglobin alpha-beta dimer,HBB,1,1,1,2HHB.pdb,Experimental
+Hemoglobin tetramer,HBB,5,5,5,2HHB.pdb,Experimental
 KRAS-CRAF RBD,KRAS,3,3,3,6XI7.pdb,Experimental
 MLH1-PMS2 C-terminal heterodimer,MLH1/PMS2,7,7,3,fold_mlh1_pms2_model_0.pdb,AlphaFold
 MSH2-MSH6 heterodimer,MSH2,5,5,3,fold_msh2_msh6_model_0.pdb,AlphaFold
