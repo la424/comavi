@@ -123,20 +123,41 @@ def main():
         return 1
 
     mapping = pd.read_csv(args.mapping)
-    expected = list(mapping.manuscript_item)
+    # PLOS uploads supporting information as separate files and lists only its
+    # CAPTIONS at the end of the manuscript, so the S# Fig items are named in the
+    # document but are deliberately not embedded in it. Only the main figures are
+    # paired against embedded images here; the S# Fig rows are checked for the
+    # opposite property, that they are NOT embedded, so a supplementary figure
+    # accidentally left inside the manuscript fails rather than passing quietly.
+    main_expected = [x for x in mapping.manuscript_item if str(x).startswith("Fig ")]
+    si_expected = [x for x in mapping.manuscript_item if not str(x).startswith("Fig ")]
     images = embedded_images(args.docx)
     labels = caption_labels(args.docx)
+    main_labels = [x for x in labels if x.startswith("Fig ")]
+    si_labels = [x for x in labels if not x.startswith("Fig ")]
 
     problems = []
-    if len(images) != len(labels):
-        print("FAIL: %d embedded images but %d figure captions -- cannot pair them"
-              % (len(images), len(labels)))
+    if len(images) != len(main_labels):
+        print("FAIL: %d embedded images but %d main-figure captions -- cannot pair them"
+              % (len(images), len(main_labels)))
+        print("  main-figure captions: %s" % main_labels)
+        print("  supplementary captions present (must not be embedded): %s" % si_labels)
         return 1
-    if labels != expected:
-        print("FAIL: caption sequence does not match the mapping")
-        print("  captions: %s" % labels)
-        print("  mapping : %s" % expected)
+    if main_labels != main_expected:
+        print("FAIL: main-figure caption sequence does not match the mapping")
+        print("  captions: %s" % main_labels)
+        print("  mapping : %s" % main_expected)
         return 1
+    if sorted(si_labels) != sorted(si_expected):
+        print("FAIL: supplementary figure captions do not match the mapping")
+        print("  captions: %s" % sorted(si_labels))
+        print("  mapping : %s" % sorted(si_expected))
+        return 1
+    for label in si_expected:
+        src = REPO / mapping[mapping.manuscript_item == label].iloc[0].file
+        if not src.exists():
+            problems.append("%s: generator output %s is missing" % (label, src))
+    labels = main_labels
 
     print("pairing %d embedded images with %d captions, in document order\n" % (len(images), len(labels)))
     for (target, data), label in zip(images, labels):

@@ -51,6 +51,27 @@ def main() -> int:
         return 1
 
     text = render(args.docx)
+    # The supplementary notes and tables moved OUT of the manuscript into separate
+    # SI files for PLOS submission, but the claims in them are still published
+    # claims and every gate that reads this rendering must still see them.
+    # Appending the SI appendix documents keeps the audit's contract intact:
+    # every number in the SUBMITTED material traces to a generator, not just
+    # every number that happens to sit in the manuscript file.
+    si_dir = REPO / "submission" / "COMAVI_v7.12_SI"
+    for si in sorted(si_dir.glob("S*_Text.docx")):
+        text += "\n[SI %s]\n" % si.stem + render(si)
+    for si in sorted(si_dir.glob("S*_Table.xlsx")):
+        try:
+            import openpyxl
+        except ImportError:
+            break
+        wb = openpyxl.load_workbook(si, read_only=True, data_only=True)
+        text += "\n[SI %s]\n" % si.stem
+        for ws in wb.worksheets:
+            text += "[SHEET %s]\n" % ws.title
+            for row in ws.iter_rows(values_only=True):
+                text += "\t".join("" if c is None else str(c) for c in row) + "\n"
+        wb.close()
     digest = hashlib.sha256(text.encode()).hexdigest()
 
     if args.check:

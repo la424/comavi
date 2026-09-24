@@ -87,22 +87,15 @@ def arrow(ax, x1, y1, x2, y2, color=GRAY):
 
 
 # Figure 1: unified workflow
-fig, ax = plt.subplots(figsize=(12.0, 6.0))
-ax.set_xlim(0, 1)
-# The internal title was removed (its text duplicated the caption); tighten the
-# y-range to the drawn content so the figure does not ship a blank upper band.
-ax.set_ylim(0.04, 0.94)
-ax.axis('off')
-box(ax, (0.02,0.36),(0.12,0.25),'INPUT','Missense variant\n+ structure',LIGHT,NAVY)
-arrow(ax,0.14,0.485,0.20,0.485)
-# calculation boxes
-ys=[0.68,0.49,0.30,0.11]
-colors=[('#EAF3F8',BLUE),('#E9F6F2',TEAL),('#FFF1E8',ORANGE),('#F1EDFA',PURPLE)]
-titles=['Monomer-fold ΔΔG','Complex-context ΔΔG','Binding-interface ΔΔG','Structural-context tier']
-bodies=['FoldX on isolated subunit','FoldX on assembled coordinates','FoldX interaction energy by partner','Chemistry, contacts,\ninterface, burial, confidence']
-for y,(fc,ec),t,b in zip(ys,colors,titles,bodies):
-    box(ax,(0.20,y),(0.23,0.14),t,b,fc,ec,8.5)
-# arrows to two outputs
+# Layout follows the author's hand-drawn replacement: four labelled columns
+# (Input, Structural Evidence, COMAVI Outputs, Practical Use) rather than the
+# earlier three-stage flow, which never said what the two outputs are FOR. Drawn
+# in code rather than pasted so it renders at the same resolution as the other
+# figures and stays inside the embedded-figure gate.
+fig, ax = plt.subplots(figsize=(13.4, 4.9))
+ax.set_xlim(0, 1); ax.set_ylim(0.075, 1.0); ax.axis('off')
+BUS_X = 0.478
+
 # ALL FOUR evidence rows feed BOTH outputs. Verified against the tier-ablation
 # record, not asserted: classify_mechanism_at() in apply_concordance_v5.py reads
 # comavi_tier (it selects contact-driven vs burial-driven vocabulary), and
@@ -114,21 +107,51 @@ _abl = json.loads((Path(__file__).resolve().parents[2] / 'reference_outputs'
 assert _abl['n_labels_changed'] > 0, (
     'tier-ablation record says the tier changes no mechanism label; if that is now '
     'true this figure must be rewired to route the tier to the priority score only')
-# The four rows gather on a single bracket, and the bracket forks to both
-# products: the priority score (energy + context components) and the mechanism
-# profile (signed per-axis values plus the tier's contact/burial vocabulary).
-BUS_X = 0.475
-for y in [0.75, 0.56, 0.37, 0.18]:
-    ax.plot([0.43, BUS_X], [y, y], color=BLUE, lw=1.3, solid_capstyle='round', zorder=1)
-ax.plot([BUS_X, BUS_X], [0.18, 0.75], color=BLUE, lw=1.3, solid_capstyle='round', zorder=1)
-arrow(ax, BUS_X, 0.465, 0.52, 0.66, BLUE)
-arrow(ax, BUS_X, 0.465, 0.52, 0.32, BLUE)
-box(ax,(0.52,0.54),(0.20,0.25),'ISDS-v1','Cohort-independent\nstructural-disruption\npriority score', '#EAF6F5', TEAL, 9.0)
-box(ax,(0.52,0.18),(0.20,0.25),'Mechanism profile','Signed values and calls for\nmonomer fold, complex context,\nand binding', '#EDF3FA', BLUE, 8.7)
-arrow(ax,0.72,0.66,0.79,0.66,TEAL)
-arrow(ax,0.72,0.30,0.79,0.30,BLUE)
-box(ax,(0.79,0.54),(0.19,0.25),'PRIORITIZE','Rank variants for\nstructural follow-up', '#EEF8F1', GREEN, 9.2)
-box(ax,(0.79,0.18),(0.19,0.25),'LOCALIZE','Select stability, assembly,\nor interaction experiments', '#FFF7E7', GOLD, 9.0)
+
+COLHEAD_Y = 0.955
+for cx, head in [(0.085, 'Input'), (0.335, 'Structural Evidence'),
+                 (0.615, 'COMAVI Outputs'), (0.875, 'Practical Use')]:
+    ax.text(cx, COLHEAD_Y, head, ha='center', va='center',
+            fontsize=12.5, fontweight='bold', color=GRAY)
+
+EV_X, EV_W, EV_H = 0.205, 0.245, 0.175
+ev = [(0.735, 'Stability in monomer', '#DCE9F7', BLUE),
+      (0.525, 'Stability in multimer', '#DFF0E6', GREEN),
+      (0.315, 'Binding energy by partner', '#FDECD9', ORANGE),
+      (0.105, 'Structural-context tier', '#E7E1F5', PURPLE)]
+
+# Every box first, every connector second. Drawing an arrow before the box it
+# points into lets the box's rounded padding cover the arrowhead, which is how
+# an earlier version of this figure shipped with headless connectors.
+box(ax, (0.005, 0.545), (0.16, 0.20), 'Missense variant', '', LIGHT, GRAY, 9.0)
+box(ax, (0.005, 0.175), (0.16, 0.24), 'Isolated / assembled\nstructural models', '', LIGHT, GRAY, 9.0)
+for y, t, fc, ec in ev:
+    box(ax, (EV_X, y), (EV_W, EV_H), t, '', fc, ec, 9.0)
+box(ax, (0.505, 0.545), (0.225, 0.245), 'Priority score (ISDS)',
+    'Ranks strength of modeled\nstructural-disruption evidence', '#F7DEDE', '#C06C6C', 8.6)
+box(ax, (0.505, 0.155), (0.225, 0.245), 'Mechanism profile',
+    'Assigns per-variant\nmechanisms and context', '#D9EBEA', TEAL, 8.6)
+box(ax, (0.775, 0.545), (0.220, 0.245), 'Prioritization',
+    'Choose variants for\nfurther evaluation', '#F7DEDE', '#C06C6C', 8.6)
+box(ax, (0.775, 0.155), (0.220, 0.245), 'Experimental design',
+    'Test stability, assembly\nand/or interaction', '#D9EBEA', TEAL, 8.6)
+
+def link(x1, y1, x2, y2, color=GRAY):
+    ax.plot([x1, x2], [y1, y2], color=color, lw=1.1, solid_capstyle='round', zorder=5)
+
+def tip(x1, y1, x2, y2, color=GRAY):
+    ax.add_patch(FancyArrowPatch((x1, y1), (x2, y2), arrowstyle='-|>',
+                                 mutation_scale=15, linewidth=1.3, color=color, zorder=6))
+
+for y, _, _, _ in ev:
+    link(0.168, y + EV_H / 2, EV_X - 0.004, y + EV_H / 2)
+    link(EV_X + EV_W + 0.004, y + EV_H / 2, BUS_X, y + EV_H / 2)
+BUS_TOP, BUS_BOT = ev[0][0] + EV_H / 2, ev[-1][0] + EV_H / 2
+link(BUS_X, BUS_BOT, BUS_X, BUS_TOP)
+tip(BUS_X, (BUS_TOP + BUS_BOT) / 2, 0.499, 0.668)
+tip(BUS_X, (BUS_TOP + BUS_BOT) / 2, 0.499, 0.278)
+tip(0.734, 0.668, 0.770, 0.668, '#C06C6C')
+tip(0.734, 0.278, 0.770, 0.278, TEAL)
 save(fig,'figure1_unified_comavi_workflow.png')
 
 # Figure 2: population map
@@ -336,18 +359,38 @@ fig.tight_layout(w_pad=3)
 save(fig,'figure6_threshold_tradeoff.png')
 
 # Figure 7: AlphaMissense, ISDS, mechanism
+# Two rows, not one. At 14.2 in wide on a 6.5 in text column every label was
+# downscaled by 0.46, so 10.5 pt type reached the page at under 5 pt. Narrowing
+# the figure and raising the type is the only thing that makes it legible; a
+# wider figure with the same font makes it worse.
 clin=pd.read_csv(AN/'ISDS_v1_alphamissense_common_set.csv')
-fig,axes=plt.subplots(1,3,figsize=(14.2,4.7))
-colors=np.where(clin.clinical_y.eq(1),ORANGE,BLUE)
-ax=axes[0]; ax.scatter(clin['AM pathogenicity'],clin['isds_v1'],c=colors,edgecolor='white',linewidth=.5,s=48); ax.axvspan(.34,.564,color=MID,alpha=.45); ax.set_xlabel('AlphaMissense pathogenicity score'); ax.set_ylabel('ISDS-v1'); ax.set_title('Pathogenicity and structural priority differ',loc='left',fontweight='bold',color=NAVY); ax.grid(alpha=.15); panel_label(ax, 'A')
-ax=axes[1]; ax.scatter(clin['AM pathogenicity'],clin['isds_energy_component'],c=colors,edgecolor='white',linewidth=.5,s=48); ax.axvspan(.34,.564,color=MID,alpha=.45); ax.set_xlabel('AlphaMissense pathogenicity score'); ax.set_ylabel('ISDS energetic component'); ax.set_title('Energetic evidence is one component',loc='left',fontweight='bold',color=NAVY); ax.grid(alpha=.15); panel_label(ax, 'B')
-ax=axes[2]
-labels=['AlphaMissense','ISDS-v1','Energy','Context']; vals=[.902778,.851010,.835859,.768939]; cols=[NAVY,TEAL,ORANGE,PURPLE]
-bars=ax.barh(np.arange(4),vals,color=cols); ax.set_yticks(np.arange(4),labels); ax.invert_yaxis(); ax.set_xlim(.5,1.0); ax.set_xlabel('Pathogenicity AUC (descriptive)'); ax.set_title('COMAVI is not a replacement pathogenicity model',loc='left',fontweight='bold',color=NAVY); ax.grid(axis='x',alpha=.2)
-for b,v in zip(bars,vals): ax.text(v+.008,b.get_y()+b.get_height()/2,f'{v:.3f}',va='center',fontsize=9,fontweight='bold')
-panel_label(ax, 'C')
-fig.text(.02,.01,'Orange: pathogenic/pathogenic gain-of-function; blue: benign. The gray band marks the AlphaMissense ambiguous range.',fontsize=9,color=GRAY)
-fig.tight_layout(rect=[0,.035,1,1],w_pad=2.4)
+with plt.rc_context({'font.size':12.5,'axes.titlesize':13.0,'axes.labelsize':12.5,
+                     'xtick.labelsize':11.5,'ytick.labelsize':11.5}):
+    fig=plt.figure(figsize=(9.4,7.6))
+    gs=fig.add_gridspec(2,2,height_ratios=[1.0,0.82],hspace=0.40,wspace=0.28)
+    axA=fig.add_subplot(gs[0,0]); axB=fig.add_subplot(gs[0,1]); axC=fig.add_subplot(gs[1,:])
+    colors=np.where(clin.clinical_y.eq(1),ORANGE,BLUE)
+    for ax,ycol,ylab,ttl,lab in [
+            (axA,'isds_v1','ISDS-v1','Pathogenicity and priority differ','A'),
+            (axB,'isds_energy_component','ISDS energetic component','Energetic evidence is one component','B')]:
+        ax.scatter(clin['AM pathogenicity'],clin[ycol],c=colors,edgecolor='white',linewidth=.5,s=52)
+        ax.axvspan(.34,.564,color=MID,alpha=.45)
+        ax.set_xlabel('AlphaMissense pathogenicity score'); ax.set_ylabel(ylab)
+        ax.set_title(ttl,loc='left',fontweight='bold',color=NAVY)
+        ax.grid(alpha=.15); panel_label(ax,lab)
+    labels=['AlphaMissense','ISDS-v1','Energy','Context']; vals=[.902778,.851010,.835859,.768939]
+    cols=[NAVY,TEAL,ORANGE,PURPLE]
+    bars=axC.barh(np.arange(4),vals,color=cols)
+    axC.set_yticks(np.arange(4),labels); axC.invert_yaxis(); axC.set_xlim(.5,1.0)
+    axC.set_xlabel('Pathogenicity AUC (descriptive)')
+    axC.set_title('COMAVI is not a replacement pathogenicity model',loc='left',fontweight='bold',color=NAVY)
+    axC.grid(axis='x',alpha=.2)
+    for b,v in zip(bars,vals):
+        axC.text(v+.007,b.get_y()+b.get_height()/2,f'{v:.3f}',va='center',fontsize=11.5,fontweight='bold')
+    panel_label(axC,'C')
+    fig.text(.012,.012,'Orange: pathogenic or pathogenic gain-of-function; blue: benign. '
+             'The grey band marks the AlphaMissense ambiguous range.',fontsize=10.5,color=GRAY)
+    fig.subplots_adjust(left=0.105,right=0.985,top=0.945,bottom=0.095)
 save(fig,'figure7_alphamissense_isds_mechanism.png')
 
 # Alt-text file

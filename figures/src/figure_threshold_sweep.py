@@ -107,8 +107,13 @@ def main():
     mrec = [d["recovered"] for d in meas["measured_effects_recovered"]["by_threshold"]]
     mn = meas["measured_effects_recovered"]["population"]["n"]
 
-    apply_figure_style(sizes=(8, 7, 6))
-    fig, axes = plt.subplots(1, 4, figsize=(COLUMN_W * 1.90, 2.62))
+    apply_figure_style(sizes=(11, 10, 8.5))
+    # 2x2 rather than 1x4: at four panels across one text width each panel was
+    # about 1.6 in wide and the tick and annotation type had to shrink below
+    # readable size to fit. Two columns roughly doubles panel width, so the
+    # type ladder can grow instead.
+    fig, axes2d = plt.subplots(2, 2, figsize=(COLUMN_W * 1.44, 6.30))
+    axes = axes2d.ravel()
 
     def ref_marker(ax):
         ax.axvline(ref_i, color=META_GREY, lw=0.8, ls=(0, (4, 3)), zorder=0)
@@ -123,7 +128,7 @@ def main():
     ax.text(x[-1] + 0.10, det[-1], "detection", color=C_DETECT, va="center", fontsize=7)
     ax.text(x[-1] + 0.10, att[-1] - 0.045, "attribution", color=C_ATTRIB, va="center", fontsize=7)
     ax.text(x[-1] + 0.10, rej[-1], "correct\nrejection", color=C_REJECT, va="center", fontsize=7)
-    ax.set_title("Raising the threshold buys rejection\nand gives up attribution", loc="left")
+    ax.set_title("Rejection is bought with attribution", loc="left")
     ax.set_ylabel("Fraction")
     ax.set_ylim(0.05, 1.0)
     ax.set_xlim(-0.25, len(rows) - 0.32)
@@ -139,7 +144,7 @@ def main():
             ms=10, mew=1.4, zorder=4)
     ax.plot([fold.index(max(fold))], [max(fold)], "o", mfc="none", mec=C_FOLD,
             ms=10, mew=1.4, zorder=4)
-    ax.set_title("One threshold does not suit all three axes:\nbinding peaks lowest, fold peaks at the reference",
+    ax.set_title("No single threshold suits all three axes",
                  loc="left")
     ax.set_ylabel("Directional agreement")
     ax.set_ylim(0.50, 0.85)
@@ -162,7 +167,7 @@ def main():
     ax.text(0.05, 0.92, "pooled", transform=ax.transAxes, color=C_WHOLE, fontsize=7)
     ax.text(0.05, 0.83, "structural arm", transform=ax.transAxes, color=C_DETECT, fontsize=7)
     ax.text(0.05, 0.74, "no-lesion arm", transform=ax.transAxes, color=C_REJECT, fontsize=7)
-    ax.set_title("Graded: the pooled score peaks above\nthe point where the two arms cross", loc="left")
+    ax.set_title("The pooled score peaks above the crossing", loc="left")
     ax.set_ylabel("Mechanism-pattern grade")
     ax.set_ylim(0.38, 0.99)
     ax.set_xlim(-0.30, len(rows) - 0.68)
@@ -177,7 +182,7 @@ def main():
     for xi, v in zip(x, mrec):
         ax.annotate("%d" % v, (xi, v / mn), textcoords="offset points",
                     xytext=(0, 6), ha="center", fontsize=6.2, color=C_ATTRIB)
-    ax.set_title("Against direct measurement, stringency\ncosts recovery fastest of all", loc="left")
+    ax.set_title("Measured recovery falls fastest of all", loc="left")
     ax.set_ylabel("Measured effects recovered")
     ax.set_ylim(0.14, 0.98)
     ax.set_xlim(-0.30, len(rows) - 0.68)
@@ -191,7 +196,8 @@ def main():
         ax.set_xlabel("Decision threshold (kcal/mol)")
         panel_letter(ax, "ABCD"[i])
 
-    fig.subplots_adjust(left=0.050, right=0.990, top=0.80, bottom=0.185, wspace=0.315)
+    fig.subplots_adjust(left=0.085, right=0.985, top=0.905, bottom=0.075,
+                        wspace=0.255, hspace=0.365)
     fig.savefig(OUT, dpi=300)
     fig.savefig(OUT.with_suffix(".pdf"))
 

@@ -1,0 +1,10 @@
+item,title,file,kind,source_items_folded_in,body_citations
+S1 Table,"Benchmark cohort, evidence and comparator tables.",S1_Table.xlsx,xlsx,"S1 Table, S2 Table, S3 Table, S4 Table, S5 Table, S6 Table",12
+S2 Table,"Operating points, evidence states and robustness tables.",S2_Table.xlsx,xlsx,"S7 Table, S8 Table, S9 Table, S10 Table, S11 Table, S12 Table, S13 Table, S14 Table, S15 Table",3
+S1 Text,"Implementation details, statistical conventions and evidence provenance.",S1_Text.docx,docx,"S1 Text, S2 Text",5
+S2 Text,"Sensitivity analyses, mechanism-class decomposition and operating-point diagnostics.",S2_Text.docx,docx,"S3 Text, S4 Text, S5 Text",4
+S3 Text,"Pathogenicity comparison, robustness, independent validation and a self-caught ground-truth correction.",S3_Text.docx,docx,"S6 Text, S7 Text, S8 Text, S9 Text, S10 Text",5
+S1 Fig,Benchmark stress tests for whole-variant mechanism-pattern agreement.,S1_Fig.png,img,S1 Fig,1
+S2 Fig,Independent binding-axis validation on SKEMPI 2.0.,S2_Fig.png,img,S2 Fig,1
+S3 Fig,Structural-context comparator performance on the 47-variant population.,S3_Fig.png,img,S3 Fig,2
+S4 Fig,Priority-score transformation and component ranking.,S4_Fig.png,img,S4 Fig,1
