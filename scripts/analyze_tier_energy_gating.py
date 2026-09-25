@@ -29,6 +29,7 @@ not by exclusion -- see the tier applicability note in the manuscript.
 """
 import argparse
 import json
+import math
 import pathlib
 import sys
 
@@ -388,9 +389,32 @@ def main():
                   % OUT.relative_to(REPO))
             return 1
         stored = json.loads(OUT.read_text())
-        if stored != out:
+
+        # Compare floats with a tolerance, not exactly. Two fields are stored
+        # at full double precision rather than rounded -- marginal_tier_screen
+        # fisher_p and classifier spearman_p -- and scipy's last bits for those
+        # differ between platforms (different BLAS/libm). An exact comparison
+        # therefore failed on the CI runner while passing locally, which is a
+        # gate reporting an environment difference as a data defect. The
+        # tolerance below is far tighter than any real change: the staleness
+        # this check exists to catch moved integer counts (20 positives vs 17)
+        # and a p-value from 0.0057 to 0.0095.
+        def same(a, b):
+            if isinstance(a, bool) or isinstance(b, bool):
+                return a == b
+            if isinstance(a, (int, float)) and isinstance(b, (int, float)):
+                if a != a and b != b:      # both NaN
+                    return True
+                return math.isclose(a, b, rel_tol=1e-9, abs_tol=1e-12)
+            if isinstance(a, dict) and isinstance(b, dict):
+                return a.keys() == b.keys() and all(same(a[k], b[k]) for k in a)
+            if isinstance(a, list) and isinstance(b, list):
+                return len(a) == len(b) and all(same(x, y) for x, y in zip(a, b))
+            return a == b
+
+        if not same(stored, out):
             diffs = [k for k in set(stored) | set(out)
-                     if stored.get(k) != out.get(k)]
+                     if not same(stored.get(k), out.get(k))]
             print("FAIL: %s differs from a fresh build in: %s"
                   % (OUT.name, ", ".join(sorted(diffs))))
             return 1
