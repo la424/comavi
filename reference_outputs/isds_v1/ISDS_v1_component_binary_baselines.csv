@@ -1,4 +1,4 @@
-screen,tp,fn,fp,tn,sensitivity,specificity,ppv
-interface_status_alone,15,2,7,23,0.8823529411764706,0.7666666666666667,0.6818181818181818
-tier_without_interface_bonus,14,3,12,18,0.8235294117647058,0.6,0.5384615384615384
-full_tier_1_2,17,0,13,17,1.0,0.5666666666666667,0.5666666666666667
+screen,tp,fn,fp,tn,sensitivity,specificity,ppv,balanced_accuracy,within_system_permutation_p,within_system_permutation_method
+interface_status_alone,15,2,7,23,0.8823529411764706,0.7666666666666667,0.6818181818181818,0.8245098039215686,0.0018,exact (convolved hypergeometrics)
+tier_without_interface_bonus,14,3,12,18,0.8235294117647058,0.6,0.5384615384615384,0.7117647058823529,0.1294,exact (convolved hypergeometrics)
+full_tier_1_2,17,0,13,17,1.0,0.5666666666666667,0.5666666666666667,0.7833333333333333,0.0095,exact (convolved hypergeometrics)

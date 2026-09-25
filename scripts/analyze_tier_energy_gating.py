@@ -27,6 +27,7 @@ ground truth. The BRCA1-BRCT cohort carries no tier (its upstream contact and
 burial features were never computed) and is therefore absent by construction,
 not by exclusion -- see the tier applicability note in the manuscript.
 """
+import argparse
 import json
 import pathlib
 import sys
@@ -115,6 +116,21 @@ def fisher_from_cells(c):
 
 
 def main():
+    # --check exists because this script was the one generator in the release
+    # without one, and that is exactly how its committed record went stale: it
+    # was last run before the v7.9 ground-truth correction, so
+    # marginal_tier_screen described 20 structural positives when the corrected
+    # ledger has 17, and six of its eight fields were wrong. Nothing noticed,
+    # because the only thing reading the record was a prose audit pointed at a
+    # manuscript filename that no longer exists, which took its skip path and
+    # exited zero. Every draw here is seeded (default_rng(0)), so a fresh build
+    # is byte-reproducible and a full comparison is meaningful.
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--check", action="store_true",
+                    help="verify the committed record matches a fresh build; "
+                         "write nothing")
+    args = ap.parse_args()
+
     df = pd.read_csv(CANON)
     partners = ac.discover_partners(df)
     pop = build_population(df, partners)
@@ -366,6 +382,21 @@ def main():
         round(float(np.percentile(deltas, 2.5)), 3), round(float(np.percentile(deltas, 97.5)), 3)]
     out["classifier"]["auc_delta_bootstrap_n"] = len(deltas)
 
+    if args.check:
+        if not OUT.exists():
+            print("FAIL: %s missing -- run this script without --check"
+                  % OUT.relative_to(REPO))
+            return 1
+        stored = json.loads(OUT.read_text())
+        if stored != out:
+            diffs = [k for k in set(stored) | set(out)
+                     if stored.get(k) != out.get(k)]
+            print("FAIL: %s differs from a fresh build in: %s"
+                  % (OUT.name, ", ".join(sorted(diffs))))
+            return 1
+        print("PASS: %s reproduces from the committed canonical" % OUT.name)
+        return 0
+
     OUT.write_text(json.dumps(out, indent=1))
     print(f"wrote {OUT.relative_to(REPO)}")
     print(f"  population n={out['population_n']} "
@@ -374,7 +405,11 @@ def main():
     print(f"  canonical firing cells: {c['strong_structural']}/{c['strong_n']} vs "
           f"{c['weak_structural']}/{c['weak_n']}, p={c['fisher_p']}")
     print(f"  BH: {out['bh_n_surviving']} of {len(pv)} tests survive at 5%")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    # main() now returns an exit code, so propagate it: a bare main() call
+    # discards it and --check would report FAIL on stdout while exiting 0,
+    # which is how a gate ends up passing while telling you it failed.
+    raise SystemExit(main())

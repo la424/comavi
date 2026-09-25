@@ -178,6 +178,20 @@ jobs:
           python scripts/build_alphamissense_thresholded_accuracy.py --check
           python scripts/verify_embedded_figures.py
 
+      - name: Verify every committed record is current, not merely present
+        # Two records went stale through the v7.9 ground-truth correction and
+        # nothing noticed, because nothing compared them against a fresh build.
+        # COMAVI_tier_energy_gating.json still described 20 structural
+        # positives against a corrected ledger of 17, and the post hoc
+        # threshold columns the supplement publishes had no committed record at
+        # all. Presence is not freshness; these two compare stored bytes to a
+        # rebuild. The gating check is slow (~5 min, 20k seeded draws) and that
+        # is the price of the class of defect it catches.
+        run: |
+          python scripts/build_threshold_sweep.py --check
+          python scripts/build_threshold_sweep.py --check --extended
+          python scripts/analyze_tier_energy_gating.py --check
+
       - name: Re-derive and verify the canonical benchmark
         run: |
           output_dir="$(mktemp -d)"

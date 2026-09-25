@@ -820,6 +820,49 @@ def main() -> None:
         ('full_tier_1_2', _tier_no <= 2),
     ]
     _yb = y.astype(bool)
+
+    def _exact_within_system_perm(systems, labels, positive):
+        """Exact within-system permutation p, by convolved hypergeometrics.
+
+        Same estimator as verify_tier_construction.exact_within_system_perm:
+        under H0 the structural labels are exchangeable WITHIN each system, so
+        the count in the screen-positive cell is a sum of independent
+        hypergeometrics; convolve them and take the upper tail.
+
+        This lives here because the supplement publishes a within-system p for
+        all THREE screens in this table, and only two of them had a committed
+        record (tier_construction.json covers the full tier and the
+        bonus-zeroed tier). The interface-only screen's p was published with
+        nothing in the repository to check it against. It happens to be
+        correct, but 'correct and unverifiable' is the state that lets a value
+        go stale unnoticed, which is exactly what this project has been
+        repairing. Anything published needs a generator behind it.
+        """
+        # y and the screen masks arrive as either Series or ndarray depending on
+        # how each was built upstream, so normalise rather than assume.
+        sysv = np.asarray(systems)
+        lab = np.asarray(labels, dtype=bool)
+        pos = np.asarray(positive, dtype=bool)
+        obs = int((pos & lab).sum())
+        dists = []
+        for _s in pd.unique(sysv):
+            sel = np.flatnonzero(sysv == _s)
+            n = len(sel)
+            k = int(lab[sel].sum())
+            ns = int(pos[sel].sum())
+            d = {}
+            for x in range(max(0, k - (n - ns)), min(k, ns) + 1):
+                d[x] = math.comb(ns, x) * math.comb(n - ns, k - x) / math.comb(n, k)
+            dists.append(d)
+        tot = {0: 1.0}
+        for d in dists:
+            nt = {}
+            for s0, p0 in tot.items():
+                for x, px in d.items():
+                    nt[s0 + x] = nt.get(s0 + x, 0.0) + p0 * px
+            tot = nt
+        return float(sum(p for s, p in tot.items() if s >= obs))
+
     component_rows = []
     for name, positive in _screens:
         positive = positive.astype(bool)
@@ -831,7 +874,12 @@ def main() -> None:
             'screen': name, 'tp': tp, 'fn': fn, 'fp': fp, 'tn': tn,
             'sensitivity': tp / (tp + fn) if tp + fn else float('nan'),
             'specificity': tn / (fp + tn) if fp + tn else float('nan'),
-            'ppv': tp / (tp + fp) if tp + fp else float('nan')})
+            'ppv': tp / (tp + fp) if tp + fp else float('nan'),
+            'balanced_accuracy': 0.5 * ((tp / (tp + fn) if tp + fn else float('nan'))
+                                        + (tn / (fp + tn) if fp + tn else float('nan'))),
+            'within_system_permutation_p': round(
+                _exact_within_system_perm(df['system'], _yb, positive), 4),
+            'within_system_permutation_method': 'exact (convolved hypergeometrics)'})
     component_binary = pd.DataFrame(component_rows)
     component_binary.to_csv(OUT / 'ISDS_v1_component_binary_baselines.csv', index=False)
 

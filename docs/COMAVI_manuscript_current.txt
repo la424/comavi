@@ -285,7 +285,7 @@ This file consolidates 5 supplementary notes from the reviewed manuscript into o
 Section 1. Pathogenicity comparison, directional enrichment, and gain of function
 At the 2.5 reference, 27 of 61 benchmark variants had at least one firing energetic output and 34 were silent, where firing uses the shipped reduction over confidence-passing axes rather than a raw threshold on every partner column. Among the 49 variants carrying a curated clinical annotation, 37 were pathogenic. All 22 annotated variants with a firing output were pathogenic, so no benign variant in this cohort produced one, whereas the silent group contained 15 pathogenic and 12 benign variants (Fisher exact p = 2.0 × 10^-4). The 15 pathogenic-but-silent variants spanned 10 of the 14 systems. Because the benchmark was selected for mechanism evidence, these fractions are not expected clinical predictive values; they establish only the direction of the asymmetry between positive and silent structural calls.
 Section 2. Robustness, uncertainty, and metric reconciliation
-The versioned per-variant mechanism grades and output-level agreement fields are the authoritative source records. In the manuscript, structural agreement is described as a four-output continuity aggregate and is decomposed into the three energetic axes plus tier. The primary convention excludes the four ungraded scope or commitment cases from both whole-variant mechanism scoring and the continuity denominator, giving 92/124 = 0.742 at 2.5 and 90/124 = 0.726 at tSAP. The all-row denominator audit is 92/125 = 0.736 at 2.5. Naive recounts based only on raw ΔΔG sign or per-partner values do not reproduce the metric because the shipped scorer applies direction, operating-point, confidence, and interval gates.
+The versioned per-variant mechanism grades and output-level agreement fields are the authoritative source records. In the manuscript, structural agreement is described as a four-output continuity aggregate and is decomposed into the three energetic axes plus tier. The primary convention excludes the four ungraded scope or commitment cases from both whole-variant mechanism scoring and the continuity denominator, giving 92/124 = 0.742 at 2.5 and 90/124 = 0.726 at the substitution-adjusted setting. The all-row denominator audit is 92/125 = 0.736 at 2.5. Naive recounts based only on raw ΔΔG sign or per-partner values do not reproduce the metric because the shipped scorer applies direction, operating-point, confidence, and interval gates.
 Restricting the primary graded set to crystal or confident site models removes the seven partial-site variants. A636P remains in this sensitivity because it is a confident-site case, so its two newly committed neutral fold expectations still count as prediction disagreements. The restricted cohort scored 37.5/50 = 0.750 against 41.0/57 = 0.719 on the full graded set, a difference of 0.031. The confidence restriction therefore removes lower-confidence observations without turning the remaining cohort into a hidden high-performing subset; it should be read as a robustness view, not as an alternative benchmark definition. The two pLDDT thresholds operate together rather than as alternative configurations: a partner interface enters the gated set at 50, confidence is upgraded to high at 70, and the seven interfaces lying between those values are exactly the seven partial-site variants removed here.
 Section 3. Independent binding-axis validation on SKEMPI 2.0
 The hemoglobin series provides a high-quality within-system anchor but does not test generalization across unrelated interfaces. We therefore scored two independent SKEMPI 2.0 complexes [56] with the frozen COMAVI workflow: barnase-barstar (24 substitutions) and TEM1-BLIP (24 substitutions on the unambiguously mapped BLIP side). Measured binding ΔΔG was calculated as RT ln(K_D,mut/K_D,wt).
@@ -441,7 +441,7 @@ Operating point	Structural arm (n = 25)	Rejection arm (n = 32)	Pooled score (n =
 1.5	0.720	0.594	0.649	0.657	26/44
 2.0	0.640	0.719	0.684	0.679	19/44
 2.5 reference	0.600	0.812	0.719	0.706	13/44
-tSAP	0.540	0.844	0.711	0.692	12/44
+Substitution-adjusted	0.540	0.844	0.711	0.692	12/44
 [SHEET disagreement_classes]
 S2 Table, disagreement_classes sheet. Disagreement classes at the 2.5 kcal/mol operating point, excluding the barnase Glu73 cluster. (S8 Table in the reviewed manuscript.)				
 				
@@ -464,7 +464,7 @@ Operating point	Convergent	Energy-only	Context-only	Neither
 1.5	15/6	0/6	2/7	0/11
 2.0	15/4	0/5	2/9	0/12
 2.5 reference	15/3	0/3	2/10	0/14
-tSAP	11/3	0/2	6/10	0/15
+Substitution-adjusted	11/3	0/2	6/10	0/15
 [SHEET detection_metrics]
 S2 Table, detection_metrics sheet. Structural-mechanism detection metrics. Values are sensitivity / specificity / positive predictive value. (S11 Table in the reviewed manuscript.)		
 		
@@ -473,7 +473,7 @@ Operating point	Any energetic firing	Convergent: energy + Tier 1-2
 1.5	0.882 / 0.600 / 0.556	0.882 / 0.800 / 0.714
 2.0	0.882 / 0.700 / 0.625	0.882 / 0.867 / 0.789
 2.5 reference	0.882 / 0.800 / 0.714	0.882 / 0.900 / 0.833
-tSAP	0.647 / 0.833 / 0.688	0.647 / 0.900 / 0.786
+Substitution-adjusted	0.647 / 0.833 / 0.688	0.647 / 0.900 / 0.786
 [SHEET pathogenicity_ranking]
 S2 Table, pathogenicity_ranking sheet. Descriptive pathogenicity ranking on the common complete-case population. (S12 Table in the reviewed manuscript.)		
 		

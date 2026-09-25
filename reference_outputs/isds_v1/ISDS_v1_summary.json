@@ -16,7 +16,10 @@
       "tn": 23,
       "sensitivity": 0.8823529411764706,
       "specificity": 0.7666666666666667,
-      "ppv": 0.6818181818181818
+      "ppv": 0.6818181818181818,
+      "balanced_accuracy": 0.8245098039215686,
+      "within_system_permutation_p": 0.0018,
+      "within_system_permutation_method": "exact (convolved hypergeometrics)"
     },
     {
       "screen": "tier_without_interface_bonus",
@@ -26,7 +29,10 @@
       "tn": 18,
       "sensitivity": 0.8235294117647058,
       "specificity": 0.6,
-      "ppv": 0.5384615384615384
+      "ppv": 0.5384615384615384,
+      "balanced_accuracy": 0.7117647058823529,
+      "within_system_permutation_p": 0.1294,
+      "within_system_permutation_method": "exact (convolved hypergeometrics)"
     },
     {
       "screen": "full_tier_1_2",
@@ -36,7 +42,10 @@
       "tn": 17,
       "sensitivity": 1.0,
       "specificity": 0.5666666666666667,
-      "ppv": 0.5666666666666667
+      "ppv": 0.5666666666666667,
+      "balanced_accuracy": 0.7833333333333333,
+      "within_system_permutation_p": 0.0095,
+      "within_system_permutation_method": "exact (convolved hypergeometrics)"
     }
   ],
   "four_state_agreement": {
@@ -203,7 +212,7 @@
     }
   },
   "files": {
-    "canonical_input_sha256": "eb0a90c13aeabe80e1c918090e6de8c2177319cfe56a0d25d925c57ec7c5ebfc",
+    "canonical_input_sha256": "aba940a0ad211535b9d6e1d6ce83ca480b0dd4f38b1e14a033d183a9e1833e12",
     "a636p_audit_sha256": "d1a60faac6f5b71765f24d84f785d2c29ea8323be5140e93e44fd68b73e12e23",
     "canonical_isds_audit_sha256": "39ab05d6cc611c9961b0b8d585b9cbefbb06d5bbafbba8b6be121f91b8615d5b",
     "per_variant_sha256": "dd4d12e32f8f97ca293e477f966f55c898dcb46c67de60442d11992afab66ba9"

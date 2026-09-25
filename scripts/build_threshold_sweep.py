@@ -69,6 +69,17 @@ CANON = REPO / "reference_outputs" / "scored_61var_canonical.csv"
 OUT_JSON = REPO / "reference_outputs" / "COMAVI_threshold_sweep.json"
 OUT_CSV = REPO / "reference_outputs" / "COMAVI_threshold_sweep.csv"
 
+# The post hoc points reported under --extended get their OWN committed record
+# rather than extra rows in the primary one. Two reasons. The primary record's
+# --check compares stored rows against a build with the prespecified set only,
+# so extended rows there would make the gate fail against itself. And the
+# supplement publishes the post hoc columns: before this file existed, those
+# values appeared in S2 Table with nothing in the repository to check them
+# against, which is the same defect class as a hardcoded literal. Anything
+# published from --extended must be reproducible from a committed file.
+OUT_EXT_JSON = REPO / "reference_outputs" / "COMAVI_threshold_sweep_extended.json"
+OUT_EXT_CSV = REPO / "reference_outputs" / "COMAVI_threshold_sweep_extended.csv"
+
 GRADE = {"consistent": 1.0, "partial": 0.5, "inconsistent": 0.0}
 N_BOOT = 2000
 SEED = 20260923
@@ -236,12 +247,31 @@ def main():
             ref["whole_variant_k"], ref["whole_variant_n"]))
 
     if args.check:
-        if not OUT_JSON.exists():
-            print("FAIL: %s missing" % OUT_JSON.name)
+        target = OUT_EXT_JSON if args.extended else OUT_JSON
+        if not target.exists():
+            print("FAIL: %s missing" % target.name)
             return 1
-        stored = json.loads(OUT_JSON.read_text())
-        if stored.get("rows") != result["rows"]:
-            print("FAIL: stored sweep differs from a fresh build")
+        stored = json.loads(target.read_text())
+        # The post hoc rows carry no whole-variant score, so that field is NaN.
+        # A plain != comparison is always True in the presence of NaN, which
+        # would make this gate fail against a record it had just written.
+        def same(a, b):
+            if isinstance(a, float) and isinstance(b, float):
+                if a != a and b != b:
+                    return True
+                return abs(a - b) < 1e-12
+            if isinstance(a, dict) and isinstance(b, dict):
+                return a.keys() == b.keys() and all(same(a[k], b[k]) for k in a)
+            if isinstance(a, list) and isinstance(b, list):
+                return len(a) == len(b) and all(same(x, y) for x, y in zip(a, b))
+            return a == b
+
+        if not same(stored.get("rows"), result["rows"]):
+            print("FAIL: stored sweep differs from a fresh build (%s)" % target.name)
+            return 1
+        if not args.extended and not OUT_EXT_JSON.exists():
+            print("FAIL: %s missing; the supplement publishes the post hoc "
+                  "columns and they must be reproducible" % OUT_EXT_JSON.name)
             return 1
         print("PASS: threshold sweep reproduces, and the reference column "
               "matches every published value")
@@ -263,10 +293,11 @@ def main():
     print("\n  argmax of the whole-variant score: %s (%s kcal/mol) at %.4f"
           % (peak["threshold_tag"], peak["threshold_kcal_mol"], peak["whole_variant"]))
 
-    OUT_JSON.write_text(json.dumps(result, indent=1) + "\n")
-    table.to_csv(OUT_CSV, index=False)
-    print("\nwrote %s" % OUT_JSON.relative_to(REPO))
-    print("wrote %s" % OUT_CSV.relative_to(REPO))
+    out_json, out_csv = (OUT_EXT_JSON, OUT_EXT_CSV) if args.extended else (OUT_JSON, OUT_CSV)
+    out_json.write_text(json.dumps(result, indent=1) + "\n")
+    table.to_csv(out_csv, index=False)
+    print("\nwrote %s" % out_json.relative_to(REPO))
+    print("wrote %s" % out_csv.relative_to(REPO))
     return 0
 
 
