@@ -64,7 +64,7 @@ Before any benchmark result can be read, it must be clear what a single COMAVI c
 CFH R78G illustrates a binding-specific result: its predicted isolated-subunit change was modest (0.93 kcal/mol), whereas predicted binding disruption was 6.12 kcal/mol, consistent with an increase in the measured dissociation constant from approximately 12 μM to more than 35 μM [46]. VWF R1334Q shows the value of evaluating the assembled complex. Its isolated-subunit prediction was nearly neutral (0.01 kcal/mol), but assembled-complex stability and binding changed by 4.73 and 4.11 kcal/mol [47]. The profile therefore proposes a combined assembly-and-binding lesion rather than an isolated-fold lesion.
 A silent result requires equal care, and it is not a benign call: COMAVI reports whether a modeled lesion was detected on the axes it can evaluate, and never returns a pathogenicity verdict. Two different situations produce silence, and they carry different meaning. The first is an in-scope variant with no lesion above threshold on any applicable axis, which is an informative negative for the mechanisms modeled. The second is a mechanism that acts through a state the supplied structure does not contain, where silence is uninformative rather than negative. HBB E6V is the clearest example of the second: it acts through deoxygenated hemoglobin polymerization, a state absent from the supplied model, so COMAVI silence there cannot test the known mechanism and instead redirects follow-up toward the missing assembly state. BRCA1 R1699L/Q and CALM1 N98S are related, involving phosphopeptide recognition and calcium-dependent dynamics. The eligibility screen in S1 Table (model_scope sheet) is what separates the two situations, and it is applied before scoring rather than after.
 Table 3. Every reported metric, its population, and its value at each decision threshold.
-Each metric is given across the whole prespecified threshold set rather than at the reference alone, because every graded quantity in this paper is a function of that choice and reporting one column would hide it; Fig 4 plots the same rows and S2 Table (threshold_sweep sheet) adds post hoc points beyond the prespecified range. The structural-prioritization ROC AUC is constant across the row because it is the one metric here that is threshold-free in both of its ingredients: the priority score is a continuous combination of energies and structural context that applies no cut-off, and the positive class is the curated mechanism class from the evidence ledger, not a thresholded call. Several quantities are reported as fractions of variants and are easy to conflate. Several quantities are reported as fractions of variants and are easy to conflate. Detection and attribution ask binary questions of the same 25 variants the structural arm grades, and attribution agrees with it to within 0.040. Measured destabilizations called is computed on a different population entirely - variant-axis pairs carrying a directly measured energy - and answers whether the predictor reproduces a measurement, not whether it recovers a curated mechanism. Reproduction is scored as a pair of threshold crossings rather than as numerical agreement: the 44 comparisons are those whose measured effect is at least 1.0 kcal/mol in absolute value, and a comparison counts as recovered when the predicted energy also reaches the threshold of that row. A prediction that gets the direction and the magnitude class right therefore counts, even if the two numbers differ.
+Each metric is given across the whole prespecified threshold set rather than at the reference alone, because every graded quantity in this paper is a function of that choice and reporting one column would hide it; S2 Table (threshold_sweep sheet) adds post hoc points beyond the prespecified range. The structural-prioritization ROC AUC is constant across the row because it is the one metric here that is threshold-free in both of its ingredients: the priority score is a continuous combination of energies and structural context that applies no cut-off, and the positive class is the curated mechanism class from the evidence ledger, not a thresholded call. Several quantities are reported as fractions of variants and are easy to conflate. Detection and attribution ask binary questions of the same 25 variants the structural arm grades, and attribution agrees with it to within 0.040. Measured destabilizations called is computed on a different population entirely - variant-axis pairs carrying a directly measured energy - and answers whether the predictor reproduces a measurement, not whether it recovers a curated mechanism. Reproduction is scored as a pair of threshold crossings rather than as numerical agreement: the 44 comparisons are those whose measured effect is at least 1.0 kcal/mol in absolute value, and a comparison counts as recovered when the predicted energy also reaches the threshold of that row. A prediction that gets the direction and the magnitude class right therefore counts, even if the two numbers differ.
 3.2 COMAVI recovers the literature-defined mechanism in 0.719 of graded variants, against 0.561 for the strongest trivial strategy
 This and every subsequent analysis use the same prespecified cohort of 61 variants across 14 protein systems described in Section 2.2 and listed in Table 1 and S1 Table (benchmark_variants sheet). Each variant carries a mechanism expectation taken from the primary literature rather than from any prediction, so the comparison is against an independently defined answer. At the 2.5 kcal/mol reference threshold, COMAVI recovered the expected combination of structural effects with a mechanism-pattern score of 41.0/57 = 0.719. Across the prespecified threshold set the same score runs 0.579, 0.649, 0.684, 0.719 and 0.711, so the reference is also its maximum on this cohort; Table 3 gives every metric in this paper at all five thresholds, Section 3.5 treats the choice of threshold directly, and the coincidence between the reference and the maximum is examined there rather than claimed as a selection criterion. This partial-credit result represents 41.0 total points across 57 graded variants, not 41 exact matches. The benchmark is close to balanced by construction, 32 variants curated to carry no lesion on the modeled axes against 25 with a committed structural mechanism, so this aggregate is close to a balanced measure: the unweighted mean of the two arms is 0.706, 0.013 below the weighted score. Both are reported because the cohort is not exactly balanced. To establish what that number is worth, every trivial fixed strategy was graded through the same rubric on the same variants. The strongest is to call every variant structurally silent, which scores 0.561 by taking the curated negatives and missing every mechanism; calling every variant destabilized on both fold subtypes and binding scores 0.386, and shuffling the ground truth gives 0.484 (standard deviation 0.052). COMAVI exceeds the strongest trivial strategy by 0.158. A single aggregate nonetheless averages two capabilities that a reader should see separately. Rubric performance was 0.600 on the 25 variants with a committed structural mechanism and 0.812 on the 32 curated to lack one. Resolving those arms into binary questions: among the 25 committed mechanisms, at least one of the three axes exceeded the reference threshold for 20 (detection, 0.800) and the axis to which the literature attributes the mechanism exceeded it for 14 (attribution, 0.560); among the 32 curated negatives, no axis exceeded it for 26 (correct rejection, 0.812). Binary attribution and the rubric restricted to the same 25 variants agree to within 0.040, so the partial credit the rubric awards is not inflating the structural arm. COMAVI therefore detects structural disruption more reliably than it localizes the disrupted axis, and the gap between those two rates is the method's principal current limitation. S2 Text reports the decomposition by expected mechanism class. The interaction and BRCT subsets had similar scores, so neither cohort determined the pooled result. Because the data span 14 clustered systems, 0.719 is benchmark-specific pattern agreement rather than universal accuracy.
 At the output level, 58 of 77 applicable energetic calculations had the expected direction: 19/25 for isolated-subunit stability, 17/22 for stability calculated in the assembled complex, and 22/30 for binding. Fig 2 shows these axis-specific counts alongside the whole-variant partial-credit score, so that a reader can see whether the aggregate rests evenly on the three physical axes or is carried by one of them. The per-axis rates identify which calculations contributed, but they do not replace the whole-variant outcome.
@@ -241,59 +241,77 @@ Substitution-adjusted 2.9/2.9/3.5	0.540	0.844	12/44 = 0.273	Most conservative se
 
 [SI S1_Text]
 S1 Text. Implementation details, statistical conventions and evidence provenance.
-Consolidated for submission. Each section below appeared in the reviewed manuscript under the item name given in its heading.
-S1 Text. Implementation details and statistical conventions
+This file consolidates 2 supplementary notes from the reviewed manuscript into one supporting-information item. Section numbers below are local to this file. The item name each section carried in the reviewed manuscript is given in the contents list, so a reader holding the earlier version can locate any passage.
+Section 1. Implementation details and statistical conventions
 Each structural context was repaired once and cached. Variants were specified in FoldX notation. BuildModel was run five times on both isolated and assembled coordinates, and AnalyzeComplex was applied pairwise to each resulting mutant complex. Beyond the command, input, replicate count, partner chains, and output directory, no FoldX energy-function parameter was overridden.
 foldx --command=RepairPDB --pdb=<structure> --output-dir=<workdir>
 foldx --command=BuildModel --pdb=<repaired> --mutant-file=individual_list.txt --numberOfRuns=5 --output-dir=<workdir>
 foldx --command=AnalyzeComplex --pdb=<mutant_complex> --analyzeComplexChains=<chainA>,<chainB> --output-dir=<workdir>
 The mutant-minus-wild-type ΔΔG was read from FoldX outputs. Wild-type interaction energy was computed once per partner pair, and mutant interaction energy was computed on each of the five BuildModel replicates. Partner-level binding ΔΔG is the mean of IE(mutant) - IE(wild type); replicate standard deviation is retained.
 Structural-context tier implementation. The raw score is Grantham substitution severity [53] multiplied by the sum of monomer contacts and the maximum confidence-passing inter-chain contact count, plus an interface bonus (1.5 for one partner; 2.0 for at least two) and a burial bonus (1.0 for partial burial; 2.0 for a buried core position). The result is multiplied by 1.0 for pLDDT at least 70, 0.7 for pLDDT 50-70, and 0.4 below 50; experimental structures bypass this attenuation. Fixed cutoffs assign Tier 1 at s at least 5.0, Tier 2 at 3.0 to less than 5.0, Tier 3 at 1.5 to less than 3.0, and Tier 4 below 1.5.
-S2 Text. Evidence provenance and denominator sensitivity
+Section 2. Evidence provenance and denominator sensitivity
 The evidence ledger contains 98 committed energetic-axis expectations. E1-E3 expectations are supported by energetic, functional, or qualitative experiments. E4 denotes population-supported neutral expectations. E5 denotes an inferred axis state used when the literature supported a mechanistic or retained-function interpretation but no axis-specific assay was available; inference was not assigned from missing data alone. E4 and E5 commitments are heavily enriched for neutral expectations: all 9 E4 axes and all 18 E5 axes are neutral. Complex-context stability is the least independently grounded axis: 14 of its 25 committed axes rest on inferred rather than direct or coupled evidence, and 11 are E5 inferred axis states.
 Using the all-row 78-axis convention, energetic-output agreement was 20/32 = 0.625 for E1-E2 evidence and 38/46 = 0.826 for E3-E5 evidence (Fisher p = 0.065). Evidence class was strongly associated with expected axis state: direct measurements were preferentially available for destabilizers, whereas frequency-supported and inferred commitments were predominantly neutral. Within expected-destabilizing axes, agreement was 14/24 for E1-E2 and 4/6 for E3-E5; within expected-neutral axes, the corresponding rates were 6/7 and 34/40. The continuity-corrected Mantel-Haenszel estimate across expected-state strata was odds ratio 0.83 (p = 0.92). Thus the current benchmark does not show that evidence category independently explains energetic-output agreement after expected axis state is considered. Among 25 gradeable E1 energetic axes, 18 agreed (0.720).
 Strict variant-level sensitivity analyses used all-axis definitions. Requiring every committed axis to have E1-E3 support left n = 26, 13 structural and 13 no-lesion (tier sensitivity 1.000, 95% CI 0.753-1.000; specificity 0.615, 0.316-0.861). Requiring every committed axis to be direct or coupled left the same 26 variants and returned the same values. Complete recovery here rests on 13 positives, so the interval is wide; it is reported because the restriction is a sensitivity view of the full-tier screen, which recovers all 17 positives on the whole subset.
+[TABLE 1]
+Section	Title	Item name in the reviewed manuscript
+Section 1	Implementation details and statistical conventions	S1 Text
+Section 2	Evidence provenance and denominator sensitivity	S2 Text
 
 [SI S2_Text]
 S2 Text. Sensitivity analyses, mechanism-class decomposition and operating-point diagnostics.
-Consolidated for submission. Each section below appeared in the reviewed manuscript under the item name given in its heading.
-S3 Text. Mechanism-class decomposition, fold-arm errors, and ground-truth conventions
+This file consolidates 3 supplementary notes from the reviewed manuscript into one supporting-information item. Section numbers below are local to this file. The item name each section carried in the reviewed manuscript is given in the contents list, so a reader holding the earlier version can locate any passage.
+Section 1. Mechanism-class decomposition, fold-arm errors, and ground-truth conventions
 Weighted mechanism consistency differed by expected mechanism class: 0.833 for mixed structural expectations (n = 6), 0.812 for curated structurally silent variants (n = 32), 0.550 for the fold-mechanism class (n = 10), and 0.500 for pure interface destabilization (n = 9). The interface class is therefore the weakest arm. Fold-arm errors separate into prediction misses and disagreements created by the sign-based ground-truth convention.
-S4 Text. Operating-point and calibration diagnostics
+Section 2. Operating-point and calibration diagnostics
 The apparent pooled optimum depends on class mixture. The benchmark contains 25 variants with committed structural mechanisms and 32 benchmark negatives, a structural fraction of 0.439. Reweighting the classes moved the pooled optimum: 2.5 kcal/mol remained the pooled argmax only while the weight on the structural arm stayed at or below 0.645, well above the benchmark's own structural fraction, so the reference point is not an artifact of this cohort's class mixture, though it would move under a substantially more structural-heavy one. This analysis supports reporting a threshold menu rather than a universal optimum.
 In 10,000 paired whole-system resamples, in which the same resample of the 14 systems is scored at every threshold, graded recovery decreased from 0.757 (95% CI 0.639-0.861) at 1.0 kcal/mol to 0.536 (0.405-0.679) at the substitution-adjusted setting, whereas correct rejection increased from 0.445 (0.270-0.625) to 0.849 (0.688-1.000). The probability that recovery fell was 0.999, and the probability that rejection rose was 1.000. The direction of the curves is forced by thresholding, however; resampling quantifies the size of the exchange, not its existence.
 The mechanism-attribution menu also answers a different question from the 3 kcal/mol fold cutoff used for cellular-stability or degradation interpretation in MAVISp [15] and related MLH1 studies [54,55]. A predicted fold change below that cellular-abundance cutoff can still identify the correct structural axis for follow-up. We therefore retain the 3 kcal/mol comparison as endpoint context, not as a basis for selecting a COMAVI operating point.
-S5 Text. Structural-context comparators, evidence states, and priority-score sensitivity
-The full tier, an interface-only screen, and the tier without its interface bonus were compared on the same 47-variant prioritization subset (S4 Table; S3 Fig). The full tier recovered all 17 structural mechanisms (exact 95% CI 0.805-1.000) but also flagged 13 of 30 no-lesion variants, giving specificity 0.567 (95% CI 0.374-0.745). Complete recovery on seventeen variants is compatible with a true sensitivity as low as 0.805, so the interval rather than the point estimate is what the screen supports. Interface status alone recovered 15/17 and rejected 23/30; the no-interface tier recovered 14/17 and rejected 18/30. Exact within-system permutation p values were 0.0095, 0.0018, and 0.129, respectively. Per-tier structural fractions were 11/13 in Tier 1, 6/17 in Tier 2, and 0/17 across Tiers 3-4, so the gradient is now strictly decreasing and no variant with a modeled structural mechanism falls in the two weakest tiers. Removing the interface bonus demoted HBB W37Y, PIK3CA E542K, PIK3CA E545K, and CALM1 D96V from Tier 2 to Tier 3.
+Section 3. Structural-context comparators, evidence states, and priority-score sensitivity
+The full tier, an interface-only screen, and the tier without its interface bonus were compared on the same 47-variant prioritization subset (S1 Table, context_comparators sheet; S3 Fig). The full tier recovered all 17 structural mechanisms (exact 95% CI 0.805-1.000) but also flagged 13 of 30 no-lesion variants, giving specificity 0.567 (95% CI 0.374-0.745). Complete recovery on seventeen variants is compatible with a true sensitivity as low as 0.805, so the interval rather than the point estimate is what the screen supports. Interface status alone recovered 15/17 and rejected 23/30; the no-interface tier recovered 14/17 and rejected 18/30. Exact within-system permutation p values were 0.0095, 0.0018, and 0.129, respectively. Per-tier structural fractions were 11/13 in Tier 1, 6/17 in Tier 2, and 0/17 across Tiers 3-4, so the gradient is now strictly decreasing and no variant with a modeled structural mechanism falls in the two weakest tiers. Removing the interface bonus demoted HBB W37Y, PIK3CA E542K, PIK3CA E545K, and CALM1 D96V from Tier 2 to Tier 3.
+[TABLE 1]
+Section	Title	Item name in the reviewed manuscript
+Section 1	Mechanism-class decomposition, fold-arm errors, and ground-truth conventions	S3 Text
+Section 2	Operating-point and calibration diagnostics	S4 Text
+Section 3	Structural-context comparators, evidence states, and priority-score sensitivity	S5 Text
 
 [SI S3_Text]
 S3 Text. Pathogenicity comparison, robustness, independent validation and a self-caught ground-truth correction.
-Consolidated for submission. Each section below appeared in the reviewed manuscript under the item name given in its heading.
-S6 Text. Pathogenicity comparison, directional enrichment, and gain of function
+This file consolidates 5 supplementary notes from the reviewed manuscript into one supporting-information item. Section numbers below are local to this file. The item name each section carried in the reviewed manuscript is given in the contents list, so a reader holding the earlier version can locate any passage.
+Section 1. Pathogenicity comparison, directional enrichment, and gain of function
 At the 2.5 reference, 27 of 61 benchmark variants had at least one firing energetic output and 34 were silent, where firing uses the shipped reduction over confidence-passing axes rather than a raw threshold on every partner column. Among the 49 variants carrying a curated clinical annotation, 37 were pathogenic. All 22 annotated variants with a firing output were pathogenic, so no benign variant in this cohort produced one, whereas the silent group contained 15 pathogenic and 12 benign variants (Fisher exact p = 2.0 × 10^-4). The 15 pathogenic-but-silent variants spanned 10 of the 14 systems. Because the benchmark was selected for mechanism evidence, these fractions are not expected clinical predictive values; they establish only the direction of the asymmetry between positive and silent structural calls.
-S7 Text. Robustness, uncertainty, and metric reconciliation
+Section 2. Robustness, uncertainty, and metric reconciliation
 The versioned per-variant mechanism grades and output-level agreement fields are the authoritative source records. In the manuscript, structural agreement is described as a four-output continuity aggregate and is decomposed into the three energetic axes plus tier. The primary convention excludes the four ungraded scope or commitment cases from both whole-variant mechanism scoring and the continuity denominator, giving 92/124 = 0.742 at 2.5 and 90/124 = 0.726 at tSAP. The all-row denominator audit is 92/125 = 0.736 at 2.5. Naive recounts based only on raw ΔΔG sign or per-partner values do not reproduce the metric because the shipped scorer applies direction, operating-point, confidence, and interval gates.
 Restricting the primary graded set to crystal or confident site models removes the seven partial-site variants. A636P remains in this sensitivity because it is a confident-site case, so its two newly committed neutral fold expectations still count as prediction disagreements. The restricted cohort scored 37.5/50 = 0.750 against 41.0/57 = 0.719 on the full graded set, a difference of 0.031. The confidence restriction therefore removes lower-confidence observations without turning the remaining cohort into a hidden high-performing subset; it should be read as a robustness view, not as an alternative benchmark definition. The two pLDDT thresholds operate together rather than as alternative configurations: a partner interface enters the gated set at 50, confidence is upgraded to high at 70, and the seven interfaces lying between those values are exactly the seven partial-site variants removed here.
-S8 Text. Independent binding-axis validation on SKEMPI 2.0
+Section 3. Independent binding-axis validation on SKEMPI 2.0
 The hemoglobin series provides a high-quality within-system anchor but does not test generalization across unrelated interfaces. We therefore scored two independent SKEMPI 2.0 complexes [56] with the frozen COMAVI workflow: barnase-barstar (24 substitutions) and TEM1-BLIP (24 substitutions on the unambiguously mapped BLIP side). Measured binding ΔΔG was calculated as RT ln(K_D,mut/K_D,wt).
-S9 Text. Do high-priority variants also have their mechanism graded correctly?
+Section 4. Do high-priority variants also have their mechanism graded correctly?
 The prioritization and mechanism-grading results answer different questions, and reporting them separately leaves open whether they agree: a variant ranked highly but graded inconsistent would point a user at the right variant with the wrong mechanistic hypothesis. Crossing the two over the 47-variant prioritization population answers the question only partly. Of the 17 variants with a modeled structural mechanism, 16 fall inside the top 20 and the one outside, HBB W37Y, ranks 21st and is graded partial. With a single variant beyond the cut there is no population to contrast against: the mean grade is 0.594 inside against 0.500 outside, and the rank-grade association across all 17 is not significant (Spearman rho = 0.356, p = 0.161). The test is underpowered because the ranking leaves almost nothing outside the cut, not because the two outputs disagree. Both grades sit below the 0.719 whole-cohort score because they are computed within the structural class alone, where the mean grade is 0.588; the whole-cohort figure also contains the curated negatives, on which COMAVI scores 0.812. What can be stated without a significance test is the property that matters operationally: no variant graded fully consistent falls outside the top 20, so the ranking does not bury a variant whose mechanism COMAVI resolves. Within the top 20 the grades are 5 consistent, 9 partial and 2 inconsistent; the two inconsistent cases are MLH1 R755W at rank 11 and PIK3CA E545K at rank 15, and they are the failure mode this analysis is designed to expose - correctly prioritized, incorrectly explained. Only one structural mechanism falls outside the top 20: HBB W37Y at rank 21, immediately below the cut, graded partial. Because a single variant sits beyond the cut, the inside-versus-outside contrast cannot be tested and the descriptive values should not be read as an association; what the crossing does establish is that no fully resolved mechanism is ranked below the cut. This is consistent rather than compounding.
-S10 Text. A correction the benchmark caught in itself
+Section 5. A correction the benchmark caught in itself
 Every committed expectation in this benchmark carries a written one-line evidence basis and a primary citation alongside its expected token. A shipped gate, scripts/verify_ledger_token_basis.py, reads each basis, keeps the clauses that carry the vocabulary of the axis being committed, and fails if the token asserts disruption where those clauses assert the axis is intact, or the reverse. It is run in continuous integration with the other audits.
 Three of the 98 committed expectations failed that check, and all three were binding-axis tokens introduced by a single earlier curation review that changed them from neutral to destabilizing without changing the bases beside them. MSH2 C697F carried a destabilizing binding expectation against a basis reading "ATPase catalytic defect, protein stable, interaction intact". KRAS G12D and G12V carried destabilizing binding expectations against bases recording WT-like RAF1 binding with impaired GTP hydrolysis, and noting that residue 12 lies 13.6 A from the RAF1 interface. In each case the lesion is catalytic and the binding axis is not the axis it affects. The three tokens were returned to neutral and the three variants are now curated as carrying no lesion on the modeled axes.
 The correction is reported rather than absorbed because its effects run in both directions. KRAS G12D and G12V move from graded inconsistent to graded consistent, and they are no longer counted among the variants the priority score fails to rank, which removes a limitation the earlier analysis stated. MSH2 C697F moves the other way: it is now a curated negative on which COMAVI predicts 13.3 kcal/mol of isolated-subunit destabilization at a buried-core residue, so it becomes a false positive, it lowers the rejection arm, and it is the one non-structural variant in the highest priority-score band. A correction that only improved the result would deserve more suspicion than this one.
 The gate cannot detect every curation error. It reads one curated sentence per axis, so it catches contradictions that are written down; it cannot catch an expectation whose basis is silent on the axis, whose citation is wrong, or which is simply mistaken in a way the curator also wrote down. A passing gate means no committed token contradicts its own recorded evidence, which is weaker than every token being correct.
+[TABLE 1]
+Section	Title	Item name in the reviewed manuscript
+Section 1	Pathogenicity comparison, directional enrichment, and gain of function	S6 Text
+Section 2	Robustness, uncertainty, and metric reconciliation	S7 Text
+Section 3	Independent binding-axis validation on SKEMPI 2.0	S8 Text
+Section 4	Do high-priority variants also have their mechanism graded correctly?	S9 Text
+Section 5	A correction the benchmark caught in itself	S10 Text
 
 [SI S1_Table]
 [SHEET index]
-sheet	source item in the reviewed manuscript	caption
-benchmark_variants	S1 Table	S1 Table. The 61 benchmark variants. Every variant scored in this paper, with the clinical annotation, the expected mechanism defined from primary literature before COMAVI results were considered, the structural-context tier, COMAVI's graded agreement at the 2.5 kcal/mol reference threshold, and the
-evidence_composition	S2 Table	S2 Table. Evidence composition by category.
-model_scope	S3 Table	S3 Table. Model-scope and mechanism-eligibility framework.
-context_comparators	S4 Table	S4 Table. Structural-context comparator analyses on the same 47-variant population.
-denominator_sensitivity	S5 Table	S5 Table. Denominator and eligibility sensitivity analyses.
-fold_binding_disagreements	S6 Table	S6 Table. Directly measured or curated fold and binding disagreements at the 2.5 kcal/mol reference.
+Supporting information item	sheet	source item in the reviewed manuscript	caption
+S1 Table	benchmark_variants	S1 Table	S1 Table, benchmark_variants sheet. The 61 benchmark variants. Every variant scored in this paper, with the clinical annotation, the expected mechanism defined from primary literature before COMAVI results were considered, the structural-context tier, COMAVI's graded agreement at the 2.5 kcal/mol reference threshold, and the (S1 Table in the reviewed manuscript.)
+S1 Table	evidence_composition	S2 Table	S1 Table, evidence_composition sheet. Evidence composition by category. (S2 Table in the reviewed manuscript.)
+S1 Table	model_scope	S3 Table	S1 Table, model_scope sheet. Model-scope and mechanism-eligibility framework. (S3 Table in the reviewed manuscript.)
+S1 Table	context_comparators	S4 Table	S1 Table, context_comparators sheet. Structural-context comparator analyses on the same 47-variant population. (S4 Table in the reviewed manuscript.)
+S1 Table	denominator_sensitivity	S5 Table	S1 Table, denominator_sensitivity sheet. Denominator and eligibility sensitivity analyses. (S5 Table in the reviewed manuscript.)
+S1 Table	fold_binding_disagreements	S6 Table	S1 Table, fold_binding_disagreements sheet. Directly measured or curated fold and binding disagreements at the 2.5 kcal/mol reference. (S6 Table in the reviewed manuscript.)
 [SHEET benchmark_variants]
+S1 Table, benchmark_variants sheet. The 61 benchmark variants. Every variant scored in this paper, with the clinical annotation, the expected mechanism defined from primary literature before COMAVI results were considered, the structural-context tier, COMAVI's graded agreement at the 2.5 kcal/mol reference threshold, and the (S1 Table in the reviewed manuscript.)																
+																
 System	Gene	Variant	Clinical annotation	Expected mechanism	Structural tier	Agreement at 2.5	Agreement 1.0/1.5/2.0/2.5/SAP	Committed axes	Evidence class	Evidence basis	Citation	Pred ΔΔG subunit	Pred ΔΔG in complex	Pred ΔΔG binding	Measured ΔΔG	Structure
 BRCA1 BRCT tandem domain (fold only)	brca1	A1843P	-	Fold destabilization	-	consistent	C/C/C/C/C	monomer	E1	GdmCl equilibrium unfolding: measured ddG_U-F = +4.89 kcal/mol	Rowling, Cook & Itzhaki 2010 JBC 285:20080 (PMID 20452977; PMC2888420), Table S1	6.43	-	-	4.89	1JNX.pdb
 BRCA1 BRCT tandem domain (fold only)	brca1	L1664P	-	Fold destabilization	-	inconsistent	X/X/X/X/X	monomer	E1	GdmCl equilibrium unfolding: measured ddG_U-F = +1.18 kcal/mol	Rowling, Cook & Itzhaki 2010 JBC 285:20080 (PMID 20452977; PMC2888420), Table S1	0.53	-	-	1.18	1JNX.pdb
@@ -357,6 +375,8 @@ VHL-elongin C	vhl	Y98H	Pathogenic	No modeled lesion	Tier 2	consistent	X/C/C/C/C	
 VWF A1-GPIb alpha	vwf	A1381T	Benign	No modeled lesion	Tier 2	consistent	C/C/C/C/C	binding, fold_complex, monomer	E1/E5	Binding-competent by SPR; No assembly-context stability measurement; token inferred from the intact monomer fold; Natively folded, WT-like Tm	Tischer / Moon-Tasson / Auton 2025 J Thromb Haemost 23(4):1215-1228 (PMID 39756657); CD/DSC + SPR + shear-flow	-0.1	-0.11	-0.00	-	1SQ0.pdb
 VWF A1-GPIb alpha	vwf	R1334Q	Pathogenic	Interface disruption	Tier 1	partial	P/P/P/P/P	binding, fold_complex, monomer	E1/E5	GPIba binding lost by SPR and shear-flow adhesion; No assembly-context stability measurement; token inferred from the intact monomer fold; Natively folded with modestly reduced Tm -- below the destabilization threshold	Tischer / Moon-Tasson / Auton 2025 J Thromb Haemost 23(4):1215-1228 (PMID 39756657); CD/DSC + SPR + shear-flow	0.01	4.73	4.11	-	1SQ0.pdb
 [SHEET evidence_composition]
+S1 Table, evidence_composition sheet. Evidence composition by category. (S2 Table in the reviewed manuscript.)				
+				
 Evidence category	Axes	Neutral	Destabilizing	Interpretation
 E1 quantitative energetic	29	8	20	Direct or quantitative energetic evidence; includes one stabilizing expectation. One E1 monomer axis (BRCA1 R1699Q) carries a stabilizing rather than neutral or destabilizing expectation and is not shown in either column, so this row's Neutral and Destabilizing counts sum to 28 of 29.
 E2 quantitative functional	9	4	5	Quantitative functional readout coupled to the axis.
@@ -364,22 +384,30 @@ E3 qualitative experimental	33	22	11	Qualitative experimental evidence; includes
 E4 population frequency	9	9	0	Population-supported neutral expectations.
 E5 inferred	18	18	0	Literature-supported axis state without an axis-specific assay; primarily neutral commitments.
 [SHEET model_scope]
+S1 Table, model_scope sheet. Model-scope and mechanism-eligibility framework. (S3 Table in the reviewed manuscript.)		
+		
 Class	Definition	Whole-variant treatment
 Representable structural	Known lesion maps to one or more supplied COMAVI energetic outputs.	Grade the complete applicable-axis pattern.
 Structural context missing	A required partner, ligand, modification, oligomer, or state is absent.	Exclude whole-variant mechanism grading; retain independently gradeable axes.
 Nonstructural or static-invisible	Catalytic, regulatory, dynamic, aggregative, or post-translational mechanism outside static energetic outputs.	May be a committed benchmark negative only when literature supports the modeled axes.
 Mechanistically uncommitted	Evidence does not establish a structural-versus-nonstructural pattern.	Exclude from whole-variant grading.
 [SHEET context_comparators]
+S1 Table, context_comparators sheet. Structural-context comparator analyses on the same 47-variant population. (S4 Table in the reviewed manuscript.)							
+							
 Screen	TP/FN	FP/TN	Sensitivity	Specificity	PPV	Balanced accuracy	Within-system p
 Any pLDDT-passing interface	15/2	7/23	0.882	0.767	0.682	0.824	0.0018
 Contact/severity + burial; no interface bonus	14/3	12/18	0.824	0.600	0.538	0.712	0.129
 Full Tier 1-2 screen	17/0	13/17	1.000	0.567	0.567	0.783	0.0095
 [SHEET denominator_sensitivity]
+S1 Table, denominator_sensitivity sheet. Denominator and eligibility sensitivity analyses. (S5 Table in the reviewed manuscript.)				
+				
 Analysis convention	Whole-variant score	Monomer fold	All energetic outputs	Four-output continuity aggregate
 Primary 57-variant graded cohort	41.0/57 = 0.719	19/25 = 0.760	58/77 = 0.753	92/124 = 0.742
 All-row output convention	Whole-variant exclusions retained	19/26 = 0.731	58/78 = 0.744	92/125 = 0.736
 Include BRCA1 R1699L/Q in rubric-only sensitivity	43.0/59 = 0.729	Measured axes remain available	Not used as headline	Not used as headline
 [SHEET fold_binding_disagreements]
+S1 Table, fold_binding_disagreements sheet. Directly measured or curated fold and binding disagreements at the 2.5 kcal/mol reference. (S6 Table in the reviewed manuscript.)				
+				
 Variant	Axis	Measured or curated expectation	Predicted ΔΔG (kcal/mol)	Interpretation
 BRCA1 V1736A	Monomer fold	4.20	1.24	Genuine magnitude miss; false negative at 2.5.
 MLH1 R755W	Monomer fold	Curated destabilizing	0.97	Genuine miss against the curated fold mechanism.
@@ -391,17 +419,19 @@ MSH2 A636P	Monomer and complex-context fold	Neutral on both modeled fold axes	4.
 
 [SI S2_Table]
 [SHEET index]
-sheet	source item in the reviewed manuscript	caption
-operating_point_sweep	S7 Table	S7 Table. Complete operating-point sweep. MC is weighted mechanism consistency; balanced MC gives structural and benchmark-negative classes equal weight.
-disagreement_classes	S8 Table	S8 Table. Disagreement classes at the 2.5 kcal/mol operating point, excluding the barnase Glu73 cluster.
-tier_distribution	S9 Table	S9 Table. Structural-mechanism distribution by tier.
-evidence_states	S10 Table	S10 Table. Four evidence states across thresholds. Each cell is structural mechanism / no-lesion variant.
-detection_metrics	S11 Table	S11 Table. Structural-mechanism detection metrics. Values are sensitivity / specificity / positive predictive value.
-pathogenicity_ranking	S12 Table	S12 Table. Descriptive pathogenicity ranking on the common complete-case population.
-robustness	S13 Table	S13 Table. Mechanism-pattern and four-output robustness analyses at the 2.5 kcal/mol reference.
-skempi_validation	S14 Table	S14 Table. Independent binding-axis validation.
-threshold_sweep	S15 Table	S15 Table. Every graded metric at every decision threshold, including post hoc points. The five rows above the rule are the prespecified set, unchanged since the repository's first commit and fixed before the graded ground truth existed in committed form; the three below it were evaluated after the 
+Supporting information item	sheet	source item in the reviewed manuscript	caption
+S2 Table	operating_point_sweep	S7 Table	S2 Table, operating_point_sweep sheet. Complete operating-point sweep. MC is weighted mechanism consistency; balanced MC gives structural and benchmark-negative classes equal weight. (S7 Table in the reviewed manuscript.)
+S2 Table	disagreement_classes	S8 Table	S2 Table, disagreement_classes sheet. Disagreement classes at the 2.5 kcal/mol operating point, excluding the barnase Glu73 cluster. (S8 Table in the reviewed manuscript.)
+S2 Table	tier_distribution	S9 Table	S2 Table, tier_distribution sheet. Structural-mechanism distribution by tier. (S9 Table in the reviewed manuscript.)
+S2 Table	evidence_states	S10 Table	S2 Table, evidence_states sheet. Four evidence states across thresholds. Each cell is structural mechanism / no-lesion variant. (S10 Table in the reviewed manuscript.)
+S2 Table	detection_metrics	S11 Table	S2 Table, detection_metrics sheet. Structural-mechanism detection metrics. Values are sensitivity / specificity / positive predictive value. (S11 Table in the reviewed manuscript.)
+S2 Table	pathogenicity_ranking	S12 Table	S2 Table, pathogenicity_ranking sheet. Descriptive pathogenicity ranking on the common complete-case population. (S12 Table in the reviewed manuscript.)
+S2 Table	robustness	S13 Table	S2 Table, robustness sheet. Mechanism-pattern and four-output robustness analyses at the 2.5 kcal/mol reference. (S13 Table in the reviewed manuscript.)
+S2 Table	skempi_validation	S14 Table	S2 Table, skempi_validation sheet. Independent binding-axis validation. (S14 Table in the reviewed manuscript.)
+S2 Table	threshold_sweep	S15 Table	S2 Table, threshold_sweep sheet. Every graded metric at every decision threshold, including post hoc points. The five rows above the rule are the prespecified set, unchanged since the repository's first commit and fixed before the graded ground truth existed in committed form; the three below it were evaluated after the (S15 Table in the reviewed manuscript.)
 [SHEET operating_point_sweep]
+S2 Table, operating_point_sweep sheet. Complete operating-point sweep. MC is weighted mechanism consistency; balanced MC gives structural and benchmark-negative classes equal weight. (S7 Table in the reviewed manuscript.)					
+					
 Operating point	Structural arm (n = 25)	Rejection arm (n = 32)	Pooled score (n = 57)	Balanced score	Measured destabilizations called (n = 44)
 1.0 default	0.760	0.438	0.579	0.599	35/44
 1.5	0.720	0.594	0.649	0.657	26/44
@@ -409,16 +439,22 @@ Operating point	Structural arm (n = 25)	Rejection arm (n = 32)	Pooled score (n =
 2.5 reference	0.600	0.812	0.719	0.706	13/44
 tSAP	0.540	0.844	0.711	0.692	12/44
 [SHEET disagreement_classes]
+S2 Table, disagreement_classes sheet. Disagreement classes at the 2.5 kcal/mol operating point, excluding the barnase Glu73 cluster. (S8 Table in the reviewed manuscript.)				
+				
 Call relationship	n	Definition	Median absolute error	Benchmark examples
 Agreement	38	Measured and predicted calls agree.	0.67 kcal/mol	Most comparisons
 Borderline disagreement	7	Calls straddle 2.5 kcal/mol but both values sit near it.	0.79 kcal/mol	V1665M
 Substantive disagreement	11	Calls straddle 2.5 kcal/mol and at least one value is far from it.	2.96 kcal/mol	V1736A; V1808A
 [SHEET tier_distribution]
+S2 Table, tier_distribution sheet. Structural-mechanism distribution by tier. (S9 Table in the reviewed manuscript.)			
+			
 Tier group	Structural mechanism	Benchmark negative	Structural fraction
 Tier 1	11	2	11/13 = 0.846
 Tier 2	6	11	6/17 = 0.353
 Tiers 3-4	0	17	0/17 = 0.000
 [SHEET evidence_states]
+S2 Table, evidence_states sheet. Four evidence states across thresholds. Each cell is structural mechanism / no-lesion variant. (S10 Table in the reviewed manuscript.)				
+				
 Operating point	Convergent	Energy-only	Context-only	Neither
 1.0 default	16/9	0/8	1/4	0/9
 1.5	15/6	0/6	2/7	0/11
@@ -426,6 +462,8 @@ Operating point	Convergent	Energy-only	Context-only	Neither
 2.5 reference	15/3	0/3	2/10	0/14
 tSAP	11/3	0/2	6/10	0/15
 [SHEET detection_metrics]
+S2 Table, detection_metrics sheet. Structural-mechanism detection metrics. Values are sensitivity / specificity / positive predictive value. (S11 Table in the reviewed manuscript.)		
+		
 Operating point	Any energetic firing	Convergent: energy + Tier 1-2
 1.0 default	0.941 / 0.433 / 0.485	0.941 / 0.700 / 0.640
 1.5	0.882 / 0.600 / 0.556	0.882 / 0.800 / 0.714
@@ -433,12 +471,16 @@ Operating point	Any energetic firing	Convergent: energy + Tier 1-2
 2.5 reference	0.882 / 0.800 / 0.714	0.882 / 0.900 / 0.833
 tSAP	0.647 / 0.833 / 0.688	0.647 / 0.900 / 0.786
 [SHEET pathogenicity_ranking]
+S2 Table, pathogenicity_ranking sheet. Descriptive pathogenicity ranking on the common complete-case population. (S12 Table in the reviewed manuscript.)		
+		
 Descriptor	Pathogenicity AUC	Intended interpretation
 AlphaMissense	0.903	Pathogenicity ranking
 ISDS-v1	0.851	Integrated structural-disruption priority
 ISDS energetic component	0.836	Energetic structural evidence
 ISDS context component	0.769	Structural-context strength
 [SHEET robustness]
+S2 Table, robustness sheet. Mechanism-pattern and four-output robustness analyses at the 2.5 kcal/mol reference. (S13 Table in the reviewed manuscript.)		
+		
 Test	Weighted mechanism consistency	Four-output continuity aggregate
 Observed at 2.5	0.719	0.742
 Block-permutation null, n = 2,000	0.484 ± 0.052; p = 5 × 10^-4	0.535 ± 0.046; p = 5 × 10^-4
@@ -447,12 +489,16 @@ Replicate noise, n = 500	0.721 ± 0.013	0.740 ± 0.004
 Variant bootstrap, n = 2,000	95% CI 0.614-0.819	95% CI 0.664-0.820
 System-cluster bootstrap, n = 2,000	95% CI 0.625-0.821	95% CI 0.682-0.816
 [SHEET skempi_validation]
+S2 Table, skempi_validation sheet. Independent binding-axis validation. (S14 Table in the reviewed manuscript.)					
+					
 Complex	Methods	n	Pearson r	Spearman ρ	Sign-correct on destabilizers
 Barnase-barstar, all	ITC 10; stopped-flow 9; inactivation 5	24	0.37 (p = 0.074)	0.30 (p = 0.156)	14/22 (64%)
 Barnase-barstar, excluding Glu73	stopped-flow 9; inactivation 5; ITC 3	17	0.51 (p = 0.035)	0.56 (p = 0.019)	14/15 (93%)
 TEM1-BLIP, BLIP side	ITC 17; stopped-flow 5; SPR 1; inactivation 1	24	0.51 (p = 0.010)	0.50 (p = 0.012)	16/18 (89%)
 Combined, excluding Glu73 cluster	mixed	41	0.48 (p = 0.002)	0.55 (p = 0.0002)	30/33 (91%)
 [SHEET threshold_sweep]
+S2 Table, threshold_sweep sheet. Every graded metric at every decision threshold, including post hoc points. The five rows above the rule are the prespecified set, unchanged since the repository's first commit and fixed before the graded ground truth existed in committed form; the three below it were evaluated after the (S15 Table in the reviewed manuscript.)								
+								
 Threshold (kcal/mol)	Detection	Attribution	Correct rejection	Whole-variant score	Axis: isolated subunit	Axis: in complex	Axis: binding	Structural agreement
 1.0	0.920	0.760	0.156	0.579	0.720	0.545	0.800	0.710
 1.5	0.800	0.680	0.594	0.649	0.680	0.727	0.800	0.734
