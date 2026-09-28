@@ -1,7 +1,7 @@
 COMAVI supporting information
 =============================
 
-Nine supporting-information items. Upload each file below to PLOS Computational
+Ten supporting-information items. Upload each file below to PLOS Computational
 Biology as a separate Supporting Information item, using the item name in the
 first column. The captions for these items are listed at the end of the
 manuscript file, as PLOS requires; they are not repeated here and must not be
@@ -20,6 +20,10 @@ row, and every consolidated document opens on a contents table.
                               classes, tier distribution, evidence states,
                               detection metrics, pathogenicity ranking,
                               robustness, SKEMPI validation, threshold sweep
+  S3 Table  S3_Table.xlsx    all 98 committed axis-level expectations, each with its
+                             evidence class, directness, one-line written basis and
+                             citation. This is the benchmark's ground truth; it was
+                             repository-only before v7.13.
   S1 Text    S1_Text.docx     2 sections: implementation details and
                               statistical conventions; evidence provenance and
                               denominator sensitivity

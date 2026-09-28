@@ -79,6 +79,15 @@ def main():
 
     mapping = pd.read_csv(args.mapping)
     labels = caption_labels(args.docx)
+    # Main figures only. The supplementary figures were moved out of the
+    # manuscript into separate SI files for submission, so they are no longer
+    # inline drawings here -- 7 inline against 11 mapping rows is the correct
+    # state, not a defect. verify_embedded_figures.py already pairs main-figure
+    # captions only and asserts the opposite property for the S# Fig rows (that
+    # they are NOT embedded); this script has to make the same distinction or it
+    # refuses to run on a compliant manuscript.
+    mapping = mapping[mapping.manuscript_item.str.startswith("Fig ")].reset_index(drop=True)
+    labels = [x for x in labels if x.startswith("Fig ")]
     zin = zipfile.ZipFile(args.docx)
 
     rels = ET.fromstring(zin.read("word/_rels/document.xml.rels"))

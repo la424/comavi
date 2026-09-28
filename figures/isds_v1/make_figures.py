@@ -375,6 +375,17 @@ with plt.rc_context({'font.size':12.5,'axes.titlesize':13.0,'axes.labelsize':12.
             (axB,'isds_energy_component','ISDS energetic component','Energetic evidence is one component','B')]:
         ax.scatter(clin['AM pathogenicity'],clin[ycol],c=colors,edgecolor='white',linewidth=.5,s=52)
         ax.axvspan(.34,.564,color=MID,alpha=.45)
+        # Label the two discordant variants Section 3.7 discusses by name, so the
+        # reader can find them instead of being told they exist. VWF R1334Q is
+        # deliberately absent: AlphaMissense has no score for it, so it is not in
+        # this complete-case population at all and cannot be labelled here.
+        for _v, _dx, _dy, _ha in [('E6V', 8, 10, 'left'), ('R78G', 8, -14, 'left')]:
+            _r = clin[clin.variant == _v]
+            if len(_r):
+                ax.annotate(_v, (float(_r['AM pathogenicity'].iloc[0]), float(_r[ycol].iloc[0])),
+                            textcoords='offset points', xytext=(_dx, _dy), ha=_ha,
+                            fontsize=10.5, fontweight='bold', color=NAVY,
+                            arrowprops=dict(arrowstyle='-', lw=.8, color=GRAY))
         ax.set_xlabel('AlphaMissense pathogenicity score'); ax.set_ylabel(ylab)
         ax.set_title(ttl,loc='left',fontweight='bold',color=NAVY)
         ax.grid(alpha=.15); panel_label(ax,lab)
