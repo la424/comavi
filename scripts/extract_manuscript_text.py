@@ -57,7 +57,25 @@ def main() -> int:
     # Appending the SI appendix documents keeps the audit's contract intact:
     # every number in the SUBMITTED material traces to a generator, not just
     # every number that happens to sit in the manuscript file.
-    si_dir = REPO / "submission" / "COMAVI_v7.12_SI"
+    # Resolve the SI directory rather than hardcoding a version. A pinned name
+    # goes stale on the next version bump and this loop then contributes
+    # NOTHING, silently: the rendering shrinks, every audit that reads it stops
+    # seeing supplementary claims, and all of them still pass. That happened at
+    # v7.13 -- the rendering fell from 622 lines to 242 with no error. A missing
+    # or ambiguous directory is now a hard failure, because a smaller rendering
+    # that still passes is worse than a crash.
+    si_candidates = sorted((REPO / "submission").glob("COMAVI_v*_SI"))
+    if len(si_candidates) != 1:
+        print("[FAIL] expected exactly one submission/COMAVI_v*_SI directory, "
+              "found %d: %s" % (len(si_candidates),
+                                [p.name for p in si_candidates]), file=sys.stderr)
+        return 1
+    si_dir = si_candidates[0]
+    si_items = sorted(si_dir.glob("S*_Text.docx")) + sorted(si_dir.glob("S*_Table.xlsx"))
+    if not si_items:
+        print("[FAIL] %s contains no S*_Text.docx or S*_Table.xlsx items"
+              % si_dir.relative_to(REPO), file=sys.stderr)
+        return 1
     for si in sorted(si_dir.glob("S*_Text.docx")):
         text += "\n[SI %s]\n" % si.stem + render(si)
     for si in sorted(si_dir.glob("S*_Table.xlsx")):
