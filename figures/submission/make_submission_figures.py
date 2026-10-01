@@ -158,6 +158,38 @@ def canonical_grades():
 
 # ------------------------------------------------------------------ Fig 1
 
+# The slide's box labels, mapped to the terms the manuscript uses. The geometry
+# in fig1_layout.json stays a faithful extraction of the author's slide; only
+# the words change, and a label missing from this table stops the build, so the
+# figure cannot drift from the text if the layout is re-extracted.
+FIG1_TERMS = {
+    "Missense Variant": "Missense variant",
+    "Isolated/Assembled Structural Models": "Isolated and assembled structural models",
+    "Stability in Monomer": "Isolated-subunit stability",
+    "Stability in Multimer": "Assembled-complex stability",
+    "Binding Energy by Partner": "Binding energy for each partner",
+    "Structural Context Tier": "Structural-context tier",
+    "Priority Score (ISDS)": "Priority score",
+    "Mechanism Profile": "Mechanism profile",
+    "Prioritization": "Prioritization",
+    "Experimental Design": "Experimental design",
+    "Input": "Input",
+    "Structural Evidence": "Structural evidence",
+    "COMAVI Outputs": "COMAVI outputs",
+    "Practical Use": "Practical use",
+    "Ranks strength of modeled structural-disruption evidence": "Ranks strength of modeled structural-disruption evidence",
+    "Assigns per-variant mechanisms and context": "Assigns per-variant mechanisms and context",
+    "Choose variants for further evaluation": "Choose variants for further evaluation",
+    "Test stability, assembly, and/or interaction": "Test stability, assembly or binding",
+}
+
+
+def term(text):
+    if text not in FIG1_TERMS:
+        raise SystemExit("Fig 1 label %r has no entry in FIG1_TERMS" % text)
+    return FIG1_TERMS[text]
+
+
 def fig1():
     L = J(LAYOUT)
     boxes, labels, conns = L["boxes"], L["labels"], L["connectors"]
@@ -196,7 +228,7 @@ def fig1():
     for h in hdr:
         cx = h["x"] + h["w"] / 2
         cy = h["y"] + lab_inset(h) + 1.2 * h["pt"] / 72 / 2
-        ax.text(cx, cy, h["text"], ha="center", va="center", fontsize=pt(h["pt"]), fontweight="bold",
+        ax.text(cx, cy, term(h["text"]), ha="center", va="center", fontsize=pt(h["pt"]), fontweight="bold",
                 zorder=3)
     for b in boxes:
         own = sorted([lab for lab in labels if lab["box"] == b["id"]], key=lambda d: d["y"])
@@ -205,7 +237,7 @@ def fig1():
         for lab in [title] + subs:
             size = pt(lab["pt"])
             avail = min(lab["w"] - 2 * lab_inset(lab), b["w"] - 2 * 0.05) * S
-            wrapped = wrap(fig, ren, lab["text"], size, avail)
+            wrapped = wrap(fig, ren, term(lab["text"]), size, avail)
             nlines = wrapped.count("\n") + 1
             blocks.append((wrapped, size, nlines * size * 1.18 / 72))
         gap = 0.035
@@ -246,9 +278,9 @@ def wrap(fig, ren, text, size, max_w_in):
     return "\n".join(lines)
 
 
-# ------------------------------------------------------------------ Fig 2
+# ------------------------------------------------------------------ priority score (Fig 4)
 
-def fig2():
+def fig_priority():
     pv = pd.read_csv(AN / "ISDS_v1_per_variant.csv")
     tk = pd.read_csv(AN / "ISDS_v1_top_k.csv")
     pop = J(AN / "ISDS_v1_summary.json")["population"]
@@ -288,9 +320,9 @@ def fig2():
     return fig
 
 
-# ------------------------------------------------------------------ Fig 3
+# ------------------------------------------------------------------ threshold sweep (Fig 2)
 
-def fig3():
+def fig_threshold():
     sw = J(RO / "COMAVI_threshold_sweep.json")
     rows = sw["rows"]
     assert [r["threshold_tag"] for r in rows] == TAGS
@@ -353,7 +385,7 @@ def fig3():
     return fig
 
 
-# ------------------------------------------------------------------ Fig 4
+# ------------------------------------------------------------------ calibration (Fig 3)
 
 SYSTEMS = [("Barnase–barstar", "o", BIND, "Barnase–barstar"), ("TEM1–BLIP", "s", BIND, "TEM1–BLIP"),
            ("BRCA1 BRCT", "^", MONO, "BRCA1 BRCT"), ("Hb tetramer", "D", BIND, "Hemoglobin")]
@@ -376,7 +408,7 @@ def draw_points(ax, d, ycol):
                linewidth=0.9, zorder=3)
 
 
-def fig4():
+def fig_calibration():
     d = calibration_points()
     st = J(RO / "COMAVI_delta_calibration_stats.json")
     assert st["n_fit"] == len(d)
@@ -428,7 +460,7 @@ def fig4():
     offs = {"N102T": (6, 0), "W37Y": (-6, 3), "W37A": (-6, 4), "W37G": (-6, 6), "W37E": (0, -10)}
     for _, r in hb.iterrows():
         dx, dy = offs[r.variant]
-        e.annotate("β" + r.variant, (r.measured_kcal, r.foldx_ddg), xytext=(dx, dy), textcoords="offset points",
+        e.annotate(r.variant, (r.measured_kcal, r.foldx_ddg), xytext=(dx, dy), textcoords="offset points",
                    fontsize=8, ha="left" if dx > 0 else ("right" if dx < 0 else "center"), va="center")
     letter(c, "C")
     letter(e, "D")
@@ -661,8 +693,10 @@ def s5():
     return fig
 
 
-FIGURES = {"Fig1": fig1, "Fig2": fig2, "Fig3": fig3, "Fig4": fig4, "Fig5": fig5,
-           "S1_Fig": s1, "S2_Fig": s2, "S3_Fig": s3, "S4_Fig": s4, "S5_Fig": s5}
+# Numbered in the order the Results cite them: threshold, calibration, priority; and
+# for the supporting figures, call relationships, context comparators, transformation.
+FIGURES = {"Fig1": fig1, "Fig2": fig_threshold, "Fig3": fig_calibration, "Fig4": fig_priority, "Fig5": fig5,
+           "S1_Fig": s1, "S2_Fig": s2, "S3_Fig": s5, "S4_Fig": s3, "S5_Fig": s4}
 
 
 # ------------------------------------------------------------------ specification

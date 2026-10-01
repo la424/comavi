@@ -112,6 +112,15 @@ def build(canon, threshold=REFERENCE_T):
     struct = graded[graded.expected_mech_class.isin(STRUCTURAL)]
     silent = graded[graded.expected_mech_class == SILENT]
 
+    # What scoring the assembled complex adds, and what it costs. A monomer-only
+    # analysis sees only the isolated-subunit axis, so detection and correct
+    # rejection are recounted on that axis alone, on the same variants and at the
+    # same threshold. "In a complex" means at least one partner axis was computed;
+    # for the single-chain BRCT system the two counts coincide by construction.
+    in_complex = graded.fold_max.notna() | graded.bind_max.notna()
+    struct_cx = struct[in_complex.loc[struct.index]]
+    only_assembled = struct[struct.any_fires & ~struct.mono_fires]
+
     per_class = {}
     for cls, sub in graded.groupby("expected_mech_class"):
         row = {"n": int(len(sub)),
@@ -141,6 +150,20 @@ def build(canon, threshold=REFERENCE_T):
                         "rate": round(float(struct.right_axis.mean()), 3)},
         "correct_rejection": {"k": int((~silent.any_fires).sum()), "n": int(len(silent)),
                               "rate": round(float((~silent.any_fires).mean()), 3)},
+        "isolated_subunit_only": {
+            "detection": {"k": int(struct.mono_fires.sum()), "n": int(len(struct)),
+                          "rate": round(float(struct.mono_fires.mean()), 3)},
+            "correct_rejection": {"k": int((~silent.mono_fires).sum()), "n": int(len(silent)),
+                                  "rate": round(float((~silent.mono_fires).mean()), 3)},
+            "detected_only_with_assembled_axes": {
+                "k": int(len(only_assembled)),
+                "variants": ["%s %s" % (str(r.gene).upper(), r.variant)
+                             for _, r in only_assembled.iterrows()]},
+            "structural_in_complexes": {
+                "n": int(len(struct_cx)),
+                "detection_all_axes": int(struct_cx.any_fires.sum()),
+                "detection_isolated_subunit": int(struct_cx.mono_fires.sum())},
+        },
         "per_class": per_class,
         "interface_class_diagnosis": {
             "n": int(len(ppi)),
@@ -182,6 +205,13 @@ def main():
     # the weakest arm claim in the manuscript rests on this ordering
     means = {k: v["mean_grade"] for k, v in result["per_class"].items()}
     assert min(means, key=means.get) == "ppi_destab_mechanism", means
+    # The isolated-subunit recount is a subset of the full profile: everything it
+    # detects the full profile detects, and the remainder is exactly the set
+    # detected only through the assembled-complex and binding axes.
+    iso = result["isolated_subunit_only"]
+    assert (iso["detection"]["k"] + iso["detected_only_with_assembled_axes"]["k"]
+            == result["detection"]["k"]), iso
+    assert iso["correct_rejection"]["k"] >= result["correct_rejection"]["k"], iso
 
     if args.check:
         if not OUT.exists():
@@ -198,6 +228,11 @@ def main():
     for k in ("detection", "attribution", "correct_rejection"):
         d = result[k]
         print("  %-18s %2d/%-2d = %.3f" % (k, d["k"], d["n"], d["rate"]))
+    iso = result["isolated_subunit_only"]
+    print("  isolated subunit only: detection %d/%d, correct rejection %d/%d; "
+          "%d detected only through the assembled axes"
+          % (iso["detection"]["k"], iso["detection"]["n"], iso["correct_rejection"]["k"],
+             iso["correct_rejection"]["n"], iso["detected_only_with_assembled_axes"]["k"]))
     print("\nper expected mechanism class:")
     for cls, r in sorted(result["per_class"].items(),
                          key=lambda kv: -kv[1]["mean_grade"]):

@@ -351,8 +351,12 @@ def table2_rows():
         ["Structural arm", "%d structural-mechanism variants" % int(struct.sum()), "Mean grade of variants expected to carry a lesion"] + arm(struct),
         ["No-lesion arm", "%d no-lesion variants" % int((~struct).sum()), "Mean grade of variants expected to be silent"] + arm(~struct),
         ["Detection", "%d structural-mechanism variants" % sw[0]["detection_n"], "Any axis reaches the threshold"] + [f3(r["detection"]) for r in sw],
+        # What a monomer-only analysis would report on the same variants: the first
+        # contribution of the paper is the gap between this row and the one above.
+        ["Detection, isolated subunit only", "%d structural-mechanism variants" % sw[0]["detection_n"], "The isolated-subunit axis alone reaches the threshold"] + [f3(r["detection_isolated"]) for r in sw],
         ["Attribution", "%d structural-mechanism variants" % sw[0]["attribution_n"], "The axis the literature implicates reaches the threshold"] + [f3(r["attribution"]) for r in sw],
         ["Correct rejection", "%d no-lesion variants" % sw[0]["correct_rejection_n"], "No axis reaches the threshold"] + [f3(r["correct_rejection"]) for r in sw],
+        ["Correct rejection, isolated subunit only", "%d no-lesion variants" % sw[0]["correct_rejection_n"], "The isolated-subunit axis alone does not reach the threshold"] + [f3(r["correct_rejection_isolated"]) for r in sw],
         ["Direction agreement, energy axes", "%d axis expectations" % n_axes, "Call matches the committed direction"] + [f3(da(r)) for r in sw],
         ["Direction agreement, tier", "%d variants" % sw[0]["axis_tier_n"], "Tier 1–2 matches the committed structural class"] + [f3(r["axis_tier"]) for r in sw],
         ["Measured destabilizations recovered", "%d measured comparisons" % me["population"]["n"], "Measured ≥ 1.0 kcal/mol; predicted ≥ threshold with the same sign"] + [f3(r["fraction"]) for r in me["by_threshold"]],

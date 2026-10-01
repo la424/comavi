@@ -147,6 +147,18 @@ def sweep_row(canon, partners, tag, spec, ac, dva):
         "correct_rejection_n": built["correct_rejection"]["n"],
         "correct_rejection": round(
             built["correct_rejection"]["k"] / built["correct_rejection"]["n"], 4),
+        # The same two rates on the isolated-subunit axis alone: what a
+        # monomer-only analysis would report on these variants at this threshold.
+        "detection_isolated_k": built["isolated_subunit_only"]["detection"]["k"],
+        "detection_isolated": round(built["isolated_subunit_only"]["detection"]["k"]
+                                    / built["isolated_subunit_only"]["detection"]["n"], 4),
+        "correct_rejection_isolated_k": built["isolated_subunit_only"]["correct_rejection"]["k"],
+        "correct_rejection_isolated": round(
+            built["isolated_subunit_only"]["correct_rejection"]["k"]
+            / built["isolated_subunit_only"]["correct_rejection"]["n"], 4),
+        "detection_complex_n": built["isolated_subunit_only"]["structural_in_complexes"]["n"],
+        "detection_complex_k": built["isolated_subunit_only"]["structural_in_complexes"]["detection_all_axes"],
+        "detection_complex_isolated_k": built["isolated_subunit_only"]["structural_in_complexes"]["detection_isolated_subunit"],
         "whole_variant_k": round(wv_k, 1),
         "whole_variant_n": wv_n,
         "whole_variant": round(wv_k / wv_n, 4) if wv_n else float("nan"),

@@ -1,0 +1,36 @@
+item,file,locator,title,caption_title,body_citations
+S1 Table,S1_Table.xlsx,index sheet,Contents of this workbook.,Committed structural expectations with their evidence basis and citation.,3
+S1 Table,S1_Table.xlsx,evidence_ledger sheet,"S1 Table, evidence_ledger sheet. Committed structural expectations with their evidence basis and citation. Each row is one committed axis-level expectation; together they are the benchmark's ground tr",Committed structural expectations with their evidence basis and citation.,3
+S1 Table,S1_Table.xlsx,whole_variant_negatives sheet,"S1 Table, whole_variant_negatives sheet. The five no-lesion variants graded at the whole-variant level. Each is curated to carry no lesion on any modeled axis, but no axis-level expectation is committ",Committed structural expectations with their evidence basis and citation.,3
+S2 Table,S2_Table.xlsx,index sheet,Contents of this workbook.,"Benchmark cohort, evidence and comparator tables.",5
+S2 Table,S2_Table.xlsx,benchmark_variants sheet,"S2 Table, benchmark_variants sheet. The 61 benchmark variants. Each row gives the clinical annotation, the expected mechanism defined from primary literature, the structural-context tier, the whole-va","Benchmark cohort, evidence and comparator tables.",5
+S2 Table,S2_Table.xlsx,evidence_composition sheet,"S2 Table, evidence_composition sheet. Evidence composition by category.","Benchmark cohort, evidence and comparator tables.",5
+S2 Table,S2_Table.xlsx,model_scope sheet,"S2 Table, model_scope sheet. Model-scope and mechanism-eligibility framework.","Benchmark cohort, evidence and comparator tables.",5
+S2 Table,S2_Table.xlsx,context_comparators sheet,"S2 Table, context_comparators sheet. Structural-context comparator analyses on the same 47-variant population.","Benchmark cohort, evidence and comparator tables.",5
+S2 Table,S2_Table.xlsx,denominator_sensitivity sheet,"S2 Table, denominator_sensitivity sheet. Denominator and eligibility sensitivity analyses.","Benchmark cohort, evidence and comparator tables.",5
+S2 Table,S2_Table.xlsx,fold_binding_disagreements sheet,"S2 Table, fold_binding_disagreements sheet. Directly measured or curated fold and binding disagreements at the 2.5 kcal/mol reference.","Benchmark cohort, evidence and comparator tables.",5
+S3 Table,S3_Table.xlsx,index sheet,Contents of this workbook.,"Operating points, evidence states and robustness tables.",2
+S3 Table,S3_Table.xlsx,operating_point_sweep sheet,"S3 Table, operating_point_sweep sheet. Complete operating-point sweep. The pooled score is the mechanism-pattern score over all 57 graded variants; the balanced score weights the structural and no-les","Operating points, evidence states and robustness tables.",2
+S3 Table,S3_Table.xlsx,disagreement_classes sheet,"S3 Table, disagreement_classes sheet. Call relationships between measured and predicted energies at the 2.5 kcal/mol reference, for all 63 comparisons and without the seven barnase Glu73 substitutions","Operating points, evidence states and robustness tables.",2
+S3 Table,S3_Table.xlsx,tier_distribution sheet,"S3 Table, tier_distribution sheet. Structural-mechanism distribution by tier.","Operating points, evidence states and robustness tables.",2
+S3 Table,S3_Table.xlsx,evidence_states sheet,"S3 Table, evidence_states sheet. Four evidence states across thresholds. Each cell is structural mechanism / no-lesion variant.","Operating points, evidence states and robustness tables.",2
+S3 Table,S3_Table.xlsx,detection_metrics sheet,"S3 Table, detection_metrics sheet. Structural-mechanism detection metrics. Values are sensitivity / specificity / positive predictive value.","Operating points, evidence states and robustness tables.",2
+S3 Table,S3_Table.xlsx,pathogenicity_ranking sheet,"S3 Table, pathogenicity_ranking sheet. Descriptive pathogenicity ranking on the common complete-case population.","Operating points, evidence states and robustness tables.",2
+S3 Table,S3_Table.xlsx,robustness sheet,"S3 Table, robustness sheet. Mechanism-pattern and four-output robustness analyses at the 2.5 kcal/mol reference.","Operating points, evidence states and robustness tables.",2
+S3 Table,S3_Table.xlsx,skempi_validation sheet,"S3 Table, skempi_validation sheet. Independent binding-axis validation on SKEMPI 2.0, for every substitution and without the barnase Glu73 cluster.","Operating points, evidence states and robustness tables.",2
+S3 Table,S3_Table.xlsx,threshold_sweep sheet,"S3 Table, threshold_sweep sheet. Every graded metric at every decision threshold, including post hoc points. The five rows above the rule are the prespecified set, unchanged since the repository's fir","Operating points, evidence states and robustness tables.",2
+S1 Text,S1_Text.docx,Section 1,Implementation details and statistical conventions,"Implementation details, statistical conventions and evidence provenance.",5
+S1 Text,S1_Text.docx,Section 2,Evidence provenance and denominator sensitivity,"Implementation details, statistical conventions and evidence provenance.",5
+S2 Text,S2_Text.docx,Section 1,"Mechanism-class decomposition, fold-arm errors, and ground-truth conventions","Sensitivity analyses, mechanism-class decomposition and operating-point diagnostics.",5
+S2 Text,S2_Text.docx,Section 2,Operating-point and calibration diagnostics,"Sensitivity analyses, mechanism-class decomposition and operating-point diagnostics.",5
+S2 Text,S2_Text.docx,Section 3,"Structural-context comparators, evidence states, and priority-score sensitivity","Sensitivity analyses, mechanism-class decomposition and operating-point diagnostics.",5
+S3 Text,S3_Text.docx,Section 1,"Pathogenicity comparison, directional enrichment, and gain of function","Pathogenicity comparison, robustness and independent validation.",4
+S3 Text,S3_Text.docx,Section 2,"Robustness, uncertainty, and metric reconciliation","Pathogenicity comparison, robustness and independent validation.",4
+S3 Text,S3_Text.docx,Section 3,Independent binding-axis validation on SKEMPI 2.0,"Pathogenicity comparison, robustness and independent validation.",4
+S3 Text,S3_Text.docx,Section 4,Do high-priority variants also have their mechanism graded correctly?,"Pathogenicity comparison, robustness and independent validation.",4
+S3 Text,S3_Text.docx,Section 5,A correction the benchmark caught in itself,"Pathogenicity comparison, robustness and independent validation.",4
+S1 Fig,S1_Fig.tif,whole file,Stress tests of the mechanism-pattern score.,Stress tests of the mechanism-pattern score.,1
+S2 Fig,S2_Fig.tif,whole file,Binding-axis validation on SKEMPI 2.0.,Binding-axis validation on SKEMPI 2.0.,1
+S3 Fig,S3_Fig.tif,whole file,Call relationships between predicted and measured energies at 2.5 kcal/mol.,Call relationships between predicted and measured energies at 2.5 kcal/mol.,1
+S4 Fig,S4_Fig.tif,whole file,Structural-context comparators on the 47-variant prioritization population.,Structural-context comparators on the 47-variant prioritization population.,1
+S5 Fig,S5_Fig.tif,whole file,Priority-score transformation and component ranking.,Priority-score transformation and component ranking.,1

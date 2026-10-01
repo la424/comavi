@@ -174,6 +174,10 @@ jobs:
         run: |
           python scripts/build_rubric_baselines.py --check
           python scripts/build_detection_vs_attribution.py --check
+          # Structure-source split and the clinical-label composition of the
+          # pathogenicity comparison: the two ways the cohort's construction
+          # could shape its headline results.
+          python scripts/build_cohort_composition_checks.py --check
           python scripts/build_directional_enrichment.py --check
           python scripts/build_alphamissense_thresholded_accuracy.py --check
           python scripts/verify_embedded_figures.py

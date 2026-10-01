@@ -1,0 +1,74 @@
+{
+ "structure_source": {
+  "rule": "complex structure file: fold_<job>_model_<n>.pdb is an AlphaFold 3 server model; any other file is a Protein Data Bank entry",
+  "systems": {
+   "brca1_bard1": "experimental",
+   "brca1_brct": "experimental",
+   "cam_cav12": "AlphaFold 3",
+   "cfh_c3b": "experimental",
+   "hemoglobin_dimer": "experimental",
+   "hemoglobin_tetramer": "experimental",
+   "kras_craf": "experimental",
+   "mlh1_pms2": "AlphaFold 3",
+   "msh2_msh6": "AlphaFold 3",
+   "pi3k": "AlphaFold 3",
+   "smad4_smad3": "AlphaFold 3",
+   "troponin_ic": "AlphaFold 3",
+   "vhl_elonginc": "AlphaFold 3",
+   "vwf_gpiba": "experimental"
+  },
+  "mechanism_pattern_score_at_2.5": {
+   "AlphaFold 3": {
+    "systems": 7,
+    "variants": 29,
+    "score_total": 19.0,
+    "score": 0.6552
+   },
+   "experimental": {
+    "systems": 7,
+    "variants": 28,
+    "score_total": 22.0,
+    "score": 0.7857
+   }
+  },
+  "difference_experimental_minus_af3": {
+   "value": 0.1305,
+   "ci95_system_resampling": [
+    -0.0571,
+    0.3287
+   ],
+   "draws": 2000,
+   "seed": 20260923
+  },
+  "prioritization": {
+   "AlphaFold 3": {
+    "variants": 29,
+    "structural": 8,
+    "roc_auc": 0.9107
+   },
+   "experimental": {
+    "variants": 18,
+    "structural": 9,
+    "roc_auc": 1.0
+   }
+  },
+  "note": "Seven systems per source: model quality cannot be separated from system difficulty. Isolated-subunit stability uses single-chain AlphaFold 3 models in 11 systems whatever the complex source."
+ },
+ "clinical_label_by_curated_class": {
+  "population": "AlphaMissense comparison set (47 variants)",
+  "table": {
+   "pathogenic": {
+    "structural": 16,
+    "no_lesion": 18,
+    "ungraded": 2
+   },
+   "benign": {
+    "structural": 0,
+    "no_lesion": 11,
+    "ungraded": 0
+   }
+  },
+  "benign_all_curated_no_lesion": true,
+  "note": "Benign variants entered the benchmark as curated no-lesion controls, so pathogenicity AUCs of structural scores partly reflect construction. The division of the pathogenic class is the informative quantity."
+ }
+}

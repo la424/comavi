@@ -25,6 +25,41 @@
   "n": 32,
   "rate": 0.812
  },
+ "isolated_subunit_only": {
+  "detection": {
+   "k": 7,
+   "n": 25,
+   "rate": 0.28
+  },
+  "correct_rejection": {
+   "k": 29,
+   "n": 32,
+   "rate": 0.906
+  },
+  "detected_only_with_assembled_axes": {
+   "k": 13,
+   "variants": [
+    "BRCA1 V11G",
+    "BRCA1 C61G",
+    "PIK3CA E542K",
+    "PIK3CA E545K",
+    "MLH1 L749P",
+    "MLH1 R755W",
+    "VHL L158Q",
+    "HBB W37Y",
+    "HBB W37A",
+    "HBB W37G",
+    "HBB W37E",
+    "CFH R78G",
+    "VWF R1334Q"
+   ]
+  },
+  "structural_in_complexes": {
+   "n": 17,
+   "detection_all_axes": 15,
+   "detection_isolated_subunit": 2
+  }
+ },
  "per_class": {
   "fold_mechanism": {
    "n": 10,
