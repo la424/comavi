@@ -129,7 +129,7 @@ axB.set_xlabel("Measured assembly $\\Delta\\Delta$G (kcal/mol)")
 axB.set_ylabel("FoldX $\\Delta\\Delta$G$_{bind}$ $\\alpha$1$\\beta$2 (kcal/mol)")
 axB.set_title(f"Binding axis — hemoglobin tetramer (n={len(hb)})",
               fontsize=BASE, loc="left", pad=4)
-axB.text(0.97, 0.03, f"Spearman \u03c1={rho_b:.2f}\np={p_b:.3f} \u00b7 W37 series",
+axB.text(0.97, 0.03, f"Spearman \u03c1={rho_b:.2f}\nn={len(hb)}, p={p_b:.3f}",
          transform=axB.transAxes, ha="right", va="bottom",
          fontsize=SECOND, color="#333", linespacing=1.25)
 axB.legend(loc="upper left", frameon=False, handletextpad=0.4, borderpad=0.2,

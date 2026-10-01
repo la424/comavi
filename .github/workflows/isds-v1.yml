@@ -177,6 +177,12 @@ jobs:
           python scripts/build_directional_enrichment.py --check
           python scripts/build_alphamissense_thresholded_accuracy.py --check
           python scripts/verify_embedded_figures.py
+          # The manuscript is built from docs/manuscript/; the committed .docx must
+          # be what its source produces, and every figure file must meet the PLOS
+          # specification (format, resolution, printed size, manifest). The drawing
+          # checks (fonts, 8-12 pt) need Arial and run where the figures are built.
+          python scripts/build_manuscript.py --check
+          python scripts/verify_figure_specs.py
 
       - name: Verify every committed record is current, not merely present
         # Two records went stale through the v7.9 ground-truth correction and

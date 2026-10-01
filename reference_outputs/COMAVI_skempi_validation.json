@@ -1,0 +1,69 @@
+{
+ "source": "supplement/skempi/*_binding_validation.csv; SKEMPI 2.0 measured binding ddG against FoldX AnalyseComplex predictions",
+ "complexes": {
+  "barnase_barstar_all": {
+   "n": 24,
+   "pearson_r": 0.3714,
+   "pearson_p": 0.07395,
+   "spearman_rho": 0.2988,
+   "spearman_p": 0.1562,
+   "destabilizing_n": 22,
+   "sign_correct": 14
+  },
+  "barnase_barstar_excluding_glu73": {
+   "n": 17,
+   "pearson_r": 0.5125,
+   "pearson_p": 0.03543,
+   "spearman_rho": 0.5628,
+   "spearman_p": 0.01866,
+   "destabilizing_n": 15,
+   "sign_correct": 14
+  },
+  "tem1_blip": {
+   "n": 24,
+   "pearson_r": 0.5145,
+   "pearson_p": 0.0101,
+   "spearman_rho": 0.5026,
+   "spearman_p": 0.01231,
+   "destabilizing_n": 18,
+   "sign_correct": 16
+  }
+ },
+ "combined_excluding_glu73": {
+  "n": 41,
+  "pearson_r": 0.4783,
+  "pearson_p": 0.00156,
+  "spearman_rho": 0.5475,
+  "spearman_p": 0.0002116,
+  "destabilizing_n": 33,
+  "sign_correct": 30
+ },
+ "combined_including_glu73": {
+  "n": 48,
+  "pearson_r": 0.3084,
+  "pearson_p": 0.03295,
+  "spearman_rho": 0.3368,
+  "spearman_p": 0.01925,
+  "destabilizing_n": 40,
+  "sign_correct": 30
+ },
+ "glu73_cluster": {
+  "n": 7,
+  "codes": [
+   "EA73Q",
+   "EA73W",
+   "EA73F",
+   "EA73A",
+   "EA73Y",
+   "EA73C",
+   "EA73S"
+  ],
+  "measured_min": 1.45,
+  "measured_max": 3.01,
+  "predicted_min": -1.66,
+  "predicted_max": -1.01,
+  "all_measured_destabilizing": true,
+  "all_predicted_stabilizing": true,
+  "status": "single-site systematic sign inversion; included in the primary statistics, with the fit without it reported as a sensitivity view; introduced with the analysis, not prespecified"
+ }
+}

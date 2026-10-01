@@ -2,59 +2,103 @@
  "source": "COMAVI_delta_calibration_points.csv",
  "measured_effects_recovered": {
   "population": {
-   "n": 44,
+   "n": 42,
    "in_benchmark": 13,
-   "external": 31,
-   "definition": "|measured| >= 1.0 kcal/mol"
+   "external": 29,
+   "definition": "measured >= +1.0 kcal/mol; recovered when predicted >= +threshold (same sign)",
+   "measured_stabilizing_not_in_population": [
+    "DB163K",
+    "YB50A"
+   ]
   },
   "by_threshold": [
    {
     "threshold": "1.0",
-    "recovered": 35,
-    "n": 44,
-    "fraction": 0.795,
-    "cell": "35/44"
+    "recovered": 27,
+    "n": 42,
+    "fraction": 0.643,
+    "cell": "27/42"
    },
    {
     "threshold": "1.5",
-    "recovered": 26,
-    "n": 44,
-    "fraction": 0.591,
-    "cell": "26/44"
+    "recovered": 23,
+    "n": 42,
+    "fraction": 0.548,
+    "cell": "23/42"
    },
    {
     "threshold": "2.0",
-    "recovered": 19,
-    "n": 44,
-    "fraction": 0.432,
-    "cell": "19/44"
+    "recovered": 18,
+    "n": 42,
+    "fraction": 0.429,
+    "cell": "18/42"
    },
    {
     "threshold": "2.5",
-    "recovered": 13,
-    "n": 44,
-    "fraction": 0.295,
-    "cell": "13/44"
+    "recovered": 12,
+    "n": 42,
+    "fraction": 0.286,
+    "cell": "12/42"
    },
    {
     "threshold": "tSAP",
-    "recovered": 12,
-    "n": 44,
-    "fraction": 0.273,
-    "cell": "12/44"
+    "recovered": 11,
+    "n": 42,
+    "fraction": 0.262,
+    "cell": "11/42"
    }
-  ]
+  ],
+  "sensitivity_excluding_glu73": {
+   "n": 35,
+   "by_threshold": [
+    {
+     "threshold": "1.0",
+     "recovered": 27,
+     "n": 35,
+     "fraction": 0.771,
+     "cell": "27/35"
+    },
+    {
+     "threshold": "1.5",
+     "recovered": 23,
+     "n": 35,
+     "fraction": 0.657,
+     "cell": "23/35"
+    },
+    {
+     "threshold": "2.0",
+     "recovered": 18,
+     "n": 35,
+     "fraction": 0.514,
+     "cell": "18/35"
+    },
+    {
+     "threshold": "2.5",
+     "recovered": 12,
+     "n": 35,
+     "fraction": 0.343,
+     "cell": "12/35"
+    },
+    {
+     "threshold": "tSAP",
+     "recovered": 11,
+     "n": 35,
+     "fraction": 0.314,
+     "cell": "11/35"
+    }
+   ]
+  }
  },
  "call_relationships": {
-  "n_comparisons": 56,
+  "n_comparisons": 63,
   "reference_threshold": 2.5,
-  "population": "63 comparisons less the 7-point barnase Glu73 cluster",
+  "population": "all comparisons in COMAVI_delta_calibration_points.csv",
   "classes": [
    {
     "call_relationship": "Agreement",
-    "n": 38,
+    "n": 43,
     "definition": "Measured and predicted calls agree.",
-    "median_abs_error": 0.67,
+    "median_abs_error": 0.84,
     "examples": [
      "M1663K",
      "P1806A",
@@ -74,15 +118,53 @@
    },
    {
     "call_relationship": "Substantive disagreement",
-    "n": 11,
+    "n": 13,
     "definition": "Calls straddle 2.5 kcal/mol and at least one value is far from it.",
-    "median_abs_error": 2.96,
+    "median_abs_error": 3.09,
     "examples": [
      "V1808A",
      "V1736A",
-     "NA58A"
+     "EA73C"
     ]
    }
-  ]
+  ],
+  "sensitivity_excluding_glu73": {
+   "n_comparisons": 56,
+   "classes": [
+    {
+     "call_relationship": "Agreement",
+     "n": 38,
+     "definition": "Measured and predicted calls agree.",
+     "median_abs_error": 0.67,
+     "examples": [
+      "M1663K",
+      "P1806A",
+      "L1664P"
+     ]
+    },
+    {
+     "call_relationship": "Borderline disagreement",
+     "n": 7,
+     "definition": "Calls straddle 2.5 kcal/mol but both values sit near it.",
+     "median_abs_error": 0.79,
+     "examples": [
+      "V1665M",
+      "RA59K",
+      "YD29A"
+     ]
+    },
+    {
+     "call_relationship": "Substantive disagreement",
+     "n": 11,
+     "definition": "Calls straddle 2.5 kcal/mol and at least one value is far from it.",
+     "median_abs_error": 2.96,
+     "examples": [
+      "V1808A",
+      "V1736A",
+      "NA58A"
+     ]
+    }
+   ]
+  }
  }
 }

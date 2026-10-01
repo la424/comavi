@@ -1,0 +1,610 @@
+{
+ "source": "Author's PowerPoint (Untitled presentation.pptx), slide 2, native shapes; extracted with python-pptx. The slide title (shape 60) is omitted because PLOS asks for no titles inside figure files.",
+ "slide_in": [
+  10.0,
+  5.625
+ ],
+ "theme_font": "Arial",
+ "boxes": [
+  {
+   "id": 61,
+   "x": 0.0236,
+   "y": 2.7469,
+   "w": 2.019,
+   "h": 0.9482,
+   "fill": "#EEEEEE",
+   "line": "#595959",
+   "lw_pt": 1.5,
+   "corner": 0.16667
+  },
+  {
+   "id": 62,
+   "x": 2.3295,
+   "y": 2.327,
+   "w": 2.6588,
+   "h": 0.6263,
+   "fill": "#C9DAF8",
+   "line": "#6D9EEB",
+   "lw_pt": 1.5,
+   "corner": 0.16667
+  },
+  {
+   "id": 63,
+   "x": 2.3295,
+   "y": 3.077,
+   "w": 2.6588,
+   "h": 0.6263,
+   "fill": "#D9EAD3",
+   "line": "#93C47D",
+   "lw_pt": 1.5,
+   "corner": 0.16667
+  },
+  {
+   "id": 64,
+   "x": 2.3295,
+   "y": 3.827,
+   "w": 2.6588,
+   "h": 0.6263,
+   "fill": "#FCE5CD",
+   "line": "#F6B26B",
+   "lw_pt": 1.5,
+   "corner": 0.16667
+  },
+  {
+   "id": 65,
+   "x": 2.3295,
+   "y": 4.577,
+   "w": 2.6588,
+   "h": 0.6263,
+   "fill": "#D9D2E9",
+   "line": "#8E7CC3",
+   "lw_pt": 1.5,
+   "corner": 0.16667
+  },
+  {
+   "id": 66,
+   "x": 5.3777,
+   "y": 2.2955,
+   "w": 2.2051,
+   "h": 1.4078,
+   "fill": "#F4CCCC",
+   "line": "#E06666",
+   "lw_pt": 1.5,
+   "corner": 0.16667
+  },
+  {
+   "id": 67,
+   "x": 7.8286,
+   "y": 2.2955,
+   "w": 2.1188,
+   "h": 1.4078,
+   "fill": "#F4CCCC",
+   "line": "#E06666",
+   "lw_pt": 1.5,
+   "corner": 0.16667
+  },
+  {
+   "id": 68,
+   "x": 5.3777,
+   "y": 3.7955,
+   "w": 2.2051,
+   "h": 1.4078,
+   "fill": "#D0E0E3",
+   "line": "#76A5AF",
+   "lw_pt": 1.5,
+   "corner": 0.16667
+  },
+  {
+   "id": 69,
+   "x": 7.8286,
+   "y": 3.7955,
+   "w": 2.1188,
+   "h": 1.4078,
+   "fill": "#D0E0E3",
+   "line": "#76A5AF",
+   "lw_pt": 1.5,
+   "corner": 0.16667
+  },
+  {
+   "id": 71,
+   "x": 0.0236,
+   "y": 3.8303,
+   "w": 2.019,
+   "h": 0.9482,
+   "fill": "#EEEEEE",
+   "line": "#595959",
+   "lw_pt": 1.5,
+   "corner": 0.16667
+  }
+ ],
+ "labels": [
+  {
+   "id": 70,
+   "x": 0.0618,
+   "y": 2.9834,
+   "w": 2.019,
+   "h": 0.4255,
+   "text": "Missense Variant",
+   "pt": 15.0,
+   "bold": true,
+   "align": "l",
+   "inset_in": 0.1,
+   "box": 61
+  },
+  {
+   "id": 72,
+   "x": -0.12,
+   "y": 3.9519,
+   "w": 2.2812,
+   "h": 0.4255,
+   "text": "Isolated/Assembled Structural Models",
+   "pt": 15.0,
+   "bold": true,
+   "align": "ctr",
+   "inset_in": 0.1,
+   "box": 71
+  },
+  {
+   "id": 73,
+   "x": 2.331,
+   "y": 2.282,
+   "w": 2.6588,
+   "h": 0.4255,
+   "text": "Stability in Monomer",
+   "pt": 15.0,
+   "bold": true,
+   "align": "ctr",
+   "inset_in": 0.1,
+   "box": 62
+  },
+  {
+   "id": 74,
+   "x": 2.331,
+   "y": 3.032,
+   "w": 2.6588,
+   "h": 0.4255,
+   "text": "Stability in Multimer",
+   "pt": 15.0,
+   "bold": true,
+   "align": "ctr",
+   "inset_in": 0.1,
+   "box": 63
+  },
+  {
+   "id": 75,
+   "x": 2.2281,
+   "y": 3.782,
+   "w": 2.853,
+   "h": 0.4255,
+   "text": "Binding Energy by Partner",
+   "pt": 15.0,
+   "bold": true,
+   "align": "ctr",
+   "inset_in": 0.1,
+   "box": 64
+  },
+  {
+   "id": 76,
+   "x": 2.331,
+   "y": 4.532,
+   "w": 2.6588,
+   "h": 0.4255,
+   "text": "Structural Context Tier",
+   "pt": 15.0,
+   "bold": true,
+   "align": "ctr",
+   "inset_in": 0.1,
+   "box": 65
+  },
+  {
+   "id": 77,
+   "x": 5.308,
+   "y": 2.3968,
+   "w": 2.374,
+   "h": 0.4255,
+   "text": "Priority Score (ISDS)",
+   "pt": 15.0,
+   "bold": true,
+   "align": "ctr",
+   "inset_in": 0.1,
+   "box": 66
+  },
+  {
+   "id": 78,
+   "x": 5.308,
+   "y": 3.8968,
+   "w": 2.374,
+   "h": 0.4255,
+   "text": "Mechanism Profile",
+   "pt": 15.0,
+   "bold": true,
+   "align": "ctr",
+   "inset_in": 0.1,
+   "box": 68
+  },
+  {
+   "id": 79,
+   "x": 7.7481,
+   "y": 2.3968,
+   "w": 2.2812,
+   "h": 0.4255,
+   "text": "Prioritization",
+   "pt": 15.0,
+   "bold": true,
+   "align": "ctr",
+   "inset_in": 0.1,
+   "box": 67
+  },
+  {
+   "id": 80,
+   "x": 7.7481,
+   "y": 3.8968,
+   "w": 2.2812,
+   "h": 0.4255,
+   "text": "Experimental Design",
+   "pt": 15.0,
+   "bold": true,
+   "align": "ctr",
+   "inset_in": 0.1,
+   "box": 69
+  },
+  {
+   "id": 99,
+   "x": 0.0618,
+   "y": 1.65,
+   "w": 2.019,
+   "h": 0.4255,
+   "text": "Input",
+   "pt": 17.0,
+   "bold": true,
+   "align": "ctr",
+   "inset_in": 0.1,
+   "box": null
+  },
+  {
+   "id": 100,
+   "x": 2.3656,
+   "y": 1.65,
+   "w": 2.5197,
+   "h": 0.4255,
+   "text": "Structural Evidence",
+   "pt": 17.0,
+   "bold": true,
+   "align": "ctr",
+   "inset_in": 0.1,
+   "box": null
+  },
+  {
+   "id": 101,
+   "x": 5.278,
+   "y": 1.6454,
+   "w": 2.2976,
+   "h": 0.4255,
+   "text": "COMAVI Outputs",
+   "pt": 17.0,
+   "bold": true,
+   "align": "ctr",
+   "inset_in": 0.1,
+   "box": null
+  },
+  {
+   "id": 102,
+   "x": 7.8708,
+   "y": 1.6454,
+   "w": 1.9649,
+   "h": 0.4255,
+   "text": "Practical Use",
+   "pt": 17.0,
+   "bold": true,
+   "align": "ctr",
+   "inset_in": 0.1,
+   "box": null
+  },
+  {
+   "id": 103,
+   "x": 5.2616,
+   "y": 2.8343,
+   "w": 2.4275,
+   "h": 0.4255,
+   "text": "Ranks strength of modeled structural-disruption evidence",
+   "pt": 12.0,
+   "bold": true,
+   "align": "ctr",
+   "inset_in": 0.1,
+   "box": 66
+  },
+  {
+   "id": 104,
+   "x": 5.2616,
+   "y": 4.3343,
+   "w": 2.4275,
+   "h": 0.4255,
+   "text": "Assigns per-variant mechanisms and context",
+   "pt": 12.0,
+   "bold": true,
+   "align": "ctr",
+   "inset_in": 0.1,
+   "box": 68
+  },
+  {
+   "id": 105,
+   "x": 7.7318,
+   "y": 2.8343,
+   "w": 2.2976,
+   "h": 0.4255,
+   "text": "Choose variants for further evaluation",
+   "pt": 12.0,
+   "bold": true,
+   "align": "ctr",
+   "inset_in": 0.1,
+   "box": 67
+  },
+  {
+   "id": 106,
+   "x": 7.7318,
+   "y": 4.3343,
+   "w": 2.2976,
+   "h": 0.4255,
+   "text": "Test stability, assembly, and/or interaction",
+   "pt": 12.0,
+   "bold": true,
+   "align": "ctr",
+   "inset_in": 0.1,
+   "box": 69
+  }
+ ],
+ "connectors": [
+  {
+   "start": [
+    2.0431,
+    3.2196
+   ],
+   "end": [
+    2.0995,
+    3.2206
+   ],
+   "id": 81,
+   "lw_pt": 0.75,
+   "color": "#595959",
+   "arrow_at_end": false
+  },
+  {
+   "start": [
+    2.0431,
+    4.3029
+   ],
+   "end": [
+    2.0995,
+    4.3039
+   ],
+   "id": 82,
+   "lw_pt": 0.75,
+   "color": "#595959",
+   "arrow_at_end": false
+  },
+  {
+   "start": [
+    2.0996,
+    3.2148
+   ],
+   "end": [
+    2.0996,
+    4.3099
+   ],
+   "id": 83,
+   "lw_pt": 0.75,
+   "color": "#595959",
+   "arrow_at_end": false
+  },
+  {
+   "start": [
+    2.2645,
+    2.638
+   ],
+   "end": [
+    2.3209,
+    2.639
+   ],
+   "id": 84,
+   "lw_pt": 0.75,
+   "color": "#595959",
+   "arrow_at_end": false
+  },
+  {
+   "start": [
+    2.2645,
+    4.901
+   ],
+   "end": [
+    2.3209,
+    4.902
+   ],
+   "id": 85,
+   "lw_pt": 0.75,
+   "color": "#595959",
+   "arrow_at_end": false
+  },
+  {
+   "start": [
+    2.2663,
+    2.6332
+   ],
+   "end": [
+    2.2666,
+    4.9081
+   ],
+   "id": 86,
+   "lw_pt": 0.75,
+   "color": "#595959",
+   "arrow_at_end": false
+  },
+  {
+   "start": [
+    2.1011,
+    3.7631
+   ],
+   "end": [
+    2.2537,
+    3.7624
+   ],
+   "id": 87,
+   "lw_pt": 0.75,
+   "color": "#595959",
+   "arrow_at_end": true
+  },
+  {
+   "start": [
+    4.997,
+    2.6381
+   ],
+   "end": [
+    5.1496,
+    2.6374
+   ],
+   "id": 88,
+   "lw_pt": 0.75,
+   "color": "#595959",
+   "arrow_at_end": true
+  },
+  {
+   "start": [
+    4.997,
+    3.3881
+   ],
+   "end": [
+    5.1496,
+    3.3874
+   ],
+   "id": 89,
+   "lw_pt": 0.75,
+   "color": "#595959",
+   "arrow_at_end": true
+  },
+  {
+   "start": [
+    4.997,
+    4.1381
+   ],
+   "end": [
+    5.1496,
+    4.1374
+   ],
+   "id": 90,
+   "lw_pt": 0.75,
+   "color": "#595959",
+   "arrow_at_end": true
+  },
+  {
+   "start": [
+    4.997,
+    4.8881
+   ],
+   "end": [
+    5.1496,
+    4.8874
+   ],
+   "id": 91,
+   "lw_pt": 0.75,
+   "color": "#595959",
+   "arrow_at_end": true
+  },
+  {
+   "start": [
+    5.029,
+    2.5391
+   ],
+   "end": [
+    5.1852,
+    2.5401
+   ],
+   "id": 92,
+   "lw_pt": 0.75,
+   "color": "#595959",
+   "arrow_at_end": false
+  },
+  {
+   "start": [
+    5.1882,
+    2.5343
+   ],
+   "end": [
+    5.1875,
+    4.9739
+   ],
+   "id": 93,
+   "lw_pt": 0.75,
+   "color": "#595959",
+   "arrow_at_end": false
+  },
+  {
+   "start": [
+    5.029,
+    4.9687
+   ],
+   "end": [
+    5.1852,
+    4.9697
+   ],
+   "id": 94,
+   "lw_pt": 0.75,
+   "color": "#595959",
+   "arrow_at_end": false
+  },
+  {
+   "start": [
+    5.1845,
+    3.0079
+   ],
+   "end": [
+    5.3371,
+    3.0072
+   ],
+   "id": 95,
+   "lw_pt": 0.75,
+   "color": "#595959",
+   "arrow_at_end": true
+  },
+  {
+   "start": [
+    5.1845,
+    4.5079
+   ],
+   "end": [
+    5.3371,
+    4.5072
+   ],
+   "id": 96,
+   "lw_pt": 0.75,
+   "color": "#595959",
+   "arrow_at_end": true
+  },
+  {
+   "start": [
+    7.5968,
+    3.0079
+   ],
+   "end": [
+    7.7979,
+    3.0072
+   ],
+   "id": 97,
+   "lw_pt": 0.75,
+   "color": "#595959",
+   "arrow_at_end": true
+  },
+  {
+   "start": [
+    7.5968,
+    4.5079
+   ],
+   "end": [
+    7.7979,
+    4.5072
+   ],
+   "id": 98,
+   "lw_pt": 0.75,
+   "color": "#595959",
+   "arrow_at_end": true
+  }
+ ]
+}

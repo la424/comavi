@@ -1,12 +1,11 @@
-manuscript_item,file,caption_title,generator,renumbered_this_pass
-Fig 1,figures/isds_v1/figure1_unified_comavi_workflow.png,COMAVI prioritizes and localizes variant structural disruption. A missense variant and one or more structural,make_figures.py,no
-Fig 2,figures/isds_v1/figure3_mechanism_localization.png,COMAVI recovers literature-defined structural mechanism patterns in th,make_figures.py,no
-Fig 3,figures/isds_v1/figure6_priority_recovery.png,The fixed priority score concentrates modeled structural mechanisms ne,make_figures.py,yes
-Fig 4,figures/COMAVI_Figure_threshold_sweep.png,Every graded metric as a function of the decision threshold. COMAVI's outputs are continuous; the threshold,figures/src/figure_threshold_sweep.py,yes
-Fig 5,figures/COMAVI_Figure_delta_calibration.png,FoldX ranks measured effects but compresses their magnitude. The poole,figures/src/figure_delta_calibration.py,yes
-Fig 6,figures/COMAVI_Figure4_measured_vs_foldx.png,Direct energy anchors for two COMAVI calculations. (A) Predicted isola,figures/src/figure4_measured_vs_foldx.py,yes
-Fig 7,figures/isds_v1/figure7_alphamissense_isds_mechanism.png,"Pathogenicity ranking, structural prioritization, and mechanism interp",make_figures.py,no
-S1 Fig,figures/COMAVI_FigS_stress_tests.png,Benchmark stress tests for whole-variant mechanism-pattern agreement. ,figures/src/figureS_stress_tests.py,no
-S2 Fig,figures/COMAVI_FigureS2_skempi_validation.png,Independent binding-axis validation. (A) Barnase-barstar substitutions,figures/src/figureS2_skempi_validation.py,no
-S3 Fig,figures/isds_v1/figureS3_context_comparators.png,Structural-context comparator performance on the 47-variant prioritiza,make_figures.py,no
-S4 Fig,figures/isds_v1/figureS4_priority_definition.png,Priority-score transformation and component ranking. (A) The soft-satu,make_figures.py,no
+manuscript_item,file,upload_file,caption_title,generator
+Fig 1,figures/submission/Fig1.png,figures/submission/Fig1.tif,COMAVI workflow.,figures/submission/make_submission_figures.py
+Fig 2,figures/submission/Fig2.png,figures/submission/Fig2.tif,The priority score concentrates structural mechanisms at the top of the ranking.,figures/submission/make_submission_figures.py
+Fig 3,figures/submission/Fig3.png,figures/submission/Fig3.tif,Every graded result depends on the energy threshold.,figures/submission/make_submission_figures.py
+Fig 4,figures/submission/Fig4.png,figures/submission/Fig4.tif,Predicted energies rank measured effects but compress their magnitude.,figures/submission/make_submission_figures.py
+Fig 5,figures/submission/Fig5.png,figures/submission/Fig5.tif,Pathogenicity prediction and structural prioritization rank different properties.,figures/submission/make_submission_figures.py
+S1 Fig,figures/submission/S1_Fig.png,figures/submission/S1_Fig.tif,Stress tests of the mechanism-pattern score.,figures/submission/make_submission_figures.py
+S2 Fig,figures/submission/S2_Fig.png,figures/submission/S2_Fig.tif,Binding-axis validation on SKEMPI 2.0.,figures/submission/make_submission_figures.py
+S3 Fig,figures/submission/S3_Fig.png,figures/submission/S3_Fig.tif,Structural-context comparators on the 47-variant prioritization population.,figures/submission/make_submission_figures.py
+S4 Fig,figures/submission/S4_Fig.png,figures/submission/S4_Fig.tif,Priority-score transformation and component ranking.,figures/submission/make_submission_figures.py
+S5 Fig,figures/submission/S5_Fig.png,figures/submission/S5_Fig.tif,Call relationships between predicted and measured energies at 2.5 kcal/mol.,figures/submission/make_submission_figures.py

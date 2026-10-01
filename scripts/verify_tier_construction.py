@@ -359,8 +359,10 @@ def main():
     # SEMANTICS ARE LOAD-BEARING AND WERE PREVIOUSLY AMBIGUOUS. A variant commits
     # one to three axes, each with its own evidence_type/directness row in the
     # ledger, so "restrict to E1-E3" has two non-equivalent readings:
-    #   ANY  -- at least one committed axis is E1-E3  (permissive; n = 42)
-    #   ALL  -- every committed axis is E1-E3         (strict;     n = 27)
+    #   ANY  -- at least one committed axis is E1-E3  (permissive)
+    #   ALL  -- every committed axis is E1-E3         (strict)
+    # (Population sizes are emitted in the record, not written here: counts in
+    # comments go stale on the next ground-truth correction, as these did.)
     # The key was formerly named "E1_E3_only" while computing ANY, which reads as
     # the strict view and differs from it by 15 variants and 0.04 specificity.
     # Prose that says "all committed axes" must quote the ALL row. Both are
@@ -390,8 +392,15 @@ def main():
         b = int((~sub["strong_tier"] & sub["structural_gt"]).sum())
         c = int((sub["strong_tier"] & ~sub["structural_gt"]).sum())
         dd = int((~sub["strong_tier"] & ~sub["structural_gt"]).sum())
-        ev[lab] = {"n": len(sub), "sensitivity": round(a / (a + b), 3),
-                   "specificity": round(dd / (c + dd), 3), "weak_tier_structural": b,
+        # Counts and exact (Clopper-Pearson) intervals are emitted with each view
+        # because the manuscript quotes them: an interval computed by hand next to
+        # a record that holds only the point estimate is a value nothing checks.
+        ev[lab] = {"n": len(sub), "structural_n": a + b, "silent_n": c + dd,
+                   "sensitivity": round(a / (a + b), 3),
+                   "sensitivity_ci": cp_interval(a, a + b),
+                   "specificity": round(dd / (c + dd), 3),
+                   "specificity_ci": cp_interval(dd, c + dd),
+                   "weak_tier_structural": b,
                    "fisher_p": float(f"{fisher_exact([[a, c], [b, dd]])[1]:.3g}"),
                    "quantifier": ("n/a" if lab == "all"
                                   else "all" if lab.startswith("all_") else "any")}

@@ -24,7 +24,7 @@
  "calibration_fits": {
   "benchmark_n": 15,
   "benchmark_slope": 0.605,
-  "pooled_n": 56,
-  "pooled_slope": 0.4253
+  "pooled_n": 63,
+  "pooled_slope": 0.4198
  }
 }

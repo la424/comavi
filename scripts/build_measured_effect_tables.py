@@ -51,56 +51,59 @@ def load() -> pd.DataFrame:
 
 
 def recovered(cal: pd.DataFrame) -> dict:
-    """[A] measured effects recovered at each threshold."""
-    d = cal["measured_kcal"].abs() >= DESTABILIZER_MIN
-    inb = cal["in_benchmark"].astype(str).str.lower().isin(("true", "yes"))
-    n = int(d.sum())
-    rows = []
-    for label, t in THRESHOLDS:
-        k = int((d & (cal["foldx_ddg"].abs() >= t)).sum())
-        rows.append({"threshold": label, "recovered": k, "n": n,
-                     "fraction": round(k / n, 3), "cell": f"{k}/{n}"})
-    return {"population": {"n": n, "in_benchmark": int((d & inb).sum()),
-                           "external": int((d & ~inb).sum()),
-                           "definition": f"|measured| >= {DESTABILIZER_MIN} kcal/mol"},
-            "by_threshold": rows}
+    """[A] measured destabilizations recovered at each threshold.
 
+    v7.14 correction. The earlier version took absolute values on BOTH sides:
+    the population was |measured| >= 1.0 and a comparison counted as recovered
+    when |predicted| >= t. That counted sign-inverted predictions as recoveries
+    -- all seven barnase Glu73 substitutions (measured destabilizing, predicted
+    stabilizing) at 1.0 kcal/mol, and TEM1-BLIP YB50A (measured stabilizing,
+    predicted destabilizing) at every threshold -- and it put two measured
+    STABILIZING comparisons into a population the manuscript calls "measured
+    destabilizing effects". The manuscript's own definition says a recovery
+    must get the direction right. The population is now measured >= +1.0 and a
+    recovery requires predicted >= +t, i.e. the same sign as the measurement.
 
-def call_relationships(cal: pd.DataFrame) -> dict:
-    """[B] agreement / borderline / substantive disagreement, with median |error|.
-
-    Two corrections, both found by auditing the manuscript table against the
-    figure that plots the same quantity (figures/src/figure_delta_calibration.py,
-    panel c):
-
-    [1] POPULATION. The barnase Glu73 buried-charge cluster is a prespecified
-        force-field failure and is excluded here, as the table's own caption and
-        the figure both state. The first version of this generator used all 63
-        rows, which contradicted the caption it was supposed to produce and
-        reported 43/8/12 where the correct answer is 38/7/11.
-
-    [2] CLASSIFICATION. `straddles` and `both_near` are columns of the
-        calibration table. Re-deriving them from a window around the threshold
-        looks equivalent and is not: the re-derivation put 8 comparisons in the
-        borderline class against the stored columns' 7. Read the columns.
+    The primary result uses every comparison. The Glu73 cluster, a single-site
+    systematic sign inversion excluded from nothing by design, is reported as
+    a sensitivity view rather than removed.
     """
+    g73 = cal.get("g73", pd.Series(False, index=cal.index)).fillna(False).astype(bool)
+    inb = cal["in_benchmark"].astype(str).str.lower().isin(("true", "yes"))
+    destab = cal["measured_kcal"] >= DESTABILIZER_MIN
+
+    def block(mask):
+        n = int(mask.sum())
+        rows = []
+        for label, t in THRESHOLDS:
+            k = int((mask & (cal["foldx_ddg"] >= t)).sum())
+            rows.append({"threshold": label, "recovered": k, "n": n,
+                         "fraction": round(k / n, 3), "cell": f"{k}/{n}"})
+        return n, rows
+
+    n, rows = block(destab)
+    n_ex, rows_ex = block(destab & ~g73)
+    excluded_stabilizing = cal.loc[(cal["measured_kcal"] <= -DESTABILIZER_MIN), "variant"].tolist()
+    return {"population": {"n": n, "in_benchmark": int((destab & inb).sum()),
+                           "external": int((destab & ~inb).sum()),
+                           "definition": (f"measured >= +{DESTABILIZER_MIN} kcal/mol; recovered when "
+                                          "predicted >= +threshold (same sign)"),
+                           "measured_stabilizing_not_in_population": excluded_stabilizing},
+            "by_threshold": rows,
+            "sensitivity_excluding_glu73": {"n": n_ex, "by_threshold": rows_ex}}
+
+
+def _classes(cal: pd.DataFrame) -> list:
     t = REFERENCE_T
-    keep = ~cal.get("g73", pd.Series(False, index=cal.index)).fillna(False).astype(bool)
-    cal = cal.loc[keep]
     err = (cal["foldx_ddg"] - cal["measured_kcal"]).abs()
     straddles = cal["straddles"].fillna(False).astype(bool)
     both_near = cal["both_near"].fillna(False).astype(bool)
-
-    agree = ~straddles
-    borderline = straddles & both_near
-    substantive = straddles & ~both_near
-
     out = []
     for name, mask, definition in [
-            ("Agreement", agree, "Measured and predicted calls agree."),
-            ("Borderline disagreement", borderline,
+            ("Agreement", ~straddles, "Measured and predicted calls agree."),
+            ("Borderline disagreement", straddles & both_near,
              f"Calls straddle {t} kcal/mol but both values sit near it."),
-            ("Substantive disagreement", substantive,
+            ("Substantive disagreement", straddles & ~both_near,
              f"Calls straddle {t} kcal/mol and at least one value is far from it.")]:
         ex = cal.loc[mask, "variant"].dropna().unique().tolist()
         out.append({"call_relationship": name, "n": int(mask.sum()),
@@ -108,16 +111,26 @@ def call_relationships(cal: pd.DataFrame) -> dict:
                     "median_abs_error": round(float(err[mask].median()), 2)
                                         if mask.any() else None,
                     "examples": ex[:3]})
-    total = sum(r["n"] for r in out)
-    assert total == len(cal), f"classes sum to {total}, not {len(cal)}"
-    # Guard both corrections: the Glu73 exclusion (n) and reading the stored
-    # columns rather than re-deriving them (the class split).
-    assert len(cal) == 56, f"expected 56 non-Glu73 comparisons, got {len(cal)}"
-    got = tuple(r["n"] for r in out)
-    assert got == (38, 7, 11), f"class split {got} != figure panel c (38, 7, 11)"
-    return {"n_comparisons": len(cal), "reference_threshold": t,
-            "population": "63 comparisons less the 7-point barnase Glu73 cluster",
-            "classes": out}
+    assert sum(r["n"] for r in out) == len(cal)
+    return out
+
+
+def call_relationships(cal: pd.DataFrame) -> dict:
+    """[B] agreement / borderline / substantive disagreement, with median |error|.
+
+    Classification reads the stored `straddles` and `both_near` columns;
+    re-deriving them from a window looks equivalent and is not (it moved one
+    comparison between classes). v7.14: the primary result uses all 63
+    comparisons; the Glu73 cluster is a named sensitivity view, not an
+    exclusion. The exclusion was introduced with the analysis, so it is not
+    described as prespecified anywhere.
+    """
+    g73 = cal.get("g73", pd.Series(False, index=cal.index)).fillna(False).astype(bool)
+    return {"n_comparisons": int(len(cal)), "reference_threshold": REFERENCE_T,
+            "population": "all comparisons in COMAVI_delta_calibration_points.csv",
+            "classes": _classes(cal),
+            "sensitivity_excluding_glu73": {"n_comparisons": int((~g73).sum()),
+                                            "classes": _classes(cal.loc[~g73])}}
 
 
 def main() -> int:

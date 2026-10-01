@@ -9,7 +9,9 @@ Only two of the three COMAVI axes have measured comparators. There is NO
 directly measured complex-fold comparator anywhere in this benchmark.
 
 The Glu73 barnase electrostatics cluster (g73 == True) is drawn as open red
-diamonds and EXCLUDED from every fitted statistic (slope, rho, medians).
+diamonds and INCLUDED in every fitted statistic (slope, rho, medians). It was
+excluded until v7.14; that exclusion was introduced with the analysis, so the
+without-Glu73 fit is now a sensitivity view in the stats record, not the headline.
 
 Data:  reference_outputs/COMAVI_delta_calibration_points.csv
 Stats: reference_outputs/COMAVI_delta_calibration_stats.json
@@ -75,7 +77,7 @@ def panel_letter(ax, letter, dx=-0.18, dy=1.02, fontsize=None):
 
 D = pd.read_csv(REPO / "reference_outputs/COMAVI_delta_calibration_points.csv")
 STATS = json.load(open(REPO / "reference_outputs/COMAVI_delta_calibration_stats.json"))
-FIT = D[~D.g73]
+FIT = D  # every comparison; Glu73 is marked, not removed
 sl, ic = STATS["slope"], STATS["intercept"]
 rho, prho = STATS["rho"], STATS["p"]
 rho_delta = STATS["rho_delta_vs_measured"]
@@ -112,7 +114,7 @@ def _pa(ax):
        label=s+(" (fold)" if s=="BRCA1 BRCT" else " (binding)"))
        for s in ["BRCA1 BRCT","Hb tetramer","Barnase–barstar","TEM1–BLIP"]]
     h+=[Line2D([],[],ls="none",marker="D",markerfacecolor="none",markeredgecolor=C_EXC,
-               markersize=5.5,label="Glu73 cluster (excluded)"),
+               markersize=5.5,label="barnase Glu73 (sign inverted)"),
         Patch(facecolor="#f2f2f2",edgecolor="none",label="calls disagree at 2.5")]
     ax.legend(handles=h,loc="upper left",bbox_to_anchor=(-0.012,1.015),frameon=False,fontsize=SECOND,
               handletextpad=0.35,borderpad=0.15,labelspacing=0.3)
@@ -140,7 +142,7 @@ def panel_b(ax):
     ax.text(9.4,-5.55,f"ρ = {rho_delta:.2f}",ha="right",va="bottom",fontsize=SECOND,color="#333")
     ax.text(-1.3,3.15,"FoldX over-predicts",fontsize=SECOND,color="#666",va="top")
     ax.text(-1.3,-6.35,"FoldX under-predicts",fontsize=SECOND,color="#666",va="bottom",ha="left")
-    ax.annotate("expected from\nslope 0.43",xy=(7.2,(sl-1)*7.2+ic),xytext=(6.6,-1.15),fontsize=SECOND,
+    ax.annotate(f"expected from\nslope {sl:.2f}",xy=(7.2,(sl-1)*7.2+ic),xytext=(6.6,-1.15),fontsize=SECOND,
                 color=GREY,ha="center",arrowprops=dict(arrowstyle="-",lw=0.6,color=GREY))
     set_frame(ax); panel_letter(ax,"B")
 
