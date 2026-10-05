@@ -72,11 +72,11 @@ DEFAULT_SUMMARY = REPO / "reference_outputs" / "COMAVI_evidence_ledger_summary.j
 #   v7.8  fb80b9849d8bdee3ae9b511abf2e6da9656071208eacff5be08e23366ce2d614
 #   v7.6  e4d657dee2625580bd41da05d9251fb69a224ddefdff6286f82a236511465d28
 #   v7.5  88cee917d00ea6705e851b59b7551ef8211052011768a732462ee59ef45031bb
-CANONICAL_SHA256 = "aba940a0ad211535b9d6e1d6ce83ca480b0dd4f38b1e14a033d183a9e1833e12"
+CANONICAL_SHA256 = "d3224c4146c2cfa565ea231a42b3b0c49e566258f0e8d18a3c20c88cbd6498ec"
 
 # Committed-axis count. v7.6 withdrew 11 commitments (expected token -> unknown),
 # taking the ledger and the canonical from 109 committed axes to 98.
-COMMITTED_AXIS_COUNT = 98
+COMMITTED_AXIS_COUNT = 99
 
 AXES = {
     "monomer": "expected_ddg_monomer",

@@ -429,7 +429,15 @@ def main():
     # should have one. The exceptions are variants whose E1 evidence is a
     # dissociation constant rather than a folding energy; those carry the K_D in
     # the basis column, and the set is named so it cannot grow silently.
-    KD_ONLY = {"I62V", "R53H", "R78G", "A1381T", "R1334Q"}
+    # v8.0 adds KRAS G12D and G12V. Hunter 2015 Table 2 reports RAF-kinase
+    # affinities in nmol/L (WT 56, G12D 270, G12V 411), which is a dissociation
+    # constant and so belongs in this set rather than in the measured-energy
+    # column. They are deliberately NOT converted into the measured-effect
+    # table that feeds the calibration: that table holds direct thermodynamic
+    # measurements (SPR, ITC, DSC), and a competition-assay relative affinity
+    # is a different assay class. The derived magnitudes (0.93 and 1.18
+    # kcal/mol) are carried in the evidence basis instead.
+    KD_ONLY = {"I62V", "R53H", "R78G", "A1381T", "R1334Q", "G12D", "G12V"}
     e1 = variants["Evidence class"].astype(str).str.contains("E1")
     missing = set(variants.loc[e1 & blank("Measured DDG (kcal/mol)"), "Variant"])
     assert missing == KD_ONLY, (

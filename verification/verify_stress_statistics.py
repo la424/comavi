@@ -142,20 +142,20 @@ require(
 )
 
 require(
-    int(population["mechanism_graded_variants"]) == 57,
-    "mechanism population differs from 57",
+    int(population["mechanism_graded_variants"]) == 56,
+    "mechanism population differs from 56",
 )
 
 require(
     list(population["primary_structural_agreement"])
-    == [92, 124],
-    "primary structural-agreement count differs from 92/124",
+    == [86, 123],
+    "primary structural-agreement count differs from 86/123",
 )
 
 require(
     list(population["all_row_structural_agreement"])
-    == [92, 125],
-    "all-row structural-agreement count differs from 92/125",
+    == [86, 124],
+    "all-row structural-agreement count differs from 86/124",
 )
 
 require(
@@ -166,17 +166,17 @@ require(
 require(
     close(
         observed["mechanism_consistency"],
-        41.0 / 57,
+        37.0 / 56,
     ),
-    "mechanism-consistency point estimate differs from 41.0/57",
+    "mechanism-consistency point estimate differs from 37.0/56",
 )
 
 require(
     close(
         observed["structural_agreement"],
-        92 / 124,
+        86 / 123,
     ),
-    "structural-agreement point estimate differs from 92/124",
+    "structural-agreement point estimate differs from 86/123",
 )
 
 
@@ -283,26 +283,26 @@ require(
 )
 
 require(
-    archive_mc_n == 57,
-    f"draw archive mechanism n is {archive_mc_n}, not 57",
+    archive_mc_n == 56,
+    f"draw archive mechanism n is {archive_mc_n}, not 56",
 )
 
 require(
-    (archive_sa_n, archive_sa_d) == (92, 124),
+    (archive_sa_n, archive_sa_d) == (86, 123),
     (
         "draw archive structural agreement is "
-        f"{archive_sa_n}/{archive_sa_d}, not 92/124"
+        f"{archive_sa_n}/{archive_sa_d}, not 86/123"
     ),
 )
 
 require(
-    close(archive_mc, 41.0 / 57),
-    "draw archive mechanism point estimate differs from 41.0/57",
+    close(archive_mc, 37.0 / 56),
+    "draw archive mechanism point estimate differs from 37.0/56",
 )
 
 require(
-    close(archive_sa, 92 / 124),
-    "draw archive structural point estimate differs from 92/124",
+    close(archive_sa, 86 / 123),
+    "draw archive structural point estimate differs from 86/123",
 )
 
 require(
@@ -477,14 +477,14 @@ for name, (
 # ---------------------------------------------------------------------
 
 require(
-    ledger.get("SA_total") == [92, 125],
+    ledger.get("SA_total") == [86, 124],
     f"ledger SA_total is {ledger.get('SA_total')!r}",
 )
 
 require(
     close(
         ledger.get("SA"),
-        92 / 125,
+        86 / 124,
         tolerance=5e-5,
     ),
     f"ledger scalar SA is {ledger.get('SA')!r}",
@@ -492,8 +492,8 @@ require(
 
 require(
     ledger.get("SA_by_axis", {}).get("monomer", [])[:3]
-    == [19, 26, 0.7308],
-    "ledger monomer-axis record differs from 19/26",
+    == [19, 27, 0.7037],
+    "ledger monomer-axis record differs from 19/27",
 )
 
 require(
@@ -504,14 +504,14 @@ require(
 
 require(
     ledger.get("SA_by_axis", {}).get("binding", [])[:3]
-    == [22, 30, 0.7333],
-    "ledger binding record differs from 22/30",
+    == [20, 29, 0.6897],
+    "ledger binding record differs from 20/29",
 )
 
 require(
     ledger.get("SA_by_axis", {}).get("tier", [])[:3]
-    == [34, 47, 0.7234],
-    "ledger tier record differs from 34/47",
+    == [30, 46, 0.6522],
+    "ledger tier record differs from 30/46",
 )
 
 expected_cluster_sa = list(

@@ -47,7 +47,14 @@ OUT = REPO / "reference_outputs" / "COMAVI_detection_vs_attribution.json"
 
 GRADE_MAP = {"consistent": 1.0, "partial": 0.5, "inconsistent": 0.0}
 REFERENCE_T = 2.5
-STRUCTURAL = ("fold_mechanism", "ppi_destab_mechanism", "mixed_structural")
+# v8.0 adds "ppi_stab_mechanism". Until SMAD4 I500V there was no stabilizing
+# commitment in the graded set, so the tuple was complete by accident rather
+# than by design, and a stabilizing expectation fell through both buckets --
+# which the population identity below caught. A strengthened interaction is a
+# curated structural lesion like any other, and detection asks only whether an
+# axis fired, which is tested on |ddG|.
+STRUCTURAL = ("fold_mechanism", "ppi_destab_mechanism", "mixed_structural",
+              "ppi_stab_mechanism")
 SILENT = "structurally_silent"
 
 
@@ -222,9 +229,18 @@ def main():
     assert p["structural"] + p["silent"] == p["graded"]
     assert abs(result["headline_score"]["total"]
                - _g.mech_consistency_t25.map(_W).sum()) < 1e-9
-    # the weakest arm claim in the manuscript rests on this ordering
-    means = {k: v["mean_grade"] for k, v in result["per_class"].items()}
+    # The weakest-arm claim in the manuscript rests on this ordering. Restrict
+    # it to classes with at least MIN_ARM_N members: v8.0 introduced
+    # ppi_stab_mechanism with a single variant, and a one-member class scoring
+    # zero would take the title and make the manuscript assert a ranking that
+    # n = 1 cannot support. The floor is named rather than implicit so that a
+    # class crossing it changes the claim deliberately.
+    MIN_ARM_N = 3
+    means = {k: v["mean_grade"] for k, v in result["per_class"].items()
+             if v["n"] >= MIN_ARM_N}
     assert min(means, key=means.get) == "ppi_destab_mechanism", means
+    assert all(v["n"] < MIN_ARM_N or k in STRUCTURAL + (SILENT,)
+               for k, v in result["per_class"].items()), "unbucketed class"
     # The isolated-subunit recount is a subset of the full profile: everything it
     # detects the full profile detects, and the remainder is exactly the set
     # detected only through the assembled-complex and binding axes.

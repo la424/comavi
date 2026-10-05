@@ -317,7 +317,13 @@ def table1_rows():
         tot[0] += n
         tot[1] += graded
         tot[2] += path
-    assert tot[:2] == [61, 57], tot
+    # Derived from the canonical, not frozen: the graded count moved 57 -> 56
+    # in v8.0 when MSH2 G674R lost its only commitment, and a literal here can
+    # only be got past by bumping it.
+    _canon = pd.read_csv(RO / "scored_61var_canonical.csv", low_memory=False)
+    _graded = int(_canon.mech_consistency_t25.isin(
+        ["consistent", "partial", "inconsistent"]).sum())
+    assert tot[:2] == [len(_canon), _graded], (tot, len(_canon), _graded)
     rows.append(["Total", "", tot[0], tot[1], tot[2], ""])
     return ["System", "Gene", "Variants", "Graded", "Pathogenic", "Structure"], rows
 

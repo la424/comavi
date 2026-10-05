@@ -183,7 +183,7 @@ def main() -> int:
             f"ledger={ledger_axes}, derived={axes}"
         )
 
-    if primary_total != [92, 124]:
+    if primary_total != [86, 123]:
         raise SystemExit(
             "Unexpected primary structural-agreement total: "
             f"{primary_total}"

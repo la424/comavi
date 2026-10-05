@@ -25,7 +25,14 @@ import apply_concordance_v5 as ac  # noqa: E402
 
 TAGS = [tag for tag, _ in ac.THRESHOLD_SPECS]
 GMAP = {"consistent": 1.0, "partial": 0.5, "inconsistent": 0.0}
-STRUCT = {"ppi_destab_mechanism", "mixed_structural", "fold_mechanism"}
+from apply_concordance_v5 import (  # noqa: E402
+    MECH_STRUCTURAL_CLASSES as _MSC, assert_classes_covered)
+# One source of truth: see apply_concordance_v5. The local literal here was
+# the fifth independent copy of this list and, like the other four, omitted
+# ppi_stab_mechanism -- which silently dropped SMAD4 I500V from the
+# structural arm and made sensitivity read 0.696 over 28 rather than 0.672
+# over 29. The figure generator's cross-check against the canonical caught it.
+STRUCT = set(_MSC)
 
 
 def measured_image(t, slope, intercept):

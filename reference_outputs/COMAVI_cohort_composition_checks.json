@@ -20,36 +20,36 @@
   "mechanism_pattern_score_at_2.5": {
    "AlphaFold 3": {
     "systems": 7,
-    "variants": 29,
-    "score_total": 19.0,
-    "score": 0.6552
+    "variants": 28,
+    "score_total": 17.0,
+    "score": 0.6071
    },
    "experimental": {
     "systems": 7,
     "variants": 28,
-    "score_total": 22.0,
-    "score": 0.7857
+    "score_total": 20.0,
+    "score": 0.7143
    }
   },
   "difference_experimental_minus_af3": {
-   "value": 0.1305,
+   "value": 0.1072,
    "ci95_system_resampling": [
-    -0.0571,
-    0.3287
+    -0.08,
+    0.257
    ],
    "draws": 2000,
    "seed": 20260923
   },
   "prioritization": {
    "AlphaFold 3": {
-    "variants": 29,
-    "structural": 8,
-    "roc_auc": 0.9107
+    "variants": 28,
+    "structural": 10,
+    "roc_auc": 0.7778
    },
    "experimental": {
     "variants": 18,
-    "structural": 9,
-    "roc_auc": 1.0
+    "structural": 11,
+    "roc_auc": 0.9481
    }
   },
   "note": "Seven systems per source: model quality cannot be separated from system difficulty. Isolated-subunit stability uses single-chain AlphaFold 3 models in 11 systems whatever the complex source."
@@ -58,17 +58,17 @@
   "population": "AlphaMissense comparison set (47 variants)",
   "table": {
    "pathogenic": {
-    "structural": 16,
-    "no_lesion": 18,
-    "ungraded": 2
+    "structural": 19,
+    "no_lesion": 14,
+    "ungraded": 3
    },
    "benign": {
-    "structural": 0,
-    "no_lesion": 11,
+    "structural": 1,
+    "no_lesion": 10,
     "ungraded": 0
    }
   },
-  "benign_all_curated_no_lesion": true,
+  "benign_all_curated_no_lesion": false,
   "note": "Benign variants entered the benchmark as curated no-lesion controls, so pathogenicity AUCs of structural scores partly reflect construction. The division of the pathogenic class is the informative quantity."
  }
 }

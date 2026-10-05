@@ -1,40 +1,40 @@
 {
  "threshold": 2.5,
  "population": {
-  "graded": 57,
-  "structural": 25,
-  "silent": 32
+  "graded": 56,
+  "structural": 29,
+  "silent": 27
  },
  "headline_score": {
-  "total": 41.0,
-  "n": 57,
-  "mean": 0.7193
+  "total": 37.0,
+  "n": 56,
+  "mean": 0.6607
  },
  "detection": {
   "k": 20,
-  "n": 25,
-  "rate": 0.8
+  "n": 29,
+  "rate": 0.69
  },
  "attribution": {
   "k": 14,
-  "n": 25,
-  "rate": 0.56
+  "n": 29,
+  "rate": 0.5
  },
  "correct_rejection": {
-  "k": 26,
-  "n": 32,
-  "rate": 0.812
+  "k": 22,
+  "n": 27,
+  "rate": 0.815
  },
  "isolated_subunit_only": {
   "detection": {
    "k": 7,
-   "n": 25,
-   "rate": 0.28
+   "n": 29,
+   "rate": 0.241
   },
   "correct_rejection": {
-   "k": 29,
-   "n": 32,
-   "rate": 0.906
+   "k": 25,
+   "n": 27,
+   "rate": 0.926
   },
   "detected_only_with_assembled_axes": {
    "k": 13,
@@ -55,18 +55,18 @@
    ]
   },
   "structural_in_complexes": {
-   "n": 17,
+   "n": 21,
    "detection_all_axes": 15,
    "detection_isolated_subunit": 2
   }
  },
  "per_class": {
   "fold_mechanism": {
-   "n": 10,
-   "mean_grade": 0.55,
+   "n": 11,
+   "mean_grade": 0.5,
    "consistent": 5,
    "partial": 1,
-   "inconsistent": 4,
+   "inconsistent": 5,
    "detection": 7,
    "attribution": 5
   },
@@ -80,25 +80,34 @@
    "attribution": 5
   },
   "ppi_destab_mechanism": {
-   "n": 9,
-   "mean_grade": 0.5,
+   "n": 11,
+   "mean_grade": 0.4091,
    "consistent": 1,
    "partial": 7,
-   "inconsistent": 1,
+   "inconsistent": 3,
    "detection": 8,
    "attribution": 4
   },
-  "structurally_silent": {
-   "n": 32,
-   "mean_grade": 0.8125,
-   "consistent": 26,
+  "ppi_stab_mechanism": {
+   "n": 1,
+   "mean_grade": 0.0,
+   "consistent": 0,
    "partial": 0,
-   "inconsistent": 6,
-   "correct_rejection": 26
+   "inconsistent": 1,
+   "detection": 0,
+   "attribution": 0
+  },
+  "structurally_silent": {
+   "n": 27,
+   "mean_grade": 0.8148,
+   "consistent": 22,
+   "partial": 0,
+   "inconsistent": 5,
+   "correct_rejection": 22
   }
  },
  "interface_class_diagnosis": {
-  "n": 9,
+  "n": 11,
   "binding_axis_fires": 4,
   "complex_fold_axis_fires": 7,
   "note": "For variants curated as pure interface destabilizers the complex-context fold axis fires more often than the binding axis, so the lesion is detected but attributed to the wrong axis. This is the separation the pipeline exists to make and it is where the benchmark is weakest.",

@@ -47,8 +47,8 @@ def main():
     check("benchmark rows", len(df), 61)
     check("systems", int(df.system.nunique()), 14)
     check("BRCT rows", int(brct.sum()), 12)
-    check("graded variants", int(graded.sum()), 57)
-    check("graded interaction", int((graded & ~brct).sum()), 47)
+    check("graded variants", int(graded.sum()), 56)
+    check("graded interaction", int((graded & ~brct).sum()), 46)
     check("graded BRCT", int((graded & brct).sum()), 10)
 
     print("\n[2] Mechanism-consistency by population")
@@ -56,8 +56,8 @@ def main():
             # v7.9: the three reversed binding tokens moved the pooled and
             # interaction figures. BRCT is untouched, as expected -- the
             # correction is confined to the interaction cohort.
-            ("all gradeable n=57", graded, 0.7193),
-            ("interaction n=47", graded & ~brct, 0.7234),
+            ("all gradeable n=56", graded, 0.6607),
+            ("interaction n=46", graded & ~brct, 0.6522),
             ("BRCT core/fold n=10", graded & brct, 0.7000)]:
         s = df.loc[mask, "mech_consistency_t25"].map(GMAP)
         check(label, round(float(s.mean()), 4), want)
@@ -82,21 +82,21 @@ def main():
     check("all-row structural agreement",
           (sum(v[0] for v in t_all.values()),
            sum(v[1] for v in t_all.values())),
-          (92, 125))
+          (86, 124))
     check("primary 57-variant structural agreement",
           (sum(v[0] for v in t_primary.values()),
            sum(v[1] for v in t_primary.values())),
-          (92, 124))
+          (86, 123))
     check("interaction-only structural agreement",
           (sum(v[0] for v in t_int.values()),
            sum(v[1] for v in t_int.values())),
-          (85, 114))
+          (79, 113))
 
     expected_primary_axes = {
-        "monomer": (19, 25),
+        "monomer": (19, 26),
         "fold": (17, 22),
-        "binding": (22, 30),
-        "tier": (34, 47),
+        "binding": (20, 29),
+        "tier": (30, 46),
     }
 
     for axis, expected in expected_primary_axes.items():
@@ -162,7 +162,7 @@ def main():
           [regrades["R1699L"], regrades["R1699Q"]], ["consistent", "consistent"])
     pts = df.loc[graded, "mech_consistency_t25"].map(GMAP).sum() + 2.0
     check("MC if both included as structurally silent",
-          round(pts / 59, 4), 0.7288)
+          round(pts / 58, 4), 0.6724)
     print("        -> the exclusion is a curation decision applied upstream of the")
     print("           rubric. It must be stated in Methods, not left implicit.")
 

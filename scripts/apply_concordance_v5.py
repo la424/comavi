@@ -675,6 +675,34 @@ def compute_signal_consensus_split(row, tier_val, prefix=""):
 # Evidence-aware rule: mild_destab is graded positive only when evidence_axes
 # is structural (binding/monomer/both); otherwise treated as not-tested.
 STRUCTURAL_EVIDENCE = {"binding", "monomer", "both"}
+
+# The authoritative mechanism-class vocabulary, owned here because
+# derive_expected_mech_class below is what emits it.
+#
+# Four modules each kept their own copy of the structural-class list, and all
+# four omitted "ppi_stab_mechanism": until SMAD4 I500V there was no stabilizing
+# commitment in the graded set, so every copy was complete by accident. When
+# v8.0 added one, I500V was silently dropped from the prioritization population
+# and the tier analyses -- a variant missing from a denominator with no error
+# anywhere. Import these instead of restating them, and use
+# assert_classes_covered() so a future class fails loudly rather than vanishing.
+MECH_SILENT_CLASS = "structurally_silent"
+MECH_STRUCTURAL_CLASSES = ("fold_mechanism", "ppi_destab_mechanism",
+                           "ppi_stab_mechanism", "mixed_structural")
+MECH_UNGRADED_CLASSES = ("NA", "structurally_uncommitted",
+                         "interface_uncommitted_magnitude")
+
+
+def assert_classes_covered(classes):
+    """Fail if any observed mechanism class is in none of the known buckets."""
+    known = (set(MECH_STRUCTURAL_CLASSES) | {MECH_SILENT_CLASS}
+             | set(MECH_UNGRADED_CLASSES))
+    unknown = {c for c in classes if pd.notna(c)} - known
+    if unknown:
+        raise AssertionError(
+            "mechanism class(es) in no bucket: %s -- add to "
+            "apply_concordance_v5.MECH_STRUCTURAL_CLASSES or the ungraded list"
+            % sorted(unknown))
 SOFT_EVIDENCE       = {"functional", "population"}
 
 

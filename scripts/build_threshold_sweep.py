@@ -254,9 +254,21 @@ def main():
         assert got == want, (
             "reference column disagrees with the published %s: sweep %s, "
             "published %s" % (key, got, want))
-    assert ref["whole_variant_k"] == 41.0 and ref["whole_variant_n"] == 57, (
-        "reference whole-variant score moved: %s/%s" % (
-            ref["whole_variant_k"], ref["whole_variant_n"]))
+    # Recomputed from the canonical rather than frozen. This pair was a literal
+    # 41.0/57 until v8.0, which is a guard that stops working the moment the
+    # ground truth is corrected: the only way past it is to bump the number,
+    # and bumping it is indistinguishable from removing it. Deriving the
+    # expectation keeps the check live across any future re-curation. It still
+    # catches what it was for -- a sweep whose reference column has drifted
+    # away from the rubric the rest of the paper is scored on.
+    _W = {"consistent": 1.0, "partial": 0.5, "inconsistent": 0.0}
+    _can = pd.read_csv(CANON, low_memory=False)
+    _g = _can[_can.mech_consistency_t25.isin(_W)]
+    _k, _n = _g.mech_consistency_t25.map(_W).sum(), len(_g)
+    assert (abs(ref["whole_variant_k"] - _k) < 1e-9
+            and ref["whole_variant_n"] == _n), (
+        "reference whole-variant score %s/%s disagrees with the canonical "
+        "rubric %s/%s" % (ref["whole_variant_k"], ref["whole_variant_n"], _k, _n))
 
     if args.check:
         target = OUT_EXT_JSON if args.extended else OUT_JSON

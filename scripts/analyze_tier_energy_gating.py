@@ -55,7 +55,10 @@ from verify_tier_construction import exact_within_system_perm  # noqa: E402
 CANON = REPO / "reference_outputs" / "scored_61var_canonical.csv"
 OUT = REPO / "reference_outputs" / "COMAVI_tier_energy_gating.json"
 
-STRUCTURAL_CLASSES = ["mixed_structural", "ppi_destab_mechanism", "fold_mechanism"]
+from apply_concordance_v5 import (  # noqa: E402
+    MECH_STRUCTURAL_CLASSES as _MSC, assert_classes_covered)
+# One source of truth: see apply_concordance_v5.
+STRUCTURAL_CLASSES = list(_MSC)
 SILENT_CLASS = "structurally_silent"
 GRADE_MAP = {"consistent": 1.0, "partial": 0.5, "inconsistent": 0.0}
 CANONICAL_TAG = "t25"

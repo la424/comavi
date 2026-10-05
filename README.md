@@ -341,50 +341,50 @@ externally validated classifier. This release does not establish a binary
 ISDS cutoff.
 
 The literature-curated resource contains 61 variants across 14 protein
-systems. Fifty-seven variants are gradeable for whole-variant mechanism
-localization. The 47 tier-carrying interaction variants form the primary
+systems. Fifty-six variants are gradeable for whole-variant mechanism
+localization. The 46 tier-carrying interaction variants form the primary
 structural-prioritization population.
 
 ### Mechanism localization
 
 At the 2.5 kcal/mol reproducibility reference, whole-variant
-mechanism-pattern agreement was 0.72 (0.7193, graded n=57), with a weighted total of 41.0/57.
+mechanism-pattern agreement was 0.66 (0.6607, graded n=56), with a weighted total of 37.0/56.
 
-Direction-aware agreement across energetic axes in the primary 57-variant
-population was 58/77 = 0.753:
+Direction-aware agreement across energetic axes in the primary 56-variant
+population was 56/77 = 0.727:
 
-- monomer-fold: 19/25;
+- monomer-fold: 19/26;
 - complex-context: 17/22;
-- binding: 22/30.
+- binding: 20/29.
 
 The historical four-output `structural_agreement` aggregate is retained as a
 continuity and denominator audit rather than as the primary mechanism result.
-On the same 57-variant population it is 92/124 = 0.742. With all 61 resource
-rows retained, it is 92/125 = 0.736.
+On the same 56-variant population it is 86/123 = 0.699. With all 61 resource
+rows retained, it is 86/124 = 0.694.
 
-The all-row decomposition is tier 34/47, monomer-fold ΔΔG 19/26,
-complex-fold ΔΔG 17/22, and binding ΔΔG 22/30; denominators sum to 125.
+The all-row decomposition is tier 30/46, monomer-fold ΔΔG 19/27,
+complex-fold ΔΔG 17/22, and binding ΔΔG 20/29; denominators sum to 124.
 The one additional all-row axis is the monomer-fold axis of BRCA1 R1699Q,
 which is retained in the resource but excluded from whole-variant grading by
 its curated role.
 
 ### Structural-disruption prioritization
 
-On the 47-variant prioritization population, comprising 17 committed modeled
-structural mechanisms and 30 variants curated to lack a committed lesion on
+On the 46-variant prioritization population, comprising 21 committed modeled
+structural mechanisms and 25 variants curated to lack a committed lesion on
 the modeled axes:
 
-- ISDS-v1 ROC AUC 0.943;
-- average precision 0.818;
-- energetic component ROC AUC 0.846;
-- structural-context component ROC AUC 0.857;
-- system-cluster ROC AUC 95% interval 0.783–0.996.
+- ISDS-v1 ROC AUC 0.834;
+- average precision 0.779;
+- energetic component ROC AUC 0.779;
+- structural-context component ROC AUC 0.785;
+- system-cluster ROC AUC 95% interval 0.699–0.944.
 
 The ranking reflects the intended limited-budget use case:
 
 - Top 10: 9 structural-mechanism variants;
-- Top 20: 16/17;
-- Top 25: 17/17.
+- Top 20: 17/21;
+- Top 25: 17/21.
 
 These are internal, system-aware benchmark results. They do not establish
 external generalization or a validated decision cutoff.

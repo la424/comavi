@@ -45,7 +45,10 @@ CANON = REPO / "reference_outputs/scored_61var_canonical.csv"
 LEDGER = REPO / "reference_outputs/COMAVI_evidence_ledger.csv"
 OUT = REPO / "reference_outputs/COMAVI_tier_construction.json"
 
-STRUCTURAL_CLASSES = ["mixed_structural", "ppi_destab_mechanism", "fold_mechanism"]
+from apply_concordance_v5 import (  # noqa: E402
+    MECH_STRUCTURAL_CLASSES as _MSC, assert_classes_covered)
+# One source of truth: see apply_concordance_v5.
+STRUCTURAL_CLASSES = list(_MSC)
 SILENT_CLASS = "structurally_silent"
 FIRING_LABELS = ["concordant_disruption", "ddg_only"]
 

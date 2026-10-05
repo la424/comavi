@@ -7,20 +7,21 @@
    "Tier 2"
   ],
   "structural_classes": [
-   "mixed_structural",
+   "fold_mechanism",
    "ppi_destab_mechanism",
-   "fold_mechanism"
+   "ppi_stab_mechanism",
+   "mixed_structural"
   ]
  },
- "population_n": 47,
- "population_structural": 17,
- "population_silent": 30,
+ "population_n": 46,
+ "population_structural": 21,
+ "population_silent": 25,
  "population_systems": 13,
  "four_state_t25": {
   "convergent": {
-   "n": 18,
+   "n": 17,
    "structural": 15,
-   "rate": 0.8333
+   "rate": 0.8824
   },
   "energy_only": {
    "n": 3,
@@ -34,155 +35,155 @@
   },
   "neither": {
    "n": 14,
-   "structural": 0,
-   "rate": 0.0
+   "structural": 4,
+   "rate": 0.2857
   }
  },
  "sweep": {
   "t10": {
    "firing": {
     "strong_structural": 16,
-    "strong_n": 25,
-    "weak_structural": 0,
+    "strong_n": 24,
+    "weak_structural": 2,
     "weak_n": 8,
-    "fisher_p": 0.0027
+    "fisher_p": 0.0964
    },
    "silent": {
     "strong_structural": 1,
     "strong_n": 5,
-    "weak_structural": 0,
+    "weak_structural": 2,
     "weak_n": 9,
-    "fisher_p": 0.3571
+    "fisher_p": 1.0
    }
   },
   "t15": {
    "firing": {
     "strong_structural": 15,
-    "strong_n": 21,
-    "weak_structural": 0,
+    "strong_n": 20,
+    "weak_structural": 1,
     "weak_n": 6,
-    "fisher_p": 0.0031
+    "fisher_p": 0.0184
    },
    "silent": {
     "strong_structural": 2,
     "strong_n": 9,
-    "weak_structural": 0,
+    "weak_structural": 3,
     "weak_n": 11,
-    "fisher_p": 0.1895
+    "fisher_p": 1.0
    }
   },
   "t20": {
    "firing": {
     "strong_structural": 15,
-    "strong_n": 19,
-    "weak_structural": 0,
+    "strong_n": 18,
+    "weak_structural": 1,
     "weak_n": 5,
-    "fisher_p": 0.003
+    "fisher_p": 0.0173
    },
    "silent": {
     "strong_structural": 2,
     "strong_n": 11,
-    "weak_structural": 0,
+    "weak_structural": 3,
     "weak_n": 12,
-    "fisher_p": 0.2174
+    "fisher_p": 1.0
    }
   },
   "t25": {
    "firing": {
     "strong_structural": 15,
-    "strong_n": 18,
+    "strong_n": 17,
     "weak_structural": 0,
     "weak_n": 3,
-    "fisher_p": 0.015
+    "fisher_p": 0.0088
    },
    "silent": {
     "strong_structural": 2,
     "strong_n": 12,
-    "weak_structural": 0,
+    "weak_structural": 4,
     "weak_n": 14,
-    "fisher_p": 0.2031
+    "fisher_p": 0.6522
    }
   },
   "tSAP": {
    "firing": {
     "strong_structural": 11,
-    "strong_n": 14,
+    "strong_n": 13,
     "weak_structural": 0,
     "weak_n": 2,
-    "fisher_p": 0.0833
+    "fisher_p": 0.0571
    },
    "silent": {
     "strong_structural": 6,
     "strong_n": 16,
-    "weak_structural": 0,
+    "weak_structural": 4,
     "weak_n": 15,
-    "fisher_p": 0.0177
+    "fisher_p": 0.7043
    }
   }
  },
  "bh": {
   "firing_t10": {
-   "p": 0.0027,
-   "p_adj": 0.0104,
-   "survives_05": true
+   "p": 0.0964,
+   "p_adj": 0.1927,
+   "survives_05": false
   },
   "silent_t10": {
-   "p": 0.3571,
-   "p_adj": 0.3571,
+   "p": 1.0,
+   "p_adj": 1.0,
    "survives_05": false
   },
   "firing_t15": {
-   "p": 0.0031,
-   "p_adj": 0.0104,
-   "survives_05": true
+   "p": 0.0184,
+   "p_adj": 0.0614,
+   "survives_05": false
   },
   "silent_t15": {
-   "p": 0.1895,
-   "p_adj": 0.2415,
+   "p": 1.0,
+   "p_adj": 1.0,
    "survives_05": false
   },
   "firing_t20": {
-   "p": 0.003,
-   "p_adj": 0.0104,
-   "survives_05": true
+   "p": 0.0173,
+   "p_adj": 0.0614,
+   "survives_05": false
   },
   "silent_t20": {
-   "p": 0.2174,
-   "p_adj": 0.2415,
+   "p": 1.0,
+   "p_adj": 1.0,
    "survives_05": false
   },
   "firing_t25": {
-   "p": 0.015,
-   "p_adj": 0.0353,
-   "survives_05": true
+   "p": 0.0088,
+   "p_adj": 0.0614,
+   "survives_05": false
   },
   "silent_t25": {
-   "p": 0.2031,
-   "p_adj": 0.2415,
+   "p": 0.6522,
+   "p_adj": 1.0,
    "survives_05": false
   },
   "firing_tSAP": {
-   "p": 0.0833,
-   "p_adj": 0.1389,
+   "p": 0.0571,
+   "p_adj": 0.1429,
    "survives_05": false
   },
   "silent_tSAP": {
-   "p": 0.0177,
-   "p_adj": 0.0353,
-   "survives_05": true
+   "p": 0.7043,
+   "p_adj": 1.0,
+   "survives_05": false
   }
  },
- "bh_n_surviving": 5,
+ "bh_n_surviving": 0,
  "canonical_cells": {
   "strong_structural": 15,
-  "strong_n": 18,
+  "strong_n": 17,
   "weak_structural": 0,
   "weak_n": 3,
-  "fisher_p": 0.015
+  "fisher_p": 0.0088
  },
  "reclassification_fragility": {
-  "reclassify_1": 0.1278,
-  "reclassify_2": 0.4887
+  "reclassify_1": 0.0877,
+  "reclassify_2": 0.4035
  },
  "weak_tier_firing_variants": [
   {
@@ -205,71 +206,75 @@
  "n_systems_with_both_tier_strata": 1,
  "residue_collapsed": {
   "strong_structural": 12,
-  "strong_n": 15,
+  "strong_n": 14,
   "weak_structural": 0,
   "weak_n": 2,
-  "fisher_p": 0.0735
+  "fisher_p": 0.05
  },
  "marginal_tier_screen": {
   "strong_structural": 17,
-  "strong_n": 30,
-  "weak_structural": 0,
+  "strong_n": 29,
+  "weak_structural": 4,
   "weak_n": 17,
-  "sensitivity": 1.0,
+  "sensitivity": 0.8095,
   "sensitivity_ci": [
-   0.8049,
-   1.0
+   0.5809,
+   0.9455
   ],
-  "specificity": 0.5667,
+  "specificity": 0.52,
   "specificity_ci": [
-   0.3743,
-   0.7454
+   0.3131,
+   0.722
   ],
-  "npv": 1.0,
-  "ppv": 0.5667,
+  "npv": 0.7647,
+  "ppv": 0.5862,
   "n_systems_in_weak_cell": 10,
   "n_systems_with_both_strata": 7,
   "weak_tier_classes": {
-   "structurally_silent": 17
+   "structurally_silent": 13,
+   "ppi_destab_mechanism": 2,
+   "fold_mechanism": 1,
+   "ppi_stab_mechanism": 1
   },
   "structural_by_tier": {
    "Tier 1": 11,
-   "Tier 2": 6
+   "Tier 2": 6,
+   "Tier 3": 4
   },
-  "stratified_cells_are_subsets_of_marginal_zero": true,
+  "stratified_cells_are_subsets_of_marginal_zero": false,
   "structural_by_class": {
-   "ppi_destab_mechanism": 9,
+   "ppi_destab_mechanism": 11,
    "mixed_structural": 6,
-   "fold_mechanism": 2
+   "fold_mechanism": 3,
+   "ppi_stab_mechanism": 1
   },
-  "non_ppi_structural_n": 8,
-  "non_ppi_structural_all_strong_tier": true,
-  "fold_mechanism_n": 2,
-  "fold_mechanism_all_strong_tier": true,
-  "fisher_p": 6.851e-05,
-  "within_system_permutation_p": 0.0095,
-  "within_system_permutation_p_monte_carlo_check": 0.0097,
+  "non_ppi_structural_n": 10,
+  "non_ppi_structural_all_strong_tier": false,
+  "fold_mechanism_n": 3,
+  "fold_mechanism_all_strong_tier": false,
+  "fisher_p": 0.03215,
+  "within_system_permutation_p": 0.1651,
+  "within_system_permutation_p_monte_carlo_check": 0.1678,
   "within_system_permutation_method": "exact (convolved hypergeometrics)",
   "cluster_bootstrap_rate_diff_ci": [
-   0.3448,
-   0.75
+   0.0771,
+   0.6316
   ]
  },
  "stratum_mc": {
   "convergent_all": {
-   "n": 18,
-   "mc": 0.5
+   "n": 17,
+   "mc": 0.5294
   },
   "convergent_structural_gt": {
    "n": 15,
    "mc": 0.6
   },
   "convergent_silent_gt": {
-   "n": 3,
+   "n": 2,
    "mc": 0.0,
    "variants": [
     "C697F",
-    "G674R",
     "N564D"
    ]
   },

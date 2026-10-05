@@ -1,42 +1,42 @@
 {
  "population": {
-  "n_graded": 57,
-  "n_structural": 25,
-  "n_silent": 32,
-  "structural_fraction": 0.4386,
+  "n_graded": 56,
+  "n_structural": 29,
+  "n_silent": 27,
+  "structural_fraction": 0.5179,
   "n_systems": 14
  },
  "point_estimates": {
   "t10": {
    "threshold_kcal_mol": "1.0",
-   "recovery": 0.76,
-   "correct_rejection": 0.4375
+   "recovery": 0.6724,
+   "correct_rejection": 0.4444
   },
   "t15": {
    "threshold_kcal_mol": "1.5",
-   "recovery": 0.72,
-   "correct_rejection": 0.5938
+   "recovery": 0.6379,
+   "correct_rejection": 0.5926
   },
   "t20": {
    "threshold_kcal_mol": "2.0",
-   "recovery": 0.64,
-   "correct_rejection": 0.7188
+   "recovery": 0.569,
+   "correct_rejection": 0.7407
   },
   "t25": {
    "threshold_kcal_mol": "2.5",
-   "recovery": 0.6,
-   "correct_rejection": 0.8125
+   "recovery": 0.5172,
+   "correct_rejection": 0.8148
   },
   "tSAP": {
    "threshold_kcal_mol": "2.9/2.9/3.5",
-   "recovery": 0.54,
-   "correct_rejection": 0.8438
+   "recovery": 0.4655,
+   "correct_rejection": 0.8519
   }
  },
  "class_reweighting": {
-  "t25_optimal_for_structural_weight_below": 0.645,
-  "t25_optimal_for_structural_weight_above": 0.343,
-  "benchmark_structural_fraction": 0.4386,
+  "t25_optimal_for_structural_weight_below": 0.588,
+  "t25_optimal_for_structural_weight_above": 0.418,
+  "benchmark_structural_fraction": 0.5179,
   "note": "The weight at which 2.5 stops being the pooled argmax, compared against the benchmark's own structural fraction. Both are computed here; neither is typed."
  },
  "paired_bootstrap": {
@@ -45,79 +45,79 @@
   "unit": "protein system",
   "recovery": {
    "t10": {
-    "mean": 0.7568,
+    "mean": 0.6668,
     "ci95": [
-     0.639,
-     0.861
+     0.5,
+     0.81
     ]
    },
    "t15": {
-    "mean": 0.7224,
+    "mean": 0.6364,
     "ci95": [
-     0.607,
-     0.857
+     0.482,
+     0.792
     ]
    },
    "t20": {
-    "mean": 0.6376,
+    "mean": 0.5646,
     "ci95": [
-     0.474,
-     0.786
+     0.389,
+     0.717
     ]
    },
    "t25": {
-    "mean": 0.5934,
+    "mean": 0.5086,
     "ci95": [
-     0.435,
-     0.722
+     0.321,
+     0.661
     ]
    },
    "tSAP": {
-    "mean": 0.5359,
+    "mean": 0.4588,
     "ci95": [
-     0.405,
-     0.679
+     0.295,
+     0.615
     ]
    }
   },
   "correct_rejection": {
    "t10": {
-    "mean": 0.4446,
+    "mean": 0.4503,
     "ci95": [
-     0.27,
-     0.625
+     0.273,
+     0.64
     ]
    },
    "t15": {
-    "mean": 0.6003,
+    "mean": 0.5989,
     "ci95": [
      0.438,
-     0.769
+     0.783
     ]
    },
    "t20": {
-    "mean": 0.7262,
+    "mean": 0.7486,
     "ci95": [
-     0.514,
-     0.935
+     0.536,
+     1.0
     ]
    },
    "t25": {
-    "mean": 0.8174,
+    "mean": 0.8201,
     "ci95": [
-     0.64,
+     0.657,
      1.0
     ]
    },
    "tSAP": {
-    "mean": 0.8489,
+    "mean": 0.8567,
     "ci95": [
-     0.688,
+     0.724,
      1.0
     ]
    }
   },
-  "p_recovery_fell_t10_to_tSAP": 0.9994,
+  "p_recovery_fell_t10_to_tSAP": 0.9998,
   "p_rejection_rose_t10_to_tSAP": 1.0
  }
 }

@@ -2,49 +2,49 @@
   "analysis_id": "COMAVI-ISDS-v1-2026-08-21",
   "formula_version": "ISDS-v1",
   "population": {
-    "n": 47,
-    "positive": 17,
-    "negative": 30,
+    "n": 46,
+    "positive": 21,
+    "negative": 25,
     "systems": 13
   },
   "component_binary_baselines": [
     {
       "screen": "interface_status_alone",
       "tp": 15,
-      "fn": 2,
+      "fn": 6,
       "fp": 7,
-      "tn": 23,
-      "sensitivity": 0.8823529411764706,
-      "specificity": 0.7666666666666667,
+      "tn": 18,
+      "sensitivity": 0.7142857142857143,
+      "specificity": 0.72,
       "ppv": 0.6818181818181818,
-      "balanced_accuracy": 0.8245098039215686,
-      "within_system_permutation_p": 0.0018,
+      "balanced_accuracy": 0.7171428571428571,
+      "within_system_permutation_p": 0.0165,
       "within_system_permutation_method": "exact (convolved hypergeometrics)"
     },
     {
       "screen": "tier_without_interface_bonus",
       "tp": 14,
-      "fn": 3,
-      "fp": 12,
-      "tn": 18,
-      "sensitivity": 0.8235294117647058,
-      "specificity": 0.6,
-      "ppv": 0.5384615384615384,
-      "balanced_accuracy": 0.7117647058823529,
-      "within_system_permutation_p": 0.1294,
+      "fn": 7,
+      "fp": 11,
+      "tn": 14,
+      "sensitivity": 0.6666666666666666,
+      "specificity": 0.56,
+      "ppv": 0.56,
+      "balanced_accuracy": 0.6133333333333333,
+      "within_system_permutation_p": 0.5222,
       "within_system_permutation_method": "exact (convolved hypergeometrics)"
     },
     {
       "screen": "full_tier_1_2",
       "tp": 17,
-      "fn": 0,
-      "fp": 13,
-      "tn": 17,
-      "sensitivity": 1.0,
-      "specificity": 0.5666666666666667,
-      "ppv": 0.5666666666666667,
-      "balanced_accuracy": 0.7833333333333333,
-      "within_system_permutation_p": 0.0095,
+      "fn": 4,
+      "fp": 12,
+      "tn": 13,
+      "sensitivity": 0.8095238095238095,
+      "specificity": 0.52,
+      "ppv": 0.5862068965517241,
+      "balanced_accuracy": 0.6647619047619048,
+      "within_system_permutation_p": 0.1651,
       "within_system_permutation_method": "exact (convolved hypergeometrics)"
     }
   ],
@@ -59,52 +59,52 @@
       15,
       0,
       2,
-      0
+      4
     ],
     "no_lesion": [
-      3,
+      2,
       3,
       10,
-      14
+      10
     ]
   },
   "observed": {
-    "isds_roc_auc": 0.9431372549019608,
-    "isds_average_precision": 0.8181799892371737,
-    "energy_roc_auc": 0.8568627450980393,
-    "context_roc_auc": 0.8901960784313726,
-    "isds_minus_energy_auc": 0.08627450980392148,
-    "isds_minus_context_auc": 0.05294117647058816
+    "isds_roc_auc": 0.8342857142857142,
+    "isds_average_precision": 0.7791628832042365,
+    "energy_roc_auc": 0.779047619047619,
+    "context_roc_auc": 0.7847619047619048,
+    "isds_minus_energy_auc": 0.0552380952380952,
+    "isds_minus_context_auc": 0.049523809523809414
   },
   "bootstrap": {
     "draws_requested": 10000,
     "seed": 20260821,
     "isds_roc_auc_ci95": [
-      0.8582947768550235,
-      1.0
+      0.6987216604730216,
+      0.9437540064102563
     ],
     "isds_average_precision_ci95": [
-      0.5316137566137566,
-      1.0
+      0.5244706929543885,
+      0.9599383809035883
     ],
     "isds_minus_energy_auc_ci95": [
-      0.010820765256249042,
-      0.15584590141041757
+      -0.02564102564102566,
+      0.12465270607297735
     ],
     "isds_minus_context_auc_ci95": [
-      -0.016129032258064502,
-      0.1379953917050691
+      -0.021740523968784824,
+      0.1257737679040597
     ],
-    "fraction_isds_gt_energy": 0.9864,
-    "fraction_isds_gt_context": 0.9235,
+    "fraction_isds_gt_energy": 0.9034,
+    "fraction_isds_gt_context": 0.9115,
     "valid_draws": 10000
   },
   "leave_one_system_out": {
-    "roc_auc_min": 0.9285714285714286,
-    "roc_auc_max": 0.983529411764706,
-    "roc_auc_median": 0.939655172413793,
-    "average_precision_min": 0.7823082010582011,
-    "average_precision_max": 0.9764301179708209
+    "roc_auc_min": 0.8025,
+    "roc_auc_max": 0.8771929824561404,
+    "roc_auc_median": 0.8293650793650793,
+    "average_precision_min": 0.7176690338484693,
+    "average_precision_max": 0.9057053460350941
   },
   "top_k": [
     {
@@ -113,7 +113,7 @@
       "k_effective": 5,
       "structural_mechanisms_in_top_k": 4,
       "precision_at_k": 0.8,
-      "recovery_at_k": 0.23529411764705882
+      "recovery_at_k": 0.19047619047619047
     },
     {
       "score": "isds_v1",
@@ -121,7 +121,7 @@
       "k_effective": 10,
       "structural_mechanisms_in_top_k": 9,
       "precision_at_k": 0.9,
-      "recovery_at_k": 0.5294117647058824
+      "recovery_at_k": 0.42857142857142855
     },
     {
       "score": "isds_v1",
@@ -129,15 +129,15 @@
       "k_effective": 15,
       "structural_mechanisms_in_top_k": 13,
       "precision_at_k": 0.8666666666666667,
-      "recovery_at_k": 0.7647058823529411
+      "recovery_at_k": 0.6190476190476191
     },
     {
       "score": "isds_v1",
       "k": 20,
       "k_effective": 20,
-      "structural_mechanisms_in_top_k": 16,
-      "precision_at_k": 0.8,
-      "recovery_at_k": 0.9411764705882353
+      "structural_mechanisms_in_top_k": 17,
+      "precision_at_k": 0.85,
+      "recovery_at_k": 0.8095238095238095
     },
     {
       "score": "isds_v1",
@@ -145,7 +145,7 @@
       "k_effective": 25,
       "structural_mechanisms_in_top_k": 17,
       "precision_at_k": 0.68,
-      "recovery_at_k": 1.0
+      "recovery_at_k": 0.8095238095238095
     }
   ],
   "score_bands": [
@@ -160,8 +160,8 @@
     {
       "isds_band": "0.20-<0.40",
       "n_variants": 10,
-      "n_structural_mechanism": 0,
-      "structural_mechanism_fraction": 0.0,
+      "n_structural_mechanism": 4,
+      "structural_mechanism_fraction": 0.4,
       "systems": "brca1_bard1;hemoglobin_dimer;kras_craf;mlh1_pms2;msh2_msh6;smad4_smad3;troponin_ic;vwf_gpiba",
       "variants": "R145Q;G12D;A1381T;V384D;H718Y;I500V;E6V;G12V;K45R;G322D"
     },
@@ -175,11 +175,11 @@
     },
     {
       "isds_band": "0.60-<0.80",
-      "n_variants": 8,
+      "n_variants": 7,
       "n_structural_mechanism": 6,
-      "structural_mechanism_fraction": 0.75,
-      "systems": "brca1_bard1;hemoglobin_tetramer;mlh1_pms2;msh2_msh6;pi3k",
-      "variants": "V11G;R755W;L749P;Q542L;G674R;E545K;N564D;N102T"
+      "structural_mechanism_fraction": 0.8571428571428571,
+      "systems": "brca1_bard1;hemoglobin_tetramer;mlh1_pms2;pi3k",
+      "variants": "V11G;R755W;L749P;Q542L;E545K;N564D;N102T"
     },
     {
       "isds_band": "0.80-1.00",
@@ -191,30 +191,30 @@
     }
   ],
   "mechanism_localization_final_values": {
-    "whole_variant_score": "41/57 = 0.719",
-    "interaction_subset_score": "34/47 = 0.723",
+    "whole_variant_score": "37/56 = 0.661",
+    "interaction_subset_score": "30/46 = 0.652",
     "brct_subset_score": "7/10 = 0.700",
     "convention": "primary (57 mechanism-gradeable variants)",
-    "monomer_agreement": "19/25 = 0.760",
+    "monomer_agreement": "19/26 = 0.731",
     "complex_context_agreement": "17/22 = 0.773",
-    "binding_agreement": "22/30 = 0.733",
-    "tier_agreement": "34/47 = 0.723",
-    "all_energetic_agreement": "58/77 = 0.753",
-    "historical_four_output": "92/124 = 0.742",
+    "binding_agreement": "20/29 = 0.690",
+    "tier_agreement": "30/46 = 0.652",
+    "all_energetic_agreement": "56/77 = 0.727",
+    "historical_four_output": "86/123 = 0.699",
     "all_row": {
       "convention": "all 61 benchmark rows",
-      "monomer_agreement": "19/26 = 0.731",
+      "monomer_agreement": "19/27 = 0.704",
       "complex_context_agreement": "17/22 = 0.773",
-      "binding_agreement": "22/30 = 0.733",
-      "tier_agreement": "34/47 = 0.723",
-      "all_energetic_agreement": "58/78 = 0.744",
-      "historical_four_output": "92/125 = 0.736"
+      "binding_agreement": "20/29 = 0.690",
+      "tier_agreement": "30/46 = 0.652",
+      "all_energetic_agreement": "56/78 = 0.718",
+      "historical_four_output": "86/124 = 0.694"
     }
   },
   "files": {
-    "canonical_input_sha256": "aba940a0ad211535b9d6e1d6ce83ca480b0dd4f38b1e14a033d183a9e1833e12",
-    "a636p_audit_sha256": "d1a60faac6f5b71765f24d84f785d2c29ea8323be5140e93e44fd68b73e12e23",
+    "canonical_input_sha256": "d3224c4146c2cfa565ea231a42b3b0c49e566258f0e8d18a3c20c88cbd6498ec",
+    "a636p_audit_sha256": "6df27b3b455d4580c0d12856e148da093f80e1b2a5a10a05fbe605f3f14fc2e6",
     "canonical_isds_audit_sha256": "39ab05d6cc611c9961b0b8d585b9cbefbb06d5bbafbba8b6be121f91b8615d5b",
-    "per_variant_sha256": "dd4d12e32f8f97ca293e477f966f55c898dcb46c67de60442d11992afab66ba9"
+    "per_variant_sha256": "26d9a683d3fa60c2d98ebd458014860972851e8aae9b653353a6142acb5f5c58"
   }
 }

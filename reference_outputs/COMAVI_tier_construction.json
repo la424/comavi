@@ -1,57 +1,62 @@
 {
- "population_n": 47,
- "structural_n": 17,
- "silent_n": 30,
- "reimplementation_fidelity": "47/47",
+ "population_n": 46,
+ "structural_n": 21,
+ "silent_n": 25,
+ "reimplementation_fidelity": "46/46",
  "interface_bonus_reach": {
   "structural_with_bonus": 15,
-  "structural_total": 17,
+  "structural_total": 21,
   "by_class": {
-   "fold_mechanism": "1/2",
+   "fold_mechanism": "1/3",
    "mixed_structural": "6/6",
-   "ppi_destab_mechanism": "8/9"
+   "ppi_destab_mechanism": "8/11",
+   "ppi_stab_mechanism": "0/1"
   },
   "structural_without_bonus": [
    "C61G",
-   "D351H"
+   "H718Y",
+   "G12D",
+   "G12V",
+   "D351H",
+   "I500V"
   ],
   "note": "15/17 \u2014 NOT the 6 binding-only-class variants. The manuscript's original 6-of-17 claim inferred bonus reach from mechanism class and was wrong."
  },
  "screen_full_tier": {
   "strong_structural": 17,
-  "weak_structural": 0,
-  "strong_silent": 13,
-  "weak_silent": 17,
-  "sensitivity": 1.0,
+  "weak_structural": 4,
+  "strong_silent": 12,
+  "weak_silent": 13,
+  "sensitivity": 0.81,
   "sensitivity_ci": [
-   0.805,
-   1.0
+   0.581,
+   0.946
   ],
-  "specificity": 0.567,
+  "specificity": 0.52,
   "specificity_ci": [
-   0.374,
-   0.745
+   0.313,
+   0.722
   ],
-  "fisher_p": 6.9e-05,
-  "within_system_permutation_p": 0.0095
+  "fisher_p": 0.032153,
+  "within_system_permutation_p": 0.1651
  },
  "screen_interface_bonus_zeroed": {
   "strong_structural": 14,
-  "weak_structural": 3,
-  "strong_silent": 12,
-  "weak_silent": 18,
-  "sensitivity": 0.824,
+  "weak_structural": 7,
+  "strong_silent": 11,
+  "weak_silent": 14,
+  "sensitivity": 0.667,
   "sensitivity_ci": [
-   0.566,
-   0.962
+   0.43,
+   0.854
   ],
-  "specificity": 0.6,
+  "specificity": 0.56,
   "specificity_ci": [
-   0.406,
-   0.773
+   0.349,
+   0.756
   ],
-  "fisher_p": 0.006546,
-  "within_system_permutation_p": 0.1294
+  "fisher_p": 0.148507,
+  "within_system_permutation_p": 0.5222
  },
  "structural_demotions": [
   {
@@ -117,9 +122,9 @@
  ],
  "sensitivity_invariance_is_identity": {
   "structural_variants_removed_by_requiring_strong_tier": {
-   "t10": 0,
-   "t15": 0,
-   "t20": 0,
+   "t10": 2,
+   "t15": 1,
+   "t20": 1,
    "t25": 0,
    "tSAP": 0
   },
@@ -128,69 +133,69 @@
  "loso_is_identity": {
   "per_system": {
    "brca1_bard1": {
-    "n": 43,
-    "weak_tier_structural": 0,
-    "sensitivity": 1.0
+    "n": 42,
+    "weak_tier_structural": 4,
+    "sensitivity": 0.789
    },
    "cam_cav12": {
-    "n": 44,
-    "weak_tier_structural": 0,
-    "sensitivity": 1.0
+    "n": 43,
+    "weak_tier_structural": 4,
+    "sensitivity": 0.81
    },
    "cfh_c3b": {
-    "n": 44,
-    "weak_tier_structural": 0,
-    "sensitivity": 1.0
+    "n": 43,
+    "weak_tier_structural": 4,
+    "sensitivity": 0.8
    },
    "hemoglobin_dimer": {
-    "n": 46,
-    "weak_tier_structural": 0,
-    "sensitivity": 1.0
+    "n": 45,
+    "weak_tier_structural": 4,
+    "sensitivity": 0.81
    },
    "hemoglobin_tetramer": {
-    "n": 42,
-    "weak_tier_structural": 0,
-    "sensitivity": 1.0
+    "n": 41,
+    "weak_tier_structural": 4,
+    "sensitivity": 0.75
    },
    "kras_craf": {
-    "n": 44,
-    "weak_tier_structural": 0,
-    "sensitivity": 1.0
+    "n": 43,
+    "weak_tier_structural": 2,
+    "sensitivity": 0.895
    },
    "mlh1_pms2": {
-    "n": 40,
-    "weak_tier_structural": 0,
-    "sensitivity": 1.0
+    "n": 39,
+    "weak_tier_structural": 3,
+    "sensitivity": 0.824
    },
    "msh2_msh6": {
     "n": 42,
-    "weak_tier_structural": 0,
-    "sensitivity": 1.0
+    "weak_tier_structural": 4,
+    "sensitivity": 0.81
    },
    "pi3k": {
-    "n": 42,
-    "weak_tier_structural": 0,
-    "sensitivity": 1.0
+    "n": 41,
+    "weak_tier_structural": 4,
+    "sensitivity": 0.789
    },
    "smad4_smad3": {
-    "n": 43,
-    "weak_tier_structural": 0,
-    "sensitivity": 1.0
+    "n": 42,
+    "weak_tier_structural": 3,
+    "sensitivity": 0.833
    },
    "troponin_ic": {
-    "n": 44,
-    "weak_tier_structural": 0,
-    "sensitivity": 1.0
+    "n": 43,
+    "weak_tier_structural": 4,
+    "sensitivity": 0.81
    },
    "vhl_elonginc": {
-    "n": 45,
-    "weak_tier_structural": 0,
-    "sensitivity": 1.0
+    "n": 44,
+    "weak_tier_structural": 4,
+    "sensitivity": 0.8
    },
    "vwf_gpiba": {
-    "n": 45,
-    "weak_tier_structural": 0,
-    "sensitivity": 1.0
+    "n": 44,
+    "weak_tier_structural": 4,
+    "sensitivity": 0.8
    }
   },
   "note": "Row removal cannot CREATE a weak-tier structural variant when the full-cohort cell is already 0. Valid as a check on the tier GRADIENT (refit), not on the screen's perfect recall."
@@ -198,9 +203,9 @@
  "specificity_gain": {
   "by_threshold": {
    "t10": {
-    "specificity_energy_only": 0.433,
-    "specificity_convergent": 0.7,
-    "gain": 0.267,
+    "specificity_energy_only": 0.44,
+    "specificity_convergent": 0.68,
+    "gain": 0.24,
     "energy_only_cell_n": 8,
     "energy_only_systems": 5,
     "energy_only_distinct_residues": 7,
@@ -232,9 +237,9 @@
     ]
    },
    "t20": {
-    "specificity_energy_only": 0.7,
-    "specificity_convergent": 0.867,
-    "gain": 0.167,
+    "specificity_energy_only": 0.72,
+    "specificity_convergent": 0.88,
+    "gain": 0.16,
     "energy_only_cell_n": 5,
     "energy_only_systems": 3,
     "energy_only_distinct_residues": 4,
@@ -248,8 +253,8 @@
    },
    "t25": {
     "specificity_energy_only": 0.8,
-    "specificity_convergent": 0.9,
-    "gain": 0.1,
+    "specificity_convergent": 0.92,
+    "gain": 0.12,
     "energy_only_cell_n": 3,
     "energy_only_systems": 2,
     "energy_only_distinct_residues": 2,
@@ -260,9 +265,9 @@
     ]
    },
    "tSAP": {
-    "specificity_energy_only": 0.833,
-    "specificity_convergent": 0.9,
-    "gain": 0.067,
+    "specificity_energy_only": 0.84,
+    "specificity_convergent": 0.92,
+    "gain": 0.08,
     "energy_only_cell_n": 2,
     "energy_only_systems": 2,
     "energy_only_distinct_residues": 2,
@@ -274,11 +279,11 @@
   },
   "reference_t25_cluster_bootstrap_ci": [
    0.0,
-   0.24
+   0.28
   ],
   "reference_t25_cluster_bootstrap_ci_raw_3dp": [
    0.0,
-   0.24
+   0.276
   ],
   "cluster_bootstrap_n_draws": 200000,
   "fraction_resamples_no_gain": 0.1145,
@@ -286,129 +291,129 @@
  },
  "evidence_restricted_views": {
   "all": {
-   "n": 47,
-   "structural_n": 17,
-   "silent_n": 30,
-   "sensitivity": 1.0,
+   "n": 46,
+   "structural_n": 21,
+   "silent_n": 25,
+   "sensitivity": 0.81,
    "sensitivity_ci": [
-    0.805,
-    1.0
+    0.581,
+    0.946
    ],
-   "specificity": 0.567,
+   "specificity": 0.52,
    "specificity_ci": [
-    0.374,
-    0.745
+    0.313,
+    0.722
    ],
-   "weak_tier_structural": 0,
-   "fisher_p": 6.85e-05,
+   "weak_tier_structural": 4,
+   "fisher_p": 0.0322,
    "quantifier": "n/a"
   },
   "any_axis_E1_E3": {
    "n": 39,
-   "structural_n": 17,
-   "silent_n": 22,
-   "sensitivity": 1.0,
+   "structural_n": 21,
+   "silent_n": 18,
+   "sensitivity": 0.81,
    "sensitivity_ci": [
-    0.805,
-    1.0
+    0.581,
+    0.946
    ],
-   "specificity": 0.591,
+   "specificity": 0.556,
    "specificity_ci": [
-    0.364,
-    0.793
+    0.308,
+    0.785
    ],
-   "weak_tier_structural": 0,
-   "fisher_p": 7.83e-05,
+   "weak_tier_structural": 4,
+   "fisher_p": 0.0237,
    "quantifier": "any"
   },
   "all_axes_E1_E3": {
    "n": 26,
-   "structural_n": 13,
-   "silent_n": 13,
-   "sensitivity": 1.0,
+   "structural_n": 16,
+   "silent_n": 10,
+   "sensitivity": 0.812,
    "sensitivity_ci": [
-    0.753,
-    1.0
+    0.544,
+    0.96
    ],
-   "specificity": 0.615,
+   "specificity": 0.6,
    "specificity_ci": [
-    0.316,
-    0.861
+    0.262,
+    0.878
    ],
-   "weak_tier_structural": 0,
-   "fisher_p": 0.00165,
+   "weak_tier_structural": 3,
+   "fisher_p": 0.0461,
    "quantifier": "all"
   },
   "any_axis_direct_or_coupled": {
    "n": 39,
-   "structural_n": 17,
-   "silent_n": 22,
-   "sensitivity": 1.0,
+   "structural_n": 21,
+   "silent_n": 18,
+   "sensitivity": 0.81,
    "sensitivity_ci": [
-    0.805,
-    1.0
+    0.581,
+    0.946
    ],
-   "specificity": 0.591,
+   "specificity": 0.556,
    "specificity_ci": [
-    0.364,
-    0.793
+    0.308,
+    0.785
    ],
-   "weak_tier_structural": 0,
-   "fisher_p": 7.83e-05,
+   "weak_tier_structural": 4,
+   "fisher_p": 0.0237,
    "quantifier": "any"
   },
   "all_axes_direct_or_coupled": {
    "n": 26,
-   "structural_n": 13,
-   "silent_n": 13,
-   "sensitivity": 1.0,
+   "structural_n": 16,
+   "silent_n": 10,
+   "sensitivity": 0.812,
    "sensitivity_ci": [
-    0.753,
-    1.0
+    0.544,
+    0.96
    ],
-   "specificity": 0.615,
+   "specificity": 0.6,
    "specificity_ci": [
-    0.316,
-    0.861
+    0.262,
+    0.878
    ],
-   "weak_tier_structural": 0,
-   "fisher_p": 0.00165,
+   "weak_tier_structural": 3,
+   "fisher_p": 0.0461,
    "quantifier": "all"
   },
   "E1_E3_only": {
    "n": 39,
-   "structural_n": 17,
-   "silent_n": 22,
-   "sensitivity": 1.0,
+   "structural_n": 21,
+   "silent_n": 18,
+   "sensitivity": 0.81,
    "sensitivity_ci": [
-    0.805,
-    1.0
+    0.581,
+    0.946
    ],
-   "specificity": 0.591,
+   "specificity": 0.556,
    "specificity_ci": [
-    0.364,
-    0.793
+    0.308,
+    0.785
    ],
-   "weak_tier_structural": 0,
-   "fisher_p": 7.83e-05,
+   "weak_tier_structural": 4,
+   "fisher_p": 0.0237,
    "quantifier": "any"
   },
   "direct_or_coupled_only": {
    "n": 39,
-   "structural_n": 17,
-   "silent_n": 22,
-   "sensitivity": 1.0,
+   "structural_n": 21,
+   "silent_n": 18,
+   "sensitivity": 0.81,
    "sensitivity_ci": [
-    0.805,
-    1.0
+    0.581,
+    0.946
    ],
-   "specificity": 0.591,
+   "specificity": 0.556,
    "specificity_ci": [
-    0.364,
-    0.793
+    0.308,
+    0.785
    ],
-   "weak_tier_structural": 0,
-   "fisher_p": 7.83e-05,
+   "weak_tier_structural": 4,
+   "fisher_p": 0.0237,
    "quantifier": "any"
   }
  },
@@ -416,17 +421,17 @@
   "context_representable_only": "not computable from shipped data; no context-representability column exists in COMAVI_evidence_ledger.csv or scored_61var_canonical.csv"
  },
  "detection_auc": {
-  "energy": 0.861,
-  "tier": 0.89,
-  "combined_zsum": 0.947,
+  "energy": 0.781,
+  "tier": 0.785,
+  "combined_zsum": 0.834,
   "delta_combined_minus_energy_ci": [
-   0.011,
-   0.159
+   -0.029,
+   0.125
   ],
   "delta_combined_minus_tier_ci": [
-   -0.008,
-   0.14
+   -0.021,
+   0.127
   ],
-  "note": "Same-cohort, not externally validated. The tier's interface bonus is partly definitional for structural class (15/17), so the combination gain is not independent of ground truth."
+  "note": "Same-cohort, not externally validated. The tier's interface bonus is partly definitional for structural class (15/21), so the combination gain is not independent of ground truth."
  }
 }

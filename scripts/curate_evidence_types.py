@@ -100,7 +100,12 @@ C_OLLILA = ("Ollila 2008 Hum Mutat 29:1355 (PMID 18951462); "
 C_JIA = "Jia 2021"
 C_STEBBINS = "Stebbins 1999 Science"
 C_OHH = "Ohh 2000"
-C_HUNTER = "Hunter 2015"
+C_HUNTER = ("Hunter 2015 Mol Cancer Res 13:1325 Table 2 "
+            "(doi:10.1158/1541-7786.MCR-15-0203)")
+C_HINRICHSEN = ("Hinrichsen 2013 Clin Cancer Res 19:2432 "
+                "(doi:10.1158/1078-0432.CCR-12-3299)")
+C_LINDSAY = ("Lindsay 2025 J Allergy Clin Immunol Fig 4D-E "
+             "(doi:10.1016/j.jaci.2024.08.024)")
 C_EATON = "Eaton & Hofrichter 1990 (HbS polymerization)"
 C_KIGER = ("Kiger / Kwiatkowski Biochemistry 1998 "
            "(PMID 9521754 equilibrium assembly dG; PMID 9521753 kinetics)")
@@ -200,7 +205,17 @@ put("mlh1_pms2", "V384D", "binding", E3, "coupled",
 for ax in AXES:
     put("mlh1_pms2", "G857A", ax, E4, "inferred",
         "gnomAD AF 28%; ClinVar BA1 stand-alone benign", C_GNOMAD)
-put("mlh1_pms2", "H718Y", "monomer", E5, "inferred", NO_STAB_ASSAY, C_RAEVAARA)
+# v8.0: a stability measurement for this exact variant does exist. Hinrichsen
+# 2013 states that "the 4 MMR-proficient variants (K618A, E578G, V716M, and
+# H718Y) moderately destabilize the MLH1 protein but are not causative for
+# Lynch syndrome", with thermal stability "decreased more strongly in V716M,
+# H718Y, and E578G" and pulse-chase half-life reduced to 64% on average.
+# Structurally destabilizing and clinically neutral in the same variant.
+put("mlh1_pms2", "H718Y", "monomer", E2, "direct",
+    "Source states H718Y moderately destabilizes the MLH1 protein; thermal "
+    "stability decreased more strongly in V716M, H718Y and E578G, and "
+    "pulse-chase half-life fell to 64% of wild type. Clinically neutral",
+    C_HINRICHSEN)
 put("mlh1_pms2", "H718Y", "fold_complex", E5, "inferred", NO_ASSEMBLY_ASSAY,
     C_RAEVAARA)
 put("mlh1_pms2", "H718Y", "binding", E2, "coupled",
@@ -212,9 +227,14 @@ put("mlh1_pms2", "K618E", "binding", E3, "coupled",
     "Non-damaging in functional assay", C_DROST)
 
 # ------------------------------------------------------------------ MSH2-MSH6
-put("msh2_msh6", "G674R", "binding", E3, "direct",
-    "MSH6 binding preserved by co-IP; MMR lost via Walker-A ATPase defect",
-    C_JIA)
+# v8.0: G674R's binding commitment is retired, and the canonical now marks this
+# axis `unknown`, so this entry is deliberately absent rather than corrected.
+# The prior basis read "MSH6 binding preserved by co-IP" and cited Jia 2021,
+# which measures MMR loss of function by 6-thioguanine selection and performs
+# no co-immunoprecipitation. Ollila 2008 did run co-IP on an MSH2 ATPase-domain
+# variant, but on G674A -- a different substitution at the same position; that
+# paper never mentions G674R. No accessible source gives this variant's binding
+# direction, so there is nothing to commit.
 put("msh2_msh6", "A636P", "monomer", E3, "direct",
     "MSH2 expression/stability preserved; ATPase mismatch binding/release defect",
     C_OLLILA)
@@ -240,11 +260,19 @@ for ax in ("fold_complex", "binding"):
         "(beta-domain HIF face, not the ElonginC face)", C_OHH)
 
 # ------------------------------------------------------------------- KRAS-CRAF
-put("kras_craf", "G12D", "binding", E3, "direct",
-    "WT-like RAF1 binding; impaired GTP hydrolysis. G12 is 13.6 A from RAF1",
-    C_HUNTER)
-put("kras_craf", "G12V", "binding", E3, "direct",
-    "WT-like RAF1 binding; impaired GTP hydrolysis", C_HUNTER)
+# v8.0: the prior bases read "WT-like RAF1 binding" and cited Hunter 2015, but
+# Hunter 2015 Table 2 ("Relative affinities for RAF kinase", nmol/L) reports
+# WT 56 +/- 6, G12D 270 +/- 46, G12V 411 +/- 40, and the text states a "4.8-,
+# 7.3-, and 6.2-fold decrease in affinity". The basis misread the source it
+# named. Checked against the paper, not against a summary of it.
+put("kras_craf", "G12D", "binding", E1, "direct",
+    "RAF-RBD affinity decreased 4.8-fold (270 +/- 46 nmol/L against 56 +/- 6 "
+    "for wild type). Measured magnitude 0.93 kcal/mol, below the 2.5 kcal/mol "
+    "reference threshold", C_HUNTER)
+put("kras_craf", "G12V", "binding", E1, "direct",
+    "RAF-RBD affinity decreased 7.3-fold (411 +/- 40 nmol/L against 56 +/- 6 "
+    "for wild type). Measured magnitude 1.18 kcal/mol, below the 2.5 kcal/mol "
+    "reference threshold", C_HUNTER)
 put("kras_craf", "Q61H", "binding", E3, "direct",
     "Preserved RAF binding; switch-II hydrolysis defect. Q61 is 11.1 A from RAF1",
     C_HUNTER)
@@ -299,10 +327,18 @@ put("smad4_smad3", "D351H", "binding", E3, "direct",
     "Abolished phospho-Smad2/3 interaction by co-IP", C_DEBOSSCHER)
 put("smad4_smad3", "R361C", "binding", E3, "direct",
     "Completely abolished R-Smad interaction", C_LANAUZE)
-for v in ("I500T", "I500V"):
-    put("smad4_smad3", v, "binding", E5, "inferred",
-        "Post-translational mechanism (reduced ubiquitination -> protein "
-        "stabilization); no interface measurement", C_LEGOFF)
+put("smad4_smad3", "I500T", "binding", E5, "inferred",
+    "Post-translational mechanism (reduced ubiquitination -> protein "
+    "stabilization); no interface measurement", C_LEGOFF)
+# v8.0: I500V is no longer grouped with I500T. An interface measurement for
+# this exact variant now exists -- Lindsay 2025 Fig 4D-E -- and it points the
+# other way: the interaction is strengthened, not merely unmeasured. One of
+# only two stabilizing commitments in the benchmark.
+put("smad4_smad3", "I500V", "binding", E2, "direct",
+    "GST pull-down shows increased recovery of SMAD3 with SMAD4 I500V, and "
+    "TR-FRET shows a statistically significant increase in SMAD4-SMAD3 "
+    "interaction. R361H and R361C negative controls show the opposite "
+    "direction, so the assay resolves sign", C_LINDSAY)
 
 # ------------------------------------------------------------------ CFH-C3b
 for v, kd in [("R78G", "> 35 uM (binding effectively abolished)"),

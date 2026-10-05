@@ -19,7 +19,10 @@ from scipy.stats import fisher_exact
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
 CANON = REPO / "reference_outputs" / "scored_61var_canonical.csv"
-STRUCTURAL = ["mixed_structural", "ppi_destab_mechanism", "fold_mechanism"]
+sys.path.insert(0, str(REPO / "scripts"))
+from apply_concordance_v5 import MECH_STRUCTURAL_CLASSES  # noqa: E402
+# One source of truth: the local literal omitted ppi_stab_mechanism.
+STRUCTURAL = list(MECH_STRUCTURAL_CLASSES)
 SILENT = "structurally_silent"
 FIRING = ["concordant_disruption", "ddg_only"]
 BOOT_SEED = 20260813
@@ -66,14 +69,14 @@ def main():
     pop["strong_tier"] = pop.comavi_tier.isin(ac.FOOTPRINT_TIERS)
 
     print("population")
-    check("n", len(pop), 47)
+    check("n", len(pop), 46)
     # v7.9: the three reversed binding tokens left the structural class.
-    check("structural", int(pop.structural_gt.sum()), 17)
-    check("silent", int((~pop.structural_gt).sum()), 30)
+    check("structural", int(pop.structural_gt.sum()), 21)
+    check("silent", int((~pop.structural_gt).sum()), 25)
 
     print("\ntier reconstruction (gate: reimplementation must match shipped tiers)")
     rebuilt = pop.apply(lambda r: rebuild_tier(r, partners, True), axis=1)
-    check("shipped tiers reproduced", int((rebuilt == pop.comavi_tier).sum()), 47)
+    check("shipped tiers reproduced", int((rebuilt == pop.comavi_tier).sum()), 46)
     if FAILS:
         print("\nABORT: a check above failed; "
               "the ablation below would be uninterpretable. "
@@ -105,8 +108,8 @@ def main():
     # Fisher p compared to the full double, not a rounded literal: the manuscript
     # quotes 6.9e-05 and 0.0065, and rounding here before comparing would make the
     # check pass for any nearby value.
-    for lab, col, sens, spec, fp in [("full", "strong_tier", 1.0, 0.5667, 6.851195942185343e-05),
-                                     ("ablated", "strong_no_iface", 0.8235, 0.6, 0.006546276363860495)]:
+    for lab, col, sens, spec, fp in [("full", "strong_tier", 0.8095, 0.52, 0.032152716671407316),
+                                     ("ablated", "strong_no_iface", 0.6667, 0.56, 0.1485068790397015)]:
         a, b, c, d, s, sp, p = screen(col)
         print(f"\ntier screen ({lab})")
         check(f"{lab} sensitivity", round(s, 4), sens)
@@ -125,16 +128,23 @@ def main():
     check("silent variants demoted", sorted(dem.loc[~dem.structural_gt, "variant"]),
           ["D96V"])
 
-    print("\nsensitivity-equality identity (weak-tier structural cell must be empty)")
-    check("weak-tier structural variants", int((~pop.strong_tier & pop.structural_gt).sum()), 0)
+    # Until v8.0 this cell was empty and tier sensitivity was exactly 1.000.
+    # That perfect value was a property of the ground truth, not of the tier:
+    # KRAS G12D/G12V, MLH1 H718Y and SMAD4 I500V were curated as silent, and
+    # all four are weak-tier. Correcting them to committed mechanisms moved
+    # them into the positive class and sensitivity fell to 0.8095. The check
+    # is kept, with the count it should now have, because a change in it is
+    # exactly what a reader of the comparator claim needs to know about.
+    print("\nsensitivity-equality identity (weak-tier structural cell)")
+    check("weak-tier structural variants", int((~pop.strong_tier & pop.structural_gt).sum()), 4)
 
     print("\nfour-state sweep")
     expect = {
-        "t10":  (16, 9, 0, 8, 1, 4, 0, 9),
-        "t15":  (15, 6, 0, 6, 2, 7, 0, 11),
-        "t20":  (15, 4, 0, 5, 2, 9, 0, 12),
-        "t25":  (15, 3, 0, 3, 2, 10, 0, 14),
-        "tSAP": (11, 3, 0, 2, 6, 10, 0, 15),
+        "t10":  (16, 8, 2, 6, 1, 4, 2, 7),
+        "t15":  (15, 5, 1, 5, 2, 7, 3, 8),
+        "t20":  (15, 3, 1, 4, 2, 9, 3, 9),
+        "t25":  (15, 2, 0, 3, 2, 10, 4, 10),
+        "tSAP": (11, 2, 0, 2, 6, 10, 4, 11),
     }
     for tag, _ in ac.THRESHOLD_SPECS:
         f = pop[f"p1_ddg_concordance_{tag}"].isin(FIRING)
@@ -149,7 +159,7 @@ def main():
     sil = pop[~pop.structural_gt]
     fires = sil[f"p1_ddg_concordance_t25"].isin(FIRING)
     point = float((~(fires & sil.strong_tier)).mean() - (~fires).mean())
-    check("point specificity gain at t=2.5", round(point, 4), 0.1)
+    check("point specificity gain at t=2.5", round(point, 4), 0.12)
 
     groups = [g.index.values for _, g in pop.groupby("system")]
     keep = {i: (bool(fires[i]), bool(sil.strong_tier[i])) for i in sil.index}
@@ -165,9 +175,9 @@ def main():
         if n:
             gains.append((n - s_) / n - (n - f_) / n)
     gains = np.array(gains)
-    check("bootstrap median", round(float(np.median(gains)), 5), 0.09091)
+    check("bootstrap median", round(float(np.median(gains)), 5), 0.11111)
     check("bootstrap CI low", round(float(np.percentile(gains, 2.5)), 5), 0.0)
-    check("bootstrap CI high", round(float(np.percentile(gains, 97.5)), 5), 0.24242)
+    check("bootstrap CI high", round(float(np.percentile(gains, 97.5)), 5), 0.28)
     check("fraction zero-or-negative gain", round(float((gains <= 0).mean()), 5), 0.11355)
     # These 5-dp values are an exact-reproduction check on THIS script's pinned
     # seed and draw count -- they are not reportable precision and must never be
@@ -177,7 +187,7 @@ def main():
     _sg = json.loads((REPO / "reference_outputs" / "COMAVI_tier_construction.json")
                      .read_text())["specificity_gain"]
     check("agrees with canonical CI high (2 dp)",
-          round(float(np.percentile(gains, 97.5)), 2), 0.24)
+          round(float(np.percentile(gains, 97.5)), 2), 0.28)
     check("agrees with canonical no-gain pct",
           round(float((gains <= 0).mean()) * 100),
           _sg["fraction_resamples_no_gain_pct_reportable"])
@@ -190,10 +200,10 @@ def main():
                 continue
             axis_n[k] = axis_n.get(k, 0) + v[0]
             axis_d[k] = axis_d.get(k, 0) + v[1]
-    for k, want in [("tier", (34, 47)), ("monomer", (19, 26)),
-                    ("fold", (17, 22)), ("binding", (22, 30))]:
+    for k, want in [("tier", (30, 46)), ("monomer", (19, 27)),
+                    ("fold", (17, 22)), ("binding", (20, 29))]:
         check(f"{k} axis", (axis_n[k], axis_d[k]), want)
-    check("all-rows four-output", (sum(axis_n.values()), sum(axis_d.values())), (92, 125))
+    check("all-rows four-output", (sum(axis_n.values()), sum(axis_d.values())), (86, 124))
 
     unobs = set(ac.unobservable_variants())
     graded = df[~df.variant.isin(unobs)]
@@ -202,11 +212,11 @@ def main():
         got = ac.compute_structural_agreement(r, partners, 2.5, 2.5, 2.5)
         if got:
             gn += got[0]; gd += got[1]
-    check("primary four-output (unobservable excluded)", (gn, gd), (92, 124))
+    check("primary four-output (unobservable excluded)", (gn, gd), (86, 123))
 
     gmap = {"consistent": 1.0, "partial": 0.5, "inconsistent": 0.0}
     mc = graded.mech_consistency_t25.map(lambda v: gmap.get(str(v).lower())).dropna()
-    check("mechanism consistency", (round(float(mc.sum()), 1), len(mc)), (41.0, 57))
+    check("mechanism consistency", (round(float(mc.sum()), 1), len(mc)), (37.0, 56))
 
     print("\n" + "=" * 62)
     if FAILS:

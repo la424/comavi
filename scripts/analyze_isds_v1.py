@@ -24,7 +24,11 @@ ISDS_VERSION = PIPELINE_ISDS_VERSION
 ANCHORS = {'monomer': 2.9, 'complex_context': 2.9, 'binding': 3.5}
 BOOT_DRAWS = 10_000
 BOOT_SEED = 20260821
-STRUCTURAL_CLASSES = {'mixed_structural', 'ppi_destab_mechanism', 'fold_mechanism'}
+from apply_concordance_v5 import (  # noqa: E402
+    MECH_STRUCTURAL_CLASSES as _MSC, assert_classes_covered)
+# One source of truth: see apply_concordance_v5. The local literal here
+# omitted ppi_stab_mechanism and silently dropped SMAD4 I500V.
+STRUCTURAL_CLASSES = set(_MSC)
 
 
 @dataclass(frozen=True)
@@ -709,8 +713,21 @@ def main() -> None:
 
     tier = pd.read_csv(tier_calls_path)
     df = tier.merge(canonical_without_isds, on=['system', 'variant'], how='left', validate='one_to_one', suffixes=('', '_canonical'))
-    if len(df) != 47:
-        raise RuntimeError(f'Expected 47 prioritization rows; found {len(df)}')
+    # Derived from the canonical rather than frozen at 47. The literal was a
+    # guard that could only be got past by bumping it, which is
+    # indistinguishable from deleting it -- and it fired for the right reason
+    # in v8.0 (G674R lost its only commitment) at the same time as a wrong one
+    # (I500V was silently dropped by a stale class list). Recomputing keeps the
+    # check live and still catches a merge that loses or duplicates rows.
+    assert_classes_covered(canonical['expected_mech_class'])
+    _elig = canonical[
+        canonical['mech_consistency_t25'].isin(['consistent', 'partial', 'inconsistent'])
+        & canonical['expected_mech_class'].isin(list(STRUCTURAL_CLASSES) + ['structurally_silent'])
+        & canonical['comavi_tier'].notna()]
+    if len(df) != len(_elig):
+        raise RuntimeError(
+            f'prioritization rows {len(df)} disagree with the canonical '
+            f'eligible population {len(_elig)}')
 
     fold_cols, bind_cols = _axis_columns(canonical)
     calculated = []
