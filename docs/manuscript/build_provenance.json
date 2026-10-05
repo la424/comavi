@@ -126,7 +126,7 @@
    "from": "p28"
   },
   {
-   "text": "COMAVI's premise is that one calculation on the isolated subunit is not enough, so we first measured what the assembled complex adds on the same variants at the same threshold. At the 2.5 kcal/mol reference the isolated-subunit axis alone reached the threshold for 7 of the 25 variants carrying a committed structural mechanism; with the assembled-complex and binding axes the figure is 20. The 13 variants found only through the assembled axes are 6 of the 9 pure interface destabilizers, 5 of the 6 mixed expectations and 2 fold mechanisms, drawn from 7 of the 13 complexes. Among the 17 structural mechanisms that sit in a complex the contrast is starker, 2 against 15. The cost is three further calls on no-lesion variants: correct rejection falls from 29 of 32 to 26. At the 1.0 kcal/mol screening default the same comparison gives 12 against 23 detected and 21 against 5 rejected, so the assembled axes carry most of the detection at every threshold and most of the false calls at permissive ones (Table 2).",
+   "text": "COMAVI's premise is that one calculation on the isolated subunit is not enough, so we first measured what the assembled complex adds on the same variants at the same threshold. At the 2.5 kcal/mol reference the isolated-subunit axis alone reached the threshold for 7 of the 25 variants carrying a committed structural mechanism; with the assembled-complex and binding axes the figure is 20. The 13 variants found only through the assembled axes are 6 of the 9 pure interface destabilizers, 5 of the 6 mixed expectations and 2 fold mechanisms, drawn from 7 of the 13 complexes. Among the 17 structural mechanisms that sit in a complex the contrast is starker, 2 against 15. The cost is three further calls on no-lesion variants: correct rejection falls from 29 of 32 to 26. At the 1.0 kcal/mol screening default the same comparison gives 12 against 22 detected and 21 against 14 rejected, so the assembled axes carry most of the detection at every threshold and most of the false calls at permissive ones (Table 2).",
    "from": "new (author decision v7.15)"
   },
   {
@@ -174,7 +174,7 @@
    "from": "caption"
   },
   {
-   "text": "Raising the threshold changed the three binary rates in different ways. Detection was nearly flat: at least one axis fired for 23 of the 25 mechanisms at 1.0 kcal/mol, for 20 at 1.5 to 2.5 kcal/mol and for 18 at the bound. Attribution fell at every step, from 19 to 17, 16, 14 and 12. Correct rejection rose at every step, from 5 of 32 to 19, 23, 26 and 27. Stringency therefore buys rejection by losing the correct axis, not by missing the lesion. The structural arm fell from 0.760 to 0.540 and the no-lesion arm rose from 0.438 to 0.844, and the two cross between 1.5 and 2.0 kcal/mol (Fig 2A and 2C).",
+   "text": "Raising the threshold changed the three binary rates in different ways. Detection was nearly flat: at least one axis fired for 22 of the 25 mechanisms at 1.0 kcal/mol, for 20 at 1.5 to 2.5 kcal/mol and for 18 at the bound. Attribution fell at every step, from 18 to 17, 16, 14 and 12. Correct rejection rose at every step, from 14 of 32 to 19, 23, 26 and 27. Stringency therefore buys rejection by losing the correct axis, not by missing the lesion. The structural arm fell from 0.760 to 0.540 and the no-lesion arm rose from 0.438 to 0.844, and the two cross between 1.5 and 2.0 kcal/mol (Fig 2A and 2C).",
    "from": "p92"
   },
   {

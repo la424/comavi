@@ -52,10 +52,30 @@ SILENT = "structurally_silent"
 
 
 def axis_columns(canon, kind):
-    bad = ("_sd", "_ci95", "_disting", "_runs", "_vote")
+    # "_indistinguishable" is listed explicitly. The original exclusion was
+    # "_disting", which does NOT match "ddg_binding_<partner>_indistinguishable"
+    # -- after that underscore comes "i", not "d". So all 25 per-partner
+    # indistinguishability FLAGS were being treated as binding energies, and
+    # because strongest() takes the maximum by absolute value, a flag of 1.0 won
+    # whenever no real partner energy exceeded 1.0 kcal/mol. That fired a
+    # spurious binding call at the 1.0 threshold and nowhere else, which is why
+    # correct rejection at 1.0 read 5/32 while the rubric arm -- computed by
+    # apply_concordance_v5, which excludes the flags correctly -- read 14/32 on
+    # the same property. Two implementations of one quantity disagreeing by nine
+    # variants was the visible symptom; this was the cause.
+    #
+    # This module is the only one that builds a ddG column list from scratch.
+    # Every other caller starts from apply_concordance_v5.discover_partners(),
+    # which already excludes the flags, so the defect did not spread.
+    bad = ("_sd", "_ci95", "_disting", "_indistinguishable",
+           "_runs", "_vote", "_confident")
     pre = "ddg_%s_" % kind
-    return [c for c in canon.columns
+    cols = [c for c in canon.columns
             if c.startswith(pre) and not any(b in c for b in bad)]
+    leaked = [c for c in cols if canon[c].dropna().isin([0, 1, True, False]).all()
+              and canon[c].notna().sum() > 2 * len(canon) / 3]
+    assert not leaked, ("these look like flags, not energies: %s" % leaked[:4])
+    return cols
 
 
 def strongest(row, cols, prefix):
