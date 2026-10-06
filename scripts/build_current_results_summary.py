@@ -219,17 +219,17 @@ def build_text() -> str:
         ),
     ]
 
-    if all_total != [92, 125]:
+    if all_total != [86, 124]:
         raise RuntimeError(
             f"Unexpected all-row total: {all_total}"
         )
 
-    if primary_total != [92, 124]:
+    if primary_total != [86, 123]:
         raise RuntimeError(
             f"Unexpected primary total: {primary_total}"
         )
 
-    if energetic_primary != [58, 77]:
+    if energetic_primary != [56, 77]:
         raise RuntimeError(
             "Unexpected primary energetic-axis total: "
             f"{energetic_primary}"
@@ -248,7 +248,7 @@ def build_text() -> str:
     if (
         float(mechanism_values.sum()),
         len(mechanism_values),
-    ) != (41.0, 57):
+    ) != (37.0, 56):
         raise RuntimeError(
             "Unexpected mechanism-consistency result."
         )
@@ -335,8 +335,8 @@ records remain in the repository but do not override this file.
 ## Canonical resource
 
 - **61 variants** across **14 protein systems**.
-- **57 variants** are gradeable for whole-variant mechanism-pattern agreement.
-- **47 interaction variants** form the structural-prioritization population:
+- **{len(mechanism_values)} variants** are gradeable for whole-variant mechanism-pattern agreement.
+- **{positive_count + negative_count} interaction variants** form the structural-prioritization population:
   **{positive_count}** committed modeled structural mechanisms and
   **{negative_count}** variants curated to lack a committed lesion on the
   modeled COMAVI axes.
@@ -354,7 +354,7 @@ value is {float(a636p["isds_v1"]):.8f}.
 At the 2.5 kcal/mol reproducibility reference:
 
 - weighted whole-variant mechanism-pattern agreement is
-  **41/57 = {mechanism_values.mean():.4f}**;
+  **{mechanism_values.sum():.1f}/{len(mechanism_values)} = {mechanism_values.mean():.4f}**;
 - direction-aware agreement across the three energetic axes is
   **{energetic_primary[0]}/{energetic_primary[1]} =
   {energetic_primary[0] / energetic_primary[1]:.4f}**;
