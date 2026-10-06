@@ -1,0 +1,6 @@
+area,n,outcome
+Numbers in paper + supplement,2110,1762 result values; 1634 (92.7%) trace to a committed record; 0 unresolved
+Committed axes source-verified,99,"37 exact, 8 partial, 26 direction, 6 assay-only, 13 unverifiable, 9 database"
+Methods behaviour claims,19,14 tested and passing; 5 explicitly untestable with the reason
+Generator literals,764,no executable result literal in any builder or shipped figure; 1 stale docstring fixed
+Gates,38,"34 before this audit, 4 added; all passing from a clean clone"

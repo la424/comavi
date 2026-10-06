@@ -1,0 +1,6 @@
+location,where,defect,action
+scripts/build_rubric_baselines.py,docstring,"present-tense claims now false: score 0.693, cohort 29 silent / 28 structural, arms within 0.003","values removed, not updated — the docstring now points at the record's observed/population blocks, since a prose claim with no generator is what the script exists to replace"
+submission SI / S2_Text,Section 2,class-mixture reweighting stated 0.417-0.589 (my own sweep grid),"corrected to 0.418-0.588, the values the generator's class_reweighting block emits — the analysis was already generator-backed and my grid differed"
+submission SI / S2_Text,Section 2,"stale cohort 25/32, structural fraction 0.439, one-sided bound","29/27, fraction 0.518, two-sided interval from the record"
+submission SI / S3_Table,tier_distribution,Tier 2 6/17; Tiers 3-4 asserted 0/17,"6/16 = 0.375 and 4/17 = 0.235, recomputed from ISDS_v1_per_variant.csv"
+submission SI / S3_Text,Section 4,"version-history narrative (v7.15 rho = 0.356, 'committed in v8.0')",removed — the paper presents only its final state

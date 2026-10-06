@@ -74,7 +74,7 @@ def stratum_of(tier_strong, fires):
     return STRATA[3]
 
 
-def main():
+def main(check=False):
     df = pd.read_csv(REPO / "reference_outputs" / "scored_61var_canonical.csv")
     partners = ac.discover_partners(df)
 
@@ -159,6 +159,28 @@ def main():
     )
 
     out = REPO / "reference_outputs"
+    # --check exists because these three files were written at v7.7 and never
+    # regenerated. They sat through the v7.9 AND v8.0 ground-truth corrections
+    # carrying the pre-correction classes (H718Y structurally_silent, C697F
+    # ppi_destab, G674R and I500V still present, n_variants 47). Nothing read
+    # them, no gate touched them and they were absent from CI, so nothing could
+    # notice. Presence is not freshness; this mode makes staleness fail.
+    if check:
+        import sys as _sys
+        prev = json.loads((out / "COMAVI_tier_ddg_concordance.json").read_text())
+        # Round-trip the freshly computed dict through JSON before comparing.
+        # stats["streams"] is keyed by int, and json.dump turns those into
+        # strings, so a direct dict comparison reports a difference on every
+        # run regardless of the numbers.
+        fresh = json.loads(json.dumps(stats))
+        if prev != fresh:
+            moved = [k for k in fresh if prev.get(k) != fresh.get(k)]
+            print("FAIL: COMAVI_tier_ddg_concordance.json is stale; "
+                  "fields that differ: %s" % moved[:6])
+            return 1
+        print("PASS: tier-ddG concordance record reproduces "
+              "(n_variants=%s)" % fresh.get("n_variants"))
+        return 0
     tab.to_csv(out / "COMAVI_tier_ddg_concordance.csv", index=False)
     per.to_csv(out / "COMAVI_tier_ddg_concordance_per_variant.csv", index=False)
     with open(out / "COMAVI_tier_ddg_concordance.json", "w") as fh:
@@ -169,4 +191,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    import argparse
+    _ap = argparse.ArgumentParser(description=__doc__)
+    _ap.add_argument("--check", action="store_true",
+                     help="recompute and fail if the committed record differs")
+    raise SystemExit(main(check=_ap.parse_args().check) or 0)

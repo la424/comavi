@@ -3,16 +3,22 @@
 
 WHY THIS EXISTS
 ---------------
-The manuscript reports a whole-variant mechanism-pattern score of 0.693 without
-a reference class, so a reader cannot tell whether that is good. The obvious
+The manuscript reports a whole-variant mechanism-pattern score without a
+reference class, so a reader cannot tell whether that is good. The obvious
 worry -- that the number is carried by the curated structurally silent half of
 the cohort -- is answerable and the answer is no, but only if the do-nothing
 strategy is actually scored rather than argued about.
 
-The cohort is near-balanced (29 curated silent, 28 committed structural), so
-0.693 is already a balanced measure: the unweighted mean of the two arms is
-0.691, within 0.003 of the weighted mean. What it needs is not a caveat but a
-floor.
+The cohort is near-balanced, so the headline is already close to a balanced
+measure: the unweighted mean of the two arms sits within ~0.005 of the weighted
+score. What it needs is not a caveat but a floor.
+
+No value is quoted in this docstring on purpose. It carried 0.693 against a
+cohort of 29 silent / 28 structural, both of which the v7.6, v7.9 and v8.0
+ground-truth corrections moved, and a prose claim with no generator is exactly
+what this script exists to replace. The live figures are in
+reference_outputs/COMAVI_rubric_baselines.json under "observed" and
+"population", which this script writes and --check verifies.
 
 METHOD
 ------

@@ -13,11 +13,10 @@ L749P,mlh1_pms2,pathogenic,Tier 2,2,True,True,True,ppi_destab_mechanism,both agr
 R755W,mlh1_pms2,pathogenic,Tier 2,2,True,False,True,fold_mechanism,tier only (ΔΔG silent),inconsistent,True,0.0,1
 V384D,mlh1_pms2,benign,Tier 3,3,False,False,False,structurally_silent,neither,consistent,False,1.0,0
 G857A,mlh1_pms2,benign,Tier 2,2,True,False,False,structurally_silent,tier only (ΔΔG silent),consistent,False,1.0,1
-H718Y,mlh1_pms2,benign,Tier 3,3,False,False,False,structurally_silent,neither,consistent,False,1.0,0
+H718Y,mlh1_pms2,benign,Tier 3,3,False,False,True,fold_mechanism,neither,inconsistent,False,0.0,0
 K618E,mlh1_pms2,benign,Tier 2,2,True,False,False,structurally_silent,tier only (ΔΔG silent),consistent,False,1.0,1
-G674R,msh2_msh6,pathogenic,Tier 2,2,True,True,False,structurally_silent,both agree (tier 1-2 + ΔΔG fires),inconsistent,True,0.0,2
 A636P,msh2_msh6,pathogenic,Tier 3,3,False,True,False,structurally_silent,ΔΔG only (tier 3-4),inconsistent,True,0.0,1
-C697F,msh2_msh6,pathogenic,Tier 1,1,True,True,True,ppi_destab_mechanism,both agree (tier 1-2 + ΔΔG fires),partial,True,0.5,2
+C697F,msh2_msh6,pathogenic,Tier 1,1,True,True,False,structurally_silent,both agree (tier 1-2 + ΔΔG fires),inconsistent,True,0.0,2
 N127S,msh2_msh6,benign,Tier 2,2,True,False,False,structurally_silent,tier only (ΔΔG silent),consistent,False,1.0,1
 G322D,msh2_msh6,benign,Tier 4,4,False,False,False,structurally_silent,neither,consistent,False,1.0,0
 L158Q,vhl_elonginc,pathogenic,Tier 2,2,True,True,True,mixed_structural,both agree (tier 1-2 + ΔΔG fires),consistent,True,1.0,2
@@ -40,7 +39,6 @@ F142L,cam_cav12,pathogenic,Tier 1,1,True,False,False,structurally_silent,tier on
 D351H,smad4_smad3,pathogenic,Tier 1,1,True,True,True,ppi_destab_mechanism,both agree (tier 1-2 + ΔΔG fires),partial,True,0.5,2
 R361C,smad4_smad3,pathogenic,Tier 1,1,True,True,True,ppi_destab_mechanism,both agree (tier 1-2 + ΔΔG fires),consistent,True,1.0,2
 I500T,smad4_smad3,pathogenic_gof,Tier 2,2,True,False,False,structurally_silent,tier only (ΔΔG silent),consistent,True,1.0,1
-I500V,smad4_smad3,pathogenic_gof,Tier 3,3,False,False,False,structurally_silent,neither,consistent,True,1.0,0
 R78G,cfh_c3b,pathogenic,Tier 1,1,True,True,True,ppi_destab_mechanism,both agree (tier 1-2 + ΔΔG fires),partial,True,0.5,2
 R53H,cfh_c3b,pathogenic,Tier 4,4,False,False,False,structurally_silent,neither,consistent,True,1.0,0
 I62V,cfh_c3b,benign,Tier 2,2,True,False,False,structurally_silent,tier only (ΔΔG silent),consistent,False,1.0,1

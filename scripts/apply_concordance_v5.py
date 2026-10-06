@@ -232,12 +232,45 @@ def sf(v, default=0.0):
 
 
 def discover_partners(df):
-    return sorted({c.replace("ddg_binding_", "")
-                   for c in df.columns
-                   if c.startswith("ddg_binding_")
-                   and not c.endswith("_sd")
-                   and not c.endswith("_indistinguishable")
-                   and not c.endswith("_confident")})
+    """Partner labels with a real per-partner binding energy column.
+
+    The exclusion list used to be three endswith() tests -- _sd,
+    _indistinguishable, _confident -- which let every DERIVED column through as
+    though it named a partner: ddg_binding_c3b_ci95_sapozhnikov_high became the
+    "partner" c3b_ci95_sapozhnikov_high, and so did each of the ten
+    _distinguishable_* flags per partner, plus vote_strict and vote_relaxed.
+    That returned 377 labels where the canonical has 25 partners.
+
+    It did not corrupt any published number. Every consumer that reaches a
+    result filters again -- the full threshold sweep is byte-identical under the
+    377-label and 25-label lists, checked across every row and field -- so this
+    is a latent hazard, not an active defect. But it is the SAME hazard that did
+    produce a wrong published value once: build_detection_vs_attribution built
+    its own list with an exclusion string that missed _indistinguishable, and
+    because its reducer takes a max by absolute value a 0/1 flag won whenever no
+    real energy exceeded it. A helper with 14 consumers should not depend on all
+    14 re-filtering correctly.
+
+    Testing for a matching ddg_fold_<label> column does NOT work, because the
+    derived columns exist on both axes: ddg_fold_bard1_ci95_internal_high is a
+    real column too. The criterion used instead is the companion standard
+    deviation. A real per-partner binding energy carries ddg_binding_<label>_sd,
+    the spread of the five BuildModel replicates; a CI bound, a 0/1 flag and a
+    vote column are each computed FROM that energy and have no _sd of their own.
+    The assertion then checks the result independently of the rule that produced
+    it, so it is a real test rather than a restatement.
+    """
+    cands = sorted({c[len("ddg_binding_"):]
+                    for c in df.columns
+                    if c.startswith("ddg_binding_")
+                    and not c.endswith(("_sd", "_indistinguishable",
+                                        "_confident"))})
+    out = [p for p in cands
+           if p and ("ddg_binding_%s_sd" % p) in df.columns]
+    leaked = [p for p in out
+              if any(t in p for t in ("_ci95_", "_distinguishable_", "vote_"))]
+    assert not leaked, "derived columns admitted as partners: %s" % leaked[:4]
+    return out
 
 
 def normalize_franklin(v):

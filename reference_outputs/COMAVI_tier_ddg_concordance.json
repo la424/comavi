@@ -1,15 +1,15 @@
 {
- "n_variants": 47,
+ "n_variants": 45,
  "threshold": 2.5,
  "strata": {
   "both agree (tier 1-2 + \u0394\u0394G fires)": {
-   "n": 16,
-   "structural": 14,
+   "n": 15,
+   "structural": 13,
    "silent": 2,
-   "precision": 0.875,
-   "pathogenic": 16,
+   "precision": 0.867,
+   "pathogenic": 15,
    "pathogenic_frac": 1.0,
-   "mech_consistency": 0.594
+   "mech_consistency": 0.6
   },
   "tier only (\u0394\u0394G silent)": {
    "n": 14,
@@ -30,34 +30,34 @@
    "mech_consistency": 0.0
   },
   "neither": {
-   "n": 14,
-   "structural": 2,
-   "silent": 12,
-   "precision": 0.143,
-   "pathogenic": 7,
-   "pathogenic_frac": 0.5,
-   "mech_consistency": 0.857
+   "n": 13,
+   "structural": 3,
+   "silent": 10,
+   "precision": 0.231,
+   "pathogenic": 6,
+   "pathogenic_frac": 0.462,
+   "mech_consistency": 0.769
   }
  },
  "gate_among_ddg_firing": {
-  "strong_structural": 14,
-  "strong_total": 16,
+  "strong_structural": 13,
+  "strong_total": 15,
   "weak_structural": 0,
   "weak_total": 3,
-  "fisher_p": 0.0103
+  "fisher_p": 0.0123
  },
  "gate_among_ddg_silent": {
   "strong_structural": 4,
   "strong_total": 14,
-  "weak_structural": 2,
-  "weak_total": 14,
-  "fisher_p": 0.6483
+  "weak_structural": 3,
+  "weak_total": 13,
+  "fisher_p": 1.0
  },
  "streams": {
   "0": {
-   "n": 14,
-   "pathogenic": 7,
-   "structural": 2
+   "n": 13,
+   "pathogenic": 6,
+   "structural": 3
   },
   "1": {
    "n": 17,
@@ -65,13 +65,13 @@
    "structural": 4
   },
   "2": {
-   "n": 16,
-   "pathogenic": 16,
-   "structural": 14
+   "n": 15,
+   "pathogenic": 15,
+   "structural": 13
   }
  },
  "streams_vs_pathogenic": {
-  "spearman_rho": 0.4602,
-  "p": 0.00114
+  "spearman_rho": 0.4811,
+  "p": 0.00082
  }
 }

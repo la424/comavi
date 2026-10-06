@@ -255,8 +255,7 @@ For provenance honesty, here's what was considered and deferred or rejected:
 > this file. They are not current. The benchmark was subsequently expanded to the **61-variant
 > canonical set** (49 PPI across 13 complexes + the 12-variant BRCA1-BRCT fold cohort; 14 systems),
 > the grading rubric was corrected (ledger §15), and the fold cohort was pooled into the graded
-> arms (ledger §18). Current authoritative headlines at t = 2.5: **mech_consistency 0.7193**
-> (graded n = 57), **structural agreement 99/131 = 0.7557**. See
+> arms (ledger §18). Headline values are deliberately NOT restated here: the authoritative values live in `reference_outputs/` and are regenerated and gated: `COMAVI_threshold_sweep.json` for the mechanism-pattern score, `COMAVI_numbers_ledger.json` for structural agreement and its per-axis decomposition. See
 > `docs/COMAVI_v7_canonical_benchmark_ledger.md` §18 and `docs/COMAVI_results_synthesis.md`.
 
 Verified end-to-end via `verify_stage6.py` (16/16 checks passed) against the cached intermediate `comavi_v7_results_with_nbhd.csv`:

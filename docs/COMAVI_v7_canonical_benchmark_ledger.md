@@ -249,7 +249,7 @@ with the tier axis).** Headline at the canonical calling threshold t=2.5:
 
 > **Historical record — superseded by §18 (v7.3 pooling).** Every headline and
 > decomposition in the rest of this section predates pooling the BRCA1-BRCT cohort
-> into the graded set. Current authoritative values: MC **0.7193** (graded n = 57),
+> into the graded set. Values as of THIS revision (superseded; the authoritative values live in `reference_outputs/` and are regenerated and gated: `COMAVI_threshold_sweep.json` for the mechanism-pattern score, `COMAVI_numbers_ledger.json` for structural agreement and its per-axis decomposition): MC **0.7193** (graded n = 57),
 > SA **99/131 = 0.7557**, decomposition monomer **21/27** + complex-fold **20/25** +
 > binding **24/32** + tier **34/47**. Do not cite this section's numbers.
 - **mechanism-consistency 0.72** (0.7234; graded n=47), **structural agreement 0.77** (92/120 = 0.7667).
@@ -309,7 +309,7 @@ entry was corrected from a mistranscribed 19.*
 > **Resolved in v7.3 (§18) — retained as the record of why the gate behaved as it did.**
 > The CI columns described below were backfilled from the per-replicate SDs already in the
 > table using the pipeline's own `compute_ddg_cis`, so the monomer gate now decides on real
-> numbers. Current monomer agreement is **21/27**, not 16, and the headline decomposition is
+> numbers. Monomer agreement as of THIS revision was **21/27**, not 16, and the decomposition was
 > **99/131 = 0.7557**. The "do not backfill before submission" instruction below was
 > deliberately superseded; do not act on it.
 
@@ -334,7 +334,7 @@ without that derived CI column. Two consequences followed:
 `ddg_monomer_distinguishable_internal_from_0` for the BRCT rows from the per-replicate SDs already in
 `brct_foldx_ddg.csv` — was carried out as part of pooling the cohort into the headline. It moved
 monomer gradeable 16 → 27 (not 28: one row fails the gate on real numbers) and the headline
-denominator 120 → 131. The frozen headline is now **99/131 = 0.7557** at MC 0.7193, graded n = 57.
+denominator 120 → 131. The headline at THIS revision was **99/131 = 0.7557** at MC 0.7193, graded n = 57; later corrections moved all three.
 
 ### BRCT destabilizer-count double-threshold (verified, not a defect)
 

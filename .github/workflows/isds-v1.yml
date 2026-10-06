@@ -192,6 +192,24 @@ jobs:
           # after the manuscript renumbered S3-S5, and every text gate still
           # passed because none of them reads a .tif.
           python scripts/verify_si_package.py
+          # Behaviour, not numbers. The 34 gates above all check that a
+          # published value equals what a generator recomputes; none of them
+          # checks that the pipeline DOES what the Methods says. Different
+          # failure mode, so a separate gate.
+          python verification/audit_pipeline_behaviour.py
+          # Freshness, not presence. COMAVI_tier_ddg_concordance sat through
+          # two ground-truth corrections because nothing read it.
+          python scripts/build_tier_concordance.py --check
+          # Every stale number in the final audit was a DUPLICATE of a value
+          # that lives correctly elsewhere. The paper is gated; its copies
+          # were not.
+          python scripts/verify_no_duplicated_headlines.py
+          # A workbook cell was unreachable by every gate until this one:
+          # editing S3_Table to read "11/13 = 0.999" passed verify_si_package,
+          # audit_evidence_claims and verify_denominators. A checksum manifest
+          # cannot cover it either -- the stale sheet was already stale when the
+          # package was built, so its digest matched.
+          python scripts/verify_si_derived_sheets.py
 
       - name: Verify every committed record is current, not merely present
         # Two records went stale through the v7.9 ground-truth correction and

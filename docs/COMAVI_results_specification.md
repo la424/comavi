@@ -72,8 +72,8 @@ COMAVI does in the clinic."
 
 | Metric | Value at t = 2.5 | Denominator |
 |---|---|---|
-| Mechanism-consistency | **0.7193** | 57 graded variants |
-| Structural agreement | **0.7557** | 99 / 131 axes |
+| Mechanism-pattern score | see `COMAVI_threshold_sweep.json` | `rows[t25].whole_variant` |
+| Structural agreement | see `COMAVI_numbers_ledger.json` | `SA_total` |
 
 **Threshold sweep** (the reason to trust the operating point):
 
@@ -207,8 +207,8 @@ credibility.
 
 | Test | Result |
 |---|---|
-| Permutation null (MC) | observed 0.7193 vs null 0.479 ± 0.050, **p = 0.0005** |
-| Permutation null (SA) | observed 0.7557 vs null 0.532 ± 0.045, **p = 0.0005** |
+| Permutation null (MC) | see `stress_tests/COMAVI_stress_verified_statistics.json` |
+| Permutation null (SA) | see `stress_tests/COMAVI_stress_verified_statistics.json` |
 | Leave-one-system-out (MC) | 0.704 – 0.750 |
 | Leave-one-system-out (SA) | 0.742 – 0.772 |
 | Replicate noise (MC) | 0.721 ± 0.013 |
@@ -309,6 +309,7 @@ Regenerate these; do not copy from a draft.
 
 - Cluster bootstrap bounds — seed-sensitive at ~0.002 (`comavi_stress_tests.csv`).
 - Per-axis counts — three definitions; use `comavi_axis_decomposition`.
-- Any per-axis agreement breakdown — must sum to 99/131 or it is wrong.
+- Any per-axis agreement breakdown — must sum to the `SA_by_axis` totals in
+  `COMAVI_numbers_ledger.json`, which `verify_denominators.py` gates.
 - `n = 47` in §3.7 is the AlphaMissense-scored subset, **not** the graded set n = 57.
   This has been flagged as a false positive three times. It is correct.
