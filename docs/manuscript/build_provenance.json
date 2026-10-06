@@ -150,7 +150,7 @@
    "from": "p66,new (interface-class diagnosis)"
   },
   {
-   "text": "Direction agreement was similar on the three axes: 19 of 26 expectations for isolated-subunit stability, 17 of 22 for assembled-complex stability and 20 of 29 for binding (56 of 77 overall), rates within 0.042 of one another. The 46 complex variants and the 10 BRCT variants scored similarly (0.652 and 0.700), so neither subset determines the pooled result.",
+   "text": "Direction agreement was similar on the three axes: 19 of 26 expectations for isolated-subunit stability, 17 of 22 for assembled-complex stability and 20 of 29 for binding (56 of 77 overall), rates spanning 0.083. The 46 complex variants and the 10 BRCT variants scored similarly (0.652 and 0.700), so neither subset determines the pooled result.",
    "from": "p74,p73"
   },
   {
@@ -158,7 +158,7 @@
    "from": "p78"
   },
   {
-   "text": "Performance was lower on predicted than on experimental complexes. Seven systems use an experimental complex structure and seven an AlphaFold 3 model; the mechanism-pattern score was 20.0 of 28 (0.714) on the experimental systems and 17.0 of 28 (0.607) on the predicted ones, and the prioritization AUC was 1.000 against 0.911. Resampling whole systems within each source puts a 95% interval of −0.080 to 0.257 on the difference of 0.107, so the benchmark does not resolve it. With seven systems on each side, the source of the model also cannot be separated from the difficulty of the systems. The split is not a clean comparison of model quality in any case: isolated-subunit stability is calculated on a single-chain AlphaFold 3 model in 11 of the 14 systems, including systems whose complex is experimental.",
+   "text": "Performance was lower on predicted than on experimental complexes. Seven systems use an experimental complex structure and seven an AlphaFold 3 model; the mechanism-pattern score was 20.0 of 28 (0.714) on the experimental systems and 17.0 of 28 (0.607) on the predicted ones, and the prioritization AUC was 0.948 on the 18 tier-carrying experimental variants against 0.778 on the 28 predicted ones. Resampling whole systems within each source puts a 95% interval of −0.080 to 0.257 on the difference of 0.107, so the benchmark does not resolve it. With seven systems on each side, the source of the model also cannot be separated from the difficulty of the systems. The split is not a clean comparison of model quality in any case: isolated-subunit stability is calculated on a single-chain AlphaFold 3 model in 11 of the 14 systems, including systems whose complex is experimental.",
    "from": "new (author decision v7.15)"
   },
   {
@@ -210,7 +210,7 @@
    "from": "p80,p81,p77"
   },
   {
-   "text": "We measured ranking quality by the ROC AUC, the probability that a randomly chosen structural-mechanism variant outranks a randomly chosen no-lesion variant. The energy component alone reached an AUC of 0.779 and placed 15 of the 21 mechanisms in the top 20, and 16 by rank 25. The context component alone reached 0.785 and recovered 11 mechanisms in the top 20 and 13 by rank 25. The two components fail on different variants. Crossing the energy calls with the tier gives four descriptive evidence states, according to whether an axis fires and whether the tier is 1–2: convergent, energy only, context only and neither. At 2.5 kcal/mol, 15 mechanisms are convergent, 2 are context-only and 4 fall in the neither state, while the energy-only state holds 3 no-lesion variants and no mechanism. At 1.0 kcal/mol the energy-only state holds 6 no-lesion variants and 2 mechanisms (S3 Table, evidence_states sheet). At the reference threshold, an energy call without supporting structural context marks a no-lesion variant in this cohort, but that separation does not hold at the screening default.",
+   "text": "We measured ranking quality by the ROC AUC, the probability that a randomly chosen structural-mechanism variant outranks a randomly chosen no-lesion variant. The energy component alone reached an AUC of 0.779 and placed 15 of the 21 mechanisms in the top 20, and 16 by rank 25. It ranks HBB N102T 36th and MLH1 Q542L 32nd of 46, although the tier places both in Tier 1. The context component alone reached 0.785 and recovered 11 mechanisms in the top 20 and 13 by rank 25. The two components fail on different variants. Crossing the energy calls with the tier gives four descriptive evidence states, according to whether an axis fires and whether the tier is 1–2: convergent, energy only, context only and neither. At 2.5 kcal/mol, 15 mechanisms are convergent, 2 are context-only and 4 fall in the neither state, while the energy-only state holds 3 no-lesion variants and no mechanism. At 1.0 kcal/mol the energy-only state holds 6 no-lesion variants and 2 mechanisms (S3 Table, evidence_states sheet). At the reference threshold, an energy call without supporting structural context marks a no-lesion variant in this cohort, but that separation does not hold at the screening default.",
    "from": "p82,p84"
   },
   {
@@ -230,7 +230,7 @@
    "from": "p109,p23"
   },
   {
-   "text": "Rank-based comparison with a pathogenicity predictor is correspondingly limited. All 11 benign variants in this set entered the benchmark as curated no-lesion controls, so any structural score separates them from pathogenic structural mechanisms partly by construction, and a pathogenicity AUC computed here measures the cohort as much as the method. With that caveat, AlphaMissense ranked pathogenicity better (ROC AUC 0.903) than the priority score (0.851) or its energy (0.836) and context (0.769) components (Fig 5). The populations also differ: this set includes TNNI3 R162W and VHL W117R, which are not graded, and lacks VWF R1334Q and A1381T, for which no AlphaMissense score was retrieved, so none of these values is comparable with the structural AUC of 0.943.",
+   "text": "Rank-based comparison with a pathogenicity predictor is correspondingly limited. All 11 benign variants in this set entered the benchmark as curated no-lesion controls, so any structural score separates them from pathogenic structural mechanisms partly by construction, and a pathogenicity AUC computed here measures the cohort as much as the method. With that caveat, AlphaMissense ranked pathogenicity better (ROC AUC 0.903) than the priority score (0.851) or its energy (0.836) and context (0.769) components (Fig 5). The populations also differ: this set includes TNNI3 R162W and VHL W117R, which are not graded, and lacks VWF R1334Q and A1381T, for which no AlphaMissense score was retrieved, so none of these values is comparable with the structural AUC of 0.834.",
    "from": "p109,new (design disclosure, author decision v7.15)"
   },
   {
@@ -274,7 +274,7 @@
    "from": "p126"
   },
   {
-   "text": "The benchmark is small and clustered: 56 graded variants in 14 systems, with the variants of a system sharing structures and curation. Resampling whole systems addresses this dependence but cannot replace prospective validation. The same benchmark informed the development of the priority score, so its ranking figures, including the AUC of 0.943, are in-sample estimates; the formula is frozen, which is what makes an out-of-sample test possible, but this benchmark cannot provide one. Performance was also lower on predicted than on experimental complexes, by an amount this cohort cannot resolve. Evidence is uneven as well: isolated-subunit stability and binding have direct energy anchors, assembled-complex stability has none, and five no-lesion variants are graded only at the whole-variant level.",
+   "text": "The benchmark is small and clustered: 56 graded variants in 14 systems, with the variants of a system sharing structures and curation. Resampling whole systems addresses this dependence but cannot replace prospective validation. The same benchmark informed the development of the priority score, so its ranking figures, including the AUC of 0.834, are in-sample estimates; the formula is frozen, which is what makes an out-of-sample test possible, but this benchmark cannot provide one. Performance was also lower on predicted than on experimental complexes, by an amount this cohort cannot resolve. Evidence is uneven as well: isolated-subunit stability and binding have direct energy anchors, assembled-complex stability has none, and five no-lesion variants are graded only at the whole-variant level.",
    "from": "p127"
   },
   {
