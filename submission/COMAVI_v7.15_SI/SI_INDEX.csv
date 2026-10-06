@@ -6,7 +6,7 @@ S2 Table,S2_Table.xlsx,index sheet,Contents of this workbook.,"Benchmark cohort,
 S2 Table,S2_Table.xlsx,benchmark_variants sheet,"S2 Table, benchmark_variants sheet. The 61 benchmark variants. Each row gives the clinical annotation, the expected mechanism defined from primary literature, the structural-context tier, the whole-va","Benchmark cohort, evidence and comparator tables.",5
 S2 Table,S2_Table.xlsx,evidence_composition sheet,"S2 Table, evidence_composition sheet. Evidence composition by category.","Benchmark cohort, evidence and comparator tables.",5
 S2 Table,S2_Table.xlsx,model_scope sheet,"S2 Table, model_scope sheet. Model-scope and mechanism-eligibility framework.","Benchmark cohort, evidence and comparator tables.",5
-S2 Table,S2_Table.xlsx,context_comparators sheet,"S2 Table, context_comparators sheet. Structural-context comparator analyses on the same 47-variant population.","Benchmark cohort, evidence and comparator tables.",5
+S2 Table,S2_Table.xlsx,context_comparators sheet,"S2 Table, context_comparators sheet. Structural-context comparator analyses on the same 46-variant population.","Benchmark cohort, evidence and comparator tables.",5
 S2 Table,S2_Table.xlsx,denominator_sensitivity sheet,"S2 Table, denominator_sensitivity sheet. Denominator and eligibility sensitivity analyses.","Benchmark cohort, evidence and comparator tables.",5
 S2 Table,S2_Table.xlsx,fold_binding_disagreements sheet,"S2 Table, fold_binding_disagreements sheet. Directly measured or curated fold and binding disagreements at the 2.5 kcal/mol reference.","Benchmark cohort, evidence and comparator tables.",5
 S3 Table,S3_Table.xlsx,index sheet,Contents of this workbook.,"Operating points, evidence states and robustness tables.",2
@@ -32,5 +32,5 @@ S3 Text,S3_Text.docx,Section 5,A correction the benchmark caught in itself,"Path
 S1 Fig,S1_Fig.tif,whole file,Stress tests of the mechanism-pattern score.,Stress tests of the mechanism-pattern score.,1
 S2 Fig,S2_Fig.tif,whole file,Binding-axis validation on SKEMPI 2.0.,Binding-axis validation on SKEMPI 2.0.,1
 S3 Fig,S3_Fig.tif,whole file,Call relationships between predicted and measured energies at 2.5 kcal/mol.,Call relationships between predicted and measured energies at 2.5 kcal/mol.,1
-S4 Fig,S4_Fig.tif,whole file,Structural-context comparators on the 47-variant prioritization population.,Structural-context comparators on the 47-variant prioritization population.,1
+S4 Fig,S4_Fig.tif,whole file,Structural-context comparators on the 46-variant prioritization population.,Structural-context comparators on the 46-variant prioritization population.,1
 S5 Fig,S5_Fig.tif,whole file,Priority-score transformation and component ranking.,Priority-score transformation and component ranking.,1

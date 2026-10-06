@@ -10,7 +10,7 @@ outputs.
 
 At the 2.5 kcal/mol reproducibility reference:
 
-- mechanism consistency is 41/57 = 0.7193;
+- mechanism consistency is 37/56 = 0.6607;
 - primary structural agreement is 99/132 = 0.7500;
 - variant-bootstrap SA 95% CI is [0.676, 0.823];
 - system-cluster SA 95% CI is [0.696, 0.818];

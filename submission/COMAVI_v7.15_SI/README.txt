@@ -16,11 +16,11 @@ self-describing: every workbook sheet opens on its own caption row and every doc
   S1 Text    S1_Text.docx     Implementation details, statistical conventions and evidence provenance. (38 KB)
   S2 Text    S2_Text.docx     Sensitivity analyses, mechanism-class decomposition and operating-point diagnostics. (39 KB)
   S3 Text    S3_Text.docx     Pathogenicity comparison, robustness and independent validation. (39 KB)
-  S1 Fig     S1_Fig.tif       Stress tests of the mechanism-pattern score. (477 KB)
+  S1 Fig     S1_Fig.tif       Stress tests of the mechanism-pattern score. (488 KB)
   S2 Fig     S2_Fig.tif       Binding-axis validation on SKEMPI 2.0. (275 KB)
-  S3 Fig     S3_Fig.tif       Call relationships between predicted and measured energies at 2.5 kcal/mol. (173 KB)
-  S4 Fig     S4_Fig.tif       Structural-context comparators on the 47-variant prioritization population. (307 KB)
-  S5 Fig     S5_Fig.tif       Priority-score transformation and component ranking. (120 KB)
+  S3 Fig     S3_Fig.tif       Call relationships between predicted and measured energies at 2.5 kcal/mol. (120 KB)
+  S4 Fig     S4_Fig.tif       Structural-context comparators on the 46-variant prioritization population. (165 KB)
+  S5 Fig     S5_Fig.tif       Priority-score transformation and component ranking. (310 KB)
 
 Items are numbered in the order the manuscript first cites them. The five figures are 600 dpi LZW TIFFs
 written by figures/submission/make_submission_figures.py and pinned in figures/submission/SHA256SUMS.txt, so

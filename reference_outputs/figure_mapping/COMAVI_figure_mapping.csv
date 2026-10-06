@@ -6,6 +6,6 @@ Fig 4,figures/submission/Fig4.png,figures/submission/Fig4.tif,Predicted energies
 Fig 5,figures/submission/Fig5.png,figures/submission/Fig5.tif,Pathogenicity prediction and structural prioritization rank different properties.,figures/submission/make_submission_figures.py
 S1 Fig,figures/submission/S1_Fig.png,figures/submission/S1_Fig.tif,Stress tests of the mechanism-pattern score.,figures/submission/make_submission_figures.py
 S2 Fig,figures/submission/S2_Fig.png,figures/submission/S2_Fig.tif,Binding-axis validation on SKEMPI 2.0.,figures/submission/make_submission_figures.py
-S3 Fig,figures/submission/S3_Fig.png,figures/submission/S3_Fig.tif,Structural-context comparators on the 47-variant prioritization population.,figures/submission/make_submission_figures.py
-S4 Fig,figures/submission/S4_Fig.png,figures/submission/S4_Fig.tif,Priority-score transformation and component ranking.,figures/submission/make_submission_figures.py
-S5 Fig,figures/submission/S5_Fig.png,figures/submission/S5_Fig.tif,Call relationships between predicted and measured energies at 2.5 kcal/mol.,figures/submission/make_submission_figures.py
+S3 Fig,figures/submission/S3_Fig.png,figures/submission/S3_Fig.tif,Call relationships between predicted and measured energies at 2.5 kcal/mol.,figures/submission/make_submission_figures.py
+S4 Fig,figures/submission/S4_Fig.png,figures/submission/S4_Fig.tif,Structural-context comparators on the 46-variant prioritization population.,figures/submission/make_submission_figures.py
+S5 Fig,figures/submission/S5_Fig.png,figures/submission/S5_Fig.tif,Priority-score transformation and component ranking.,figures/submission/make_submission_figures.py

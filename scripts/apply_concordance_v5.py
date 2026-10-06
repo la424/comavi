@@ -831,15 +831,35 @@ def derive_expected_mech_class(row):
     if fold_pos and bind_pos:
         return "mixed_structural"
     if fold_pos:
-        # v7.3: the fold branch is now direction-aware, symmetric with the
-        # binding branch below. A measured STABILIZING fold change is not a
-        # fold-destabilization mechanism; labelling it `fold_mechanism` makes
-        # the expectation incoherent (the grader then demands the pipeline call
-        # a destabilization that the measurement says does not occur).
+        # v7.3: the fold branch is direction-aware. A measured STABILIZING fold
+        # change is not a fold-destabilization mechanism; labelling it
+        # `fold_mechanism` makes the expectation incoherent (the grader then
+        # demands the pipeline call a destabilization that the measurement says
+        # does not occur). One row takes this path: BRCA1-BRCT R1699Q,
+        # expected_ddg_monomer == 'stab' (Rowling 2010 states R1699L and R1699Q
+        # "are both stabilizing"; R1699L is annotated neutral at -0.99 and so
+        # does not reach this branch).
         #
-        # Blast radius: exactly one row in the 61-variant benchmark carries a
-        # stabilizing ground-truth annotation on any axis (BRCA1-BRCT R1699Q,
-        # expected_ddg_monomer == 'stab'). No interaction row is affected.
+        # v8.0 -- READ BEFORE CHANGING EITHER BRANCH. This comment used to claim
+        # the fold branch was "symmetric with the binding branch below" and that
+        # "no interaction row is affected". Both statements are now false, and
+        # the first was never true: the fold branch demotes a stabilizing axis to
+        # structurally_silent, while the binding branch keeps one as
+        # `ppi_stab_mechanism` -- a structural mechanism the pipeline is required
+        # to detect. The two branches encode OPPOSITE readings of the same
+        # situation. SMAD4 I500V (expected_ddg_binding == 'stab', from a direct
+        # interface measurement in Lindsay 2025) activated the binding path in
+        # v8.0, so the asymmetry is now load-bearing where it previously was not.
+        #
+        # The asymmetry is retained deliberately, on the stricter reading: the
+        # binding axis of this benchmark is a signed interaction energy, and
+        # predicting exactly 0.000 against a measurement that two orthogonal
+        # assays call a significant increase is a failure to detect a real
+        # interface effect. Demoting it would raise the mechanism-pattern score
+        # from 0.6607 to 0.6786 and leave the margin over the strongest trivial
+        # strategy unchanged at +0.1786 (verified, not estimated), so there is no
+        # reading of the headline that the choice improves -- which is the reason
+        # it is safe to leave on the strict side.
         fold_dir = _axis_direction(row)
         fold_axes = [a for a in ("fold_monomer", "fold_complex")
                      if axes[a] == "positive"]
