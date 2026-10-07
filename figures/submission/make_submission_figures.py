@@ -71,7 +71,14 @@ STRUCT, NOLES = "#B2182B", "#5F5F5F"              # structural mechanism / no le
 MONO, FOLD, BIND, TIER = "#3C78D8", "#6AA84F", "#E69138", "#674EA7"   # Fig 1 colours
 ENERGY = "#0E7C7B"
 TAGS = ["t10", "t15", "t20", "t25", "tSAP"]
-XLAB = ["1.0", "1.5", "2.0", "2.5", "Bound"]
+# The fifth threshold is the per-axis 95% prediction-interval upper limit. It
+# was labelled "Bound", which is ambiguous in this paper specifically: the
+# Introduction says "Most proteins work while bound to partners", so a reader
+# meets "Bound" on an energy axis having just been taught the bound state. The
+# label is now the per-axis values themselves, which also makes the axis
+# homogeneous -- every tick is a threshold in kcal/mol -- and matches the row
+# label the S3 Table threshold_sweep sheet already uses.
+XLAB = ["1.0", "1.5", "2.0", "2.5", "2.9/2.9/3.5"]
 GRADE = {"consistent": 1.0, "partial": 0.5, "inconsistent": 0.0}
 SYSNAME = {"brca1_brct": "BRCA1 BRCT", "brca1_bard1": "BRCA1–BARD1", "cam_cav12": "Calmodulin–CaV1.2",
            "cfh_c3b": "CFH–C3b", "hemoglobin_dimer": "Hemoglobin α–β dimer",

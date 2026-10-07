@@ -140,7 +140,7 @@
    "from": "p55,p65,p73"
   },
   {
-   "text": "Table 2. Metrics, populations and values at each energy threshold. Values at the four uniform thresholds (kcal/mol) and at the per-axis prediction-interval bound (2.9, 2.9 and 3.5 kcal/mol for isolated-subunit stability, assembled-complex stability and binding). The two isolated-subunit rows recount detection and correct rejection on that axis alone, which is what a calculation on the subunit without its partners would report. Detection, attribution and correct rejection use every computed axis; the rubric grades use only axes that pass confidence gating, the rule that discards an axis whose variant site falls below the AlphaFold confidence band (Methods). ROC AUC (area under the receiver operating characteristic curve) uses no threshold and takes one value.",
+   "text": "Table 2. Metrics, populations and values at each energy threshold. Values at the four uniform thresholds (kcal/mol) and at the per-axis prediction-interval limit (2.9, 2.9 and 3.5 kcal/mol for isolated-subunit stability, assembled-complex stability and binding). The two isolated-subunit rows recount detection and correct rejection on that axis alone, which is what a calculation on the subunit without its partners would report. Detection, attribution and correct rejection use every computed axis; the rubric grades use only axes that pass confidence gating, the rule that discards an axis whose variant site falls below the AlphaFold confidence band (Methods). ROC AUC (area under the receiver operating characteristic curve) uses no threshold and takes one value.",
    "from": "caption"
   },
   {
@@ -168,15 +168,15 @@
    "from": "p67,p31"
   },
   {
-   "text": "Every graded result depends on the energy threshold that turns a continuous prediction into a call (Fig 2). Over the prespecified uniform thresholds of 1.0, 1.5, 2.0 and 2.5 kcal/mol and the per-axis prediction-interval bound (Methods), the mechanism-pattern score was 0.562, 0.616, 0.652, 0.661 and 0.652. The 2.5 kcal/mol reference is the highest of the five on this cohort, as it is for the unweighted mean of the two arms. The system-resampling intervals overlap at every threshold, however (Fig 2C), so the benchmark does not establish it as an optimum.",
+   "text": "Every graded result depends on the energy threshold that turns a continuous prediction into a call (Fig 2). Over the prespecified uniform thresholds of 1.0, 1.5, 2.0 and 2.5 kcal/mol and the per-axis prediction-interval limit (Methods), the mechanism-pattern score was 0.562, 0.616, 0.652, 0.661 and 0.652. The 2.5 kcal/mol reference is the highest of the five on this cohort, as it is for the unweighted mean of the two arms. The system-resampling intervals overlap at every threshold, however (Fig 2C), so the benchmark does not establish it as an optimum.",
    "from": "p92"
   },
   {
-   "text": "Fig 2. Every graded result depends on the energy threshold. Values at the four uniform thresholds and at the per-axis prediction-interval bound (Bound); the dashed line marks the 2.5 kcal/mol reference. (A) Detection, attribution and correct rejection for the 29 structural-mechanism and 27 no-lesion variants. (B) Direction agreement on each axis (26 isolated-subunit, 22 assembled-complex and 29 binding expectations); open circles mark the best value for each axis. (C) Mechanism-pattern score, pooled (gray band, 95% interval from resampling the 14 systems) and for each arm. (D) Measured destabilizations of at least 1.0 kcal/mol (n = 42) predicted at or above the threshold with the same sign.",
+   "text": "Fig 2. Every graded result depends on the energy threshold. Values at the four uniform thresholds and at the per-axis prediction-interval limit (2.9, 2.9 and 3.5 kcal/mol for isolated-subunit stability, assembled-complex stability and binding); the dashed line marks the 2.5 kcal/mol reference. (A) Detection, attribution and correct rejection for the 29 structural-mechanism and 27 no-lesion variants. (B) Direction agreement on each axis (26 isolated-subunit, 22 assembled-complex and 29 binding expectations); open circles mark the best value for each axis. (C) Mechanism-pattern score, pooled (gray band, 95% interval from resampling the 14 systems) and for each arm. (D) Measured destabilizations of at least 1.0 kcal/mol (n = 42) predicted at or above the threshold with the same sign.",
    "from": "caption"
   },
   {
-   "text": "Raising the threshold changed the three binary rates in different ways. Detection was nearly flat: at least one axis fired for 24 of the 29 mechanisms at 1.0 kcal/mol, for 21 at 1.5 and 2.0, for 20 at 2.5 and for 18 at the bound. Attribution fell at every step, from 18 to 17, 16, 15 and 13. Correct rejection rose at every step, from 12 of 27 to 16, 20, 22 and 23. Stringency therefore buys rejection by losing the correct axis, not by missing the lesion. The structural arm fell from 0.672 to 0.466 and the no-lesion arm rose from 0.444 to 0.852, and the two cross between 1.5 and 2.0 kcal/mol (Fig 2A and 2C).",
+   "text": "Raising the threshold changed the three binary rates in different ways. Detection was nearly flat: at least one axis fired for 24 of the 29 mechanisms at 1.0 kcal/mol, for 21 at 1.5 and 2.0, for 20 at 2.5 and for 18 at the prediction-interval limit. Attribution fell at every step, from 18 to 17, 16, 15 and 13. Correct rejection rose at every step, from 12 of 27 to 16, 20, 22 and 23. Stringency therefore buys rejection by losing the correct axis, not by missing the lesion. The structural arm fell from 0.672 to 0.466 and the no-lesion arm rose from 0.444 to 0.852, and the two cross between 1.5 and 2.0 kcal/mol (Fig 2A and 2C).",
    "from": "p92"
   },
   {
@@ -184,7 +184,7 @@
    "from": "p92"
   },
   {
-   "text": "Measured effects show the same cost of stringency. We counted the 42 comparisons with a measured destabilization of at least 1.0 kcal/mol, 13 from benchmark variants and 29 from external measurements, and asked whether FoldX predicted a destabilization of at least the threshold with the same sign. It did for 27 at 1.0 kcal/mol, 12 at 2.5 kcal/mol and 11 at the bound (Fig 2D). A stringent threshold can therefore miss a real effect even when the measured destabilization is large.",
+   "text": "Measured effects show the same cost of stringency. We counted the 42 comparisons with a measured destabilization of at least 1.0 kcal/mol, 13 from benchmark variants and 29 from external measurements, and asked whether FoldX predicted a destabilization of at least the threshold with the same sign. It did for 27 at 1.0 kcal/mol, 12 at 2.5 kcal/mol and 11 at the prediction-interval limit (Fig 2D). A stringent threshold can therefore miss a real effect even when the measured destabilization is large.",
    "from": "p98,p83"
   },
   {
@@ -252,7 +252,7 @@
    "from": "p117,p114,p120"
   },
   {
-   "text": "The threshold should follow the cost of error. The 1.0 kcal/mol default suits screening, where a missed mechanism costs more than extra follow-up; 2.5 kcal/mol is the benchmark reference; and the prediction-interval bound suits settings where a false mechanistic claim is costly. These thresholds separate curated mechanisms from no-lesion variants, a different question from the 3 kcal/mol cut-off that MAVISp and related MLH1 studies use to predict cellular degradation [15,68,69]. Because each call is reported with its continuous energy, a user can re-read it at another threshold; 17 of the 56 graded variants change grade within the prespecified range (S2 Table, benchmark_variants sheet). A silent result means that the supplied static model shows no lesion at the stated threshold. It does not mean that a variant is benign, nonfunctional or unworthy of study.",
+   "text": "The threshold should follow the cost of error. The 1.0 kcal/mol default suits screening, where a missed mechanism costs more than extra follow-up; 2.5 kcal/mol is the benchmark reference; and the prediction-interval limit suits settings where a false mechanistic claim is costly. These thresholds separate curated mechanisms from no-lesion variants, a different question from the 3 kcal/mol cut-off that MAVISp and related MLH1 studies use to predict cellular degradation [15,68,69]. Because each call is reported with its continuous energy, a user can re-read it at another threshold; 17 of the 56 graded variants change grade within the prespecified range (S2 Table, benchmark_variants sheet). A silent result means that the supplied static model shows no lesion at the stated threshold. It does not mean that a variant is benign, nonfunctional or unworthy of study.",
    "from": "p122,p123,p52"
   },
   {
@@ -328,7 +328,7 @@
    "from": "p49,p41"
   },
   {
-   "text": "A predicted energy becomes a call on an axis when its absolute value reaches the threshold. Five operating points were fixed before scoring: uniform thresholds of 1.0, 1.5, 2.0 and 2.5 kcal/mol, and the prediction-interval bound. The bound takes, separately for each axis, the upper limit of the 95% prediction interval fitted to FoldX folding and binding predictions [71]: 2.9 kcal/mol for isolated-subunit stability, 2.9 for assembled-complex stability and 3.5 for binding. A call that survives the bound is unlikely to arise from prediction error alone. The released software uses 1.0 kcal/mol as a screening default, and 2.5 kcal/mol is the benchmark reference. S3 Table (threshold_sweep sheet) reports post hoc points above the bound. Crossing the energy calls with the tier (Tier 1–2 against Tier 3–4) defines four descriptive evidence states: convergent, energy only, context only and neither (S2 Text).",
+   "text": "A predicted energy becomes a call on an axis when its absolute value reaches the threshold. Five operating points were fixed before scoring: uniform thresholds of 1.0, 1.5, 2.0 and 2.5 kcal/mol, and the prediction-interval limit. The limit takes, separately for each axis, the upper edge of the 95% prediction interval fitted to FoldX folding and binding predictions [71]: 2.9 kcal/mol for isolated-subunit stability, 2.9 for assembled-complex stability and 3.5 for binding. A call that survives that limit is unlikely to arise from prediction error alone. The released software uses 1.0 kcal/mol as a screening default, and 2.5 kcal/mol is the benchmark reference. S3 Table (threshold_sweep sheet) reports post hoc points above that limit. Crossing the energy calls with the tier (Tier 1–2 against Tier 3–4) defines four descriptive evidence states: convergent, energy only, context only and neither (S2 Text).",
    "from": "p51,p53"
   },
   {

@@ -1,0 +1,13 @@
+location,before,after,note
+Fig 2 x-axis tick (all 4 panels),Bound,2.9/2.9/3.5,every tick is now a threshold in kcal/mol; matches the S3 Table row label
+Fig 2 caption,...prediction-interval bound (Bound),"...prediction-interval limit (2.9, 2.9 and 3.5 kcal/mol for ...)",the parenthetical now gives the values instead of decoding a label
+"Methods, threshold definition",the prediction-interval bound. The bound takes...,the prediction-interval limit. The limit takes...,also 'upper limit' -> 'upper edge' to avoid limit twice in one clause
+"Results, detection ladder",for 18 at the bound,for 18 at the prediction-interval limit,bare 'the bound' was the worst collision
+"Results, measured effects",11 at the bound (Fig 2D),11 at the prediction-interval limit (Fig 2D),
+"Methods, interpretation",A call that survives the bound,A call that survives that limit,
+"Methods, post hoc note",points above the bound,points above that limit,
+"S2 Text, S3 Text",prediction-interval bound,prediction-interval limit,1 paragraph each
+S2 Table benchmark_variants,Agreement 1.0/1.5/2.0/2.5/Bound,Agreement 1.0/1.5/2.0/2.5/2.9-2.9-3.5,1 cell
+"S3 Table operating_point_sweep, evidence_states",Prediction-interval bound,Prediction-interval limit,3 cells
+Introduction: 'work while bound to partners',unchanged,unchanged,"bound-state sense, deliberately kept"
+Limitations: 'lacks the bound HIF peptide',unchanged,unchanged,"bound-state sense, deliberately kept"
