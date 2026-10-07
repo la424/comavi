@@ -96,9 +96,9 @@
   "classes": [
    {
     "call_relationship": "Agreement",
-    "n": 43,
+    "n": 42,
     "definition": "Measured and predicted calls agree.",
-    "median_abs_error": 0.84,
+    "median_abs_error": 0.77,
     "examples": [
      "M1663K",
      "P1806A",
@@ -118,13 +118,13 @@
    },
    {
     "call_relationship": "Substantive disagreement",
-    "n": 13,
+    "n": 14,
     "definition": "Calls straddle 2.5 kcal/mol and at least one value is far from it.",
-    "median_abs_error": 3.09,
+    "median_abs_error": 3.11,
     "examples": [
      "V1808A",
      "V1736A",
-     "EA73C"
+     "N102T"
     ]
    }
   ],
@@ -133,9 +133,9 @@
    "classes": [
     {
      "call_relationship": "Agreement",
-     "n": 38,
+     "n": 37,
      "definition": "Measured and predicted calls agree.",
-     "median_abs_error": 0.67,
+     "median_abs_error": 0.65,
      "examples": [
       "M1663K",
       "P1806A",
@@ -155,13 +155,13 @@
     },
     {
      "call_relationship": "Substantive disagreement",
-     "n": 11,
+     "n": 12,
      "definition": "Calls straddle 2.5 kcal/mol and at least one value is far from it.",
-     "median_abs_error": 2.96,
+     "median_abs_error": 3.02,
      "examples": [
       "V1808A",
       "V1736A",
-      "NA58A"
+      "N102T"
      ]
     }
    ]

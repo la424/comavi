@@ -18,7 +18,7 @@ self-describing: every workbook sheet opens on its own caption row and every doc
   S3 Text    S3_Text.docx     Pathogenicity comparison, robustness and independent validation. (39 KB)
   S1 Fig     S1_Fig.tif       Stress tests of the mechanism-pattern score. (488 KB)
   S2 Fig     S2_Fig.tif       Binding-axis validation on SKEMPI 2.0. (275 KB)
-  S3 Fig     S3_Fig.tif       Call relationships between predicted and measured energies at 2.5 kcal/mol. (120 KB)
+  S3 Fig     S3_Fig.tif       Call relationships between predicted and measured energies at 2.5 kcal/mol. (119 KB)
   S4 Fig     S4_Fig.tif       Structural-context comparators on the 46-variant prioritization population. (165 KB)
   S5 Fig     S5_Fig.tif       Priority-score transformation and component ranking. (310 KB)
 

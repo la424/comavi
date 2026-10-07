@@ -1,0 +1,11 @@
+quantity,before,after,note
+N102T measured value,1.5 kcal/mol (per interface),3.0 kcal/mol (per tetramer),derived in code from Bonaventura's Kd ratio
+Spearman rho (63 comparisons),0.48,0.47,reported to 2 dp; 0.4849 -> 0.4678
+p value,5.6 x 10^-5,1.1 x 10^-4,still highly significant
+fitted slope,0.42,0.41,compression conclusion unchanged
+error vs measured effect,-0.66,-0.67,direction and interpretation unchanged
+predicted at measured 2.5,1.43,1.42,
+"excluding Glu73: rho, slope","0.63, 0.43","0.61, 0.42",n = 56 unchanged
+call relationships,43 / 7 / 13,42 / 7 / 14,N102T moves from Agreement to Substantive; its error grows 1.64 -> 3.14
+measured effects recovered at 2.5,12/42,12/42,"UNCHANGED - N102T predicts -0.137, below every threshold either way"
+mechanism-pattern score,0.661,0.661,UNCHANGED - no token changed; destab either way

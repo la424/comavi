@@ -9,7 +9,7 @@ M1783T,3.73,2.8551,Monomer fold,BRCA1 BRCT,GdmCl unfolding,True,-0.8748999999999
 V1736A,4.2,1.2414,Monomer fold,BRCA1 BRCT,GdmCl unfolding,True,-2.9586,2.9586,True,False,1.7000000000000002,1.2586,False
 A1843P,4.89,6.4287,Monomer fold,BRCA1 BRCT,GdmCl unfolding,True,1.5387000000000004,1.5387000000000004,False,False,2.3899999999999997,3.9287,False
 Y1853C,6.04,3.3869,Monomer fold,BRCA1 BRCT,GdmCl unfolding,True,-2.6531000000000002,2.6531000000000002,False,False,3.54,0.8868999999999998,False
-N102T,1.5,-0.1374,Binding,Hb tetramer,assembly energetics,True,-1.6374,1.6374,False,False,1.0,2.6374,False
+N102T,3.0,-0.1374,Binding,Hb tetramer,assembly energetics,True,-3.1374,3.1374,True,False,0.5,2.6374,False
 W37Y,2.0,1.5986,Binding,Hb tetramer,assembly energetics,True,-0.4014,0.4014,False,False,0.5,0.9014,True
 W37A,5.0,4.5339,Binding,Hb tetramer,assembly energetics,True,-0.46609999999999996,0.46609999999999996,False,False,2.5,2.0339,False
 W37G,7.0,5.449,Binding,Hb tetramer,assembly energetics,True,-1.5510000000000002,1.5510000000000002,False,False,4.5,2.949,False

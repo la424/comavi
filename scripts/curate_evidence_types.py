@@ -295,9 +295,24 @@ for v, dd in HB_DDG.items():
         "Same assembly-energy measurement; the fold-in-complex token is a "
         "coupled reading of the assembly ddG, not an independent "
         "subunit-stability measurement", C_KIGER)
+# The source names this variant only as "hemoglobin Kansas" -- it never writes
+# N102T -- and states the substitution as "threonine replaces asparagine in
+# position 102 of the beta chain". It reports NO kcal value anywhere, only
+# Kd(tetramer -> dimer): "about 1.0 to 1.4 x 10^-6 M" for normal oxyhemoglobin
+# against "about 200 x 10^-6 M" for Hb Kansas. RT*ln of that ratio is 3.0
+# kcal/mol per tetramer, or 1.5 per interface.
+#
+# The basis read "~1.5 kcal/mol", i.e. the per-interface reading, while the four
+# beta-W37 rows beside it are per tetramer -- Kiger's own wording is "9
+# kcal/tetramer" -- and all five sit in one calibration table under one axis and
+# one system label. Harmonised to per tetramer, and the value is now DERIVED
+# from these Kd figures in build_delta_calibration_points.py rather than typed.
 put("hemoglobin_tetramer", "N102T", "binding", E1, "direct",
-    "Hb Kansas: alpha1-beta2 H-bond loss, reduced tetramer assembly energy "
-    "(~1.5 kcal/mol)", C_BONAVENTURA)
+    "Hb Kansas: alpha1-beta2 H-bond loss. Source reports Kd(tetramer->dimer) "
+    "~1.0-1.4 uM for normal oxyhemoglobin against ~200 uM, giving a reduced "
+    "tetramer assembly energy of 3.0 kcal/mol per tetramer (1.5 per "
+    "interface); stated per tetramer to match the beta-W37 series",
+    C_BONAVENTURA)
 put("hemoglobin_tetramer", "N102T", "fold_complex", E1, "coupled",
     "Coupled reading of the same assembly measurement", C_BONAVENTURA)
 

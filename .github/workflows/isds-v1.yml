@@ -210,6 +210,11 @@ jobs:
           # cannot cover it either -- the stale sheet was already stale when the
           # package was built, so its digest matched.
           python scripts/verify_si_derived_sheets.py
+          # The calibration table -- the 63 predicted-vs-measured comparisons
+          # behind rho, the slope and the error-structure figure -- had NO
+          # generator until v8.2. It was hand-maintained, and that hid a
+          # per-interface/per-tetramer unit mix in the hemoglobin block.
+          python scripts/build_delta_calibration_points.py --check
 
       - name: Verify every committed record is current, not merely present
         # Two records went stale through the v7.9 ground-truth correction and
