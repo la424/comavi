@@ -1,0 +1,189 @@
+{
+ "population": {
+  "n": 46,
+  "positive": 21,
+  "negative": 25,
+  "systems": 13
+ },
+ "reported_roc_auc": 0.8343,
+ "alternative_formulas": {
+  "n": 9,
+  "rows": [
+   {
+    "alternative": "tier without interface bonus",
+    "column": "sens_no_interface_tier",
+    "graded_context_term": true,
+    "roc_auc": 0.7943,
+    "spearman_vs_reported": 0.9385
+   },
+   {
+    "alternative": "interface-only context",
+    "column": "sens_interface_only_context",
+    "graded_context_term": false,
+    "roc_auc": 0.8152,
+    "spearman_vs_reported": 0.788
+   },
+   {
+    "alternative": "energy weight 0.4",
+    "column": "sens_energy_weight_0_4",
+    "graded_context_term": true,
+    "roc_auc": 0.8305,
+    "spearman_vs_reported": 0.9957
+   },
+   {
+    "alternative": "cohort-standardised",
+    "column": "historical_cohort_z_combination",
+    "graded_context_term": true,
+    "roc_auc": 0.8343,
+    "spearman_vs_reported": 0.9962
+   },
+   {
+    "alternative": "exponential",
+    "column": "sens_exponential",
+    "graded_context_term": true,
+    "roc_auc": 0.8362,
+    "spearman_vs_reported": 0.9947
+   },
+   {
+    "alternative": "common per-axis anchor",
+    "column": "sens_common_2_5",
+    "graded_context_term": true,
+    "roc_auc": 0.8362,
+    "spearman_vs_reported": 0.9993
+   },
+   {
+    "alternative": "smooth normalisation",
+    "column": "sens_smooth_norm",
+    "graded_context_term": true,
+    "roc_auc": 0.8381,
+    "spearman_vs_reported": 0.9915
+   },
+   {
+    "alternative": "energy weight 0.6",
+    "column": "sens_energy_weight_0_6",
+    "graded_context_term": true,
+    "roc_auc": 0.8381,
+    "spearman_vs_reported": 0.9906
+   },
+   {
+    "alternative": "hard cap",
+    "column": "sens_hard_cap",
+    "graded_context_term": true,
+    "roc_auc": 0.8438,
+    "spearman_vs_reported": 0.9683
+   }
+  ],
+  "graded_context_n": 8,
+  "graded_context_auc_span": [
+   0.7943,
+   0.8438
+  ],
+  "graded_context_min_spearman": 0.9385,
+  "binary_context": {
+   "alternative": "interface-only context",
+   "column": "sens_interface_only_context",
+   "graded_context_term": false,
+   "roc_auc": 0.8152,
+   "spearman_vs_reported": 0.788
+  },
+  "note": "All nine are read from the columns the pipeline writes; none is reimplemented here."
+ },
+ "leave_one_system_out": {
+  "n_folds": 13,
+  "folds": [
+   {
+    "dropped_system": "brca1_bard1",
+    "combined": 0.8055,
+    "isds_energy_component": 0.746,
+    "isds_context_component": 0.7506,
+    "combined_above_both": true
+   },
+   {
+    "dropped_system": "cam_cav12",
+    "combined": 0.8355,
+    "isds_energy_component": 0.7619,
+    "isds_context_component": 0.8041,
+    "combined_above_both": true
+   },
+   {
+    "dropped_system": "cfh_c3b",
+    "combined": 0.8217,
+    "isds_energy_component": 0.7652,
+    "isds_context_component": 0.7717,
+    "combined_above_both": true
+   },
+   {
+    "dropped_system": "hemoglobin_dimer",
+    "combined": 0.8294,
+    "isds_energy_component": 0.7738,
+    "isds_context_component": 0.7798,
+    "combined_above_both": true
+   },
+   {
+    "dropped_system": "hemoglobin_tetramer",
+    "combined": 0.8025,
+    "isds_energy_component": 0.7675,
+    "isds_context_component": 0.745,
+    "combined_above_both": true
+   },
+   {
+    "dropped_system": "kras_craf",
+    "combined": 0.8772,
+    "isds_energy_component": 0.8048,
+    "isds_context_component": 0.818,
+    "combined_above_both": true
+   },
+   {
+    "dropped_system": "mlh1_pms2",
+    "combined": 0.8396,
+    "isds_energy_component": 0.7941,
+    "isds_context_component": 0.8088,
+    "combined_above_both": true
+   },
+   {
+    "dropped_system": "msh2_msh6",
+    "combined": 0.8685,
+    "isds_energy_component": 0.839,
+    "isds_context_component": 0.7993,
+    "combined_above_both": true
+   },
+   {
+    "dropped_system": "pi3k",
+    "combined": 0.8278,
+    "isds_energy_component": 0.7751,
+    "isds_context_component": 0.7919,
+    "combined_above_both": true
+   },
+   {
+    "dropped_system": "smad4_smad3",
+    "combined": 0.8472,
+    "isds_energy_component": 0.7801,
+    "isds_context_component": 0.7917,
+    "combined_above_both": true
+   },
+   {
+    "dropped_system": "troponin_ic",
+    "combined": 0.829,
+    "isds_energy_component": 0.7857,
+    "isds_context_component": 0.7641,
+    "combined_above_both": true
+   },
+   {
+    "dropped_system": "vhl_elonginc",
+    "combined": 0.8333,
+    "isds_energy_component": 0.7771,
+    "isds_context_component": 0.7927,
+    "combined_above_both": true
+   },
+   {
+    "dropped_system": "vwf_gpiba",
+    "combined": 0.8271,
+    "isds_energy_component": 0.7625,
+    "isds_context_component": 0.7812,
+    "combined_above_both": true
+   }
+  ],
+  "combined_above_both_in": 13
+ },
+ "caveat": "Both analyses are in-sample: the same benchmark informed the development of the reported score."
+}

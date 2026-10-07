@@ -126,6 +126,68 @@ def assertions_for_axis(basis: str, axis: str):
     return intact, lost
 
 
+# Vocabulary for the CROSS-AXIS check below: how a basis refers to an axis
+# other than its own, and whether the surrounding words assert that the other
+# axis is intact or disrupted.
+OTHER_AXIS_WORDS = {
+    "monomer": (r"monomer", r"isolated subunit", r"isolated fold", r"subunit fold"),
+    "fold_complex": (r"assembl\w+", r"complex[- ]context", r"in[- ]complex", r"quaternary"),
+    "binding": (r"bind\w*", r"interface", r"interaction", r"affinit\w*", r"co-?IP"),
+}
+_INTACT = re.compile(r"\b(intact|preserved|normal|unchanged|wild[- ]type|WT-?like|"
+                     r"stable|proficient|no (?:change|effect|loss))\b", re.I)
+_DISRUPTED = re.compile(r"\b(destabiliz\w+|reduced|decreased|impaired|lost|loss|"
+                        r"abolish\w+|weaken\w+|unstable|deficien\w+)\b", re.I)
+
+
+def cross_axis_conflicts(led: pd.DataFrame) -> list:
+    """Bases that assert a state for ANOTHER axis contradicting its commitment.
+
+    A basis may legitimately reason from a sibling axis -- "token inferred from
+    the intact monomer fold" is a valid inference when the monomer axis really
+    is committed neutral. It stops being valid the moment that sibling's
+    commitment changes, and nothing else in the repository notices: the
+    per-axis token-basis check reads each row in isolation, so a basis whose
+    PREMISE has been falsified by a later correction still passes it.
+
+    That is not hypothetical. v8.0 committed MLH1 H718Y's monomer axis as
+    destabilizing on a newly read source, which falsified the shared
+    "intact monomer fold" premise on that variant's assembled-fold row while
+    leaving it true for the ten other rows using the same constant. It was
+    found by hand during the v9.0 audit, which is why this runs now.
+    """
+    tokens = {(r["system"], r["variant"], r["axis"]): str(r["expected_token"]).strip().lower()
+              for _, r in led.iterrows()}
+    seen, out = set(), []
+    for _, r in led.iterrows():
+        basis = str(r["evidence_basis"])
+        for other, patterns in OTHER_AXIS_WORDS.items():
+            if other == r["axis"]:
+                continue
+            key = (r["system"], r["variant"], other)
+            if key not in tokens:
+                continue
+            for pat in patterns:
+                for m in re.finditer(pat, basis, re.I):
+                    window = basis[max(0, m.start() - 45):m.end() + 45]
+                    intact = bool(_INTACT.search(window))
+                    disrupted = bool(_DISRUPTED.search(window))
+                    if intact == disrupted:          # ambiguous or silent
+                        continue
+                    implied = "neutral" if intact else "destab"
+                    if implied == tokens[key]:
+                        continue
+                    sig = (r["system"], r["variant"], r["axis"], other)
+                    if sig in seen:
+                        continue
+                    seen.add(sig)
+                    out.append({"system": r["system"], "variant": r["variant"],
+                                "basis_axis": r["axis"], "refers_to": other,
+                                "implied": implied, "committed": tokens[key],
+                                "phrase": re.sub(r"\s+", " ", window)})
+    return out
+
+
 def audit(led: pd.DataFrame) -> pd.DataFrame:
     rows = []
     for _, r in led.iterrows():
@@ -191,6 +253,20 @@ def main() -> int:
 
     print("PASS: all %d committed expectations agree with their own evidence basis"
           % len(res))
+    conflicts = cross_axis_conflicts(led)
+    if conflicts:
+        print("FAIL: %d basis/basis conflict(s) -- a basis asserts a state for "
+              "another axis that contradicts that axis's own commitment"
+              % len(conflicts))
+        for c in conflicts:
+            print("  - %s %s (%s basis) implies %s is %s, but it is committed %s"
+                  % (c["system"], c["variant"], c["basis_axis"], c["refers_to"],
+                     c["implied"], c["committed"]))
+            print("      \"%s\"" % c["phrase"])
+        return 1
+    print("  cross-axis basis premises: %d committed axes checked, none "
+          "contradicted by a sibling basis" % len(led))
+
     return 0
 
 

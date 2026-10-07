@@ -241,7 +241,18 @@ put("mlh1_pms2", "H718Y", "monomer", E2, "direct",
     "stability decreased more strongly in V716M, H718Y and E578G, and "
     "pulse-chase half-life fell to 64% of wild type. Clinically neutral",
     C_HINRICHSEN)
-put("mlh1_pms2", "H718Y", "fold_complex", E5, "inferred", NO_ASSEMBLY_ASSAY,
+# H718Y cannot use the shared NO_ASSEMBLY_ASSAY basis, which reads "token
+# inferred from the intact monomer fold". v8.0 committed this variant's
+# monomer axis as DESTABILIZING on Hinrichsen 2013, so that premise is false
+# here while remaining true for the other ten axes that use the constant. The
+# neutral assembled-fold token is still right, but it is inferred from
+# preserved FUNCTION rather than from an intact isolated fold: the variant is
+# MMR-proficient and its PMS2 interaction survives, so the assembled complex
+# is inferred to be functional despite the destabilized subunit.
+put("mlh1_pms2", "H718Y", "fold_complex", E5, "inferred",
+    "No assembly-context stability measurement; token inferred from "
+    "proficient MMR and a surviving MLH1-PMS2 interaction, not from the "
+    "isolated fold, which this source reports as destabilized",
     C_RAEVAARA)
 put("mlh1_pms2", "H718Y", "binding", E2, "coupled",
     "Proficient MMR implies the MLH1-PMS2 interaction survived", C_RAEVAARA)

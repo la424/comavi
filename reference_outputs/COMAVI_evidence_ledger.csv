@@ -50,7 +50,7 @@ mlh1_pms2,G857A,binding,neutral,E4_population_frequency,inferred,gnomAD AF 28%; 
 mlh1_pms2,G857A,fold_complex,neutral,E4_population_frequency,inferred,gnomAD AF 28%; ClinVar BA1 stand-alone benign,gnomAD; ClinVar BA1
 mlh1_pms2,G857A,monomer,neutral,E4_population_frequency,inferred,gnomAD AF 28%; ClinVar BA1 stand-alone benign,gnomAD; ClinVar BA1
 mlh1_pms2,H718Y,binding,neutral,E2_quantitative_functional,coupled,Proficient MMR implies the MLH1-PMS2 interaction survived,Raevaara 2005 (MMR activity)
-mlh1_pms2,H718Y,fold_complex,neutral,E5_inferred_no_axis_assay,inferred,No assembly-context stability measurement; token inferred from the intact monomer fold,Raevaara 2005 (MMR activity)
+mlh1_pms2,H718Y,fold_complex,neutral,E5_inferred_no_axis_assay,inferred,"No assembly-context stability measurement; token inferred from proficient MMR and a surviving MLH1-PMS2 interaction, not from the isolated fold, which this source reports as destabilized",Raevaara 2005 (MMR activity)
 mlh1_pms2,H718Y,monomer,destab,E2_quantitative_functional,direct,"Source states H718Y moderately destabilizes the MLH1 protein; thermal stability decreased more strongly in V716M, H718Y and E578G, and pulse-chase half-life fell to 64% of wild type. Clinically neutral",Hinrichsen 2013 Clin Cancer Res 19:2432 (doi:10.1158/1078-0432.CCR-12-3299)
 mlh1_pms2,K618E,binding,neutral,E3_qualitative_experimental,coupled,Non-damaging in functional assay,Drost 2019 (functional assay)
 mlh1_pms2,L749P,binding,destab,E2_quantitative_functional,direct,PMS2 co-IP 30% of WT,"Kosinski 2010 (PMS2 co-IP, MMR activity)"
