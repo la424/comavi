@@ -63,16 +63,16 @@
  },
  "cohort_under_each_regime": {
   "relaxed_shipped": {
-   "n": 57,
-   "total": 41.0,
-   "mean": 0.7193
+   "n": 56,
+   "total": 37.0,
+   "mean": 0.6607
   },
   "strict_confident_site_only": {
-   "n": 50,
-   "total": 37.5,
-   "mean": 0.75
+   "n": 49,
+   "total": 33.5,
+   "mean": 0.6837
   },
-  "delta_mean": 0.0307,
+  "delta_mean": 0.023,
   "variants_removed_by_strict": [
    {
     "system": "mlh1_pms2",
@@ -132,8 +132,8 @@
    "relaxed_kcal_mol": 1.0,
    "counts": {
     "monomer": {
-     "strict": 10,
-     "relaxed": 17
+     "strict": 15,
+     "relaxed": 25
     },
     "fold": {
      "strict": 23,
@@ -145,7 +145,7 @@
     }
    },
    "evaluable": {
-    "monomer": 48,
+    "monomer": 60,
     "fold": 45,
     "binding": 32
    }

@@ -41,6 +41,12 @@ import pathlib
 
 import pandas as pd
 
+# The axis-status vocabulary is owned by the concordance helper. Importing it
+# rather than re-deriving "which axis does the literature commit" keeps this
+# module from drifting away from the grading path, which is how a hand-mirrored
+# copy went stale earlier in this project.
+from apply_concordance_v5 import classify_axis_status
+
 REPO = pathlib.Path(__file__).resolve().parents[1]
 CANON = REPO / "reference_outputs" / "scored_61var_canonical.csv"
 OUT = REPO / "reference_outputs" / "COMAVI_detection_vs_attribution.json"
@@ -126,9 +132,45 @@ def build(canon, threshold=REFERENCE_T):
     graded["bind_fires"] = graded.bind_max.map(fires_at(t_bind))
     graded["any_fires"] = graded[["mono_fires", "fold_fires", "bind_fires"]].any(axis=1)
 
+    # v8.6: fold attribution is now decided by WHICH fold axis the literature
+    # commits, not by assuming the isolated-subunit one.
+    #
+    # derive_expected_mech_class puts a variant in fold_mechanism when EITHER
+    # fold axis is committed positive -- isolated-subunit or complex-context --
+    # but this rule asked only `mono_fires`. A lesion committed on the
+    # complex-context fold axis therefore could not be credited no matter what
+    # the pipeline predicted, so the middle axis of a three-axis method had no
+    # route to a correct attribution. BRCA1 C61G is the case: committed on both
+    # fold axes, isolated-subunit prediction 2.33 (below the 2.5 threshold) and
+    # complex-context 6.78 (well above). It was scored as a wrong attribution
+    # while naming exactly the axis the literature names.
+    #
+    # The fix credits a fold mechanism when a COMMITTED fold axis fires. It is
+    # not a loosening: an uncommitted axis still cannot earn credit, and
+    # MLH1 R755W -- committed on both fold axes, predicted 0.97 and 0.94 with
+    # binding at 9.66 -- remains a miss, because the pipeline names binding
+    # where the literature names fold. Attribution moves 14 -> 15 of 29.
+    axis_state = {(r.system, r.variant): classify_axis_status(r)
+                  for _, r in graded.iterrows()}
+
+    def committed_positive(r, axis):
+        st = axis_state.get((r.system, r.variant)) or {}
+        return st.get(axis) == "positive"
+
     def right_axis(r):
         if r.expected_mech_class == "fold_mechanism":
-            return bool(r.mono_fires)
+            hits = []
+            if committed_positive(r, "fold_monomer"):
+                hits.append(bool(r.mono_fires))
+            if committed_positive(r, "fold_complex"):
+                hits.append(bool(r.fold_fires))
+            # A fold_mechanism always has at least one committed fold axis;
+            # assert rather than fall back, so a vocabulary change upstream
+            # surfaces here instead of silently scoring every fold variant
+            # as a miss.
+            assert hits, ("fold_mechanism with no committed fold axis: %s %s"
+                          % (r.system, r.variant))
+            return any(hits)
         if r.expected_mech_class == "ppi_destab_mechanism":
             return bool(r.bind_fires)
         if r.expected_mech_class == "mixed_structural":
@@ -158,6 +200,19 @@ def build(canon, threshold=REFERENCE_T):
         if cls in STRUCTURAL:
             row["detection"] = int(sub.any_fires.sum())
             row["attribution"] = int(sub.right_axis.sum())
+            # v8.6: separate accounting for the axis each commitment names, so
+            # the complex-context fold axis is visible rather than folded into
+            # an isolated-subunit total. `n` is how many variants in the class
+            # commit that axis; `fires` is how many of those have it fire.
+            by_axis = {}
+            for label, axis, col in (("isolated_subunit", "fold_monomer", "mono_fires"),
+                                     ("complex_fold", "fold_complex", "fold_fires"),
+                                     ("binding", "binding", "bind_fires")):
+                cm = sub.apply(lambda r: committed_positive(r, axis), axis=1)
+                if int(cm.sum()):
+                    by_axis[label] = {"n": int(cm.sum()),
+                                      "fires": int(sub.loc[cm, col].sum())}
+            row["committed_axis_accounting"] = by_axis
         elif cls == SILENT:
             row["correct_rejection"] = int((~sub.any_fires).sum())
         per_class[cls] = row

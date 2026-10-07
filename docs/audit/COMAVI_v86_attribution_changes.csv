@@ -1,0 +1,10 @@
+quantity,before,after,note
+attribution at 2.5 kcal/mol,14 of 29 (0.483),15 of 29 (0.517),"BRCA1 C61G credited: committed on the complex-fold axis, which fires at 6.78"
+attribution at the interval bound,12 of 29 (0.414),13 of 29 (0.448),same variant
+attribution ladder,"18, 17, 16, 14, 12","18, 17, 16, 15, 13",two thresholds move; the first three unchanged
+post-hoc 3.0 / 3.5 / 4.0,0.345 / 0.310 / 0.241,0.379 / 0.345 / 0.276,"same variant, supplement only"
+detection,20 of 29,20 of 29,UNCHANGED - detection never depended on which axis
+mechanism-pattern score,0.661,0.661,UNCHANGED - the graded rubric was already axis-aware
+correct rejection,22 of 27,22 of 27,UNCHANGED
+binary vs graded arm agreement,within 0.052,within 0.052,"UNCHANGED - max gap 0.0517, now 0.000 at the reference"
+MLH1 R755W,not attributed,not attributed,"still a genuine miss: fold committed, binding predicted at 9.66"

@@ -16,9 +16,9 @@
   "rate": 0.69
  },
  "attribution": {
-  "k": 14,
+  "k": 15,
   "n": 29,
-  "rate": 0.5
+  "rate": 0.536
  },
  "correct_rejection": {
   "k": 22,
@@ -68,7 +68,17 @@
    "partial": 1,
    "inconsistent": 5,
    "detection": 7,
-   "attribution": 5
+   "attribution": 6,
+   "committed_axis_accounting": {
+    "isolated_subunit": {
+     "n": 11,
+     "fires": 5
+    },
+    "complex_fold": {
+     "n": 2,
+     "fires": 1
+    }
+   }
   },
   "mixed_structural": {
    "n": 6,
@@ -77,7 +87,17 @@
    "partial": 2,
    "inconsistent": 0,
    "detection": 5,
-   "attribution": 5
+   "attribution": 5,
+   "committed_axis_accounting": {
+    "complex_fold": {
+     "n": 6,
+     "fires": 5
+    },
+    "binding": {
+     "n": 6,
+     "fires": 4
+    }
+   }
   },
   "ppi_destab_mechanism": {
    "n": 11,
@@ -86,7 +106,13 @@
    "partial": 7,
    "inconsistent": 3,
    "detection": 8,
-   "attribution": 4
+   "attribution": 4,
+   "committed_axis_accounting": {
+    "binding": {
+     "n": 11,
+     "fires": 4
+    }
+   }
   },
   "ppi_stab_mechanism": {
    "n": 1,
@@ -95,7 +121,13 @@
    "partial": 0,
    "inconsistent": 1,
    "detection": 0,
-   "attribution": 0
+   "attribution": 0,
+   "committed_axis_accounting": {
+    "binding": {
+     "n": 1,
+     "fires": 0
+    }
+   }
   },
   "structurally_silent": {
    "n": 27,
