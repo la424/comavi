@@ -1,0 +1,8 @@
+where,defect,fix
+S1 Table evidence_ledger,missing mlh1_pms2 H718Y monomer (added in v8.0),row restored from the ledger
+S1 Table evidence_ledger,missing smad4_smad3 I500V binding (added in v8.0),row restored from the ledger
+S1 Table evidence_ledger,"carried msh2_msh6 G674R binding, retired in v8.0",row removed
+S1 Table evidence_ledger,"5 evidence_basis cells held superseded text (E100Q, K45R, N102T, G12D, G12V)",rebuilt from the ledger
+S1 Table evidence_ledger,citation strings in the pre-v8.0 short form,rebuilt from the ledger
+"ledger basis, BRCA1 K45R / E100Q",Y2H values not recorded; E100Q filter status not disclosed,"measured scores, CIs and filter status added"
+scripts/verify_si_derived_sheets.py,sheet was wrongly classified out of scope,"now gated on membership, token and basis; 3 negative controls"

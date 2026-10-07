@@ -151,13 +151,33 @@ for ax, basis in [
     put("brca1_bard1", "C61G", ax, E3, "direct", basis, C_BRZOVIC)
 put("brca1_bard1", "C61G", "binding", E3, "direct",
     "BARD1 binding preserved despite fold loss", C_BRZOVIC)
+# Values read from the source's own Supp_TABLE1 (5,160 variants; Y2H_score is
+# the BARD1 two-hybrid interaction readout, 1.0 = wild type). Among the 1,472
+# variants passing the authors' 800-read filter the median Y2H score is 0.963
+# and the 5th percentile is 0.103, so both values below sit squarely in the
+# wild-type part of the distribution.
+#
+# K45R  Y2H 1.019 (95% CI 0.983-1.056), filter Pass.
+# E100Q Y2H 1.025 (95% CI 0.840-1.213), permutation p = 0.579, filter DROP.
+#
+# The E100Q measurement does not meet the authors' own read-depth filter and
+# its interval is four times wider than K45R's. The point estimate is still
+# wild-type-like with no evidence of a deficit, so the neutral token stands,
+# but the basis records the filter status rather than presenting the two as
+# equally supported -- a measurement the source itself declined to report is
+# weaker evidence than one it reports.
 for v in ("K45R", "E100Q"):
     put("brca1_bard1", v, "monomer", E5, "inferred",
         f"{NO_STAB_ASSAY} from WT-like two-hybrid function", C_STARITA)
     put("brca1_bard1", v, "fold_complex", E5, "inferred",
         NO_ASSEMBLY_ASSAY, C_STARITA)
-    put("brca1_bard1", v, "binding", E3, "direct",
-        "WT-like BARD1 interaction by Y2H", C_STARITA)
+put("brca1_bard1", "K45R", "binding", E3, "direct",
+    "WT-like BARD1 interaction by Y2H: score 1.019 (95% CI 0.983-1.056), "
+    "passes the source's 800-read filter", C_STARITA)
+put("brca1_bard1", "E100Q", "binding", E3, "direct",
+    "WT-like BARD1 interaction by Y2H: score 1.025 (95% CI 0.840-1.213), "
+    "permutation p = 0.58, but the measurement is below the source's own "
+    "800-read filter and is reported here with that caveat", C_STARITA)
 
 # ----------------------------------------------------------------------- PI3K
 for v in ("E542K", "E545K"):

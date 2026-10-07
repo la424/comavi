@@ -2,10 +2,10 @@ system,variant,axis,expected_token,evidence_type,evidence_directness,evidence_ba
 brca1_bard1,C61G,binding,neutral,E3_qualitative_experimental,direct,BARD1 binding preserved despite fold loss,Brzovic 1998 JBC 273:7795 (PMID 9520298); Roehm & Berg 1997 Biochemistry 36:10240
 brca1_bard1,C61G,fold_complex,destab,E3_qualitative_experimental,direct,RING heterodimer fold disrupted by Zn-coordination loss,Brzovic 1998 JBC 273:7795 (PMID 9520298); Roehm & Berg 1997 Biochemistry 36:10240
 brca1_bard1,C61G,monomer,destab,E3_qualitative_experimental,direct,C61 is a Zn-coordinating ligand; RING fold lost on Zn release,Brzovic 1998 JBC 273:7795 (PMID 9520298); Roehm & Berg 1997 Biochemistry 36:10240
-brca1_bard1,E100Q,binding,neutral,E3_qualitative_experimental,direct,WT-like BARD1 interaction by Y2H,Starita 2015 (Y2H interaction panel)
+brca1_bard1,E100Q,binding,neutral,E3_qualitative_experimental,direct,"WT-like BARD1 interaction by Y2H: score 1.025 (95% CI 0.840-1.213), permutation p = 0.58, but the measurement is below the source's own 800-read filter and is reported here with that caveat",Starita 2015 (Y2H interaction panel)
 brca1_bard1,E100Q,fold_complex,neutral,E5_inferred_no_axis_assay,inferred,No assembly-context stability measurement; token inferred from the intact monomer fold,Starita 2015 (Y2H interaction panel)
 brca1_bard1,E100Q,monomer,neutral,E5_inferred_no_axis_assay,inferred,No subunit-stability assay; token inferred from WT-like two-hybrid function,Starita 2015 (Y2H interaction panel)
-brca1_bard1,K45R,binding,neutral,E3_qualitative_experimental,direct,WT-like BARD1 interaction by Y2H,Starita 2015 (Y2H interaction panel)
+brca1_bard1,K45R,binding,neutral,E3_qualitative_experimental,direct,"WT-like BARD1 interaction by Y2H: score 1.019 (95% CI 0.983-1.056), passes the source's 800-read filter",Starita 2015 (Y2H interaction panel)
 brca1_bard1,K45R,fold_complex,neutral,E5_inferred_no_axis_assay,inferred,No assembly-context stability measurement; token inferred from the intact monomer fold,Starita 2015 (Y2H interaction panel)
 brca1_bard1,K45R,monomer,neutral,E5_inferred_no_axis_assay,inferred,No subunit-stability assay; token inferred from WT-like two-hybrid function,Starita 2015 (Y2H interaction panel)
 brca1_bard1,V11G,binding,destab,E2_quantitative_functional,direct,Moderate BARD1 binding loss by two-hybrid,Clark 2022 (mammalian two-hybrid)

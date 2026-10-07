@@ -143,6 +143,56 @@ def main() -> int:
                                 % (got_sa, float(exp_sa)))
     CHECKED.append("robustness (observed row) <- threshold sweep + numbers ledger")
 
+    # ---- S1 evidence_ledger, from COMAVI_evidence_ledger.csv
+    #
+    # This sheet was classified OUT OF SCOPE on the first pass, as curated
+    # rather than derived. That was wrong: it is a COPY of the committed
+    # ledger, so it is exactly as derivable as any other sheet here, and
+    # leaving it ungated let it drift through two correction rounds. When the
+    # gap was finally found the shipped sheet was still in its pre-v8.0 state:
+    # it was missing both rows v8.0 added (mlh1_pms2 H718Y monomer,
+    # smad4_smad3 I500V binding), still carried the row v8.0 retired
+    # (msh2_msh6 G674R binding), and five evidence_basis cells held superseded
+    # text. The supplement therefore advertised 98 committed axes against the
+    # article's stated 99, and published a commitment the correction had
+    # explicitly withdrawn. Nothing caught it, because every other gate reads
+    # records rather than the workbook.
+    led = pd.read_csv(RO / "COMAVI_evidence_ledger.csv")
+    s1_rows = rows_of(SI / "S1_Table.xlsx", "evidence_ledger")
+    head = next((i for i, r in enumerate(s1_rows)
+                 if r[:3] == ["system", "variant", "axis"]), None)
+    if head is None:
+        FAILURES.append("S1 evidence_ledger: no header row found")
+    else:
+        cols = s1_rows[head]
+        body = [r for r in s1_rows[head + 1:] if r and r[0]]
+        sheet_keys = {(r[0], r[1], r[2]) for r in body}
+        led_keys = set(zip(led.system, led.variant, led.axis))
+        for k in sorted(led_keys - sheet_keys):
+            FAILURES.append("S1 evidence_ledger: committed axis missing from "
+                            "the sheet: %s %s %s" % k)
+        for k in sorted(sheet_keys - led_keys):
+            FAILURES.append("S1 evidence_ledger: sheet carries an axis the "
+                            "ledger does not commit: %s %s %s" % k)
+        bi = cols.index("evidence_basis")
+        ti = cols.index("expected_token")
+        auth = {(r.system, r.variant, r.axis): (str(r.evidence_basis),
+                                                str(r.expected_token))
+                for _, r in led.iterrows()}
+        for r in body:
+            k = (r[0], r[1], r[2])
+            if k not in auth:
+                continue
+            basis, token = auth[k]
+            if r[bi].strip() != basis.strip():
+                FAILURES.append("S1 evidence_ledger %s %s %s: basis text "
+                                "differs from the ledger" % k)
+            if r[ti].strip() != token.strip():
+                FAILURES.append("S1 evidence_ledger %s %s %s: token '%s' "
+                                "against ledger '%s'" % (k + (r[ti], token)))
+    CHECKED.append("S1 evidence_ledger <- COMAVI_evidence_ledger.csv "
+                   "(membership, token and basis text)")
+
     if FAILURES:
         print("FAIL: %d supplementary cells disagree with their record" % len(FAILURES))
         for f in FAILURES[:12]:
@@ -152,7 +202,7 @@ def main() -> int:
           % len(CHECKED))
     for c in CHECKED:
         print("  " + c)
-    print("  OUT OF SCOPE (curated, not derived): evidence_ledger, "
+    print("  OUT OF SCOPE (curated, not derived): "
           "whole_variant_negatives, benchmark_variants, model_scope, index")
     return 0
 
