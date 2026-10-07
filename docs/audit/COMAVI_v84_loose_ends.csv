@@ -1,0 +1,7 @@
+loose end,what it was,resolution
+two ledger sources absent from the reference list,"Hinrichsen 2013, Lindsay 2025 entered in v8.0 and were never cited","added from CrossRef, cited in the Methods ledger-source block; list 75 -> 77"
+S1 Table reference column stale after renumbering,43 of 75 references shifted number,69 cells remapped old -> new by reference text
+supplement prose cited an older reference list,Grantham cited as [53] (= Eaton); SKEMPI as [56] (= Bonaventura),"corrected to [77] and [67], each verified against the entry it now resolves to"
+ledger citation named the wrong first author,"""Kimura 2001""; PMID 11735257 is Takahashi-Yanaga et al.",label corrected in the generator; PMID and reference number were always right
+audit report claimed 6 BRCA1 axes unverifiable,closed in v8.3 from the supplied dataset,report updated
+audit report listed evidence_ledger as not recomputable,it is a copy of the ledger and is now gated,report updated

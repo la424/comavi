@@ -55,9 +55,15 @@ where the source names the variant only by its trivial name (Hb Kansas rather
 than N102T). **9 more are population-database citations**, which are a query
 rather than an article claim and were not re-queried here.
 
-**6 BRCA1 axes stand at assay level only.** Starita 2015's PMC record is
-metadata-only; its abstract confirms the assay measures BARD1 RING binding, but
-the per-variant scores are in a supplementary dataset that was not available.
+**The 6 BRCA1 axes are closed as of v8.3.** Starita 2015's PMC record is
+metadata-only, but the author supplied the supplementary dataset
+(`Supp_TABLE1`, 5,160 variants). Both benchmark variants verify against it:
+K45R Y2H 1.019 (95% CI 0.983–1.056), passing the authors' 800-read filter, and
+E100Q 1.025 (95% CI 0.840–1.213), permutation p = 0.58 but **below** that
+filter. Among the 1,472 filter-passing variants the median Y2H score is 0.963
+and the 5th percentile is 0.103, so both sit in the wild-type part of the
+distribution and the neutral tokens stand. The E100Q basis records the filter
+status rather than presenting the two measurements as equally supported.
 
 **Five Methods claims have no executable test**, each for a stated reason: FoldX
 is licensed separately and cannot be re-run here; the 7-and-7 experimental/
@@ -72,9 +78,17 @@ of source text near each variant mention raised 13 apparent conflicts with
 committed tokens, and all 13 were window artifacts quoting other variants. Only
 reading the source settles direction.
 
-**Curated supplementary sheets are not recomputable** — `evidence_ledger`,
-`whole_variant_negatives`, `benchmark_variants`, `model_scope`. The derived
-sheets are now gated; these are curated content and remain reviewed by hand.
+**Three curated supplementary sheets are not recomputable** —
+`whole_variant_negatives`, `benchmark_variants`, `model_scope`. These are
+curated content and remain reviewed by hand.
+
+`evidence_ledger` was on that list until v8.3 and should not have been. It is a
+copy of `COMAVI_evidence_ledger.csv`, so it is exactly as derivable as the
+sheets already gated, and leaving it out let it drift through two correction
+rounds unnoticed: the shipped sheet was still in its pre-v8.0 state, carrying 98
+axes against the article's stated 99, missing both rows v8.0 added, and still
+publishing the one commitment v8.0 withdrew. It is now gated on membership,
+token and basis text.
 
 ## What this pass actually found
 

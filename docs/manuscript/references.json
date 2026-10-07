@@ -448,5 +448,15 @@
   "verified": "CrossRef DOI lookup v7.14",
   "note": "primary report of CALM1 N98S (published as p.Asn97Ser); the benchmark cited Crotti 2013, which only mentions it",
   "old_number_v713": null
+ },
+ "hinrichsen2013": {
+  "text": "Hinrichsen I, Brieger A, Trojan J, Zeuzem S, Nilbert M, Plotz G. Expression defect size among unclassified MLH1 variants determines pathogenicity in Lynch syndrome diagnosis. Clin Cancer Res. 2013;19(9):2432–2441. doi:10.1158/1078-0432.CCR-12-3299",
+  "verified": "CrossRef 10.1158/1078-0432.CCR-12-3299",
+  "note": "added v8.4; evidence-ledger source for mlh1_pms2 H718Y monomer, introduced in v8.0. Six authors, so no et al. (Vancouver). Title lowercased to sentence case to match house style; MLH1 and Lynch kept. Journal abbreviated: CrossRef returns no short title."
+ },
+ "lindsay2025": {
+  "text": "Lindsay ME, Scimone ER, Lawton J, Richa R, Yonker LM, Di YP, et al. Gain-of-function variants in SMAD4 compromise respiratory epithelial function. J Allergy Clin Immunol. 2025;155(1):107–119.e2. doi:10.1016/j.jaci.2024.08.024",
+  "verified": "CrossRef 10.1016/j.jaci.2024.08.024",
+  "note": "added v8.4; evidence-ledger source for smad4_smad3 I500V binding, introduced in v8.0. Eleven authors, truncated to six then et al. Journal abbreviated; CrossRef short title repeats the full name."
  }
 }

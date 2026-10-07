@@ -32,49 +32,51 @@
   "nyegaard2012": 30,
   "hunter2015": 31,
   "kosinski2010": 32,
-  "raevaara2005": 33,
-  "drost2019": 34,
-  "thompson2014": 35,
-  "larsenledet2025": 36,
-  "ollila2006": 37,
-  "ollila2008": 38,
-  "jia2021": 39,
-  "zhao2008": 40,
-  "mandelker2009": 41,
-  "jaiswal2009": 42,
-  "debosscher2004": 43,
-  "legoff2012": 44,
-  "lanauze2021": 45,
-  "elliott2000": 46,
-  "frazier2008": 47,
-  "takahashi2001": 48,
-  "stebbins1999": 49,
-  "ohh2000": 50,
-  "pechtl2011": 51,
-  "tischer2025": 52,
-  "eaton1990": 53,
-  "kiger1998": 54,
-  "kwiatkowski1998": 55,
-  "bonaventura1968": 56,
-  "karczewski2020": 57,
-  "landrum2018": 58,
-  "williams2001": 59,
-  "brzovic2001": 60,
-  "wu2009": 61,
-  "fermi1984": 62,
-  "tran2021": 63,
-  "dumas2004": 64,
-  "jankauskaite2019": 65,
-  "abildgaard2019": 66,
-  "nielsen2017": 67,
-  "franklin": 68,
-  "sapozhnikov2023": 69,
-  "vassall2006": 70,
-  "hurshman2008": 71,
-  "schymkowitz2005": 72,
-  "delgado2019": 73,
-  "tunyasuvunakool2021": 74,
-  "grantham1974": 75
+  "hinrichsen2013": 33,
+  "raevaara2005": 34,
+  "drost2019": 35,
+  "thompson2014": 36,
+  "larsenledet2025": 37,
+  "ollila2006": 38,
+  "ollila2008": 39,
+  "jia2021": 40,
+  "zhao2008": 41,
+  "mandelker2009": 42,
+  "jaiswal2009": 43,
+  "debosscher2004": 44,
+  "legoff2012": 45,
+  "lindsay2025": 46,
+  "lanauze2021": 47,
+  "elliott2000": 48,
+  "frazier2008": 49,
+  "takahashi2001": 50,
+  "stebbins1999": 51,
+  "ohh2000": 52,
+  "pechtl2011": 53,
+  "tischer2025": 54,
+  "eaton1990": 55,
+  "kiger1998": 56,
+  "kwiatkowski1998": 57,
+  "bonaventura1968": 58,
+  "karczewski2020": 59,
+  "landrum2018": 60,
+  "williams2001": 61,
+  "brzovic2001": 62,
+  "wu2009": 63,
+  "fermi1984": 64,
+  "tran2021": 65,
+  "dumas2004": 66,
+  "jankauskaite2019": 67,
+  "abildgaard2019": 68,
+  "nielsen2017": 69,
+  "franklin": 70,
+  "sapozhnikov2023": 71,
+  "vassall2006": 72,
+  "hurshman2008": 73,
+  "schymkowitz2005": 74,
+  "delgado2019": 75,
+  "tunyasuvunakool2021": 76,
+  "grantham1974": 77
  },
  "provenance": [
   {
@@ -106,11 +108,11 @@
    "from": "caption"
   },
   {
-   "text": "The benchmark contains 61 missense variants in 14 protein systems (Table 1): 49 variants in 13 multi-chain complexes and 12 in the tandem BRCA1 C-terminal (BRCT) domain, a single-chain system with measured unfolding free energies [24]. We chose systems in which published experiments establish how each variant acts, and all energies throughout are FoldX 5.1 predictions (Methods). Together they span the mechanisms COMAVI is meant to separate: loss and gain of function, fold-driven and binding-driven disruption, and variants with ambiguous biology. For each variant, the primary literature defines the expected direction on each applicable axis [25–58]. Each of the 99 committed expectations is recorded with its evidence class, a one-line basis and a citation (S1 Table).",
+   "text": "The benchmark contains 61 missense variants in 14 protein systems (Table 1): 49 variants in 13 multi-chain complexes and 12 in the tandem BRCA1 C-terminal (BRCT) domain, a single-chain system with measured unfolding free energies [24]. We chose systems in which published experiments establish how each variant acts, and all energies throughout are FoldX 5.1 predictions (Methods). Together they span the mechanisms COMAVI is meant to separate: loss and gain of function, fold-driven and binding-driven disruption, and variants with ambiguous biology. For each variant, the primary literature defines the expected direction on each applicable axis [25–60]. Each of the 99 committed expectations is recorded with its evidence class, a one-line basis and a citation (S1 Table).",
    "from": "p22,p27"
   },
   {
-   "text": "Table 1. Benchmark composition. Graded variants carry a committed expectation on at least one modeled axis or, for five no-lesion variants, at the whole-variant level. Pathogenic counts clinical annotations, which are independent of the mechanism ground truth and are not used in any mechanism metric; the BRCT variants carry no clinical label (–). Experimental structures are identified by their Protein Data Bank (PDB) entries [59–64]; the other systems used AlphaFold 3 models.",
+   "text": "Table 1. Benchmark composition. Graded variants carry a committed expectation on at least one modeled axis or, for five no-lesion variants, at the whole-variant level. Pathogenic counts clinical annotations, which are independent of the mechanism ground truth and are not used in any mechanism metric; the BRCT variants carry no clinical label (–). Experimental structures are identified by their Protein Data Bank (PDB) entries [61–66]; the other systems used AlphaFold 3 models.",
    "from": "caption"
   },
   {
@@ -118,7 +120,7 @@
    "from": "p22,p23"
   },
   {
-   "text": "Four graded no-lesion variants carry no committed expectation on any individual axis: CALM1 D96V, N98S and F142L, which act through altered calcium binding [29,30], and SMAD4 I500T, which acts through impaired monoubiquitination [44]. Their mechanisms lie outside the modeled axes, so they are graded at the whole-variant level as no-lesion variants. S1 Table lists their basis and sources, and the analyses below report the effect of removing them.",
+   "text": "Four graded no-lesion variants carry no committed expectation on any individual axis: CALM1 D96V, N98S and F142L, which act through altered calcium binding [29,30], and SMAD4 I500T, which acts through impaired monoubiquitination [45]. Their mechanisms lie outside the modeled axes, so they are graded at the whole-variant level as no-lesion variants. S1 Table lists their basis and sources, and the analyses below report the effect of removing them.",
    "from": "new (author decision v7.14)"
   },
   {
@@ -130,7 +132,7 @@
    "from": "new (author decision v7.15)"
   },
   {
-   "text": "Two variants show both what the second context adds and the error it introduces. Complement factor H R78G barely changes isolated-subunit stability (0.93 kcal/mol) but is predicted to weaken binding to C3b by 6.12 kcal/mol, consistent with a measured rise in dissociation constant from 10–14 μM to more than 35 μM [51]. Von Willebrand factor R1334Q leaves the isolated A1 domain unchanged (0.01 kcal/mol) but weakens binding to GPIbα by 4.11 kcal/mol; the purified A1 domain is natively folded, binds GPIbα weakly and supports little platelet adhesion [52]. A calculation on the isolated subunit alone would call both variants silent. In both, however, the assembled-complex stability axis also fires (4.88 and 4.73 kcal/mol) where the literature implies an intact fold, so both are graded partial rather than consistent.",
+   "text": "Two variants show both what the second context adds and the error it introduces. Complement factor H R78G barely changes isolated-subunit stability (0.93 kcal/mol) but is predicted to weaken binding to C3b by 6.12 kcal/mol, consistent with a measured rise in dissociation constant from 10–14 μM to more than 35 μM [53]. Von Willebrand factor R1334Q leaves the isolated A1 domain unchanged (0.01 kcal/mol) but weakens binding to GPIbα by 4.11 kcal/mol; the purified A1 domain is natively folded, binds GPIbα weakly and supports little platelet adhesion [54]. A calculation on the isolated subunit alone would call both variants silent. In both, however, the assembled-complex stability axis also fires (4.88 and 4.73 kcal/mol) where the literature implies an intact fold, so both are graded partial rather than consistent.",
    "from": "p66 (worked examples, moved here from the mechanism section)"
   },
   {
@@ -162,7 +164,7 @@
    "from": "new (author decision v7.15)"
   },
   {
-   "text": "A silent result has two meanings that the benchmark keeps apart. For a variant whose mechanism the supplied model can represent, silence on every applicable axis is an informative negative. When the mechanism acts through a state absent from the model, silence cannot test it. HBB E6V is the clearest case: it acts through polymerization of deoxygenated hemoglobin [53], so COMAVI silence points to the missing assembly state, not to a benign variant. A model-scope screen separates the two situations (S2 Table, model_scope sheet).",
+   "text": "A silent result has two meanings that the benchmark keeps apart. For a variant whose mechanism the supplied model can represent, silence on every applicable axis is an informative negative. When the mechanism acts through a state absent from the model, silence cannot test it. HBB E6V is the clearest case: it acts through polymerization of deoxygenated hemoglobin [55], so COMAVI silence points to the missing assembly state, not to a benign variant. A model-scope screen separates the two situations (S2 Table, model_scope sheet).",
    "from": "p67,p31"
   },
   {
@@ -186,7 +188,7 @@
    "from": "p98,p83"
   },
   {
-   "text": "The thresholds act on predicted free-energy changes (ΔΔG), so we compared predictions with direct measurements wherever they exist (Fig 3). The pooled set contains 63 comparisons from four systems: 48 binding energies for barnase–barstar and TEM1–BLIP from SKEMPI 2.0 [65], 10 unfolding free energies for the BRCA1 BRCT domain [24] and 5 hemoglobin assembly energies [54–56]. Predicted and measured values were rank-correlated (Spearman ρ = 0.47, p = 1.1 × 10−4), but the fitted slope was 0.41, and the prediction error became more negative as the measured effect grew (ρ = −0.67). A measured destabilization of 2.5 kcal/mol corresponds to a predicted 1.42 kcal/mol. FoldX therefore orders effects but compresses large ones, which accounts for part of the loss of measured effects at stringent thresholds.",
+   "text": "The thresholds act on predicted free-energy changes (ΔΔG), so we compared predictions with direct measurements wherever they exist (Fig 3). The pooled set contains 63 comparisons from four systems: 48 binding energies for barnase–barstar and TEM1–BLIP from SKEMPI 2.0 [67], 10 unfolding free energies for the BRCA1 BRCT domain [24] and 5 hemoglobin assembly energies [56–58]. Predicted and measured values were rank-correlated (Spearman ρ = 0.47, p = 1.1 × 10−4), but the fitted slope was 0.41, and the prediction error became more negative as the measured effect grew (ρ = −0.67). A measured destabilization of 2.5 kcal/mol corresponds to a predicted 1.42 kcal/mol. FoldX therefore orders effects but compresses large ones, which accounts for part of the loss of measured effects at stringent thresholds.",
    "from": "p100,p101,p77"
   },
   {
@@ -222,7 +224,7 @@
    "from": "caption"
   },
   {
-   "text": "A high rank does not guarantee a correct mechanism. Of the 17 structural mechanisms in the top 20, 5 are graded consistent, 10 partial and 2 inconsistent. The four outside it are KRAS G12D and G12V, MLH1 H718Y and SMAD4 I500V, at ranks 32 to 38 — the four expectations whose measured magnitudes are smallest, none reaching the 2.5 kcal/mol reference. The two inconsistent cases, MLH1 R755W and PIK3CA E545K, fail the same way. FoldX returns a large favorable interaction energy for each (−9.7 and −4.6 kcal/mol), which COMAVI reads as strengthened binding. For E545K the axis is right but the direction is wrong, because releasing the inhibitory contact with p85 is energetically favorable [40]. For R755W the literature reports reduced abundance with binding preserved [32,36], and neither stability prediction reaches the threshold (0.97 kcal/mol for the isolated subunit and −0.94 in the complex). These two variants would send a user to the right protein with the wrong experiment (S3 Text).",
+   "text": "A high rank does not guarantee a correct mechanism. Of the 17 structural mechanisms in the top 20, 5 are graded consistent, 10 partial and 2 inconsistent. The four outside it are KRAS G12D and G12V, MLH1 H718Y and SMAD4 I500V, at ranks 32 to 38 — the four expectations whose measured magnitudes are smallest, none reaching the 2.5 kcal/mol reference. The two inconsistent cases, MLH1 R755W and PIK3CA E545K, fail the same way. FoldX returns a large favorable interaction energy for each (−9.7 and −4.6 kcal/mol), which COMAVI reads as strengthened binding. For E545K the axis is right but the direction is wrong, because releasing the inhibitory contact with p85 is energetically favorable [41]. For R755W the literature reports reduced abundance with binding preserved [32,37], and neither stability prediction reaches the threshold (0.97 kcal/mol for the isolated subunit and −0.94 in the complex). These two variants would send a user to the right protein with the wrong experiment (S3 Text).",
    "from": "p89,p90"
   },
   {
@@ -250,11 +252,11 @@
    "from": "p117,p114,p120"
   },
   {
-   "text": "The threshold should follow the cost of error. The 1.0 kcal/mol default suits screening, where a missed mechanism costs more than extra follow-up; 2.5 kcal/mol is the benchmark reference; and the prediction-interval bound suits settings where a false mechanistic claim is costly. These thresholds separate curated mechanisms from no-lesion variants, a different question from the 3 kcal/mol cut-off that MAVISp and related MLH1 studies use to predict cellular degradation [15,66,67]. Because each call is reported with its continuous energy, a user can re-read it at another threshold; 17 of the 56 graded variants change grade within the prespecified range (S2 Table, benchmark_variants sheet). A silent result means that the supplied static model shows no lesion at the stated threshold. It does not mean that a variant is benign, nonfunctional or unworthy of study.",
+   "text": "The threshold should follow the cost of error. The 1.0 kcal/mol default suits screening, where a missed mechanism costs more than extra follow-up; 2.5 kcal/mol is the benchmark reference; and the prediction-interval bound suits settings where a false mechanistic claim is costly. These thresholds separate curated mechanisms from no-lesion variants, a different question from the 3 kcal/mol cut-off that MAVISp and related MLH1 studies use to predict cellular degradation [15,68,69]. Because each call is reported with its continuous energy, a user can re-read it at another threshold; 17 of the 56 graded variants change grade within the prespecified range (S2 Table, benchmark_variants sheet). A silent result means that the supplied static model shows no lesion at the stated threshold. It does not mean that a variant is benign, nonfunctional or unworthy of study.",
    "from": "p122,p123,p52"
   },
   {
-   "text": "COMAVI complements pathogenicity predictors, population data, functional assays and clinical interpretation tools such as Franklin [68]. Shown side by side, a pathogenicity score and the COMAVI outputs disagree in interpretable ways (Fig 5). Combining them into one score would reintroduce the conflation that separating structure from pathogenicity is meant to remove.",
+   "text": "COMAVI complements pathogenicity predictors, population data, functional assays and clinical interpretation tools such as Franklin [70]. Shown side by side, a pathogenicity score and the COMAVI outputs disagree in interpretable ways (Fig 5). Combining them into one score would reintroduce the conflation that separating structure from pathogenicity is meant to remove.",
    "from": "p124"
   },
   {
@@ -266,7 +268,7 @@
    "from": "p119"
   },
   {
-   "text": "FoldX preserves the direction and rank of an effect better than its size, here and in the literature. Published correlations with measured stability changes range from 0.19 to 0.81, and the uncertainty of a single prediction is large [69]; evaluations report qualitative agreement more often than quantitative agreement [16]. Large destabilizations are therefore understated, stringent thresholds miss real effects, and the priority score cannot be read in experimental energy units.",
+   "text": "FoldX preserves the direction and rank of an effect better than its size, here and in the literature. Published correlations with measured stability changes range from 0.19 to 0.81, and the uncertainty of a single prediction is large [71]; evaluations report qualitative agreement more often than quantitative agreement [16]. Large destabilizations are therefore understated, stringent thresholds miss real effects, and the priority score cannot be read in experimental energy units.",
    "from": "p126"
   },
   {
@@ -282,7 +284,7 @@
    "from": "p128"
   },
   {
-   "text": "The most informative next tests are external panels that separate folding from binding and include both disruptive and function-retaining variants. More variants in the VWF A1–GPIbα and complement factor H–C3b systems would strengthen the evidence on fold-neutral binding lesions, and SOD1, transthyretin and the dense PDZ and SH3 landscapes can test coupled tertiary, quaternary and allosteric effects [3,70,71]. The priority-score formula is frozen and should be evaluated on such panels without retuning. Extending the tier and the priority score to monomer-only systems would require a prespecified formula and prospective validation.",
+   "text": "The most informative next tests are external panels that separate folding from binding and include both disruptive and function-retaining variants. More variants in the VWF A1–GPIbα and complement factor H–C3b systems would strengthen the evidence on fold-neutral binding lesions, and SOD1, transthyretin and the dense PDZ and SH3 landscapes can test coupled tertiary, quaternary and allosteric effects [3,72,73]. The priority-score formula is frozen and should be evaluated on such panels without retuning. Extending the tier and the priority score to monomer-only systems would require a prespecified formula and prospective validation.",
    "from": "p129"
   },
   {
@@ -294,19 +296,19 @@
    "from": "p18"
   },
   {
-   "text": "COMAVI scores a variant on a supplied model of a complex whose composition is known; it does not discover partners. Seven systems used experimental complex structures and seven used models from the AlphaFold 3 server (Table 1) [4]. The isolated subunit is a separate single-chain model, not a chain extracted from the complex. Eleven of the 14 systems use a single-chain AlphaFold 3 model of the relevant gene, including systems whose complex is experimental; the BRCT, VWF A1 and complement factor H systems use the experimental chain. The two stability axes are therefore calculated on different coordinates. That difference is what makes the contrast between them informative, and it is also a source of error. Energies were calculated with FoldX 5.1 [72,73] using default energy-function parameters. Energies are reported in kcal/mol, the convention of the stability literature; 1 kcal/mol is 4.184 kJ/mol. Each structure was repaired once with RepairPDB. BuildModel was run five times per variant on the isolated subunit and on the assembled complex, and AnalyseComplex was applied to each mutant complex to obtain the change in interaction energy with each partner. ΔΔG is mutant minus wild type in kcal/mol, so positive values are destabilizing; the axis value is the mean over replicates, and the replicate standard deviation is kept. Summary outputs use the most disruptive partner, and partner-level values remain available. Running BuildModel and AnalyseComplex separately keeps an interface-localized fold signal from being read as a binding change. S1 Text gives the commands.",
+   "text": "COMAVI scores a variant on a supplied model of a complex whose composition is known; it does not discover partners. Seven systems used experimental complex structures and seven used models from the AlphaFold 3 server (Table 1) [4]. The isolated subunit is a separate single-chain model, not a chain extracted from the complex. Eleven of the 14 systems use a single-chain AlphaFold 3 model of the relevant gene, including systems whose complex is experimental; the BRCT, VWF A1 and complement factor H systems use the experimental chain. The two stability axes are therefore calculated on different coordinates. That difference is what makes the contrast between them informative, and it is also a source of error. Energies were calculated with FoldX 5.1 [74,75] using default energy-function parameters. Energies are reported in kcal/mol, the convention of the stability literature; 1 kcal/mol is 4.184 kJ/mol. Each structure was repaired once with RepairPDB. BuildModel was run five times per variant on the isolated subunit and on the assembled complex, and AnalyseComplex was applied to each mutant complex to obtain the change in interaction energy with each partner. ΔΔG is mutant minus wild type in kcal/mol, so positive values are destabilizing; the axis value is the mean over replicates, and the replicate standard deviation is kept. Summary outputs use the most disruptive partner, and partner-level values remain available. Running BuildModel and AnalyseComplex separately keeps an interface-localized fold signal from being read as a binding change. S1 Text gives the commands.",
    "from": "p33,p34,p35"
   },
   {
-   "text": "FoldX calculates ΔΔG from the supplied coordinates, and the predicted local distance difference test (pLDDT) of an AlphaFold model does not rescale these energies. Instead pLDDT decides whether a predicted axis is used at all, using the confidence bands of the AlphaFold database [74]. Two thresholds act at once rather than defining alternative settings. An axis is admitted when the pLDDT at the variant site reaches 50. The isolated-subunit axis follows the site pLDDT in the single-chain model, and each partner's axes follow the site pLDDT in the complex. An axis below 50 contributes neither a mechanism call nor a term to the priority score, and that partner adds no contacts, interface occupancy or burial to the tier. At 70 the derived confidence of a variant's energies is upgraded from medium to high, which the concordance analyses use. Independently of either, the tier's context score is multiplied by 0.7 when the best site pLDDT lies between 50 and 70 and by 0.4 below 50; experimental structures are not attenuated.",
+   "text": "FoldX calculates ΔΔG from the supplied coordinates, and the predicted local distance difference test (pLDDT) of an AlphaFold model does not rescale these energies. Instead pLDDT decides whether a predicted axis is used at all, using the confidence bands of the AlphaFold database [76]. Two thresholds act at once rather than defining alternative settings. An axis is admitted when the pLDDT at the variant site reaches 50. The isolated-subunit axis follows the site pLDDT in the single-chain model, and each partner's axes follow the site pLDDT in the complex. An axis below 50 contributes neither a mechanism call nor a term to the priority score, and that partner adds no contacts, interface occupancy or burial to the tier. At 70 the derived confidence of a variant's energies is upgraded from medium to high, which the concordance analyses use. Independently of either, the tier's context score is multiplied by 0.7 when the best site pLDDT lies between 50 and 70 and by 0.4 below 50; experimental structures are not attenuated.",
    "from": "p37"
   },
   {
-   "text": "The structural-context tier describes how strongly a site is embedded in features that make it sensitive to substitution. It contains no energy and is not a mechanism call. It combines substitution severity, scored by the Grantham distance [75], with local contacts, interface occupancy, burial and model confidence. The fixed total maps to Tier 1 (strongest context) through Tier 4 (weakest), and S1 Text gives the weights and cut-offs. Because interface occupancy contributes directly to the tier, we compared the full tier with interface status alone and with the tier recalculated without its interface bonus (S2 Text).",
+   "text": "The structural-context tier describes how strongly a site is embedded in features that make it sensitive to substitution. It contains no energy and is not a mechanism call. It combines substitution severity, scored by the Grantham distance [77], with local contacts, interface occupancy, burial and model confidence. The fixed total maps to Tier 1 (strongest context) through Tier 4 (weakest), and S1 Text gives the weights and cut-offs. Because interface occupancy contributes directly to the tier, we compared the full tier with interface status alone and with the tier recalculated without its interface bonus (S2 Text).",
    "from": "p39,p40"
   },
   {
-   "text": "The integrated structural-disruption score (ISDS-v1), called the priority score here, combines energy and context with a fixed formula: the same reference values and tier mapping apply to every variant set, and no coefficient is fitted to the cohort. For each confidence-passing energy j, |ΔΔGj| is divided by a reference value τj of 2.9 kcal/mol for the two stability axes and 3.5 kcal/mol for binding. These are the upper bounds of the published FoldX 95% prediction intervals [69]. Here they serve as divisors that put the three axes on one scale, not as cut-offs, so an energy below τj still contributes. The largest ratio represents the strongest reliable energetic signal without summing correlated stability effects:",
+   "text": "The integrated structural-disruption score (ISDS-v1), called the priority score here, combines energy and context with a fixed formula: the same reference values and tier mapping apply to every variant set, and no coefficient is fitted to the cohort. For each confidence-passing energy j, |ΔΔGj| is divided by a reference value τj of 2.9 kcal/mol for the two stability axes and 3.5 kcal/mol for binding. These are the upper bounds of the published FoldX 95% prediction intervals [71]. Here they serve as divisors that put the three axes on one scale, not as cut-offs, so an energy below τj still contributes. The largest ratio represents the strongest reliable energetic signal without summing correlated stability effects:",
    "from": "p41,p42"
   },
   {
@@ -326,7 +328,7 @@
    "from": "p49,p41"
   },
   {
-   "text": "A predicted energy becomes a call on an axis when its absolute value reaches the threshold. Five operating points were fixed before scoring: uniform thresholds of 1.0, 1.5, 2.0 and 2.5 kcal/mol, and the prediction-interval bound. The bound takes, separately for each axis, the upper limit of the 95% prediction interval fitted to FoldX folding and binding predictions [69]: 2.9 kcal/mol for isolated-subunit stability, 2.9 for assembled-complex stability and 3.5 for binding. A call that survives the bound is unlikely to arise from prediction error alone. The released software uses 1.0 kcal/mol as a screening default, and 2.5 kcal/mol is the benchmark reference. S3 Table (threshold_sweep sheet) reports post hoc points above the bound. Crossing the energy calls with the tier (Tier 1–2 against Tier 3–4) defines four descriptive evidence states: convergent, energy only, context only and neither (S2 Text).",
+   "text": "A predicted energy becomes a call on an axis when its absolute value reaches the threshold. Five operating points were fixed before scoring: uniform thresholds of 1.0, 1.5, 2.0 and 2.5 kcal/mol, and the prediction-interval bound. The bound takes, separately for each axis, the upper limit of the 95% prediction interval fitted to FoldX folding and binding predictions [71]: 2.9 kcal/mol for isolated-subunit stability, 2.9 for assembled-complex stability and 3.5 for binding. A call that survives the bound is unlikely to arise from prediction error alone. The released software uses 1.0 kcal/mol as a screening default, and 2.5 kcal/mol is the benchmark reference. S3 Table (threshold_sweep sheet) reports post hoc points above the bound. Crossing the energy calls with the tier (Tier 1–2 against Tier 3–4) defines four descriptive evidence states: convergent, energy only, context only and neither (S2 Text).",
    "from": "p51,p53"
   },
   {

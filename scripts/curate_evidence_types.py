@@ -112,7 +112,12 @@ C_KIGER = ("Kiger / Kwiatkowski Biochemistry 1998 "
 C_BONAVENTURA = "Bonaventura & Riggs 1968 JBC (Hb Kansas)"
 C_ELLIOTT = ("Elliott 2000 JBC 275:22069; "
              "Takahashi / Kimura 2001 (PMID 11735257)")
-C_KIMURA = "Kimura 2001 (PMID 11735257)"
+# v8.4: the label read "Kimura 2001". PMID 11735257 resolves to
+# Takahashi-Yanaga F, Morimoto S, Harada K, Minakami R, et al., J Mol Cell
+# Cardiol 2001;33(12):2095-2107, which is reference [50] in the article. The
+# PMID and the reference number were always right; only the author name in the
+# label was wrong, and it named someone who is not on the paper.
+C_KIMURA = "Takahashi-Yanaga 2001 (PMID 11735257)"
 C_FRAZIER = "Frazier 2008; gnomAD"
 C_CROTTI = "Crotti 2013"
 C_HWANG = "Hwang 2014 (PMC5270481)"

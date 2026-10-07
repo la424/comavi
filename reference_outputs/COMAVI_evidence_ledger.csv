@@ -87,7 +87,7 @@ troponin_ic,P82S,binding,neutral,E4_population_frequency,inferred,AF ~3% African
 troponin_ic,P82S,fold_complex,neutral,E4_population_frequency,inferred,AF ~3% African-American: benign by frequency,Frazier 2008; gnomAD
 troponin_ic,P82S,monomer,neutral,E4_population_frequency,inferred,AF ~3% African-American: benign by frequency,Frazier 2008; gnomAD
 troponin_ic,R145G,binding,neutral,E2_quantitative_functional,direct,"EC50 1.4 uM vs 0.8 uM WT: reduced inhibitory potency, actin affinity unchanged -- interface retained",Elliott 2000 JBC 275:22069; Takahashi / Kimura 2001 (PMID 11735257)
-troponin_ic,R145Q,binding,neutral,E2_quantitative_functional,direct,"Same class as R145G: reduced inhibition, actin affinity unchanged",Kimura 2001 (PMID 11735257)
+troponin_ic,R145Q,binding,neutral,E2_quantitative_functional,direct,"Same class as R145G: reduced inhibition, actin affinity unchanged",Takahashi-Yanaga 2001 (PMID 11735257)
 vhl_elonginc,L158Q,binding,destab,E3_qualitative_experimental,direct,Disrupts VCB complex assembly,Stebbins 1999 Science
 vhl_elonginc,L158Q,fold_complex,destab,E3_qualitative_experimental,direct,Disrupts VCB complex assembly,Stebbins 1999 Science
 vhl_elonginc,Y98H,binding,neutral,E3_qualitative_experimental,direct,"VCB assembly preserved while HIF binding is abolished (beta-domain HIF face, not the ElonginC face)",Ohh 2000
