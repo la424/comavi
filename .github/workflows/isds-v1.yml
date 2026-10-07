@@ -192,6 +192,17 @@ jobs:
           # after the manuscript renumbered S3-S5, and every text gate still
           # passed because none of them reads a .tif.
           python scripts/verify_si_package.py
+          # FRESHNESS, which none of the three figure gates above covers.
+          # verify_embedded_figures compares the document against the files on
+          # disk; verify_figure_specs checks those files against the journal's
+          # format rules; verify_si_package checks the shipped copies match the
+          # renders. A figure whose DATA is stale passes all three, because the
+          # document, the file and the SI copy are stale together. This rebuilds
+          # every figure in memory from the committed records and compares
+          # bytes. It has existed since v7.14 and was never wired in -- which is
+          # how the v8.6 attribution change was about to ship a Fig 2 panel A
+          # drawn from the pre-change record while 39 gates passed.
+          python figures/submission/make_submission_figures.py --check
           # Behaviour, not numbers. The 34 gates above all check that a
           # published value equals what a generator recomputes; none of them
           # checks that the pipeline DOES what the Methods says. Different
