@@ -226,6 +226,11 @@ jobs:
           # generator until v8.2. It was hand-maintained, and that hid a
           # per-interface/per-tetramer unit mix in the hemoglobin block.
           python scripts/build_delta_calibration_points.py --check
+          # The Discussion claims per-axis thresholds recover part of the
+          # interface shortfall but cannot close it. Both halves are
+          # asserted in the generator, so a change that falsifies either
+          # one fails here rather than silently rewriting the limitation.
+          python scripts/build_per_axis_threshold_test.py --check
 
       - name: Verify every committed record is current, not merely present
         # Two records went stale through the v7.9 ground-truth correction and

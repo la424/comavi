@@ -1,0 +1,106 @@
+{
+ "question": "Do per-axis thresholds recover the interface attribution shortfall left at the uniform reference threshold?",
+ "reference_uniform": {
+  "t_monomer": 2.5,
+  "t_complex_fold": 2.5,
+  "t_binding": 2.5,
+  "detection_k": 20,
+  "detection_n": 29,
+  "attribution_k": 15,
+  "attribution_n": 29,
+  "interface_attribution_k": 4,
+  "interface_attribution_n": 12,
+  "correct_rejection_k": 22,
+  "correct_rejection_n": 27
+ },
+ "binding_threshold_sweep": [
+  {
+   "t_monomer": 2.5,
+   "t_complex_fold": 2.5,
+   "t_binding": 1.0,
+   "detection_k": 20,
+   "detection_n": 29,
+   "attribution_k": 17,
+   "attribution_n": 29,
+   "interface_attribution_k": 6,
+   "interface_attribution_n": 12,
+   "correct_rejection_k": 20,
+   "correct_rejection_n": 27
+  },
+  {
+   "t_monomer": 2.5,
+   "t_complex_fold": 2.5,
+   "t_binding": 1.5,
+   "detection_k": 20,
+   "detection_n": 29,
+   "attribution_k": 17,
+   "attribution_n": 29,
+   "interface_attribution_k": 6,
+   "interface_attribution_n": 12,
+   "correct_rejection_k": 20,
+   "correct_rejection_n": 27
+  },
+  {
+   "t_monomer": 2.5,
+   "t_complex_fold": 2.5,
+   "t_binding": 2.0,
+   "detection_k": 20,
+   "detection_n": 29,
+   "attribution_k": 16,
+   "attribution_n": 29,
+   "interface_attribution_k": 5,
+   "interface_attribution_n": 12,
+   "correct_rejection_k": 22,
+   "correct_rejection_n": 27
+  },
+  {
+   "t_monomer": 2.5,
+   "t_complex_fold": 2.5,
+   "t_binding": 2.5,
+   "detection_k": 20,
+   "detection_n": 29,
+   "attribution_k": 15,
+   "attribution_n": 29,
+   "interface_attribution_k": 4,
+   "interface_attribution_n": 12,
+   "correct_rejection_k": 22,
+   "correct_rejection_n": 27
+  }
+ ],
+ "best_by_interface_attribution": {
+  "t_monomer": 2.5,
+  "t_complex_fold": 2.5,
+  "t_binding": 1.5,
+  "detection_k": 20,
+  "detection_n": 29,
+  "attribution_k": 17,
+  "attribution_n": 29,
+  "interface_attribution_k": 6,
+  "interface_attribution_n": 12,
+  "correct_rejection_k": 20,
+  "correct_rejection_n": 27
+ },
+ "gain_over_reference": {
+  "attribution": 2,
+  "interface_attribution": 2,
+  "correct_rejection": -2,
+  "in_sample": true,
+  "note": "The operating point is selected on the variants it is evaluated on, so the gain is an upper bound."
+ },
+ "unreachable_by_any_threshold": {
+  "k": 6,
+  "n": 12,
+  "floor_kcal_mol": 1.0,
+  "median_predicted_binding": 0.138,
+  "variants": [
+   "kras_craf G12D",
+   "kras_craf G12V",
+   "mlh1_pms2 Q542L",
+   "pi3k E542K",
+   "smad4_smad3 D351H",
+   "smad4_smad3 I500V"
+  ],
+  "detected_on_complex_fold_at_reference": 2,
+  "note": "Predicted binding energy below the most permissive prespecified threshold, so no placement of a binding threshold reaches them. Not an in-sample quantity."
+ }
+}

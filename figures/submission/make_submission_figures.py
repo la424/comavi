@@ -343,7 +343,15 @@ def fig_threshold():
     assert [m["threshold"] for m in me] == ["1.0", "1.5", "2.0", "2.5", "tSAP"]
     X = np.arange(5)
     fig, ax = plt.subplots(2, 2, figsize=(FULL, 4.25))
-    a, b, c, d = ax.ravel()
+    # Panels are laid out in CITATION order. The Results cite the
+    # mechanism-pattern score first, then the three binary rates, then per-axis
+    # direction agreement, then measured effects -- but the panels used to be
+    # drawn rates/agreement/score/effects, so the text referred to 2C before 2A.
+    # The variable names below still carry the same content as before; only
+    # which grid cell each one occupies, and the letter it is given, changed.
+    # Unpacking in this order moves the score panel to top-left without
+    # touching any of the drawing code.
+    c, a, b, d = ax.ravel()
 
     for key, col, ls, mk, mfc, lab in [("detection", STRUCT, "-", "o", STRUCT, "Detection"),
                                        ("attribution", STRUCT, "--", "o", "white", "Attribution"),
@@ -354,7 +362,7 @@ def fig_threshold():
     a.set_ylabel("Fraction of variants")
     a.legend(loc="lower right")
     thresh_axis(a, xlabel=False)
-    letter(a, "A")
+    letter(a, "B")
 
     for k, col, mk, lab in [("axis_monomer", MONO, "o", "Isolated subunit"),
                             ("axis_fold", FOLD, "s", "Assembled complex"),
@@ -366,8 +374,8 @@ def fig_threshold():
     b.set_ylim(0.4, 1.0)
     b.set_ylabel("Direction agreement")
     b.legend(loc="lower right", ncol=1)
-    thresh_axis(b, xlabel=False)
-    letter(b, "B")
+    thresh_axis(b)
+    letter(b, "C")
 
     bands = sw["cluster_bands"]
     lo = [bands[t]["lo"] for t in TAGS]
@@ -380,8 +388,8 @@ def fig_threshold():
     c.set_ylim(0, 1.02)
     c.set_ylabel("Mechanism-pattern score")
     c.legend(loc="lower right")
-    thresh_axis(c)
-    letter(c, "C")
+    thresh_axis(c, xlabel=False)
+    letter(c, "A")
 
     d.plot(X, [m["fraction"] for m in me], "-", color=INK, marker="o", ms=4, zorder=3)
     d.set_ylim(0, 1.02)
