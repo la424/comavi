@@ -45,13 +45,13 @@ OUT = REPO / "reference_outputs" / "COMAVI_priority_sensitivity_summary.json"
 ALTERNATIVES = {
     "hard cap": "sens_hard_cap",
     "exponential": "sens_exponential",
-    "smooth normalisation": "sens_smooth_norm",
+    "smooth normalization": "sens_smooth_norm",
     "common per-axis anchor": "sens_common_2_5",
     "energy weight 0.4": "sens_energy_weight_0_4",
     "energy weight 0.6": "sens_energy_weight_0_6",
     "tier without interface bonus": "sens_no_interface_tier",
     "interface-only context": "sens_interface_only_context",
-    "cohort-standardised": "historical_cohort_z_combination",
+    "cohort-standardized": "historical_cohort_z_combination",
 }
 # The one alternative that replaces the graded tier with a binary flag. S2
 # separates it from the other eight precisely because it is not a graded

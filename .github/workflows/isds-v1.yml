@@ -238,6 +238,11 @@ jobs:
           # combined score above both components in every fold), which the
           # generator asserts, so a change that breaks either fails here.
           python scripts/build_priority_sensitivity_summary.py --check
+          # The Limitations state that a prediction below the lowest
+          # threshold is silence rather than weak evidence. The generator
+          # asserts that the within-band AUC interval still includes
+          # chance, so a change that makes the band informative fails here.
+          python scripts/build_subthreshold_evidence.py --check
 
       - name: Verify every committed record is current, not merely present
         # Two records went stale through the v7.9 ground-truth correction and

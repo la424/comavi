@@ -31,7 +31,7 @@
     "spearman_vs_reported": 0.9957
    },
    {
-    "alternative": "cohort-standardised",
+    "alternative": "cohort-standardized",
     "column": "historical_cohort_z_combination",
     "graded_context_term": true,
     "roc_auc": 0.8343,
@@ -52,7 +52,7 @@
     "spearman_vs_reported": 0.9993
    },
    {
-    "alternative": "smooth normalisation",
+    "alternative": "smooth normalization",
     "column": "sens_smooth_norm",
     "graded_context_term": true,
     "roc_auc": 0.8381,
