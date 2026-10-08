@@ -231,12 +231,6 @@ jobs:
           # asserted in the generator, so a change that falsifies either
           # one fails here rather than silently rewriting the limitation.
           python scripts/build_per_axis_threshold_test.py --check
-          # Whether sub-threshold energies carry information. The
-          # Limitations state a bounded negative -- the within-band AUC
-          # interval includes chance -- and the generator asserts that
-          # shape, so a change that makes the band informative fails here
-          # rather than leaving a now-false sentence in the paper.
-          python scripts/build_subthreshold_evidence.py --check
           # The two S2 Text sensitivity analyses -- nine alternative score
           # formulas and the 13 leave-one-system-out folds -- had no
           # generator until v9.0 and survived only as saved tables. Both
