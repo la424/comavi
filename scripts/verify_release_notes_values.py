@@ -103,10 +103,19 @@ def main() -> int:
 
     needles = expected_current()
     bad = []
+    covered = set()
     for path in files:
         text = path.read_text()
         for label, needle, *rest in needles:
             in_table = rest[0] if rest else True
+            # A patch release's notes restate only what that release changed, so
+            # a file is held to the rows it actually claims -- the label must be
+            # present for the value to be required. On its own that would let a
+            # row vanish silently, so after the loop every label must be claimed
+            # by at least one notes file.
+            if label not in text:
+                continue
+            covered.add(label)
             # The current column is bold; a value present only unbolded is in the
             # superseded column and does not satisfy the claim.
             if in_table:
@@ -120,12 +129,16 @@ def main() -> int:
                 bad.append((path.name, label, needle, why))
     for name, label, needle, why in bad:
         print("  MISSING [%s] %s: expected %r, %s" % (name, label, needle, why))
-    if bad:
-        print("FAIL: %d current-column value(s) disagree with the records (%d checked)"
-              % (len(bad), len(needles) * len(files)))
+    uncovered = [lab for lab, *_ in needles if lab not in covered]
+    for lab in uncovered:
+        print("  UNCLAIMED [%s]: no release-notes file states this quantity, so "
+              "nothing gates it" % lab)
+    if bad or uncovered:
+        print("FAIL: %d value(s) disagree with the records, %d quantity(ies) "
+              "unclaimed across %d notes file(s)" % (len(bad), len(uncovered), len(files)))
         return 1
-    print("PASS: every current-column value in %d release-notes file(s) matches the "
-          "records (%d checked)" % (len(files), len(needles) * len(files)))
+    print("PASS: %d release-notes file(s); every quantity claimed matches the records "
+          "and all %d are claimed somewhere" % (len(files), len(needles)))
     return 0
 
 
