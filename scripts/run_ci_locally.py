@@ -83,14 +83,22 @@ def main() -> int:
 
     files = ([WORKFLOWS / w for w in args.workflow] if args.workflow
              else sorted(WORKFLOWS.glob("*.yml")))
-    # TMPDIR is set explicitly because several steps call `mktemp -d`, and the
-    # macOS per-user temp directory is not writable under the sandbox this is
-    # developed in. Without it those steps fail on the environment rather than on
-    # the code, which masks whatever they were meant to check.
+    # TMPDIR is overridden for shell `mktemp -d` steps ONLY, and deliberately not
+    # for the rest. Two different constraints collide:
+    #   - shell mktemp fails outright if the per-user temp directory is not
+    #     writable, which it is not in some sandboxes, so those steps need a
+    #     TMPDIR that is writable -- and the only writable location may be inside
+    #     the repository itself;
+    #   - the steps that copy the whole repository into a temp directory use
+    #     Python's tempfile, which works with the default TMPDIR. Pointing those
+    #     at a directory INSIDE the repo makes the copy recurse into its own
+    #     destination until it dies.
+    # Setting it globally therefore trades one spurious failure for another. The
+    # test is `mktemp` appearing in the step's own script.
     tmp = REPO / ".ci-tmp"
     tmp.mkdir(exist_ok=True)
-    env_line = ('export PYTHONPATH="%s:%s/scripts" MPLBACKEND=Agg TMPDIR="%s"\n'
-                % (REPO, REPO, tmp))
+    base_env = 'export PYTHONPATH="%s:%s/scripts" MPLBACKEND=Agg\n' % (REPO, REPO)
+    tmp_env = base_env.rstrip("\n") + ' TMPDIR="%s"\n' % tmp
 
     passed = failed = skipped = 0
     failures = []
@@ -108,6 +116,7 @@ def main() -> int:
                 print("  %-56s %s" % (name[:56], first.strip()[:60]))
                 continue
             t0 = time.time()
+            env_line = tmp_env if "mktemp" in script else base_env
             proc = subprocess.run(["bash", "-e", "-c", env_line + script],
                                   cwd=REPO, capture_output=True, text=True)
             dt = time.time() - t0
