@@ -230,6 +230,10 @@ jobs:
           # that produced a public figures README quoting a cohort that no longer
           # existed.
           python scripts/verify_release_notes_values.py
+          # CITATION.cff's version field had no reader and silently lagged the
+          # published release. Checked against the release-notes set, which is
+          # what ships in the archived tarball.
+          python scripts/verify_citation_version.py
           # A workbook cell was unreachable by every gate until this one:
           # editing S3_Table to read "11/13 = 0.999" passed verify_si_package,
           # audit_evidence_claims and verify_denominators. A checksum manifest
