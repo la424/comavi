@@ -1,3 +1,8 @@
 -r requirements.txt
-scikit-learn
-matplotlib
+
+# scikit-learn and matplotlib moved into requirements.txt in v3.0-methods. Both
+# are now verification dependencies rather than analysis extras: CI invokes
+# make_submission_figures.py --check and build_priority_sensitivity_summary.py
+# --check, and neither can import. Declaring them here as well would give the
+# same package two sources of truth, which is how they came to be installed in
+# one environment and not the other in the first place.

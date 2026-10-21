@@ -27,6 +27,22 @@ statsmodels
 pillow
 python-docx
 
+# Required to verify the figures, for the same reason as the two above.
+# figures/submission/make_submission_figures.py --check re-renders every figure
+# and compares it against the committed file, which is the only check that can
+# see a figure left stale after its underlying record changed. It was wired into
+# CI in v8.7 while matplotlib sat in requirements-analysis.txt, which this
+# workflow does not install -- so the gate imported matplotlib, died, and failed
+# every run from the day it was added. A verification gate's dependency belongs
+# in the verification requirements.
+matplotlib
+
+# Same story, one release later. build_priority_sensitivity_summary.py --check
+# gates the two S2 Text sensitivity analyses and uses sklearn.metrics for the
+# ROC AUC of the nine alternative score formulas. It was wired into CI in v9.0
+# with scikit-learn likewise sitting only in requirements-analysis.txt.
+scikit-learn
+
 # Figure and deck builders only -- not needed to verify any result. Listed so a
 # reader who wants to regenerate the presentation artifacts is not left guessing:
 #   python-pptx  -> build_lab_meeting_deck.py, audit_deck_numbers.py
