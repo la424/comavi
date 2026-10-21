@@ -119,13 +119,41 @@ def patch_ledger(dry_run: bool) -> int:
     return n
 
 
+# A later correction may legitimately overturn one of this version's rows. When
+# that happens the honest record is not to rewrite CORRECTIONS above -- that would
+# erase what v7.9 actually did -- nor to drop this check from CI, which would stop
+# it detecting drift on the rows that still stand. Instead the superseding value is
+# declared here, and check() verifies each row against whichever value is currently
+# authoritative. A silent change to EITHER a v7.9-era row or a superseding one
+# still fails.
+#
+# Keyed by (system, variant, axis) -> (current token, superseding version, reason).
+SUPERSEDED = {
+    ("kras_craf", "G12D", "binding"): (
+        "destab", "v8.0",
+        "Hunter 2015 Mol Cancer Res 13:1325 Table 2 reports RAF-kinase affinity "
+        "270 +/- 46 nmol/L against 56 +/- 6 for wild type, a stated 4.8-fold "
+        "decrease. The v7.9 reversal trusted an evidence_basis that misstated the "
+        "source it cited; v8.0 read the source."),
+    ("kras_craf", "G12V", "binding"): (
+        "destab", "v8.0",
+        "Hunter 2015 Table 2: 411 +/- 40 nmol/L against 56 +/- 6, a stated "
+        "7.3-fold decrease."),
+}
+
+
 def check() -> int:
     """Verify the correction is already applied and internally consistent."""
     base = pd.read_csv(CANONICAL, low_memory=False)
     led = pd.read_csv(LEDGER)
     bad = []
+    superseded_seen = []
     for system, variant, column, frm, to, _unit in CORRECTIONS:
         axis = column.replace("expected_ddg_", "")
+        if (system, variant, axis) in SUPERSEDED:
+            to, version, _why = SUPERSEDED[(system, variant, axis)]
+            superseded_seen.append("%s/%s/%s -> %r by %s"
+                                   % (system, variant, axis, to, version))
         row = base[(base["system"] == system) & (base[KEY] == variant)]
         if len(row) != 1:
             bad.append("%s/%s matched %d canonical rows" % (system, variant, len(row)))
@@ -144,8 +172,10 @@ def check() -> int:
         for b in bad:
             print("  - %s" % b)
         return 1
-    print("PASS: all %d v7.9 corrections present in canonical and ledger"
+    print("PASS: all %d v7.9 corrections consistent in canonical and ledger"
           % len(CORRECTIONS))
+    for line in superseded_seen:
+        print("  superseded: %s" % line)
     return 0
 
 

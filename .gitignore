@@ -53,3 +53,4 @@ docs/COMAVI_outline_v*.md
 docs/COMAVI_lab_meeting.pptx
 scripts/build_lab_meeting_deck.py
 scripts/audit_deck_numbers.py
+.ci-tmp/

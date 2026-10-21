@@ -1,31 +1,31 @@
 {
  "threshold": 2.5,
  "accounting": {
-  "n_committed_axes": 98,
+  "n_committed_axes": 99,
   "n_ddg_axes_gradeable": 78,
-  "n_committed_but_gated_out": 20,
-  "n_tier_axes_gradeable": 47,
-  "n_total_gradeable": 125,
+  "n_committed_but_gated_out": 21,
+  "n_tier_axes_gradeable": 46,
+  "n_total_gradeable": 124,
   "note": "Committed axes carry ground truth; a committed axis is gradeable only if the prediction also clears confidence and internal-CI gating. The difference is the cost of those gates, not missing curation."
  },
  "crude": {
   "quant_ok": 20,
-  "quant_n": 32,
-  "quant_rate": 0.625,
-  "soft_ok": 38,
-  "soft_n": 46,
-  "soft_rate": 0.826,
-  "OR": 0.351,
-  "p": 0.065
+  "quant_n": 34,
+  "quant_rate": 0.588,
+  "soft_ok": 36,
+  "soft_n": 44,
+  "soft_rate": 0.818,
+  "OR": 0.317,
+  "p": 0.0412
  },
  "token_composition_by_grade": {
   "soft": {
    "destab": 6,
-   "neutral": 40,
+   "neutral": 38,
    "stab": 0
   },
   "quantitative": {
-   "destab": 24,
+   "destab": 26,
    "neutral": 7,
    "stab": 1
   }
@@ -34,22 +34,22 @@
   "per_token": {
    "destab": {
     "quant_ok": 14,
-    "quant_n": 24,
+    "quant_n": 26,
     "soft_ok": 4,
     "soft_n": 6,
-    "quant_rate": 0.583,
+    "quant_rate": 0.538,
     "soft_rate": 0.667,
-    "OR": 0.7,
-    "p": 1.0
+    "OR": 0.583,
+    "p": 0.6722
    },
    "neutral": {
     "quant_ok": 6,
     "quant_n": 7,
-    "soft_ok": 34,
-    "soft_n": 40,
+    "soft_ok": 32,
+    "soft_n": 38,
     "quant_rate": 0.857,
-    "soft_rate": 0.85,
-    "OR": 1.059,
+    "soft_rate": 0.842,
+    "OR": 1.125,
     "p": 1.0
    },
    "stab": {
@@ -58,25 +58,25 @@
     "n": 1
    }
   },
-  "OR_mantel_haenszel": 0.826,
-  "chi2": 0.01,
-  "p": 0.919
+  "OR_mantel_haenszel": 0.758,
+  "chi2": 0.001,
+  "p": 0.9798
  },
  "by_evidence_type": {
   "E1_quantitative_energetic": {
    "ok": 18,
-   "n": 25,
-   "rate": 0.72
+   "n": 26,
+   "rate": 0.692
   },
   "E2_quantitative_functional": {
    "ok": 2,
-   "n": 7,
-   "rate": 0.286
+   "n": 8,
+   "rate": 0.25
   },
   "E3_qualitative_experimental": {
-   "ok": 20,
-   "n": 25,
-   "rate": 0.8
+   "ok": 18,
+   "n": 23,
+   "rate": 0.783
   },
   "E4_population_frequency": {
    "ok": 6,
@@ -96,9 +96,9 @@
    "rate": 0.833
   },
   "direct": {
-   "ok": 35,
+   "ok": 33,
    "n": 51,
-   "rate": 0.686
+   "rate": 0.647
   },
   "inferred": {
    "ok": 18,

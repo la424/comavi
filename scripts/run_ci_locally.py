@@ -83,7 +83,14 @@ def main() -> int:
 
     files = ([WORKFLOWS / w for w in args.workflow] if args.workflow
              else sorted(WORKFLOWS.glob("*.yml")))
-    env_line = 'export PYTHONPATH="%s:%s/scripts" MPLBACKEND=Agg\n' % (REPO, REPO)
+    # TMPDIR is set explicitly because several steps call `mktemp -d`, and the
+    # macOS per-user temp directory is not writable under the sandbox this is
+    # developed in. Without it those steps fail on the environment rather than on
+    # the code, which masks whatever they were meant to check.
+    tmp = REPO / ".ci-tmp"
+    tmp.mkdir(exist_ok=True)
+    env_line = ('export PYTHONPATH="%s:%s/scripts" MPLBACKEND=Agg TMPDIR="%s"\n'
+                % (REPO, REPO, tmp))
 
     passed = failed = skipped = 0
     failures = []
@@ -117,6 +124,10 @@ def main() -> int:
                         print("          %s" % line[:150])
                 failed += 1
                 failures.append("%s / %s" % (wf.name, name))
+                log = tmp / ("fail_%s.log" % re.sub(r"\W+", "_", name)[:50])
+                log.write_text("$ %s\n\n--- stdout\n%s\n--- stderr\n%s"
+                               % (script, proc.stdout, proc.stderr))
+                print("          full output: %s" % log.relative_to(REPO))
 
     if args.list:
         return 0
