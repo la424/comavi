@@ -6,7 +6,11 @@ on:
       - 'README.md'
       - 'docs/**'
       - 'notebooks/**'
-      - 'figures/isds_v1/**'
+      # Was 'figures/isds_v1/**', the LEGACY figure directory. The figures that
+      # ship, and make_submission_figures.py which this workflow gates, live in
+      # figures/submission/ -- so a change to a submitted figure or to that
+      # generator did not trigger these checks at all.
+      - 'figures/**'
       - 'scripts/**'
       - 'verification/**'
       - 'reference_outputs/**'
@@ -19,7 +23,11 @@ on:
       - 'README.md'
       - 'docs/**'
       - 'notebooks/**'
-      - 'figures/isds_v1/**'
+      # Was 'figures/isds_v1/**', the LEGACY figure directory. The figures that
+      # ship, and make_submission_figures.py which this workflow gates, live in
+      # figures/submission/ -- so a change to a submitted figure or to that
+      # generator did not trigger these checks at all.
+      - 'figures/**'
       - 'scripts/**'
       - 'verification/**'
       - 'reference_outputs/**'
