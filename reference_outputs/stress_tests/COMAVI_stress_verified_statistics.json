@@ -6,7 +6,7 @@
   "variant_bootstrap": 2000
  },
  "files": {
-  "canonical_sha256": "d3224c4146c2cfa565ea231a42b3b0c49e566258f0e8d18a3c20c88cbd6498ec",
+  "canonical_sha256": "77ba5c3b4722117ae98c06a3b1aa9e4e3e81a4a4923256519366e6798c8c27d2",
   "stress_draws_sha256": "6c8eff5a932289ece6b8ba1f0c026e82888f6d62c02393750b0961df0cb99732",
   "stress_script_sha256": "bef39363f2102bce36d90ff7232e9be9c45b4c2ed5f39049bcc735a6ead9e7cc",
   "stress_summary_sha256": "a0c48569786a5902a22f9e742f7a5422cb8fca51bb27992df8caf88d80c3816d"

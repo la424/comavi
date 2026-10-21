@@ -68,7 +68,7 @@
  ],
  "bootstrap_n": 2000,
  "bootstrap_unit": "system (cluster)",
- "canonical_sha256": "d3224c4146c2cfa565ea231a42b3b0c49e566258f0e8d18a3c20c88cbd6498ec",
+ "canonical_sha256": "77ba5c3b4722117ae98c06a3b1aa9e4e3e81a4a4923256519366e6798c8c27d2",
  "canonical_source": "reference_outputs/scored_61var_canonical.csv",
  "disruptor_definitions": {
   "ANNOTATED": "literature annotation for that axis contains 'destab' (ground-truth side only)",

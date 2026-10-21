@@ -72,7 +72,20 @@ DEFAULT_SUMMARY = REPO / "reference_outputs" / "COMAVI_evidence_ledger_summary.j
 #   v7.8  fb80b9849d8bdee3ae9b511abf2e6da9656071208eacff5be08e23366ce2d614
 #   v7.6  e4d657dee2625580bd41da05d9251fb69a224ddefdff6286f82a236511465d28
 #   v7.5  88cee917d00ea6705e851b59b7551ef8211052011768a732462ee59ef45031bb
-CANONICAL_SHA256 = "d3224c4146c2cfa565ea231a42b3b0c49e566258f0e8d18a3c20c88cbd6498ec"
+# Re-pinned in v3.0-methods. The only change to the table was the removal of 96
+# literal "N/A" strings from the ungraded mech_consistency / nbhd_mech_consistency
+# cells of 13 variants. v8.0 wrote them because grade_mechanism_consistency()
+# returns "N/A" as its ungraded sentinel, but "N/A" is in pandas' default
+# missing-value list and nothing in this repository passes keep_default_na or
+# na_rep, so the string was read back as NaN and written out as empty -- it could
+# not survive a round-trip, which broke the byte-level idempotency contract that
+# verification/test_update_canonical_isds_v1.py asserts and left remote CI red for
+# 20 consecutive runs. No value changed: every grading filter selects on
+# {consistent, partial, inconsistent}, so each consumer already saw these cells as
+# missing. Verified byte-exact before re-pinning:
+#   old_bytes.replace(b"N/A", b"") == new_bytes  ->  True   (delta 288 = 96 x 3)
+# Previous pin: d3224c4146c2cfa565ea231a42b3b0c49e566258f0e8d18a3c20c88cbd6498ec
+CANONICAL_SHA256 = "77ba5c3b4722117ae98c06a3b1aa9e4e3e81a4a4923256519366e6798c8c27d2"
 
 # Committed-axis count. v7.6 withdrew 11 commitments (expected token -> unknown),
 # taking the ledger and the canonical from 109 committed axes to 98.

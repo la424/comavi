@@ -68,27 +68,51 @@ EXPECTED_V5 = {
 # scripts/verify_v30_reconciliation.py, scripts/verify_denominators.py,
 # scripts/build_numbers_ledger.py and scripts/audit_evidence_claims.py.
 EXPECTED_CANONICAL = {
+    # v3.0-methods re-pin. The block below was last set for the v7.9 cohort and
+    # was never updated for the v8.0 ground-truth corrections (five source-verified
+    # axis changes and one withdrawn commitment), so it has been stale since
+    # 2026-10-05. This script never caught it because verify.yml triggers only on
+    # pushes to main and pull requests, and main did not move between 2026-08-26
+    # and 2026-10-21 -- the first run against the corrected cohort was its first
+    # run in eight weeks.
+    #
+    # Per the note above, these are NOT taken from this script's own re-derivation.
+    # Each was read from an independent generator and cross-checked:
+    #   structural_agreement  reference_outputs/COMAVI_threshold_sweep.json
+    #                         (structural_agreement_k/_n, graded denominator 123)
+    #                         plus the single extra all-row axis -> denominator 124
+    #   axis_decomposition    reference_outputs/COMAVI_numbers_ledger.json SA_by_axis
+    #   mech_consistency      COMAVI_threshold_sweep.json whole_variant
+    # The t25 all-row pair (86, 124) reproduces SA_total in the numbers ledger
+    # exactly, and the four-way decomposition closes on it: 19+17+20+30 = 86 and
+    # 27+22+29+46 = 124.
     'structural_agreement': {
-        # v7.9: the three reversed binding tokens add +3 correct binding-axis
-        # outputs at every threshold at or above 1.0.
-        't10': (88, 125), 't15': (91, 125), 't20': (92, 125),
-        't25': (92, 125), 'tSAP': (90, 125),
+        # All-row denominators. The graded population carries 123 axes; the one
+        # additional all-row axis is the monomer-fold axis of BRCA1 R1699Q, which
+        # is retained in the resource but excluded from whole-variant grading by
+        # its curated role (mechanism_not_observable_on_structure). It agrees at
+        # no threshold, so it adds +1 to n and +0 to k everywhere -- which is why
+        # the ledger's all-row monomer axis is (19, 27) against the sweep's
+        # graded (19, 26).
+        't10': (82, 124), 't15': (85, 124), 't20': (86, 124),
+        't25': (86, 124), 'tSAP': (84, 124),
     },
     'mech_consistency': {
-        # v7.9 moved only t25 and tSAP. Below the reference threshold the
-        # three reversed variants already fired on another axis, so their
-        # grade was unchanged there -- the correction bites exactly where
-        # the binding call was the deciding one.
-        't10': 0.579, 't15': 0.649, 't20': 0.684,
-        't25': 0.719, 'tSAP': 0.711,
+        # v8.0 moves every threshold, because the corrections changed cohort
+        # membership rather than only individual calls: G674R's binding
+        # commitment was withdrawn, which removes a variant from grading, and
+        # the KRAS, MLH1 and SMAD4 corrections reclassify variants between the
+        # mechanism and no-lesion arms.
+        't10': 0.562, 't15': 0.616, 't20': 0.652,
+        't25': 0.661, 'tSAP': 0.652,
     },
-    'mech_graded_n': 57,
+    'mech_graded_n': 56,
     # Four-way decomposition of the t=2.5 headline (ledger §13).
-    # monomer 16 -> 27 gradeable: +12 cohort rows, -1 CI-excluded (R1699L).
-    # v7.7: each axis loses the rows whose expectation was withdrawn.
+    # v8.0: binding loses G674R (commitment withdrawn) and the tier arm follows
+    # the prioritization population from 47 variants to 46.
     'axis_decomposition_t25': {
-        'monomer': (19, 26), 'fold': (17, 22),
-        'binding': (22, 30), 'tier': (34, 47),
+        'monomer': (19, 27), 'fold': (17, 22),
+        'binding': (20, 29), 'tier': (30, 46),
     },
     # Tier pathogenicity gradient — carries no expected_mech_class term, so
     # neither the v7.1 correction nor v7.3 pooling may move it.
