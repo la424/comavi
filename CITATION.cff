@@ -18,8 +18,8 @@ authors:
 license: MIT
 repository-code: "https://github.com/la424/comavi"
 doi: "10.5281/zenodo.21284083"
-version: "2.1-methods"
-date-released: "2026-08-14"
+version: "3.0-methods"
+date-released: "2026-10-21"
 keywords:
 - missense variant interpretation
 - FoldX

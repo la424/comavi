@@ -449,7 +449,9 @@ Consortium (PCGC) study `phs001194`.
 Code, the worked example, and the result CSVs live here. The full AlphaFold
 structure set (large) is best archived separately on **Zenodo/Figshare** with a
 DOI linked from this README, which also keeps a citable record of the exact inputs.
-(GitHub's Zenodo integration can additionally mint a DOI for this code on release.)
+This repository is itself archived on Zenodo through the GitHub integration: every
+release mints a new version DOI under the concept DOI in the badge above, which always
+resolves to the most recent archived release.
 
 ## Caveats
 
