@@ -223,6 +223,13 @@ jobs:
           # that lives correctly elsewhere. The paper is gated; its copies
           # were not.
           python scripts/verify_no_duplicated_headlines.py
+          # Release notes are allowed to restate headline numbers by
+          # verify_no_duplicated_headlines.py's ALLOWED_PATTERNS, so the gate that
+          # actually checks them has to run in the same step -- an allowance
+          # without its gate leaves the notes unchecked, which is the condition
+          # that produced a public figures README quoting a cohort that no longer
+          # existed.
+          python scripts/verify_release_notes_values.py
           # A workbook cell was unreachable by every gate until this one:
           # editing S3_Table to read "11/13 = 0.999" passed verify_si_package,
           # audit_evidence_claims and verify_denominators. A checksum manifest
