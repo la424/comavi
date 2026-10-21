@@ -109,21 +109,31 @@ def main() -> int:
         for label, needle, *rest in needles:
             in_table = rest[0] if rest else True
             # A patch release's notes restate only what that release changed, so
-            # a file is held to the rows it actually claims -- the label must be
-            # present for the value to be required. On its own that would let a
-            # row vanish silently, so after the loop every label must be claimed
-            # by at least one notes file.
-            if label not in text:
-                continue
+            # a file is held to the rows it actually claims. A CLAIM is the
+            # quantity named in a table row, not merely mentioned in prose: the
+            # v3.0.1 notes discuss "the mechanism-pattern agreement" without
+            # restating it, which is not a claim about its value and must not be
+            # treated as one. On its own this would let a row vanish silently, so
+            # after the loop every label must be claimed by some notes file.
+            if in_table:
+                rows = [ln for ln in text.splitlines()
+                        if ln.lstrip().startswith("|") and label in ln]
+                if not rows:
+                    continue
+                claim = "\n".join(rows)
+            else:
+                if label not in text:
+                    continue
+                claim = text
             covered.add(label)
             # The current column is bold; a value present only unbolded is in the
             # superseded column and does not satisfy the claim.
             if in_table:
-                ok = ("**%s**" % needle) in text or ("**%s" % needle) in text
+                ok = ("**%s**" % needle) in claim or ("**%s" % needle) in claim
                 why = ("present but not in the bold current column"
-                       if needle in text else "absent")
+                       if needle in claim else "absent from its table row")
             else:
-                ok = needle in text
+                ok = needle in claim
                 why = "absent"
             if not ok:
                 bad.append((path.name, label, needle, why))
