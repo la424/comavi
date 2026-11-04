@@ -333,7 +333,7 @@ COMAVI exposes two complementary outputs:
    and structural-context evidence for a modeled structural disruption.
 2. The **mechanism profile** preserves the separate monomer-fold,
    complex-context, and binding predictions needed to interpret the proposed
-   lesion and choose a follow-up experiment.
+   disruption and choose a follow-up experiment.
 
 ISDS-v1 is a unitless prioritization index. It is not a pathogenicity
 probability, a calibrated probability of structural disruption, or an
@@ -371,7 +371,7 @@ its curated role.
 ### Structural-disruption prioritization
 
 On the 46-variant prioritization population, comprising 21 committed modeled
-structural mechanisms and 25 variants curated to lack a committed lesion on
+structural mechanisms and 25 variants curated to lack a committed disruption on
 the modeled axes:
 
 - ISDS-v1 ROC AUC 0.834;

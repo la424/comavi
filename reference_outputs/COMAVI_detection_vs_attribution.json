@@ -142,7 +142,7 @@
   "n": 11,
   "binding_axis_fires": 4,
   "complex_fold_axis_fires": 7,
-  "note": "For variants curated as pure interface destabilizers the complex-context fold axis fires more often than the binding axis, so the lesion is detected but attributed to the wrong axis. This is the separation the pipeline exists to make and it is where the benchmark is weakest.",
+  "note": "For variants curated as pure interface destabilizers the complex-context fold axis fires more often than the binding axis, so the disruption is detected but attributed to the wrong axis. This is the separation the pipeline exists to make and it is where the benchmark is weakest.",
   "large_monomer_effect": [
    {
     "gene": "SMAD4",

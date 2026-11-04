@@ -53,6 +53,12 @@ from matplotlib.lines import Line2D  # noqa: E402
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch  # noqa: E402
 from PIL import Image  # noqa: E402
 
+# This interpreter runs with safe-path enabled, so a script's own directory is
+# NOT on the import path and a bare sibling import fails. Every other generator
+# in this repository inserts it explicitly; so does this one.
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from cohort_flow import fig_cohort as _fig_cohort  # noqa: E402
+
 REPO = pathlib.Path(__file__).resolve().parents[2]
 RO = REPO / "reference_outputs"
 AN = RO / "isds_v1"
@@ -67,7 +73,7 @@ PAD = 0.03                       # inches of white kept around the cropped figur
 AM_AMBIGUOUS = (0.34, 0.564)     # AlphaMissense ambiguous range (Cheng et al. 2023)
 
 INK, GREY, RULE, BAND = "#222222", "#6E6E6E", "#B3B3B3", "#E3E3E3"
-STRUCT, NOLES = "#B2182B", "#5F5F5F"              # structural mechanism / no lesion
+STRUCT, NOLES = "#B2182B", "#5F5F5F"              # structural mechanism / no disruption
 MONO, FOLD, BIND, TIER = "#3C78D8", "#6AA84F", "#E69138", "#674EA7"   # Fig 1 colours
 ENERGY = "#0E7C7B"
 TAGS = ["t10", "t15", "t20", "t25", "tSAP"]
@@ -302,7 +308,7 @@ def fig_priority():
         a.scatter(v, row + beeswarm(a, v, 13), s=13, color=col, edgecolor="white", linewidth=0.4,
                   zorder=3)
     a.set_yticks([0, 1], ["Structural\nmechanism (n = %d)" % pop["positive"],
-                          "No lesion\n(n = %d)" % pop["negative"]])
+                          "No disruption\n(n = %d)" % pop["negative"]])
     a.set_xlabel("Priority score")
     a.tick_params(axis="y", length=0)
     a.spines["left"].set_visible(False)
@@ -371,7 +377,10 @@ def fig_threshold():
         b.plot(X, vals, "-", color=col, marker=mk, mfc=col, mec=col, ms=3.6, label=lab, zorder=3)
         best = np.where(np.isclose(vals, vals.max()))[0]
         b.plot(best, vals[best], ls="none", marker="o", ms=8, mfc="none", mec=col, mew=0.9, zorder=4)
-    b.set_ylim(0.4, 1.0)
+    # Reviewer: start this axis at zero like the other three. All four panels
+    # report a fraction, so a panel with its own range invites the reader to
+    # compare heights across panels that are not on the same scale.
+    b.set_ylim(0, 1.02)
     b.set_ylabel("Direction agreement")
     b.legend(loc="lower right", ncol=1)
     thresh_axis(b)
@@ -384,7 +393,7 @@ def fig_threshold():
     c.plot(X, [r["whole_variant"] for r in rows], "-", color=INK, marker="o", ms=4, label="Pooled",
            zorder=4)
     c.plot(X, arm_s, "--", color=STRUCT, marker="s", ms=3.6, label="Structural arm", zorder=3)
-    c.plot(X, arm_n, "--", color=NOLES, marker="^", ms=3.6, label="No-lesion arm", zorder=3)
+    c.plot(X, arm_n, "--", color=NOLES, marker="^", ms=3.6, label="Non-disruptive arm", zorder=3)
     c.set_ylim(0, 1.02)
     c.set_ylabel("Mechanism-pattern score")
     c.legend(loc="lower right")
@@ -431,11 +440,11 @@ def fig_calibration():
     a, b, c, e = ax.ravel()
     lo, hi = min(d.measured_kcal.min(), d.foldx_ddg.min()) - 0.5, max(d.measured_kcal.max(), d.foldx_ddg.max()) + 0.5
     for axx in (a,):
-        axx.plot([lo, hi], [lo, hi], ls=(0, (4, 2)), color=RULE, lw=0.8, zorder=1)
+        axx.plot([lo, hi], [lo, hi], ls=(0, (5, 2)), color=INK, lw=1.0, zorder=1)
         xs = np.array([d.measured_kcal.min(), d.measured_kcal.max()])
         axx.plot(xs, st["intercept"] + st["slope"] * xs, "-", color=INK, lw=1.1, zorder=2)
-        axx.axhline(2.5, color=RULE, lw=0.6, ls=":", zorder=0)
-        axx.axvline(2.5, color=RULE, lw=0.6, ls=":", zorder=0)
+        axx.axhline(2.5, color=ENERGY, lw=0.9, ls=(0, (1.2, 1.2, 4, 1.2)), zorder=0)
+        axx.axvline(2.5, color=ENERGY, lw=0.9, ls=(0, (1.2, 1.2, 4, 1.2)), zorder=0)
     draw_points(a, d, "foldx_ddg")
     a.set_xlim(lo, hi)
     a.set_ylim(lo, max(d.foldx_ddg.max(), 7) + 0.5)
@@ -444,7 +453,9 @@ def fig_calibration():
     letter(a, "A")
 
     d["err"] = d.foldx_ddg - d.measured_kcal
-    b.axhline(0, color=RULE, lw=0.8, ls=(0, (4, 2)), zorder=1)
+    # Zero error means predicted equals measured, which is what the identity
+    # line means in the other panels, so it carries the identity style.
+    b.axhline(0, color=INK, lw=1.0, ls=(0, (5, 2)), zorder=1)
     draw_points(b, d, "err")
     b.set_xlim(lo, hi)
     b.set_xlabel("Measured ΔΔG (kcal/mol)")
@@ -459,9 +470,9 @@ def fig_calibration():
                                        "Predicted binding\nΔΔG (kcal/mol)")]:
         m = max(sub.measured_kcal.max(), sub.foldx_ddg.max()) + 0.6
         n = min(sub.measured_kcal.min(), sub.foldx_ddg.min(), 0) - 0.6
-        axx.plot([n, m], [n, m], ls=(0, (4, 2)), color=RULE, lw=0.8, zorder=1)
-        axx.axhline(2.5, color=RULE, lw=0.6, ls=":", zorder=0)
-        axx.axvline(2.5, color=RULE, lw=0.6, ls=":", zorder=0)
+        axx.plot([n, m], [n, m], ls=(0, (5, 2)), color=INK, lw=1.0, zorder=1)
+        axx.axhline(2.5, color=ENERGY, lw=0.9, ls=(0, (1.2, 1.2, 4, 1.2)), zorder=0)
+        axx.axvline(2.5, color=ENERGY, lw=0.9, ls=(0, (1.2, 1.2, 4, 1.2)), zorder=0)
         axx.scatter(sub.measured_kcal, sub.foldx_ddg, marker=mk, s=18, color=col, edgecolor="white",
                     linewidth=0.35, zorder=3)
         axx.set_xlim(n, m)
@@ -484,7 +495,9 @@ def fig_calibration():
     handles += [Line2D([], [], ls="none", marker="o", mfc="white", mec=BIND, mew=0.9, ms=5,
                        label="Barnase Glu73"),
                 Line2D([], [], color=INK, lw=1.1, label="Least-squares fit"),
-                Line2D([], [], color=RULE, lw=0.8, ls=(0, (4, 2)), label="Identity")]
+                Line2D([], [], color=INK, lw=1.0, ls=(0, (5, 2)), label="Identity"),
+                Line2D([], [], color=ENERGY, lw=0.9, ls=(0, (1.2, 1.2, 4, 1.2)),
+                       label="2.5 kcal/mol")]
     fig.legend(handles=handles, loc="upper center", ncol=4, bbox_to_anchor=(0.54, 1.0), columnspacing=1.2,
                handletextpad=0.4)
     fig.subplots_adjust(left=0.1, right=0.99, bottom=0.095, top=0.87, wspace=0.34, hspace=0.42)
@@ -589,7 +602,7 @@ def s2():
     lo = min(allv.ddg_meas.min(), allv.ddg_pred_bind.min()) - 0.4
     hi = max(allv.ddg_meas.max(), allv.ddg_pred_bind.max()) + 0.4
     for axx, df, mask, lab in [(a, bb, g73, "A"), (b, jt, pd.Series(False, index=jt.index), "B")]:
-        axx.plot([lo, hi], [lo, hi], ls=(0, (4, 2)), color=RULE, lw=0.8, zorder=1)
+        axx.plot([lo, hi], [lo, hi], ls=(0, (5, 2)), color=INK, lw=1.0, zorder=1)
         axx.axhline(0, color=RULE, lw=0.6, ls=":", zorder=0)
         axx.axvline(0, color=RULE, lw=0.6, ls=":", zorder=0)
         axx.scatter(df.loc[~mask, "ddg_meas"], df.loc[~mask, "ddg_pred_bind"], s=15, color=BIND,
@@ -710,8 +723,28 @@ def s5():
 
 # Numbered in the order the Results cite them: threshold, calibration, priority; and
 # for the supporting figures, call relationships, context comparators, transformation.
-FIGURES = {"Fig1": fig1, "Fig2": fig_threshold, "Fig3": fig_calibration, "Fig4": fig_priority, "Fig5": fig5,
-           "S1_Fig": s1, "S2_Fig": s2, "S3_Fig": s5, "S4_Fig": s3, "S5_Fig": s4}
+def fig_cohort():
+    """Benchmark cohort flow. Geometry and counts live in cohort_flow.py; the
+    style constants are passed in from here so the figure cannot drift from the
+    rest of the submission set."""
+    fig, _ = _fig_cohort(style, FULL, INK, GREY, RULE, STRUCT, NOLES, BAND)
+    return fig
+
+
+# v10.0 renumbering, by first citation. Two changes drove it: the cohort flow is
+# a new Fig 2, and the stress tests moved from the supplement into the main text
+# as Fig 3 -- they are cited before the threshold figure and they are the
+# robustness evidence for the headline score, which a referee looks for in the
+# paper rather than the supplement. Everything after shifts by one, and the four
+# remaining supporting figures renumber to close the gap.
+#   Fig 2 (threshold)  -> Fig 4        S2 Fig (SKEMPI)      -> S1 Fig
+#   Fig 3 (calibration)-> Fig 5        S3 Fig (relationships)-> S2 Fig
+#   Fig 4 (priority)   -> Fig 6        S4 Fig (comparators) -> S3 Fig
+#   Fig 5 (pathogenic) -> Fig 7        S5 Fig (transform)   -> S4 Fig
+#   S1 Fig (stress)    -> Fig 3
+FIGURES = {"Fig1": fig1, "Fig2": fig_cohort, "Fig3": s1, "Fig4": fig_threshold,
+           "Fig5": fig_calibration, "Fig6": fig_priority, "Fig7": fig5,
+           "S1_Fig": s2, "S2_Fig": s5, "S3_Fig": s3, "S4_Fig": s4}
 
 
 # ------------------------------------------------------------------ specification

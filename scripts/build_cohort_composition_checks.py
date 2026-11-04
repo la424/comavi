@@ -12,10 +12,10 @@ is visible in the headline numbers.
    on predicted complexes needs the predicted-structure number.
 
 2. Clinical labels. Every benign variant in the pathogenicity comparison entered
-   the benchmark as a curated no-lesion control, so a structural score separates
+   the benchmark as a curated non-disruptive control, so a structural score separates
    benign variants from pathogenic structural mechanisms partly by construction.
    The informative quantity is how the PATHOGENIC class divides between
-   structural mechanisms and variants with no lesion on the modeled axes: that
+   structural mechanisms and variants with no disruption on the modeled axes: that
    division is direct evidence that structural disruption and pathogenicity are
    different properties.
 
@@ -40,6 +40,12 @@ Usage (repo root)
     PYTHONPATH=.:scripts python scripts/build_cohort_composition_checks.py
     PYTHONPATH=.:scripts python scripts/build_cohort_composition_checks.py --check
 """
+# NOTE ON VOCABULARY. The paper calls this class "non-disruptive" from v10.0 on;
+# this file keeps "no_lesion" as a KEY because that key ships in the v3.0.1
+# archive (10.5281/zenodo.21284083) and anyone reading the released records is
+# reading it. A published schema is an interface, so it was left alone while the
+# prose it feeds was renamed. Human-facing strings in this file were renamed.
+
 import argparse
 import json
 import pathlib
@@ -157,7 +163,7 @@ def build():
             "population": "AlphaMissense comparison set (%d variants)" % len(am),
             "table": table,
             "benign_all_curated_no_lesion": bool(benign_all_no_lesion),
-            "note": ("Benign variants entered the benchmark as curated no-lesion "
+            "note": ("Benign variants entered the benchmark as curated non-disruptive "
                      "controls, so pathogenicity AUCs of structural scores partly "
                      "reflect construction. The division of the pathogenic class "
                      "is the informative quantity."),

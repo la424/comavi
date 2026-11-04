@@ -1,0 +1,9 @@
+where,what,n,disposition,note
+docs/manuscript/COMAVI_manuscript_source.txt,"manuscript prose, headings, figure and table captions",46,renamed,"content fingerprint identical before and after: no decimal, count, citation, variant name or item reference moved"
+figures/submission/make_submission_figures.py,figure legend labels and a palette comment,3,renamed,'No-lesion arm' -> 'Non-disruptive arm'; 'No lesion (n)' -> 'No disruption (n)'
+figures/isds_v1/make_figures.py,"legacy figure generator, display strings",5,renamed,kept consistent with the submission set
+scripts/ and verification/ (14 files),"docstrings, comments, printed messages and prose templates",33,renamed,human-facing strings only
+"scripts/analyze_isds_v1.py, build_evidence_state_tables.py, build_cohort_composition_checks.py","emitted JSON keys 'no_lesion', 'benign_all_curated_no_lesion' and the CSV value 'no modeled lesion'",15,RETAINED,"these ship in the v3.0.1 archive (10.5281/zenodo.21284083); a published schema is an interface, so the keys were left alone and a note in each file records why"
+reference_outputs/COMAVI_evidence_ledger.csv,one evidence_basis string,1,renamed via its generator,"curate_evidence_types.py rebuilds the ledger, so the fix went to source and the ledger was regenerated, not patched"
+"submission SI workbooks (S1, S2, S3 Table)","caption, basis and display-label cells",47,renamed,no builder owns these workbooks; cells patched in place and verify_si_derived_sheets.py re-run
+"submission SI texts (S1, S2, S3 Text) and SI_INDEX.csv",prose paragraphs and index captions,6,renamed,

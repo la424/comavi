@@ -315,7 +315,7 @@ put("kras_craf", "Q61H", "binding", E3, "direct",
 
 # ------------------------------------------------------------------ hemoglobin
 for ax, basis in [
-    ("monomer", "Native beta-subunit fold; the lesion is intermolecular"),
+    ("monomer", "Native beta-subunit fold; the disruption is intermolecular"),
     ("fold_complex", "Native tetramer; assembly unaffected"),
     ("binding", "HbS assembles normally -- pathogenicity arises from "
                 "deoxy-state polymerization at a surface patch, not from "

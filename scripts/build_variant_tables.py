@@ -83,7 +83,7 @@ MECH_LABEL = {
     "fold_mechanism": "Fold destabilization",
     "ppi_destab_mechanism": "Interface disruption",
     "mixed_structural": "Fold and interface",
-    "structurally_silent": "No modeled lesion",
+    "structurally_silent": "No modeled disruption",
     "structurally_uncommitted": "Not committed",
     "interface_uncommitted_magnitude": "Interface, magnitude uncommitted",
 }
@@ -243,7 +243,7 @@ def whole_variant_expectation(canonical):
 
     Five graded variants commit no axis at all: their curated expectation is a
     WHOLE-VARIANT one -- pathogenic by a functional mechanism, therefore no
-    structural lesion should be detected -- carried by evidence_axes and the
+    structural disruption should be detected -- carried by evidence_axes and the
     curation note. The per-axis evidence ledger is keyed on committed axis
     tokens, so it holds no row for them, and joining on it alone leaves their
     basis and citation blank. That blank reads as missing curation when the

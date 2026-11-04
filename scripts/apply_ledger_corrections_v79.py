@@ -27,7 +27,7 @@ is preserved or enhanced; the curated basis itself records that G12 sits 13.6 A
 from the RAF1 interface. A binding-destabilizing expectation there is wrong.
 
 For MSH2 C697F the basis records a catalytic ATPase defect with the protein
-stable and the MSH6 interaction intact. The same reasoning applies: the lesion
+stable and the MSH6 interaction intact. The same reasoning applies: the disruption
 is catalytic, which is not one of the three modeled axes.
 
 This script reverses those three cells only. It does not touch the other 15

@@ -165,7 +165,7 @@ box(ax,(0.32,0.55),(0.29,0.27),'57 mechanism-gradeable','Whole-variant pattern s
 box(ax,(0.32,0.20),(0.29,0.27),'4 ungraded resource cases','2 mechanisms missing\nrequired context\n2 mechanism-uncommitted\nreference cases','#F5F5F5',DARK,9.0)
 arrow(ax,0.61,0.69,0.66,0.69)
 _pop=json.load(open(AN/'ISDS_v1_summary.json'))['population']
-box(ax,(0.66,0.55),(0.31,0.27),f"{_pop['n']} structural-prioritization",f"Tier-carrying interaction variants\n{_pop['positive']} modeled structural mechanisms\n{_pop['negative']} with no committed lesion",'#E9F6F2',TEAL,9.0)
+box(ax,(0.66,0.55),(0.31,0.27),f"{_pop['n']} structural-prioritization",f"Tier-carrying interaction variants\n{_pop['positive']} modeled structural mechanisms\n{_pop['negative']} with no committed disruption",'#E9F6F2',TEAL,9.0)
 ax.text(0.34,0.12,'Other analysis subsets are defined once and referenced consistently: 15 direct-energy comparators, 44 measured destabilizers, and 47 AlphaMissense complete cases.',fontsize=9.3,color=GRAY)
 save(fig,'figure2_population_map.png')
 
@@ -265,7 +265,7 @@ neg=pv[~pv.structural_ground_truth.astype(bool)].isds_v1
 pos=pv[pv.structural_ground_truth.astype(bool)].isds_v1
 bins=np.linspace(0,1,11)
 _pp=summary['population']
-ax.hist(neg,bins=bins,alpha=.75,label=f"No modeled lesion (n={_pp['negative']})",color=BLUE)
+ax.hist(neg,bins=bins,alpha=.75,label=f"No modeled disruption (n={_pp['negative']})",color=BLUE)
 ax.hist(pos,bins=bins,alpha=.78,label=f"Structural mechanism (n={_pp['positive']})",color=ORANGE)
 ax.set_xlabel('ISDS-v1'); ax.set_ylabel('Variants'); ax.set_title('Higher scores enrich structural mechanisms',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False,fontsize=8.8); panel_label(ax, 'A')
 # c ROC/PR
@@ -318,9 +318,9 @@ ax=axes[1]
 states=['Convergent','Energy only','Context only','Neither']
 _fs=summary['four_state_agreement']
 assert _fs is not None, 'four_state_agreement missing from ISDS_v1_summary.json — re-run analyze_isds_v1.py'
-struct=np.array(_fs['structural']); neg=np.array(_fs['no_lesion']); x=np.arange(4)
+struct=np.array(_fs['structural']); neg=np.array(_fs['no_disruption']); x=np.arange(4)
 ax.bar(x-.18,struct,.36,color=ORANGE,label='Structural mechanism')
-ax.bar(x+.18,neg,.36,color=BLUE,label='No modeled lesion')
+ax.bar(x+.18,neg,.36,color=BLUE,label='No modeled disruption')
 ax.set_xticks(x,['Convergent','Energy\nonly','Context\nonly','Neither']); ax.set_ylabel('Variants'); ax.set_ylim(0,18.2); ax.set_title('Discrete evidence states remain interpretable',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False,fontsize=8.8); ax.grid(axis='y',alpha=.2)
 for i,(a,b) in enumerate(zip(struct,neg)):
     if a: ax.text(i-.18,a+.25,str(a),ha='center',fontweight='bold',color=ORANGE)
@@ -409,7 +409,7 @@ alt = {
 'figure1_unified_comavi_workflow.png':'Workflow diagram showing a missense variant and structure feeding four native COMAVI calculations. The outputs branch into ISDS-v1 for prioritization and a signed multi-axis mechanism profile for assay selection. Pathogenicity remains separate.',
 'figure2_population_map.png':'Population flow from a 61-variant resource to 57 mechanism-gradeable variants and 47 tier-carrying structural-prioritization variants, with four ungraded scope or commitment cases shown separately.',
 'figure3_mechanism_localization.png':'Two horizontal bar charts showing direction-aware agreement for monomer, complex-context, binding, and all energetic axes, and whole-variant mechanism-pattern scores for the full, interaction, and BRCT populations.',
-'figure6_priority_recovery.png':'Two panels showing ISDS-v1 score distributions for structural-mechanism and no-lesion variants, and precision and recovery as the experimental budget increases.',
+'figure6_priority_recovery.png':'Two panels showing ISDS-v1 score distributions for structural-mechanism and non-disruptive variants, and precision and recovery as the experimental budget increases.',
 'figureS4_priority_definition.png':'Two panels showing the soft-saturating energetic transformation and structural-prioritization ROC curves for ISDS-v1 and its energy and context components.',
 'figureS3_context_comparators.png':'Sensitivity and specificity of three structural-context screens: interface status alone, the tier without its interface bonus, and the full Tier 1-2 screen.',
 'figure5_context_components_and_states.png':'Two panels comparing sensitivity and specificity of interface, no-interface tier, and full tier screens, and counts of structural mechanisms and negatives across convergent, energy-only, context-only, and neither states.',

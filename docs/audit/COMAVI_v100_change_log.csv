@@ -1,0 +1,14 @@
+where,change,prompted_by,values_traced_to
+Fig 2 (new),Cohort flow diagram,three readers could not follow the population counts,"scored_61var_canonical.csv, ISDS_v1_per_variant.csv, ISDS_v1_alphamissense_common_set.csv"
+"Results, cohort paragraph","Rewritten around the two structural contexts, both exclusion routes named, the non-nested comparison set flagged",#16 and the same complaint from other readers,same records as Fig 2
+Global,"no-lesion → non-disruptive, lesion → disruption (141 sites)","#6, #7, #15, #21, #31",her own tracked edits
+Table 2,Reduced to metric definitions; threshold grid dropped,#20,COMAVI_threshold_sweep.json
+Fig 3 (promoted),Stress tests moved from the supplement to the main text,#20,COMAVI_stress_verified_statistics.json
+"Figures 2–7, S1–S4",Renumbered to first-citation order,consequence of the two changes above,computed from the source
+Abstract,"Subunit glossed, tier defined, systems/complexes split stated; eleven sentences tightened to stay at 298 of 300 words","#2, #4, #5, #9",—
+Evidence paragraph,Unit change from variants to axis expectations signposted,#18,COMAVI_evidence_ledger.csv
+Discussion workflow,Each axis mapped to the measurement class this benchmark used,#33,COMAVI_delta_calibration_points.csv
+Conclusion,Names the three measurements,#34,—
+Fig 5,"Identity dark dashed, threshold teal dash-dot, both in the legend",#28,—
+Fig 4C,y-axis starts at 0 like its siblings,#24,—
+Table 1,Four acronyms defined; BARD1 row before BRCT,#13,—

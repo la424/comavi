@@ -286,8 +286,10 @@ def write_table(doc, header, rows, italic_cols=(), widths=None, left_cols=()):
 
 
 SYSTEMS = [  # display name, system id, gene, structure
-    ("BRCA1 BRCT tandem domain", "brca1_brct", "BRCA1", "PDB 1JNX"),
+    # Alphabetical by display name. BARD1 precedes BRCT, which an en-dash sort
+    # gets wrong because "–" sorts after " " by code point.
     ("BRCA1–BARD1 RING heterodimer", "brca1_bard1", "BRCA1", "PDB 1JM7"),
+    ("BRCA1 BRCT tandem domain", "brca1_brct", "BRCA1", "PDB 1JNX"),
     ("Calmodulin–CaV1.2 IQ domain", "cam_cav12", "CALM1", "AlphaFold 3 model"),
     ("Complement factor H–C3b", "cfh_c3b", "CFH", "PDB 2WII"),
     ("Hemoglobin α–β dimer", "hemoglobin_dimer", "HBB", "PDB 2HHB"),
@@ -332,54 +334,50 @@ THRESH_LABELS = ["1.0", "1.5", "2.0", "2.5", "Bound"]
 
 
 def table2_rows():
+    """Metric definitions only.
+
+    Until v10.0 this table also carried every metric at all five thresholds, a
+    grid that Fig 4 plots and the S3 Table operating_point_sweep sheet tabulates
+    in full. Three readers reacted to the duplication. The definitions stay in
+    the main text, beside the first use of each term; the values do not.
+    """
     sw = json.loads((RO / "COMAVI_threshold_sweep.json").read_text())["rows"]
     assert [r["threshold_tag"] for r in sw] == ["t10", "t15", "t20", "t25", "tSAP"]
     can = pd.read_csv(RO / "scored_61var_canonical.csv")
     g = can[can.mech_consistency_t25.notna()]
-    w = {"consistent": 1.0, "partial": 0.5, "inconsistent": 0.0}
     struct = g.expected_mech_class != "structurally_silent"
     me = json.loads((RO / "COMAVI_measured_effect_tables.json").read_text())["measured_effects_recovered"]
     pm = pd.read_csv(RO / "isds_v1" / "ISDS_v1_primary_metrics.csv").set_index("score")
-    f3 = lambda x: "%.3f" % x
-
-    def arm(mask):
-        out = []
-        for tag in ["t10", "t15", "t20", "t25", "tSAP"]:
-            out.append(f3(g.loc[mask, "mech_consistency_%s" % tag].map(w).mean()))
-        return out
-
-    da = lambda r: (r["axis_monomer_k"] + r["axis_fold_k"] + r["axis_binding_k"]) / \
-                   (r["axis_monomer_n"] + r["axis_fold_n"] + r["axis_binding_n"])
     n_axes = sw[0]["axis_monomer_n"] + sw[0]["axis_fold_n"] + sw[0]["axis_binding_n"]
-    auc = f3(pm.loc["isds_v1", "roc_auc"])
     rows = [
-        ["Mechanism-pattern score", "%d graded variants" % len(g), "Mean whole-variant grade"] + [f3(r["whole_variant"]) for r in sw],
-        ["Structural arm", "%d structural-mechanism variants" % int(struct.sum()), "Mean grade of variants expected to carry a lesion"] + arm(struct),
-        ["No-lesion arm", "%d no-lesion variants" % int((~struct).sum()), "Mean grade of variants expected to be silent"] + arm(~struct),
-        ["Detection", "%d structural-mechanism variants" % sw[0]["detection_n"], "Any axis reaches the threshold"] + [f3(r["detection"]) for r in sw],
+        ["Mechanism-pattern score", "%d graded variants" % len(g), "Mean whole-variant grade"],
+        ["Structural arm", "%d structural-mechanism variants" % int(struct.sum()), "Mean grade of variants expected to carry a disruption"],
+        ["Non-disruptive arm", "%d non-disruptive variants" % int((~struct).sum()), "Mean grade of variants expected to be silent"],
+        ["Detection", "%d structural-mechanism variants" % sw[0]["detection_n"], "Any axis reaches the threshold"],
         # What a monomer-only analysis would report on the same variants: the first
         # contribution of the paper is the gap between this row and the one above.
-        ["Detection, isolated subunit only", "%d structural-mechanism variants" % sw[0]["detection_n"], "The isolated-subunit axis alone reaches the threshold"] + [f3(r["detection_isolated"]) for r in sw],
-        ["Attribution", "%d structural-mechanism variants" % sw[0]["attribution_n"], "The axis the literature implicates reaches the threshold"] + [f3(r["attribution"]) for r in sw],
-        ["Correct rejection", "%d no-lesion variants" % sw[0]["correct_rejection_n"], "No axis reaches the threshold"] + [f3(r["correct_rejection"]) for r in sw],
-        ["Correct rejection, isolated subunit only", "%d no-lesion variants" % sw[0]["correct_rejection_n"], "The isolated-subunit axis alone does not reach the threshold"] + [f3(r["correct_rejection_isolated"]) for r in sw],
-        ["Direction agreement, energy axes", "%d axis expectations" % n_axes, "Call matches the committed direction"] + [f3(da(r)) for r in sw],
-        ["Direction agreement, tier", "%d variants" % sw[0]["axis_tier_n"], "Tier 1–2 matches the committed structural class"] + [f3(r["axis_tier"]) for r in sw],
-        ["Measured destabilizations recovered", "%d measured comparisons" % me["population"]["n"], "Measured ≥ 1.0 kcal/mol; predicted ≥ threshold with the same sign"] + [f3(r["fraction"]) for r in me["by_threshold"]],
-        ["Prioritization ROC AUC", "%d prioritization variants" % int(pm.loc["isds_v1", "n"]), "A structural mechanism outranks a no-lesion variant"] + [auc] * 5,
+        ["Detection, isolated subunit only", "%d structural-mechanism variants" % sw[0]["detection_n"], "The isolated-subunit axis alone reaches the threshold"],
+        ["Attribution", "%d structural-mechanism variants" % sw[0]["attribution_n"], "The axis the literature implicates reaches the threshold"],
+        ["Correct rejection", "%d non-disruptive variants" % sw[0]["correct_rejection_n"], "No axis reaches the threshold"],
+        ["Correct rejection, isolated subunit only", "%d non-disruptive variants" % sw[0]["correct_rejection_n"], "The isolated-subunit axis alone does not reach the threshold"],
+        ["Direction agreement, energy axes", "%d axis expectations" % n_axes, "Call matches the committed direction"],
+        ["Direction agreement, tier", "%d variants" % sw[0]["axis_tier_n"], "Tier 1\u20132 matches the committed structural class"],
+        ["Measured destabilizations recovered", "%d measured comparisons" % me["population"]["n"], "Measured \u2265 1.0 kcal/mol; predicted \u2265 threshold with the same sign"],
+        ["Prioritization ROC AUC", "%d prioritization variants" % int(pm.loc["isds_v1", "n"]), "A structural mechanism outranks a non-disruptive variant"],
     ]
-    return ["Metric", "Population", "What it counts"] + THRESH_LABELS, rows
+    assert all(len(r) == 3 for r in rows)
+    return ["Metric", "Population", "What it counts"], rows
 
 
 def table3_rows():
     header = ["Condition", "Grade", "Score"]
     rows = [
-        ["No-lesion variant, and no modeled energy effect at the threshold", "Consistent", "1.0"],
+        ["Non-disruptive variant, and no modeled energy effect at the threshold", "Consistent", "1.0"],
         ["All expected effects recovered in the correct direction, with no unsupported effect", "Consistent", "1.0"],
         ["All expected effects recovered, but an axis expected to be neutral also reaches the threshold", "Partial", "0.5"],
         ["One of several expected effects missed, without an unsupported effect", "Partial", "0.5"],
         ["Predicted change opposite in direction to the expected effect", "Inconsistent", "0.0"],
-        ["No-lesion variant with an energy call; expected effect missed entirely; or a missed effect with a wrong call", "Inconsistent", "0.0"],
+        ["Non-disruptive variant with an energy call; expected effect missed entirely; or a missed effect with a wrong call", "Inconsistent", "0.0"],
         ["Structure unusable, required context absent, mechanism not established or no applicable axis", "Not graded", "–"],
     ]
     return header, rows

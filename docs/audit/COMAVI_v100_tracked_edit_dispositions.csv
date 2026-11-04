@@ -1,0 +1,8 @@
+edit_kind,n_word_level_edits,disposition,reason
+wording,42,Reviewed individually,42 word-level substitutions; those on sentences that survived are folded into the clarity edits logged against her numbered comments.
+supplement citation style,30,Declined — journal style,"She changed 'S1 Table' to 'Table S1' (30 edits). PLOS requires supporting information cited in the main text as 'S1 Fig, S1 Table, S1 Text', including spelling and capitalization, and the file name must match the citation. Kept PLOS form."
+punctuation,25,Adopted where it improves reading,"Serial commas, hyphenation and dash choices; applied where the sentence survived this revision."
+lesion rename,17,Adopted,"Applied globally — 141 sites across manuscript, figures, tables and supplement."
+small deletion,12,Adopted where it improves reading,Mostly redundant qualifiers.
+small insertion,11,Adopted where it improves reading,Mostly articles and connectives.
+Fig. vs Fig,7,Declined — journal style,She changed 'Fig' to 'Fig.' or 'Figure' (7 edits). PLOS requires in-text figure citations in the form 'Fig 1' verbatim.

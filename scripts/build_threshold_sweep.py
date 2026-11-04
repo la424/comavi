@@ -20,7 +20,7 @@ WHAT IT EMITS, AT EACH OF THE FIVE THRESHOLDS
   detection          of curated structural mechanisms, how many have ANY axis
                      firing
   attribution        of those, how many have the EXPECTED axis firing
-  correct_rejection  of curated no-lesion variants, how many have no axis
+  correct_rejection  of curated non-disruptive variants, how many have no axis
                      firing
   whole_variant      the partial-credit mechanism-pattern score, from the
                      canonical's stored per-threshold grade columns

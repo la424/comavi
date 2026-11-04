@@ -102,7 +102,7 @@ EXPECTED_CANONICAL = {
         # membership rather than only individual calls: G674R's binding
         # commitment was withdrawn, which removes a variant from grading, and
         # the KRAS, MLH1 and SMAD4 corrections reclassify variants between the
-        # mechanism and no-lesion arms.
+        # mechanism and non-disruptive arms.
         't10': 0.562, 't15': 0.616, 't20': 0.652,
         't25': 0.661, 'tSAP': 0.652,
     },

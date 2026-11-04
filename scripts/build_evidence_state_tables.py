@@ -32,7 +32,7 @@ Tier 1-2. The four states cross those two:
     Neither       neither
 
 For each threshold the tables report, per state, the count of structural-truth
-variants and of curated no-lesion variants; and for two screens -- any energetic
+variants and of curated non-disruptive variants; and for two screens -- any energetic
 firing, and convergent -- sensitivity, specificity and positive predictive value.
 
 Usage
@@ -40,6 +40,12 @@ Usage
     PYTHONPATH=. python scripts/build_evidence_state_tables.py
     PYTHONPATH=. python scripts/build_evidence_state_tables.py --check
 """
+# NOTE ON VOCABULARY. The paper calls this class "non-disruptive" from v10.0 on;
+# this file keeps "no_lesion" as a KEY because that key ships in the v3.0.1
+# archive (10.5281/zenodo.21284083) and anyone reading the released records is
+# reading it. A published schema is an interface, so it was left alone while the
+# prose it feeds was renamed. Human-facing strings in this file were renamed.
+
 import argparse
 import json
 import pathlib
@@ -149,7 +155,7 @@ def main():
     p = result["population"]
     print("population: n=%d  structural=%d  no_lesion=%d"
           % (p["n"], p["structural"], p["no_lesion"]))
-    print("\nS10 Table -- four evidence states (structural / no-lesion)")
+    print("\nS10 Table -- four evidence states (structural / non-disruptive)")
     print("  %-15s %s" % ("operating point", "  ".join("%-12s" % s for s in STATES)))
     for r in result["four_evidence_states"]:
         cells = ["%d/%d" % (r[s]["structural"], r[s]["no_lesion"]) for s in STATES]

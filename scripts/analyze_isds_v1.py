@@ -166,6 +166,12 @@ def audit_a636p_canonical(
     canonical: pd.DataFrame,
 ) -> pd.DataFrame:
     """Verify the literature-supported A636P record without mutating it."""
+# NOTE ON VOCABULARY. The paper calls this class "non-disruptive" from v10.0 on;
+# this file keeps "no_lesion" as a KEY because that key ships in the v3.0.1
+# archive (10.5281/zenodo.21284083) and anyone reading the released records is
+# reading it. A published schema is an interface, so it was left alone while the
+# prose it feeds was renamed. Human-facing strings in this file were renamed.
+
     mask = (
         canonical["variant"].astype(str).eq("A636P")
         & canonical["system"].astype(str).eq("msh2_msh6")

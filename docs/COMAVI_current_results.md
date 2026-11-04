@@ -11,7 +11,7 @@ records remain in the repository but do not override this file.
 - **56 variants** are gradeable for whole-variant mechanism-pattern agreement.
 - **46 interaction variants** form the structural-prioritization population:
   **21** committed modeled structural mechanisms and
-  **25** variants curated to lack a committed lesion on the
+  **25** variants curated to lack a committed disruption on the
   modeled COMAVI axes.
 - ISDS-v1 is available for
   **49/61**
@@ -131,7 +131,7 @@ membership materially contributes to its performance.
 
 COMAVI predicts modeled structural disruption rather than pathogenicity. A
 positive energetic call supplies a testable monomer-fold, complex-context, or
-binding hypothesis. A silent or scope-limited result means only that no lesion
+binding hypothesis. A silent or scope-limited result means only that no disruption
 was detected in the supplied static structural model at the stated operating
 point.
 

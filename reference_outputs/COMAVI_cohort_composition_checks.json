@@ -69,6 +69,6 @@
    }
   },
   "benign_all_curated_no_lesion": false,
-  "note": "Benign variants entered the benchmark as curated no-lesion controls, so pathogenicity AUCs of structural scores partly reflect construction. The division of the pathogenic class is the informative quantity."
+  "note": "Benign variants entered the benchmark as curated non-disruptive controls, so pathogenicity AUCs of structural scores partly reflect construction. The division of the pathogenic class is the informative quantity."
  }
 }

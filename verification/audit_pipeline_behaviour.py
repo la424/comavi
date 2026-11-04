@@ -279,7 +279,7 @@ def main() -> int:
           "scored_61var_canonical.csv energy columns", reverse_controls_small)
 
     # ---- "the positive class is the 21 structural-mechanism variants and the
-    #       negative class the 25 no-lesion variants in the 46-variant population"
+    #       negative class the 25 non-disruptive variants in the 46-variant population"
     def prioritization_population():
         pv = pd.read_csv(RO / "isds_v1" / "ISDS_v1_per_variant.csv")
         pos = int(pv.structural_ground_truth.astype(bool).sum())

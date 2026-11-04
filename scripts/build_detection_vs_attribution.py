@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Does COMAVI notice a lesion, and does it name the right one?
+"""Does COMAVI notice a disruption, and does it name the right one?
 
 WHY THIS EXISTS
 ---------------
@@ -57,7 +57,7 @@ REFERENCE_T = 2.5
 # commitment in the graded set, so the tuple was complete by accident rather
 # than by design, and a stabilizing expectation fell through both buckets --
 # which the population identity below caught. A strengthened interaction is a
-# curated structural lesion like any other, and detection asks only whether an
+# curated structural disruption like any other, and detection asks only whether an
 # axis fired, which is tested on |ddG|.
 STRUCTURAL = ("fold_mechanism", "ppi_destab_mechanism", "mixed_structural",
               "ppi_stab_mechanism")
@@ -137,7 +137,7 @@ def build(canon, threshold=REFERENCE_T):
     #
     # derive_expected_mech_class puts a variant in fold_mechanism when EITHER
     # fold axis is committed positive -- isolated-subunit or complex-context --
-    # but this rule asked only `mono_fires`. A lesion committed on the
+    # but this rule asked only `mono_fires`. A disruption committed on the
     # complex-context fold axis therefore could not be credited no matter what
     # the pipeline predicted, so the middle axis of a three-axis method had no
     # route to a correct attribution. BRCA1 C61G is the case: committed on both
@@ -253,7 +253,7 @@ def build(canon, threshold=REFERENCE_T):
             "complex_fold_axis_fires": int(ppi.fold_fires.sum()),
             "note": ("For variants curated as pure interface destabilizers the "
                      "complex-context fold axis fires more often than the binding "
-                     "axis, so the lesion is detected but attributed to the wrong "
+                     "axis, so the disruption is detected but attributed to the wrong "
                      "axis. This is the separation the pipeline exists to make and "
                      "it is where the benchmark is weakest."),
             "large_monomer_effect": [
