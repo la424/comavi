@@ -110,21 +110,58 @@ def main() -> int:
     for r in json.loads((RO / "COMAVI_threshold_sweep.json").read_text())["rows"]:
         key = str(r.get("threshold_kcal_mol", r["threshold_tag"]))
         by_kcal[key] = r
-    for row in rows_of(s3, "threshold_sweep"):
-        rec = by_kcal.get(row[0])
-        if not rec:
+    # Row labels carry a parenthetical -- "2.5 (reference)", "3.0 (post hoc)" --
+    # while the record keys them bare. Matching on the raw label therefore missed
+    # 4 of the 8 data rows INCLUDING "2.5 (reference)", the threshold every
+    # headline number in the paper comes from, and said PASS. Labels are now
+    # normalized, the post-hoc rows are resolved against the extended record that
+    # holds them, and a data row with no record is a FAILURE rather than a silent
+    # skip -- a loop that matches nothing must not report success.
+    for r in json.loads((RO / "COMAVI_threshold_sweep_extended.json").read_text())["rows"]:
+        by_kcal.setdefault(str(r.get("threshold_kcal_mol", r["threshold_tag"])), r)
+
+    def bare(label):
+        return re.sub(r"\s*\((?:reference|post hoc)\)\s*$", "", str(label)).strip()
+
+    # Columns are located by HEADER TEXT, not position. The previous positional
+    # zip over row[1:5] would have silently checked the wrong quantities had a
+    # column ever been inserted ahead of them.
+    FIELD_BY_HEADER = {
+        "Detection": "detection",
+        "Attribution": "attribution",
+        "Correct rejection": "correct_rejection",
+        "Whole-variant score": "whole_variant",
+        "Detection, isolated subunit only": "detection_isolated",
+        "Correct rejection, isolated subunit only": "correct_rejection_isolated",
+    }
+    sweep_rows = rows_of(s3, "threshold_sweep")
+    head = next((r for r in sweep_rows if r and r[0].startswith("Threshold")), None)
+    if head is None:
+        FAILURES.append("threshold_sweep has no header row")
+        head = []
+    idx = {h: i for i, h in enumerate(head) if h in FIELD_BY_HEADER}
+    missing = sorted(set(FIELD_BY_HEADER) - set(idx))
+    if missing:
+        FAILURES.append("threshold_sweep is missing column(s): %s" % missing)
+    checked_cells = 0
+    for row in sweep_rows:
+        if not row or not row[0] or row[0].startswith(("S3 Table", "Threshold")):
             continue
-        pairs = [("Detection", "detection"), ("Attribution", "attribution"),
-                 ("Correct rejection", "correct_rejection"),
-                 ("Whole-variant score", "whole_variant")]
-        for col, (_, field) in zip(row[1:5], pairs):
-            got, exp = num(col), rec.get(field)
+        rec = by_kcal.get(bare(row[0]))
+        if not rec:
+            FAILURES.append("threshold_sweep row %r matches no record" % row[0])
+            continue
+        for header, i in idx.items():
+            got = num(row[i]) if i < len(row) else None
+            exp = rec.get(FIELD_BY_HEADER[header])
             if got is None or exp is None:
                 continue
+            checked_cells += 1
             if abs(got - float(exp)) > 5e-4:
                 FAILURES.append("threshold_sweep %s %s: sheet %.4f, record %.4f"
-                                % (row[0], field, got, float(exp)))
-    CHECKED.append("threshold_sweep <- COMAVI_threshold_sweep.json")
+                                % (row[0], header, got, float(exp)))
+    CHECKED.append("threshold_sweep <- COMAVI_threshold_sweep.json "
+                   "(+ extended for the post-hoc rows; %d cells)" % checked_cells)
 
     # ---- robustness: the observed row, from the sweep and the numbers ledger
     nl = json.loads((RO / "COMAVI_numbers_ledger.json").read_text())
@@ -193,6 +230,40 @@ def main() -> int:
     CHECKED.append("S1 evidence_ledger <- COMAVI_evidence_ledger.csv "
                    "(membership, token and basis text)")
 
+    # ---- S2 fold_binding_disagreements, measured column, from the calibration points
+    #
+    # This sheet was out of scope as curated prose, and the measured column is
+    # not prose: five of its rows carry a measured energy that lives in
+    # COMAVI_delta_calibration_points.csv. HBB N102T read 1.50 there long after
+    # the hemoglobin values were harmonized to a per-tetramer convention and the
+    # calibration point became 3.00 -- the sheet disagreed with the record and
+    # with the ledger basis beside it, and nothing looked. Rows whose cell is
+    # prose ("Curated destabilizing") are skipped by design; rows whose cell is
+    # numeric are checked, and a numeric cell for a variant with no calibration
+    # point is a failure rather than a skip.
+    points = pd.read_csv(RO / "COMAVI_delta_calibration_points.csv")
+    measured = dict(zip(points["variant"], points["measured_kcal"]))
+    dis_checked = 0
+    for row in rows_of(SI / "S2_Table.xlsx", "fold_binding_disagreements"):
+        if not row or not row[0] or row[0].startswith(("S2 Table", "Variant")):
+            continue
+        cell = row[2] if len(row) > 2 else ""
+        val = num(cell)
+        if val is None:
+            continue
+        variant = row[0].split()[-1]
+        exp = measured.get(variant)
+        if exp is None:
+            FAILURES.append("fold_binding_disagreements %s: numeric measured value "
+                            "%s with no calibration point" % (row[0], cell))
+            continue
+        dis_checked += 1
+        if abs(val - float(exp)) > 5e-3:
+            FAILURES.append("fold_binding_disagreements %s measured: sheet %.2f, "
+                            "calibration point %.2f" % (row[0], val, float(exp)))
+    CHECKED.append("S2 fold_binding_disagreements (measured column) <- "
+                   "COMAVI_delta_calibration_points.csv (%d rows)" % dis_checked)
+
     if FAILURES:
         print("FAIL: %d supplementary cells disagree with their record" % len(FAILURES))
         for f in FAILURES[:12]:
@@ -202,7 +273,7 @@ def main() -> int:
           % len(CHECKED))
     for c in CHECKED:
         print("  " + c)
-    print("  OUT OF SCOPE (curated, not derived): "
+    print("  OUT OF SCOPE (curated prose): "
           "whole_variant_negatives, benchmark_variants, model_scope, index")
     return 0
 

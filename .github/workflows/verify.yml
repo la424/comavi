@@ -98,6 +98,12 @@ jobs:
       - name: Manuscript literal audits (skip cleanly when prose is absent)
         run: |
           python scripts/audit_evidence_claims.py
+          # The calibration family -- rank correlation, slope, the image of 2.5,
+          # the Glu73 sensitivity, the call relationships and the two
+          # within-benchmark anchors -- had no audit over the prose, and two of
+          # its values went stale when the hemoglobin measured energies were
+          # harmonized to a per-tetramer convention.
+          python scripts/audit_calibration_claims.py
           python scripts/audit_tier_energy_claims.py
 
       # Numeric audits cannot see this class of defect: a commit hash cited in
