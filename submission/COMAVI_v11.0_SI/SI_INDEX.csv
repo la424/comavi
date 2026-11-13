@@ -20,19 +20,19 @@ S3 Table,S3_Table.xlsx,detection_metrics sheet,"S3 Table, detection_metrics shee
 S3 Table,S3_Table.xlsx,pathogenicity_ranking sheet,"S3 Table, pathogenicity_ranking sheet. Descriptive ranking of pathogenic against benign variants on the 39 prioritization variants that carry a clinical label and an AlphaMissense score. The priority ","Operating points, evidence states and robustness tables.",6
 S3 Table,S3_Table.xlsx,robustness sheet,"S3 Table, robustness sheet. Robustness of the mechanism-pattern score and the four-output structural agreement at the 2.5 kcal/mol reference.","Operating points, evidence states and robustness tables.",6
 S3 Table,S3_Table.xlsx,skempi_validation sheet,"S3 Table, skempi_validation sheet. FoldX binding ΔΔG against SKEMPI 2.0 measurements for every substitution and without the barnase Glu73 cluster. Methods are the SKEMPI 2.0 method codes with counts (","Operating points, evidence states and robustness tables.",6
-S1 Text,S1_Text.docx,Section 1,FoldX calculations,"Implementation details, statistical conventions and evidence provenance.",7
-S1 Text,S1_Text.docx,Section 2,Structural-context tier: weights and cut-offs,"Implementation details, statistical conventions and evidence provenance.",7
-S1 Text,S1_Text.docx,Section 3,"Statistical conventions, seeds and draw counts","Implementation details, statistical conventions and evidence provenance.",7
-S1 Text,S1_Text.docx,Section 4,Evidence provenance and evidence-restricted analyses,"Implementation details, statistical conventions and evidence provenance.",7
-S1 Text,S1_Text.docx,Section 5,Contribution of each system to the margin,"Implementation details, statistical conventions and evidence provenance.",7
-S2 Text,S2_Text.docx,Section 1,Structure-blind strategies and the permutation null,"Sensitivity analyses, mechanism-class decomposition and operating-point diagnostics.",8
-S2 Text,S2_Text.docx,Section 2,Grades by mechanism class,"Sensitivity analyses, mechanism-class decomposition and operating-point diagnostics.",8
-S2 Text,S2_Text.docx,Section 3,"Localization, axis design and the evidence-resolution rule","Sensitivity analyses, mechanism-class decomposition and operating-point diagnostics.",8
-S2 Text,S2_Text.docx,Section 4,Half credit for calls on axes the literature never tested,"Sensitivity analyses, mechanism-class decomposition and operating-point diagnostics.",8
-S2 Text,S2_Text.docx,Section 5,Operating-point diagnostics,"Sensitivity analyses, mechanism-class decomposition and operating-point diagnostics.",8
-S2 Text,S2_Text.docx,Section 6,Structural-context comparators and the interface bonus,"Sensitivity analyses, mechanism-class decomposition and operating-point diagnostics.",8
-S2 Text,S2_Text.docx,Section 7,Evidence states,"Sensitivity analyses, mechanism-class decomposition and operating-point diagnostics.",8
-S2 Text,S2_Text.docx,Section 8,Alternative priority-score formulas and score bands,"Sensitivity analyses, mechanism-class decomposition and operating-point diagnostics.",8
+S1 Text,S1_Text.docx,Section 1,FoldX calculations,"Implementation details, statistical conventions and evidence provenance.",8
+S1 Text,S1_Text.docx,Section 2,Structural-context tier: weights and cut-offs,"Implementation details, statistical conventions and evidence provenance.",8
+S1 Text,S1_Text.docx,Section 3,"Statistical conventions, seeds and draw counts","Implementation details, statistical conventions and evidence provenance.",8
+S1 Text,S1_Text.docx,Section 4,Evidence provenance and evidence-restricted analyses,"Implementation details, statistical conventions and evidence provenance.",8
+S1 Text,S1_Text.docx,Section 5,Contribution of each system to the margin,"Implementation details, statistical conventions and evidence provenance.",8
+S2 Text,S2_Text.docx,Section 1,Structure-blind strategies and the permutation null,"Sensitivity analyses, mechanism-class decomposition and operating-point diagnostics.",9
+S2 Text,S2_Text.docx,Section 2,Grades by mechanism class,"Sensitivity analyses, mechanism-class decomposition and operating-point diagnostics.",9
+S2 Text,S2_Text.docx,Section 3,"Localization, axis design and the evidence-resolution rule","Sensitivity analyses, mechanism-class decomposition and operating-point diagnostics.",9
+S2 Text,S2_Text.docx,Section 4,Half credit for calls on axes the literature never tested,"Sensitivity analyses, mechanism-class decomposition and operating-point diagnostics.",9
+S2 Text,S2_Text.docx,Section 5,Operating-point diagnostics,"Sensitivity analyses, mechanism-class decomposition and operating-point diagnostics.",9
+S2 Text,S2_Text.docx,Section 6,Structural-context comparators and the interface bonus,"Sensitivity analyses, mechanism-class decomposition and operating-point diagnostics.",9
+S2 Text,S2_Text.docx,Section 7,Evidence states,"Sensitivity analyses, mechanism-class decomposition and operating-point diagnostics.",9
+S2 Text,S2_Text.docx,Section 8,Alternative priority-score formulas and score bands,"Sensitivity analyses, mechanism-class decomposition and operating-point diagnostics.",9
 S3 Text,S3_Text.docx,Section 1,Silent results by clinical label,"Pathogenicity comparison, robustness and independent validation.",4
 S3 Text,S3_Text.docx,Section 2,Stress tests,"Pathogenicity comparison, robustness and independent validation.",4
 S3 Text,S3_Text.docx,Section 3,Independent binding-axis validation on SKEMPI 2.0,"Pathogenicity comparison, robustness and independent validation.",4

@@ -341,6 +341,40 @@ def main() -> int:
           "exceeds the best structure-blind strategy by %s" % r3((s25 - best) / len(B)))
     check("margin positive at every prespecified threshold",
           all(tot[t] > max(score([L] * len(B), PROFILES) for L in vocab) for t in TAGS), str({t: float(tot[t]) for t in TAGS}))
+    # 4b. the Limitations paragraph: evidence composition, system concentration and the
+    # dependence of localization on evidence resolution (added in v11 at review)
+    WORDS_ = {1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven", 8: "eight", 9: "nine"}
+    classes = [{t_[:2] for t_ in LED[(LED.system == s_) & (LED.variant == v_)].evidence_type} for s_, v_ in zip(B.system, B.variant)]
+    quant = [bool(c) and c <= {"E1", "E2"} for c in classes]          # every committed expectation quantitative
+    qi = [i for i, q_ in enumerate(quant) if q_]
+    g_of = lambda L, i: GM[grade(label_axes(L), *PROFILES[i])]        # noqa: E731
+    q_comavi = sum(g_of(B.mech_t25[i], i) for i in qi) / len(qi)
+    q_all = sum(g_of("Both fold + PPI destabilization", i) for i in qi) / len(qi)
+    q_mech = [i for i in qi if MECH[i]]
+    q_nd = [i for i in qi if not MECH[i]]
+    arm = lambda L_of, idx: sum(g_of(L_of(i), i) for i in idx) / len(idx)  # noqa: E731
+    q_bal = (arm(lambda i: B.mech_t25[i], q_mech) + arm(lambda i: B.mech_t25[i], q_nd)) / 2
+    ceiling = max((arm(lambda i, L=L: L, q_mech) + arm(lambda i, L=L: L, q_nd)) / 2 for L in vocab)
+    contrib = collections.defaultdict(Fraction)
+    for i in range(len(B)):
+        contrib[B.system[i]] += g_of(B.mech_t25[i], i) - g_of("No structural effect detected", i)
+    att_no_rule = 0
+    for (_, r), (exp, cls, either) in zip(B.iterrows(), PROFILES):
+        if cls != SILENT:
+            att_no_rule += bool(set(label_axes(r.mech_t25)) & {a for a, d in exp.items() if d in ("destab", "stab")})
+    n_either = sum(1 for (exp, cls, either) in PROFILES if either and exp.get("binding") in ("destab", "stab"))
+    claim("Limitations: quantitative subset, contributions and evidence resolution",
+          "%d (%d non-disruptive), %s vs %s, balanced %s / %s; %s points, BRCT %s, Hb %s; %d vs %d"
+          % (len(qi), len(q_nd), r3(q_all), r3(q_comavi), r3(q_bal), r3(ceiling, 1), r3(sum(contrib.values()), 1),
+             r3(contrib["brca1_brct"], 1), r3(contrib["hemoglobin_tetramer"], 1), att_no_rule, att),
+          "On the %d variants whose every expectation is quantitative, only %s of them non-disruptive, calling every "
+          "variant destabilized on all three axes scores %s against %s for COMAVI, and the balanced score is %s against "
+          "a ceiling of %s for any structure-blind strategy; of the %s grade points by which COMAVI exceeds calling no "
+          "variant disrupted, the BRCT domain contributes %s and the hemoglobin tetramer %s (S1 Text). Localization also "
+          "depends on how the %s expectations of a change measured only as an amount of complex are scored: without the "
+          "evidence-resolution rule, %d rather than %d of the %d mechanisms are localized"
+          % (len(qi), WORDS_[len(q_nd)], r3(q_all), r3(q_comavi), r3(q_bal), r3(ceiling, 1), r3(sum(contrib.values()), 1),
+             r3(contrib["brca1_brct"], 1), r3(contrib["hemoglobin_tetramer"], 1), WORDS_[n_either], att_no_rule, att, n_m))
     # 5. resampling and permutation (independent seeds)
     g25 = np.array([float(GM[grade(label_axes(L), *p)]) for L, p in zip(B.mech_t25, PROFILES)])
     systems = B.system.values
