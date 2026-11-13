@@ -70,6 +70,14 @@ BRCT = REPO / "supplement" / "brct" / "brct_foldx_concordance.csv"
 OUT_CSV = REPO / "reference_outputs" / "COMAVI_evidence_ledger.csv"
 OUT_JSON = REPO / "reference_outputs" / "COMAVI_evidence_ledger_summary.json"
 
+
+def _counts(series):
+    """Counts by value, most frequent first. pandas' value_counts() sorts by count with
+    an unstable sort, so tied counts came out in an order that differs between CPUs
+    (numpy dispatches to SIMD sorts on x86). Here the data order of value_counts(sort=False)
+    is sorted stably by count, which is the same on every platform (v11)."""
+    return {k: int(v) for k, v in sorted(series.value_counts(sort=False).items(), key=lambda kv: -kv[1])}
+
 AXES = {
     "monomer": "expected_ddg_monomer",
     "fold_complex": "expected_ddg_fold_complex",
@@ -489,8 +497,8 @@ def main() -> int:
     led = evidence_resolution.curated_ledger(led.astype(str))
     led.to_csv(OUT_CSV, index=False)
 
-    by_type = led.evidence_type.value_counts().to_dict()
-    by_dir = led.evidence_directness.value_counts().to_dict()
+    by_type = _counts(led.evidence_type)
+    by_dir = _counts(led.evidence_directness)
     xt = (led.groupby(["evidence_type", "evidence_directness"]).size()
           .unstack(fill_value=0))
     quant = led.evidence_type.isin([E1, E2])
@@ -501,14 +509,14 @@ def main() -> int:
         n_systems=int(led.system.nunique()),
         by_evidence_type=by_type,
         by_directness=by_dir,
-        by_axis={a: int(n) for a, n in led.axis.value_counts().items()},
+        by_axis=_counts(led.axis),
         n_energetic_direct=int(((led.evidence_type == E1) & axis_ok).sum()),
         frac_energetic=round(float((led.evidence_type == E1).mean()), 4),
         frac_quantitative=round(float(quant.mean()), 4),
         frac_direct=round(float(axis_ok.mean()), 4),
         frac_inferred=round(float((led.evidence_type == E5).mean()), 4),
         type_by_axis={
-            a: g.evidence_type.value_counts().to_dict()
+            a: _counts(g.evidence_type)
             for a, g in led.groupby("axis")
         },
         note=("Denominator is COMMITTED axes (expected_ddg_* in "

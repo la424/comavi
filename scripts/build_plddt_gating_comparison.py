@@ -103,8 +103,11 @@ def build(canon):
                 "at_or_above_strict": int(strict.sum()),
                 "in_relaxed_band_50_70": int(band.sum()),
                 "below_relaxed": int(below.sum())},
-            "relaxed_band_members": pt.loc[band].sort_values("plddt")
-                                      .to_dict("records"),
+            # A total key and a stable sort: TNNI3 R145G and R145Q share a pLDDT of
+            # 54.93, and a single-key quicksort orders ties by CPU (numpy dispatches
+            # to SIMD sorts on x86), so the record differed between runners (v11).
+            "relaxed_band_members": pt.loc[band].sort_values(["plddt", "system", "variant", "partner"],
+                                                             kind="mergesort").to_dict("records"),
             "site_status_counts": {k: int(v) for k, v in
                                    canon.site_plddt_status.value_counts().items()},
         },

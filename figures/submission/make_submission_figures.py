@@ -546,7 +546,10 @@ def fig5():
 def s1():
     z = np.load(RO / "stress_tests" / "comavi_stress_draws.npz")
     st = J(RO / "stress_tests" / "COMAVI_stress_verified_statistics.json")
-    loso = pd.read_csv(RO / "stress_tests" / "comavi_leave_one_system_out.csv").sort_values("mc")
+    # total key and stable sort: KRAS-CRAF and troponin both leave 0.6792, and a
+    # single-key quicksort orders ties by CPU, which redrew panel C on x86 (v11)
+    loso = pd.read_csv(RO / "stress_tests" / "comavi_leave_one_system_out.csv").sort_values(
+        ["mc", "dropped"], kind="mergesort")
     assert set(loso.dropped) == set(SYSNAME)
     obs = float(z["mc_obs"][0])
     ci = st["system_cluster_ci95"]["mc"]["full_precision"]
