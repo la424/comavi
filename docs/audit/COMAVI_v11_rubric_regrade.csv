@@ -1,0 +1,79 @@
+pipeline,threshold,system,variant,expected_class,call,old_grade,new_grade,missed_axes,reason
+primary,t25,brca1_bard1,V11G,ppi_destab_mechanism,Multimer fold destabilization at interface,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+primary,tSAP,brca1_bard1,V11G,ppi_destab_mechanism,Multimer fold destabilization at interface,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+neighbourhood,t25,brca1_bard1,V11G,ppi_destab_mechanism,Multimer fold destabilization at interface,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+neighbourhood,tSAP,brca1_bard1,V11G,ppi_destab_mechanism,Multimer fold destabilization at interface,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+primary,t10,pi3k,E542K,ppi_destab_mechanism,Multimer fold destabilization at interface,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+primary,t15,pi3k,E542K,ppi_destab_mechanism,Multimer fold destabilization at interface,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+primary,t20,pi3k,E542K,ppi_destab_mechanism,Multimer fold destabilization at interface,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+primary,t25,pi3k,E542K,ppi_destab_mechanism,Multimer fold destabilization at interface,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+primary,tSAP,pi3k,E542K,ppi_destab_mechanism,Multimer fold destabilization at interface,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+neighbourhood,t10,pi3k,E542K,ppi_destab_mechanism,Multimer fold destabilization at interface,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+neighbourhood,t15,pi3k,E542K,ppi_destab_mechanism,Multimer fold destabilization at interface,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+neighbourhood,t20,pi3k,E542K,ppi_destab_mechanism,Multimer fold destabilization at interface,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+neighbourhood,t25,pi3k,E542K,ppi_destab_mechanism,Multimer fold destabilization at interface,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+neighbourhood,tSAP,pi3k,E542K,ppi_destab_mechanism,Multimer fold destabilization at interface,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+primary,t10,pi3k,E545K,ppi_destab_mechanism,Multimer fold destab. + PPI stabilization (conflicting),consistent,inconsistent,,predicted direction opposite to the expected effect on an asserted axis
+primary,t15,pi3k,E545K,ppi_destab_mechanism,Multimer fold destab. + PPI stabilization (conflicting),consistent,inconsistent,,predicted direction opposite to the expected effect on an asserted axis
+neighbourhood,t10,pi3k,E545K,ppi_destab_mechanism,Multimer fold destab. + PPI stabilization (conflicting),consistent,inconsistent,,predicted direction opposite to the expected effect on an asserted axis
+neighbourhood,t15,pi3k,E545K,ppi_destab_mechanism,Multimer fold destab. + PPI stabilization (conflicting),consistent,inconsistent,,predicted direction opposite to the expected effect on an asserted axis
+primary,t10,mlh1_pms2,Q542L,ppi_destab_mechanism,Multimer fold destabilization at interface,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+primary,t15,mlh1_pms2,Q542L,ppi_destab_mechanism,Interface variant (DDG neutral),partial,inconsistent,binding,expected effect missed entirely; the call asserts no energetic effect
+primary,t20,mlh1_pms2,Q542L,ppi_destab_mechanism,Interface variant (DDG neutral),partial,inconsistent,binding,expected effect missed entirely; the call asserts no energetic effect
+primary,t25,mlh1_pms2,Q542L,ppi_destab_mechanism,Interface variant (DDG neutral),partial,inconsistent,binding,expected effect missed entirely; the call asserts no energetic effect
+primary,tSAP,mlh1_pms2,Q542L,ppi_destab_mechanism,Interface variant (DDG neutral),partial,inconsistent,binding,expected effect missed entirely; the call asserts no energetic effect
+neighbourhood,t10,mlh1_pms2,Q542L,ppi_destab_mechanism,Multimer fold destabilization at interface,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+neighbourhood,t15,mlh1_pms2,Q542L,ppi_destab_mechanism,Interface variant (DDG neutral),partial,inconsistent,binding,expected effect missed entirely; the call asserts no energetic effect
+neighbourhood,t20,mlh1_pms2,Q542L,ppi_destab_mechanism,Interface variant (DDG neutral),partial,inconsistent,binding,expected effect missed entirely; the call asserts no energetic effect
+neighbourhood,t25,mlh1_pms2,Q542L,ppi_destab_mechanism,Interface variant (DDG neutral),partial,inconsistent,binding,expected effect missed entirely; the call asserts no energetic effect
+neighbourhood,tSAP,mlh1_pms2,Q542L,ppi_destab_mechanism,Interface variant (DDG neutral),partial,inconsistent,binding,expected effect missed entirely; the call asserts no energetic effect
+primary,t20,mlh1_pms2,L749P,ppi_destab_mechanism,Multimer fold destabilization at interface,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+primary,t25,mlh1_pms2,L749P,ppi_destab_mechanism,Multimer fold destabilization at interface,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+primary,tSAP,mlh1_pms2,L749P,ppi_destab_mechanism,Multimer fold destabilization at interface,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+neighbourhood,t20,mlh1_pms2,L749P,ppi_destab_mechanism,Multimer fold destabilization at interface,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+neighbourhood,t25,mlh1_pms2,L749P,ppi_destab_mechanism,Multimer fold destabilization at interface,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+neighbourhood,tSAP,mlh1_pms2,L749P,ppi_destab_mechanism,Multimer fold destabilization at interface,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+neighbourhood,t15,mlh1_pms2,H718Y,fold_mechanism,Structural variant — burial-driven (DDG neutral),partial,inconsistent,fold_monomer,expected effect missed entirely; the call asserts no energetic effect
+neighbourhood,t20,mlh1_pms2,H718Y,fold_mechanism,Structural variant — burial-driven (DDG neutral),partial,inconsistent,fold_monomer,expected effect missed entirely; the call asserts no energetic effect
+neighbourhood,t25,mlh1_pms2,H718Y,fold_mechanism,Structural variant — burial-driven (DDG neutral),partial,inconsistent,fold_monomer,expected effect missed entirely; the call asserts no energetic effect
+neighbourhood,tSAP,mlh1_pms2,H718Y,fold_mechanism,Structural variant — burial-driven (DDG neutral),partial,inconsistent,fold_monomer,expected effect missed entirely; the call asserts no energetic effect
+primary,t10,kras_craf,G12D,ppi_destab_mechanism,Multimer fold stabilization,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+primary,t15,kras_craf,G12D,ppi_destab_mechanism,Multimer fold stabilization,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+primary,t20,kras_craf,G12D,ppi_destab_mechanism,Multimer fold stabilization,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+neighbourhood,t10,kras_craf,G12D,ppi_destab_mechanism,Multimer fold stabilization,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+neighbourhood,t15,kras_craf,G12D,ppi_destab_mechanism,Multimer fold stabilization,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+neighbourhood,t20,kras_craf,G12D,ppi_destab_mechanism,Multimer fold stabilization,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+neighbourhood,t25,kras_craf,G12D,ppi_destab_mechanism,Structural variant — burial-driven (DDG neutral),partial,inconsistent,binding,expected effect missed entirely; the call asserts no energetic effect
+neighbourhood,tSAP,kras_craf,G12D,ppi_destab_mechanism,Structural variant — burial-driven (DDG neutral),partial,inconsistent,binding,expected effect missed entirely; the call asserts no energetic effect
+neighbourhood,t10,kras_craf,G12V,ppi_destab_mechanism,Structural variant — burial-driven (DDG neutral),partial,inconsistent,binding,expected effect missed entirely; the call asserts no energetic effect
+neighbourhood,t15,kras_craf,G12V,ppi_destab_mechanism,Structural variant — burial-driven (DDG neutral),partial,inconsistent,binding,expected effect missed entirely; the call asserts no energetic effect
+neighbourhood,t20,kras_craf,G12V,ppi_destab_mechanism,Structural variant — burial-driven (DDG neutral),partial,inconsistent,binding,expected effect missed entirely; the call asserts no energetic effect
+neighbourhood,t25,kras_craf,G12V,ppi_destab_mechanism,Structural variant — burial-driven (DDG neutral),partial,inconsistent,binding,expected effect missed entirely; the call asserts no energetic effect
+neighbourhood,tSAP,kras_craf,G12V,ppi_destab_mechanism,Structural variant — burial-driven (DDG neutral),partial,inconsistent,binding,expected effect missed entirely; the call asserts no energetic effect
+primary,tSAP,hemoglobin_tetramer,W37Y,mixed_structural,Interface variant (DDG neutral),partial,inconsistent,"fold_complex,binding",expected effect missed entirely; the call asserts no energetic effect
+neighbourhood,tSAP,hemoglobin_tetramer,W37Y,mixed_structural,Interface variant (DDG neutral),partial,inconsistent,"fold_complex,binding",expected effect missed entirely; the call asserts no energetic effect
+primary,t10,hemoglobin_tetramer,N102T,mixed_structural,Interface variant (DDG neutral),partial,inconsistent,"fold_complex,binding",expected effect missed entirely; the call asserts no energetic effect
+primary,t15,hemoglobin_tetramer,N102T,mixed_structural,Interface variant (DDG neutral),partial,inconsistent,"fold_complex,binding",expected effect missed entirely; the call asserts no energetic effect
+primary,t20,hemoglobin_tetramer,N102T,mixed_structural,Interface variant (DDG neutral),partial,inconsistent,"fold_complex,binding",expected effect missed entirely; the call asserts no energetic effect
+primary,t25,hemoglobin_tetramer,N102T,mixed_structural,Interface variant (DDG neutral),partial,inconsistent,"fold_complex,binding",expected effect missed entirely; the call asserts no energetic effect
+primary,tSAP,hemoglobin_tetramer,N102T,mixed_structural,Interface variant (DDG neutral),partial,inconsistent,"fold_complex,binding",expected effect missed entirely; the call asserts no energetic effect
+neighbourhood,t10,hemoglobin_tetramer,N102T,mixed_structural,Interface variant (DDG neutral),partial,inconsistent,"fold_complex,binding",expected effect missed entirely; the call asserts no energetic effect
+neighbourhood,t15,hemoglobin_tetramer,N102T,mixed_structural,Interface variant (DDG neutral),partial,inconsistent,"fold_complex,binding",expected effect missed entirely; the call asserts no energetic effect
+neighbourhood,t20,hemoglobin_tetramer,N102T,mixed_structural,Interface variant (DDG neutral),partial,inconsistent,"fold_complex,binding",expected effect missed entirely; the call asserts no energetic effect
+neighbourhood,t25,hemoglobin_tetramer,N102T,mixed_structural,Interface variant (DDG neutral),partial,inconsistent,"fold_complex,binding",expected effect missed entirely; the call asserts no energetic effect
+neighbourhood,tSAP,hemoglobin_tetramer,N102T,mixed_structural,Interface variant (DDG neutral),partial,inconsistent,"fold_complex,binding",expected effect missed entirely; the call asserts no energetic effect
+primary,t10,smad4_smad3,D351H,ppi_destab_mechanism,Both fold destabilization,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+primary,t15,smad4_smad3,D351H,ppi_destab_mechanism,Both fold destabilization,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+primary,t20,smad4_smad3,D351H,ppi_destab_mechanism,Both fold destabilization,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+primary,t25,smad4_smad3,D351H,ppi_destab_mechanism,Both fold destabilization,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+primary,tSAP,smad4_smad3,D351H,ppi_destab_mechanism,Both fold destabilization,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+neighbourhood,t10,smad4_smad3,D351H,ppi_destab_mechanism,Both fold destabilization,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+neighbourhood,t15,smad4_smad3,D351H,ppi_destab_mechanism,Both fold destabilization,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+neighbourhood,t20,smad4_smad3,D351H,ppi_destab_mechanism,Both fold destabilization,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+neighbourhood,t25,smad4_smad3,D351H,ppi_destab_mechanism,Both fold destabilization,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+neighbourhood,tSAP,smad4_smad3,D351H,ppi_destab_mechanism,Both fold destabilization,partial,inconsistent,binding,expected effect missed entirely; the call names only axes the literature does not commit
+neighbourhood,t10,smad4_smad3,I500V,ppi_stab_mechanism,Structural variant — contact-driven (DDG neutral),partial,inconsistent,binding,expected effect missed entirely; the call asserts no energetic effect
+neighbourhood,t15,smad4_smad3,I500V,ppi_stab_mechanism,Structural variant — contact-driven (DDG neutral),partial,inconsistent,binding,expected effect missed entirely; the call asserts no energetic effect
+neighbourhood,t20,smad4_smad3,I500V,ppi_stab_mechanism,Structural variant — contact-driven (DDG neutral),partial,inconsistent,binding,expected effect missed entirely; the call asserts no energetic effect
+neighbourhood,t25,smad4_smad3,I500V,ppi_stab_mechanism,Structural variant — contact-driven (DDG neutral),partial,inconsistent,binding,expected effect missed entirely; the call asserts no energetic effect
+neighbourhood,tSAP,smad4_smad3,I500V,ppi_stab_mechanism,Structural variant — contact-driven (DDG neutral),partial,inconsistent,binding,expected effect missed entirely; the call asserts no energetic effect

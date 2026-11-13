@@ -16,9 +16,23 @@ under its own published decision rule rather than only as a ranking (the ROC AUC
 comparison on the 47-variant complete-case population is the primary
 cross-method summary).
 
+v11.0: the population is restricted to the 56-variant benchmark (see
+scripts/benchmark_population.py), which drops the three excluded candidates
+TNNI3 R162W, VHL W117R and MSH2 G674R, and the two VWF variants now carry a
+score from the checksummed release instead of counting as no-calls. Every value
+comes from scripts/apply_alphamissense_release.py, which also corrected MLH1
+V384D (0.988, the V384E row, to 0.9976).
+
 POPULATION AND DECISION RULE
 ----------------------------
-Population: the 49 benchmark variants carrying an AlphaMissense class. Every one
+Population: the benchmark variants carrying both an AlphaMissense class and a
+pathogenic or benign clinical label under the v11 rule (a ClinVar expert-panel
+classification where one exists, otherwise Franklin;
+scripts/apply_clinical_label_rule_v11.py): 39, all in complexes, since the BRCT
+variants carry no clinical label. The guard below checks that every labelled
+benchmark variant is in it, rather than freezing the count. Before v11.0 this was the 49 scored variants
+carrying a class, eight of them with labels neither Franklin nor ClinVar
+supports. Every one
 of them also carries a curated clinical annotation (`phenotype`), which is the
 ground truth here -- clinical, NOT the structural ground truth used everywhere
 else in the paper. That is why this quantity was unaffected by the v7.6 ledger
@@ -53,7 +67,14 @@ AM_THRESHOLD = 0.5
 
 
 def build(canon):
-    a = canon[canon["AM class"].notna()].copy()
+    import sys
+    sys.path.insert(0, str(REPO / "scripts"))
+    import benchmark_population as bp
+    a = bp.benchmark(canon)
+    # v11: only variants carrying a pathogenic or benign classification
+    # (Franklin rule, scripts/apply_clinical_label_rule_v11.py) can be scored
+    # against a clinical label.
+    a = a[a["AM class"].notna() & a["phenotype"].isin(["pathogenic", "pathogenic_gof", "benign"])].copy()
     assert a.phenotype.notna().all(), "a clinically labelled variant lacks a phenotype"
     a["clinically_pathogenic"] = a.phenotype.astype(str).str.startswith("pathogenic")
 
@@ -115,9 +136,18 @@ def main():
 
     c, t = result["confident_calls"], result["thresholded_all"]
     assert c["n"] + len(t["ambiguous_resolved"]) + len(t["no_calls_counted_as_errors"]) == t["n"]
-    # the values the manuscript states
-    assert c["cell"] == "38/43", c["cell"]
-    assert t["cell"] == "40/49", t["cell"]
+    # v11.0: the literal cells ("38/43", "40/49") were removed. The manuscript
+    # no longer states these values, and a literal guard can only be passed by
+    # editing it. The population is checked instead: every benchmark variant
+    # with a clinical label, each carrying a release score, none a no-call.
+    p = result["population"]
+    import sys
+    sys.path.insert(0, str(REPO / "scripts"))
+    import benchmark_population as bp
+    bench = bp.benchmark(canon)
+    labelled = int(bench.phenotype.isin(["pathogenic", "pathogenic_gof", "benign"]).sum())
+    assert p["with_am_class"] == labelled, (p, labelled)
+    assert not t["no_calls_counted_as_errors"], t["no_calls_counted_as_errors"]
 
     if args.check:
         if not OUT.exists():

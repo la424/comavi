@@ -1,0 +1,17 @@
+{
+ "shrake1973": {
+  "text": "Shrake A, Rupley JA. Environment and exposure to solvent of protein atoms. Lysozyme and insulin. J Mol Biol. 1973;79(2):351–371. doi:10.1016/0022-2836(73)90011-9",
+  "verified": "CrossRef 10.1016/0022-2836(73)90011-9",
+  "cited_in": "S1 Text (burial)"
+ },
+ "cock2009": {
+  "text": "Cock PJA, Antao T, Chang JT, Chapman BA, Cox CJ, Dalke A, et al. Biopython: freely available Python tools for computational molecular biology and bioinformatics. Bioinformatics. 2009;25(11):1422–1423. doi:10.1093/bioinformatics/btp163",
+  "verified": "CrossRef 10.1093/bioinformatics/btp163",
+  "cited_in": "S1 Text (contacts and burial)"
+ },
+ "tien2013": {
+  "text": "Tien MZ, Meyer AG, Sydykova DK, Spielman SJ, Wilke CO. Maximum allowed solvent accessibilites of residues in proteins. PLoS One. 2013;8(11):e80635. doi:10.1371/journal.pone.0080635",
+  "verified": "CrossRef 10.1371/journal.pone.0080635 (title spelled as published)",
+  "cited_in": "S1 Text (relative accessibility)"
+ }
+}

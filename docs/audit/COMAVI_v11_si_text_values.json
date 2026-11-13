@@ -1,0 +1,239 @@
+{
+ "constant_labels": {
+  "source": "COMAVI_rubric_baselines.json every_constant_label.labels grade_counts",
+  "value": {
+   "Both fold + PPI destabilization": 24.5,
+   "Both fold + PPI stabilization": 1.0,
+   "Both fold destab. + PPI stabilization (conflicting)": 10.5,
+   "Both fold destabilization": 18.5,
+   "Both fold destabilization at interface": 18.5,
+   "Both fold stab. + PPI destabilization (conflicting)": 9.0,
+   "Both fold stabilization": 1.0,
+   "Both fold stabilization at interface": 1.0,
+   "Interface variant (DDG neutral)": 27.0,
+   "Monomer fold + PPI destabilization": 20.5,
+   "Monomer fold + PPI stabilization": 1.0,
+   "Monomer fold destab. + PPI stabilization (conflicting)": 9.5,
+   "Monomer fold destabilization": 10.0,
+   "Monomer fold destabilization at interface": 10.0,
+   "Monomer fold stab. + PPI destabilization (conflicting)": 12.0,
+   "Monomer fold stabilization": 0.0,
+   "Monomer fold stabilization at interface": 0.0,
+   "Multimer fold + PPI destabilization": 16.0,
+   "Multimer fold + PPI stabilization": 1.0,
+   "Multimer fold destab. + PPI stabilization (conflicting)": 1.0,
+   "Multimer fold destabilization": 9.0,
+   "Multimer fold destabilization at interface": 9.0,
+   "Multimer fold stab. + PPI destabilization (conflicting)": 10.0,
+   "Multimer fold stabilization": 1.0,
+   "Multimer fold stabilization at interface": 1.0,
+   "No structural effect detected": 27.0,
+   "PPI conflicting (mixed partner signals)": 15.0,
+   "PPI destabilization": 14.0,
+   "PPI stabilization": 1.0,
+   "Structural variant — burial-driven (DDG neutral)": 27.0,
+   "Structural variant — contact-driven (DDG neutral)": 27.0
+  }
+ },
+ "crude_fisher_p_full_precision": {
+  "source": "fisher_exact on COMAVI_evidence_stratified_agreement.json crude counts",
+  "value": 0.11611554522649081
+ },
+ "evidence_resolution_effect": {
+  "source": "docs/audit/COMAVI_v11_evidence_resolution.csv; build_detection_vs_attribution.build without the scope column",
+  "value": {
+   "attribution_without_rule": 15,
+   "grade_points_gained": {
+    "t10": 2,
+    "t15": 1,
+    "t20": 2,
+    "t25": 3,
+    "tSAP": 3
+   }
+  }
+ },
+ "evidence_view_every_expectation_E1_E2": {
+  "source": "COMAVI_evidence_sensitivity.json views.every_expectation_E1_E2",
+  "value": {
+   "comavi_balanced": 0.5125,
+   "comavi_score": 0.5208,
+   "margin": -0.25,
+   "margin_ci95": [
+    -0.6,
+    -0.11363636363636365
+   ],
+   "margin_p_at_or_below_zero": 1.0,
+   "n": 24,
+   "strongest_constant": 0.7708
+  }
+ },
+ "evidence_view_every_expectation_E1_E3": {
+  "source": "COMAVI_evidence_sensitivity.json views.every_expectation_E1_E3",
+  "value": {
+   "comavi_balanced": 0.625,
+   "comavi_score": 0.6111,
+   "margin": 0.0,
+   "margin_ci95": [
+    -0.16326530612244894,
+    0.14289682539682522
+   ],
+   "margin_p_at_or_below_zero": 0.61,
+   "n": 36,
+   "strongest_constant": 0.6111
+  }
+ },
+ "evidence_view_full_benchmark": {
+  "source": "COMAVI_evidence_sensitivity.json views.full_benchmark",
+  "value": {
+   "comavi_balanced": 0.6660280970625798,
+   "comavi_score": 0.6607,
+   "margin": 0.1786,
+   "margin_ci95": [
+    -0.05681818181818177,
+    0.26415094339622636
+   ],
+   "margin_p_at_or_below_zero": 0.0745,
+   "n": 56,
+   "strongest_constant": 0.4821
+  }
+ },
+ "evidence_view_without_population_only_negatives": {
+  "source": "COMAVI_evidence_sensitivity.json views.without_population_only_negatives",
+  "value": {
+   "comavi_balanced": 0.6544540229885057,
+   "comavi_score": 0.6415,
+   "margin": 0.1792,
+   "margin_ci95": [
+    -0.06253324468085106,
+    0.2592681623931623
+   ],
+   "margin_p_at_or_below_zero": 0.1,
+   "n": 53,
+   "strongest_constant": 0.4623
+  }
+ },
+ "evidence_view_without_weak_evidence_negatives": {
+  "source": "COMAVI_evidence_sensitivity.json views.without_weak_evidence_negatives",
+  "value": {
+   "comavi_balanced": 0.6336206896551724,
+   "comavi_score": 0.6122,
+   "margin": 0.1122,
+   "margin_ci95": [
+    -0.08749999999999997,
+    0.22340425531914893
+   ],
+   "margin_p_at_or_below_zero": 0.179,
+   "n": 49,
+   "strongest_constant": 0.5
+  }
+ },
+ "evidence_view_without_whole_variant_negatives": {
+  "source": "COMAVI_evidence_sensitivity.json views.without_whole_variant_negatives",
+  "value": {
+   "comavi_balanced": 0.6499250374812594,
+   "comavi_score": 0.6346,
+   "margin": 0.1635,
+   "margin_ci95": [
+    -0.06523169336384446,
+    0.23531454248366007
+   ],
+   "margin_p_at_or_below_zero": 0.099,
+   "n": 52,
+   "strongest_constant": 0.4712
+  }
+ },
+ "ledger_benchmark_E1": {
+  "source": "COMAVI_evidence_ledger.csv rows of the 56 benchmark variants",
+  "value": 29
+ },
+ "ledger_benchmark_E2": {
+  "source": "COMAVI_evidence_ledger.csv rows of the 56 benchmark variants",
+  "value": 11
+ },
+ "ledger_benchmark_E3": {
+  "source": "COMAVI_evidence_ledger.csv rows of the 56 benchmark variants",
+  "value": 30
+ },
+ "ledger_benchmark_E4": {
+  "source": "COMAVI_evidence_ledger.csv rows of the 56 benchmark variants",
+  "value": 9
+ },
+ "ledger_benchmark_E5": {
+  "source": "COMAVI_evidence_ledger.csv rows of the 56 benchmark variants",
+  "value": 18
+ },
+ "ledger_benchmark_axes": {
+  "source": "COMAVI_evidence_ledger.csv",
+  "value": {
+   "binding": 42,
+   "fold_complex": 25,
+   "monomer": 30
+  }
+ },
+ "ledger_fold_complex_inferred": {
+  "source": "COMAVI_evidence_ledger.csv evidence_directness",
+  "value": 14
+ },
+ "mechanism_pattern_total_t25": {
+  "source": "scored_61var_canonical.csv mech_consistency_t25 over the 56 benchmark variants",
+  "value": 37.0
+ },
+ "noise": {
+  "source": "reference_outputs/stress_tests/comavi_stress_draws.npz; comavi_noise_fragility.csv (benchmark rows)",
+  "value": {
+   "flips_max": 4,
+   "flips_mean": 1.006,
+   "mean": 0.6619285714285715,
+   "sd": 0.013403281657253699,
+   "unstable_calls": [
+    "TNNI3 R145Q (0.482)",
+    "PIK3CA H1047R (0.288)",
+    "CALM1 D96V (0.124)",
+    "PIK3R1 N564D (0.050)",
+    "SMAD4 R361C (0.030)",
+    "MLH1 L749P (0.024)",
+    "TNNI3 R145G (0.004)"
+   ]
+  }
+ },
+ "per_system_contribution": {
+  "source": "COMAVI_evidence_sensitivity.json by_system",
+  "value": {
+   "brca1_bard1": 1.5,
+   "brca1_brct": 5.0,
+   "cam_cav12": 0.0,
+   "cfh_c3b": 0.5,
+   "hemoglobin_dimer": 0.0,
+   "hemoglobin_tetramer": 3.5,
+   "kras_craf": 0.0,
+   "mlh1_pms2": 1.0,
+   "msh2_msh6": -2.0,
+   "pi3k": -1.0,
+   "smad4_smad3": 2.0,
+   "troponin_ic": -2.0,
+   "vhl_elonginc": 1.0,
+   "vwf_gpiba": 0.5
+  }
+ },
+ "permutation_null": {
+  "source": "reference_outputs/stress_tests/comavi_stress_draws.npz mc_null (full precision)",
+  "value": {
+   "mean": 0.3624065110466054,
+   "n_ge_observed": 0,
+   "p": 0.0004997501249375312,
+   "sd": 0.05554760414055567
+  }
+ },
+ "stratified_MH_OR_full_precision": {
+  "source": "recomputed from COMAVI_evidence_stratified_agreement.json strata with analyze_evidence_stratified_agreement.mantel_haenszel (stored value is rounded to 3 places)",
+  "value": 0.79491833030853
+ },
+ "within_system_permutation_p": {
+  "source": "exact convolution, recomputed here",
+  "value": {
+   "full_tier_1_2": 0.16507936507936508,
+   "interface_status_alone": 0.016517857142857143,
+   "tier_without_interface_bonus": 0.5222222222222223
+  }
+ }
+}

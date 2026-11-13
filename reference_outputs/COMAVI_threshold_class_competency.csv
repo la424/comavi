@@ -1,6 +1,6 @@
 expected_mech_class,n,t10,t15,t20,t25,tSAP,threshold_averaged
 fold_mechanism,11,0.636,0.545,0.545,0.5,0.409,0.527
-mixed_structural,6,0.917,0.917,0.833,0.833,0.75,0.85
-ppi_destab_mechanism,11,0.636,0.636,0.5,0.409,0.409,0.518
+mixed_structural,6,0.833,0.833,0.75,0.75,0.583,0.75
+ppi_destab_mechanism,11,0.545,0.455,0.455,0.455,0.455,0.473
 ppi_stab_mechanism,1,0.0,0.0,0.0,0.0,0.0,0.0
 structurally_silent,27,0.444,0.593,0.741,0.815,0.852,0.689

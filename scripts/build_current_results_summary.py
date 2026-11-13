@@ -153,6 +153,7 @@ def build_text() -> str:
         "monomer",
         "fold",
         "binding",
+        "assembled_either",
     )
 
     def tally(mask: pd.Series) -> dict[str, list[int]]:
@@ -200,39 +201,39 @@ def build_text() -> str:
         sum(value[1] for value in primary_axes.values()),
     ]
 
+    # v11: every energy row, including the joint complex-amount row.
     energetic_primary = [
-        sum(
-            primary_axes[axis][0]
-            for axis in (
-                "monomer",
-                "fold",
-                "binding",
-            )
-        ),
-        sum(
-            primary_axes[axis][1]
-            for axis in (
-                "monomer",
-                "fold",
-                "binding",
-            )
-        ),
+        sum(primary_axes[axis][0] for axis in concordance.ENERGETIC_ROWS),
+        sum(primary_axes[axis][1] for axis in concordance.ENERGETIC_ROWS),
     ]
 
-    if all_total != [86, 124]:
+    # Cross-check against two independent generators rather than frozen
+    # literals (which read 86/124 and 86/123 and went stale at v11): the
+    # all-row total against the numbers ledger, and the primary total against
+    # the threshold sweep at 2.5 kcal/mol.
+    ledger_total = list(json.loads((REPO / "reference_outputs" / "COMAVI_numbers_ledger.json")
+                                   .read_text(encoding="utf-8"))["SA_total"][:2])
+    sweep_t25 = [row for row in json.loads((REPO / "reference_outputs" / "COMAVI_threshold_sweep.json")
+                                           .read_text(encoding="utf-8"))["rows"]
+                 if row["threshold_tag"] == "t25"][0]
+    if all_total != ledger_total:
         raise RuntimeError(
-            f"Unexpected all-row total: {all_total}"
+            f"All-row total {all_total} differs from the numbers ledger {ledger_total}"
         )
 
-    if primary_total != [86, 123]:
+    if primary_total != [sweep_t25["structural_agreement_k"], sweep_t25["structural_agreement_n"]]:
         raise RuntimeError(
-            f"Unexpected primary total: {primary_total}"
+            f"Primary total {primary_total} differs from the threshold sweep at 2.5"
         )
 
-    if energetic_primary != [56, 77]:
+    sweep_energetic = [
+        sum(sweep_t25["axis_%s_k" % axis] for axis in concordance.ENERGETIC_ROWS),
+        sum(sweep_t25["axis_%s_n" % axis] for axis in concordance.ENERGETIC_ROWS),
+    ]
+    if energetic_primary != sweep_energetic:
         raise RuntimeError(
-            "Unexpected primary energetic-axis total: "
-            f"{energetic_primary}"
+            "Primary energetic-axis total "
+            f"{energetic_primary} differs from the threshold sweep {sweep_energetic}"
         )
 
     grade_map = {
@@ -245,12 +246,25 @@ def build_text() -> str:
         "mech_consistency_t25"
     ].map(grade_map).dropna()
 
+    # v11: checked against the threshold-sweep record, an independent
+    # generator, rather than a frozen literal. The literal (37.0, 56) went stale
+    # when the grader was brought into line with Table 3
+    # (scripts/apply_rubric_table3_v11.py), and a literal can only be got past
+    # by bumping it.
+    sweep_t25 = {
+        row["threshold_tag"]: row
+        for row in json.loads(
+            (REPO / "reference_outputs" / "COMAVI_threshold_sweep.json").read_text()
+        )["rows"]
+    }["t25"]
     if (
         float(mechanism_values.sum()),
         len(mechanism_values),
-    ) != (37.0, 56):
+    ) != (float(sweep_t25["whole_variant_k"]), int(sweep_t25["whole_variant_n"])):
         raise RuntimeError(
-            "Unexpected mechanism-consistency result."
+            "Mechanism-consistency total disagrees with the threshold sweep: "
+            f"{float(mechanism_values.sum())}/{len(mechanism_values)} vs "
+            f"{sweep_t25['whole_variant_k']}/{sweep_t25['whole_variant_n']}"
         )
 
     observed_isds = isds["observed"]
@@ -355,7 +369,7 @@ At the 2.5 kcal/mol reproducibility reference:
 
 - weighted whole-variant mechanism-pattern agreement is
   **{mechanism_values.sum():.1f}/{len(mechanism_values)} = {mechanism_values.mean():.4f}**;
-- direction-aware agreement across the three energetic axes is
+- direction-aware agreement across the energetic axes is
   **{energetic_primary[0]}/{energetic_primary[1]} =
   {energetic_primary[0] / energetic_primary[1]:.4f}**;
 - monomer-fold agreement is
@@ -363,22 +377,27 @@ At the 2.5 kcal/mol reproducibility reference:
 - complex-context agreement is
   **{primary_axes["fold"][0]}/{primary_axes["fold"][1]}**;
 - binding agreement is
-  **{primary_axes["binding"][0]}/{primary_axes["binding"][1]}**.
+  **{primary_axes["binding"][0]}/{primary_axes["binding"][1]}**;
+- either assembled axis, for the expectations measured only as an amount of
+  complex (co-IP, pull-down, two-hybrid) and scored jointly, is
+  **{primary_axes["assembled_either"][0]}/{primary_axes["assembled_either"][1]}**.
 
 The four-output continuity aggregate, which adds the structural-context tier,
 is:
 
 - **{primary_total[0]}/{primary_total[1]} =
-  {primary_total[0] / primary_total[1]:.4f}** on the primary 57-variant
-  population;
+  {primary_total[0] / primary_total[1]:.4f}** on the primary
+  {len(mechanism_values)}-variant population;
 - **{all_total[0]}/{all_total[1]} =
   {all_total[0] / all_total[1]:.4f}** when all 61 resource rows are retained.
 
 The all-row decomposition is tier
 {all_axes["tier"][0]}/{all_axes["tier"][1]}, monomer fold
 {all_axes["monomer"][0]}/{all_axes["monomer"][1]}, complex context
-{all_axes["fold"][0]}/{all_axes["fold"][1]}, and binding
-{all_axes["binding"][0]}/{all_axes["binding"][1]}. The sole extra all-row
+{all_axes["fold"][0]}/{all_axes["fold"][1]}, binding
+{all_axes["binding"][0]}/{all_axes["binding"][1]}, and either assembled axis
+{all_axes["assembled_either"][0]}/{all_axes["assembled_either"][1]} (the six
+expectations measured only as an amount of complex, scored jointly). The sole extra all-row
 output is the monomer-fold output of BRCA1 R1699Q, which is retained in the
 resource but excluded from whole-variant grading by its curated role.
 

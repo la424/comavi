@@ -1,0 +1,470 @@
+{
+ "n": 56,
+ "systems": 14,
+ "mech": 29,
+ "nondis": 27,
+ "n_cx": 46,
+ "cx_systems": 13,
+ "cx_mech": 21,
+ "cx_nondis": 25,
+ "n_br": 10,
+ "br_mech": 8,
+ "br_nondis": 2,
+ "uniprot_named": 48,
+ "n_am": 39,
+ "P": 28,
+ "Bn": 11,
+ "P_nondis": 14,
+ "P_struct": 14,
+ "B_nondis": 10,
+ "not_compared": 7,
+ "auc": {
+  "am": 0.8733766233766234,
+  "pr": 0.7954545454545454,
+  "en": 0.8181818181818182,
+  "cx": 0.6785714285714286
+ },
+ "am_vals": {
+  "E6V": [
+   0.2229,
+   0.27524025
+  ],
+  "R78G": [
+   0.398,
+   0.81810812
+  ],
+  "H1047R": [
+   0.5381,
+   0.55560876
+  ],
+  "N127S": [
+   0.3479,
+   0.50241154
+  ]
+ },
+ "ledger_n": 97,
+ "e1": 29,
+ "e2": 11,
+ "e3": 30,
+ "e4": 9,
+ "e5": 18,
+ "destab": 36,
+ "destab_quant": 28,
+ "e45": 27,
+ "e45_nd": 22,
+ "det_iso": 7,
+ "det": 20,
+ "att": 18,
+ "rej": 22,
+ "added_fc": 3,
+ "cx_iso": 2,
+ "cx_all": 15,
+ "fc10": 5,
+ "fcS": 2,
+ "wrong_axis": [
+  [
+   "MLH1",
+   "R755W"
+  ],
+  [
+   "PIK3CA",
+   "E542K"
+  ]
+ ],
+ "credited_by_rule": [
+  "D351H",
+  "L749P",
+  "V11G"
+ ],
+ "n_scope": 6,
+ "loc_gap_ci": [
+  0.0,
+  0.1875
+ ],
+ "below_rng": [
+  0.93,
+  1.57
+ ],
+ "mv": {
+  "Q542L": {
+   "system": "mlh1_pms2",
+   "gene": "MLH1",
+   "variant": "Q542L",
+   "expected_class": "ppi_destab_mechanism",
+   "predicted_monomer": -0.796,
+   "predicted_complex_fold": 1.073,
+   "predicted_binding": -0.393,
+   "measured_kcal_mol": null,
+   "measured_source": null
+  },
+  "H718Y": {
+   "system": "mlh1_pms2",
+   "gene": "MLH1",
+   "variant": "H718Y",
+   "expected_class": "fold_mechanism",
+   "predicted_monomer": -0.83,
+   "predicted_complex_fold": -1.201,
+   "predicted_binding": -0.001,
+   "measured_kcal_mol": null,
+   "measured_source": null
+  },
+  "G12D": {
+   "system": "kras_craf",
+   "gene": "KRAS",
+   "variant": "G12D",
+   "expected_class": "ppi_destab_mechanism",
+   "predicted_monomer": -0.125,
+   "predicted_complex_fold": -2.286,
+   "predicted_binding": 0.057,
+   "measured_kcal_mol": 0.93,
+   "measured_source": "evidence ledger (binding; Hunter 2015 Mol Cancer Res 13:1325 Table 2 (doi:10.1158/1541-7786.MCR-15-0203))"
+  },
+  "G12V": {
+   "system": "kras_craf",
+   "gene": "KRAS",
+   "variant": "G12V",
+   "expected_class": "ppi_destab_mechanism",
+   "predicted_monomer": 0.427,
+   "predicted_complex_fold": -0.248,
+   "predicted_binding": 0.058,
+   "measured_kcal_mol": 1.18,
+   "measured_source": "evidence ledger (binding; Hunter 2015 Mol Cancer Res 13:1325 Table 2 (doi:10.1158/1541-7786.MCR-15-0203))"
+  },
+  "N102T": {
+   "system": "hemoglobin_tetramer",
+   "gene": "HBB",
+   "variant": "N102T",
+   "expected_class": "mixed_structural",
+   "predicted_monomer": -0.769,
+   "predicted_complex_fold": -0.425,
+   "predicted_binding": -0.137,
+   "measured_kcal_mol": 3.0,
+   "measured_source": "assembly energetics (Binding)"
+  },
+  "I500V": {
+   "system": "smad4_smad3",
+   "gene": "SMAD4",
+   "variant": "I500V",
+   "expected_class": "ppi_stab_mechanism",
+   "predicted_monomer": 0.948,
+   "predicted_complex_fold": 0.143,
+   "predicted_binding": 0.0,
+   "measured_kcal_mol": null,
+   "measured_source": null
+  },
+  "V1736A": {
+   "system": "brca1_brct",
+   "gene": "BRCA1",
+   "variant": "V1736A",
+   "expected_class": "fold_mechanism",
+   "predicted_monomer": 1.241,
+   "predicted_complex_fold": null,
+   "predicted_binding": null,
+   "measured_kcal_mol": 4.2,
+   "measured_source": "GdmCl unfolding (Monomer fold)"
+  },
+  "R1751Q": {
+   "system": "brca1_brct",
+   "gene": "BRCA1",
+   "variant": "R1751Q",
+   "expected_class": "fold_mechanism",
+   "predicted_monomer": 0.729,
+   "predicted_complex_fold": null,
+   "predicted_binding": null,
+   "measured_kcal_mol": 1.57,
+   "measured_source": "GdmCl unfolding (Monomer fold)"
+  },
+  "L1664P": {
+   "system": "brca1_brct",
+   "gene": "BRCA1",
+   "variant": "L1664P",
+   "expected_class": "fold_mechanism",
+   "predicted_monomer": 0.533,
+   "predicted_complex_fold": null,
+   "predicted_binding": null,
+   "measured_kcal_mol": 1.18,
+   "measured_source": "GdmCl unfolding (Monomer fold)"
+  }
+ },
+ "det_t": [
+  24,
+  21,
+  21,
+  20,
+  18
+ ],
+ "att_t": [
+  20,
+  18,
+  18,
+  18,
+  16
+ ],
+ "rej_t": [
+  12,
+  16,
+  20,
+  22,
+  23
+ ],
+ "wa_t": [
+  4,
+  3,
+  3,
+  2,
+  2
+ ],
+ "pa_if": [
+  7,
+  12
+ ],
+ "pa_ni": 5,
+ "pa_med": 0.058,
+ "pa_lost": 2,
+ "n_sys_added": 7,
+ "n_if_destab": 11,
+ "d_all": 20,
+ "d_ib": 15,
+ "a_all": 18,
+ "a_ib": 9,
+ "fc_saved": 2,
+ "only_att": 4,
+ "if_att": 7,
+ "k": 37.0,
+ "score": 0.6607,
+ "n_labels": 31,
+ "best": 0.4821,
+ "all3": 0.4375,
+ "margin": 0.1786,
+ "perm_mean": 0.3788,
+ "perm_sd": 0.0565,
+ "perm_p": 0.0005,
+ "c_brct": 5.0,
+ "c_hb": 3.5,
+ "c_total": 10.0,
+ "lm": [
+  0.10869565217391308,
+  0.21698113207547165
+ ],
+ "m_ci": [
+  -0.05681818181818177,
+  0.26415094339622636
+ ],
+ "m_p": 0.0745,
+ "n_neg": 3,
+ "ci": [
+  0.5671517412935323,
+  0.7641509433962265
+ ],
+ "loso": [
+  0.6415094339622641,
+  0.6862745098039216
+ ],
+ "cross": "1.0 and 1.5 kcal/mol",
+ "arms": {
+  "t10": [
+   0.6206896551724138,
+   0.4444444444444444
+  ],
+  "t15": [
+   0.5517241379310345,
+   0.5925925925925926
+  ],
+  "t20": [
+   0.5344827586206896,
+   0.7407407407407407
+  ],
+  "t25": [
+   0.5172413793103449,
+   0.8148148148148148
+  ],
+  "tSAP": [
+   0.4482758620689655,
+   0.8518518518518519
+  ]
+ },
+ "gaps": {
+  "t10": 0.06896551724137934,
+  "t15": 0.06896551724137934,
+  "t20": 0.0862068965517242,
+  "t25": 0.10344827586206895
+ },
+ "unweighted": {
+  "t10": 0.5325670498084292,
+  "t15": 0.5721583652618135,
+  "t20": 0.6376117496807152,
+  "t25": 0.6660280970625798,
+  "tSAP": 0.6500638569604087
+ },
+ "cx_score": 0.6521739130434783,
+ "br_score": 0.7,
+ "c4": 14,
+ "c5": 17,
+ "wv": {
+  "n": 52,
+  "non_disruptive": 23,
+  "mechanisms": 29,
+  "systems": 13,
+  "comavi_score": 0.6346153846153846,
+  "comavi_score_ci95": [
+   0.5377299528301887,
+   0.7363920454545453
+  ],
+  "strongest_constant": 0.47115384615384615,
+  "strongest_constant_labels": [
+   "Both fold + PPI destabilization"
+  ],
+  "margin": 0.16346153846153844,
+  "margin_ci95": [
+   -0.06523169336384446,
+   0.23531454248366007
+  ],
+  "margin_p_at_or_below_zero": 0.099,
+  "comavi_balanced": 0.6499250374812594,
+  "comavi_balanced_ci95": [
+   0.5166558441558441,
+   0.7801136043497857
+  ],
+  "best_constant_balanced": 0.5,
+  "arm_mechanism": 0.5172413793103449,
+  "arm_non_disruptive": 0.782608695652174,
+  "removed": [
+   "CALM1 D96V",
+   "CALM1 N98S",
+   "CALM1 F142L",
+   "SMAD4 I500T"
+  ]
+ },
+ "wk": {
+  "n": 49,
+  "non_disruptive": 20,
+  "mechanisms": 29,
+  "systems": 13,
+  "comavi_score": 0.6122448979591837,
+  "comavi_score_ci95": [
+   0.4860906862745098,
+   0.7325581395348837
+  ],
+  "strongest_constant": 0.5,
+  "strongest_constant_labels": [
+   "Both fold + PPI destabilization"
+  ],
+  "margin": 0.11224489795918369,
+  "margin_ci95": [
+   -0.08749999999999997,
+   0.22340425531914893
+  ],
+  "margin_p_at_or_below_zero": 0.179,
+  "comavi_balanced": 0.6336206896551724,
+  "comavi_balanced_ci95": [
+   0.48256559220389805,
+   0.7785838870431893
+  ],
+  "best_constant_balanced": 0.5,
+  "arm_mechanism": 0.5172413793103449,
+  "arm_non_disruptive": 0.75,
+  "removed": [
+   "PIK3R1 M326I",
+   "PMS2 G857A",
+   "TNNI3 P82S",
+   "CALM1 D96V",
+   "CALM1 N98S",
+   "CALM1 F142L",
+   "SMAD4 I500T"
+  ]
+ },
+ "q": {
+  "n": 24,
+  "non_disruptive": 4,
+  "mechanisms": 20,
+  "systems": 7,
+  "comavi_score": 0.5208333333333334,
+  "comavi_score_ci95": [
+   0.14261904761904762,
+   0.6771434294871792
+  ],
+  "strongest_constant": 0.7708333333333334,
+  "strongest_constant_labels": [
+   "Both fold + PPI destabilization"
+  ],
+  "margin": -0.25,
+  "margin_ci95": [
+   -0.6,
+   -0.11363636363636365
+  ],
+  "margin_p_at_or_below_zero": 1.0,
+  "comavi_balanced": 0.5125,
+  "comavi_balanced_ci95": [
+   0.1,
+   0.815799148606811
+  ],
+  "best_constant_balanced": 0.5,
+  "arm_mechanism": 0.525,
+  "arm_non_disruptive": 0.5,
+  "removed": [
+   "BRCA1 C61G",
+   "BRCA1 K45R",
+   "BRCA1 E100Q",
+   "PIK3CA E542K",
+   "PIK3CA E545K",
+   "PIK3CA H1047R",
+   "PIK3R1 N564D",
+   "PIK3R1 M326I",
+   "MLH1 V384D",
+   "PMS2 G857A",
+   "MLH1 H718Y",
+   "MLH1 K618E",
+   "MSH2 A636P",
+   "MSH2 C697F",
+   "MSH2 N127S",
+   "MSH2 G322D",
+   "VHL L158Q",
+   "VHL Y98H",
+   "KRAS Q61H",
+   "HBB E6V",
+   "TNNI3 P82S",
+   "CALM1 D96V",
+   "CALM1 N98S",
+   "CALM1 F142L",
+   "SMAD4 D351H",
+   "SMAD4 R361C",
+   "SMAD4 I500T",
+   "CFH R78G",
+   "CFH R53H",
+   "CFH I62V",
+   "VWF R1334Q",
+   "VWF A1381T"
+  ]
+ },
+ "ex": {
+  "systems": 7,
+  "variants": 28,
+  "score_total": 20.0,
+  "score": 0.7143
+ },
+ "af": {
+  "systems": 7,
+  "variants": 28,
+  "score_total": 17.0,
+  "score": 0.6071
+ },
+ "dif": {
+  "value": 0.1072,
+  "ci95_system_resampling": [
+   -0.099,
+   0.2778
+  ],
+  "draws": 2000,
+  "seed": 20260923
+ },
+ "top": {
+  "consistent": 8,
+  "partial": 4,
+  "inconsistent": 5
+ },
+ "cons": 35,
+ "part": 4,
+ "cv_date": "10 November 2026",
+ "ep_n": 14,
+ "ep_agree": 12
+}

@@ -1,32 +1,32 @@
 {
  "denominators": {
   "n_rows": 61,
-  "n_unobservable": 2,
-  "n_graded": 57,
-  "n_committed": 57,
-  "n_structural": 25,
-  "n_silent": 32,
-  "note": "graded == committed == 57; the 2 class-uncommitted variants carry no grade, so every headline denominator coincides."
+  "n_excluded_candidates": 5,
+  "n_graded": 56,
+  "n_committed": 56,
+  "n_structural": 29,
+  "n_silent": 27,
+  "note": "the 56-variant benchmark (benchmark_population): every variant is graded and carries a committed class, so graded == committed == 56. The other 5 scored candidates have no gradeable expectation."
  },
- "headline_MC_t25": 0.7193,
- "threshold_averaged_MC": 0.6684,
- "threshold_averaged_MC_balanced": 0.6666,
- "R1_crossover_structural_weight": 0.646,
- "R1_benchmark_actual_weight": 0.439,
+ "headline_MC_t25": 0.6607,
+ "threshold_averaged_MC": 0.6089,
+ "threshold_averaged_MC_balanced": 0.6117,
+ "R1_crossover_structural_weight": 0.782,
+ "R1_benchmark_actual_weight": 0.518,
  "R2_lability": {
-  "n_committed": 57,
-  "n_stable": 36,
-  "n_labile": 21,
-  "grades_monotone_in_threshold": 57,
+  "n_committed": 56,
+  "n_stable": 39,
+  "n_labile": 17,
+  "grades_monotone_in_threshold": 56,
   "direction_is_forced": true,
-  "labile_structural_n": 8,
-  "labile_silent_n": 13,
-  "labile_structural_median_ddg": 3.102,
+  "labile_structural_n": 6,
+  "labile_silent_n": 11,
+  "labile_structural_median_ddg": 2.853,
   "labile_silent_median_ddg": 1.623,
-  "stable_structural_median_ddg": 4.729,
-  "stable_silent_median_ddg": 0.706,
-  "mannwhitney_U": 93.0,
-  "mannwhitney_p": 0.00185
+  "stable_structural_median_ddg": 3.567,
+  "stable_silent_median_ddg": 0.705,
+  "mannwhitney_U": 45.0,
+  "mannwhitney_p": 0.25614
  },
  "R3_model_free": {
   "definition": "real destabilizer = |measured| >= 1.0 kcal/mol",
@@ -45,51 +45,51 @@
   "residue_collapsed_2x2": [
    [
     10,
-    3
+    2
    ],
    [
     0,
     2
    ]
   ],
-  "residue_collapsed_fisher_p": 0.0952,
+  "residue_collapsed_fisher_p": 0.0659,
   "systems_with_both_tier_strata_among_firing": 1,
   "n_systems_among_firing": 10,
-  "fisher_p_if_1_weak_were_structural": 0.1548,
-  "fisher_p_if_2_weak_were_structural": 0.5304,
+  "fisher_p_if_1_weak_were_structural": 0.1078,
+  "fisher_p_if_2_weak_were_structural": 0.4424,
   "fisher_p_if_3_weak_were_structural": 1.0,
   "bh_firing_adj": {
-   "t10": 0.0473,
-   "t15": 0.0473,
-   "t20": 0.0473,
-   "t25": 0.0515,
-   "tSAP": 0.1087
+   "t10": 0.0307,
+   "t15": 0.0307,
+   "t20": 0.0307,
+   "t25": 0.0307,
+   "tSAP": 0.1
   },
   "bh_silent_adj": {
-   "t10": 0.1373,
-   "t15": 0.1087,
-   "t20": 0.1087,
-   "t25": 0.1087,
-   "tSAP": 0.0842
+   "t10": 1.0,
+   "t15": 1.0,
+   "t20": 1.0,
+   "t25": 1.0,
+   "tSAP": 1.0
   },
-  "n_surviving_bh_05": 3
+  "n_surviving_bh_05": 4
  },
  "tier_gradient": {
-  "n": 49,
-  "spearman_rho": -0.3997,
-  "spearman_p": 0.00444,
+  "n": 42,
+  "spearman_rho": -0.3118,
+  "spearman_p": 0.04442,
   "gradient": [
    {
     "tier": 1,
-    "pathogenic": 14,
-    "n": 14,
+    "pathogenic": 9,
+    "n": 9,
     "frac": 1.0
    },
    {
     "tier": 2,
-    "pathogenic": 13,
-    "n": 18,
-    "frac": 0.722
+    "pathogenic": 12,
+    "n": 17,
+    "frac": 0.706
    },
    {
     "tier": 3,
@@ -100,84 +100,84 @@
    {
     "tier": 4,
     "pathogenic": 3,
-    "n": 7,
-    "frac": 0.429
+    "n": 6,
+    "frac": 0.5
    }
   ],
-  "loso_worst_p": 0.0299,
-  "loso_worst_system": "brca1_bard1",
-  "loso_all_significant": true,
-  "cluster_boot_rho_mean": -0.399,
+  "loso_worst_p": 0.1317,
+  "loso_worst_system": "pi3k",
+  "loso_all_significant": false,
+  "cluster_boot_rho_mean": -0.318,
   "cluster_boot_ci": [
-   -0.599,
-   -0.153
+   -0.529,
+   -0.053
   ],
-  "cluster_boot_p_rho_negative": 0.9986
+  "cluster_boot_p_rho_negative": 0.9882
  },
  "tradeoff_bootstrap": {
   "variant_boot_recall_ci": [
    [
-    0.62,
-    0.88
+    0.448,
+    0.776
    ],
    [
-    0.56,
-    0.86
+    0.379,
+    0.724
    ],
    [
-    0.48,
-    0.78
+    0.362,
+    0.707
    ],
    [
-    0.46,
-    0.74
+    0.345,
+    0.69
    ],
    [
-    0.4,
-    0.68
+    0.293,
+    0.621
    ]
   ],
   "variant_boot_reject_ci": [
    [
-    0.281,
-    0.625
+    0.259,
+    0.63
    ],
    [
-    0.438,
-    0.75
+    0.407,
+    0.778
    ],
    [
-    0.562,
-    0.875
+    0.556,
+    0.889
    ],
    [
-    0.656,
-    0.938
+    0.667,
+    0.963
    ],
    [
-    0.719,
-    0.969
+    0.704,
+    0.963
    ]
   ],
-  "p_recall_drops": 0.9998,
+  "p_recall_drops": 0.9987,
   "p_reject_rises": 1.0,
-  "p_curves_cross": 0.9951,
-  "cluster_p_recall_drops": 0.9995,
+  "p_curves_cross": 0.9093,
+  "cluster_p_recall_drops": 0.9975,
   "cluster_p_reject_rises": 1.0,
   "cluster_recall_ci_t10": [
-   0.636,
-   0.857
+   0.395,
+   0.758
   ],
   "cluster_reject_ci_tSAP": [
-   0.688,
+   0.724,
    1.0
   ],
   "note": "Per-variant grades are monotone in threshold by construction, so the bootstrap confirms the MAGNITUDE of the tradeoff, not its shape."
  },
  "tier_ablation": {
-  "n_graded": 57,
-  "mc_with_tier": 0.7193,
-  "mc_without_tier": 0.7193,
+  "n_graded": 56,
+  "mc_with_tier": 0.6607,
+  "mc_without_tier": 0.6607,
   "delta": 0.0,
   "n_labels_changed": 7,
   "n_grades_changed": 0,
@@ -187,38 +187,38 @@
   "n_boot": 10000,
   "seed": 42,
   "resample_unit": "system",
-  "recall_t10": 0.76,
+  "recall_t10": 0.621,
   "recall_t10_ci": [
-   0.639,
-   0.862
+   0.395,
+   0.762
   ],
-  "recall_tSAP": 0.54,
+  "recall_tSAP": 0.448,
   "recall_tSAP_ci": [
-   0.4,
-   0.68
+   0.278,
+   0.574
   ],
-  "rejection_t10": 0.438,
+  "rejection_t10": 0.444,
   "rejection_t10_ci": [
    0.273,
-   0.633
+   0.65
   ],
-  "rejection_tSAP": 0.844,
+  "rejection_tSAP": 0.852,
   "rejection_tSAP_ci": [
-   0.69,
+   0.727,
    1.0
   ],
-  "p_tradeoff": 0.9996
+  "p_tradeoff": 0.9986
  },
  "structural_agreement": {
-  "sap_hits": 90,
-  "sap_tested": 124,
-  "sap": 0.7258,
-  "primary_hits": 92,
-  "primary_tested": 124,
-  "primary": 0.7419,
-  "all_rows_hits": 92,
-  "all_rows_tested": 125,
-  "all_rows": 0.736,
+  "sap_hits": 87,
+  "sap_tested": 125,
+  "sap": 0.696,
+  "primary_hits": 89,
+  "primary_tested": 125,
+  "primary": 0.712,
+  "all_rows_hits": 89,
+  "all_rows_tested": 126,
+  "all_rows": 0.7063,
   "convention": "primary excludes unobservable_variants(); both metrics use the same 57-variant population, with 132 applicable structural outputs",
   "unobservable": [
    "R1699L",
@@ -227,22 +227,22 @@
  },
  "predictive_value": {
   "threshold": 2.5,
-  "firing_pathogenic": 22,
+  "firing_pathogenic": 17,
   "firing_benign": 0,
-  "silent_pathogenic": 20,
-  "silent_benign": 14,
+  "silent_pathogenic": 19,
+  "silent_benign": 13,
   "ppv_firing": 1.0,
-  "ppv_silent": 0.5882,
-  "base_rate": 0.75,
-  "fisher_p": 0.0003052640685307365,
-  "n_systems_with_pathogenic_silent": 11,
+  "ppv_silent": 0.5938,
+  "base_rate": 0.7347,
+  "fisher_p": 0.0017143186810870436,
+  "n_systems_with_pathogenic_silent": 10,
   "note": "a firing axis is highly specific on this benchmark; a silent result leaves pathogenicity near the benchmark base rate"
  },
  "asymmetry_bound": {
   "threshold": 2.5,
   "n_silent_all_axes": 36,
-  "n_pathogenic": 20,
-  "n_benign": 14,
+  "n_pathogenic": 19,
+  "n_benign": 13,
   "n_vus": 2,
   "note": "a negative structural call carries no evidentiary weight against pathogenicity"
  }

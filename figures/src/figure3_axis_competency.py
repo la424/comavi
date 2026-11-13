@@ -64,7 +64,7 @@ def _thr_triple(spec):
 _SPECS = dict(_ac.THRESHOLD_SPECS)
 SWEEP = {}
 for _t in TAGS:
-    _acc = {k: [0, 0] for k in ("monomer", "fold", "binding", "tier")}
+    _acc = {k: [0, 0] for k in _ac.AGREEMENT_ROWS}
     for _, _r in _d.iterrows():
         _per = _ac.structural_agreement_by_axis(
             _r, _partners, *_thr_triple(_SPECS[_TAG2COL[_t]]))
@@ -75,8 +75,8 @@ for _t in TAGS:
 
 # The panel plots the three DDG axes; the tier axis is the fourth term of the
 # headline and is shown separately (Fig. 2), so assert the four close to it.
-_hd = sum(SWEEP["t2.5"][k][1] for k in ("monomer", "fold", "binding", "tier"))
-_hn = sum(SWEEP["t2.5"][k][0] for k in ("monomer", "fold", "binding", "tier"))
+_hd = sum(SWEEP["t2.5"][k][1] for k in _ac.AGREEMENT_ROWS)
+_hn = sum(SWEEP["t2.5"][k][0] for k in _ac.AGREEMENT_ROWS)
 # Cross-check against the released table's OWN stored aggregate, not a frozen
 # literal: a regrade must not be able to leave this assertion guarding a stale
 # total (it did, at 99/133, through v7.6).

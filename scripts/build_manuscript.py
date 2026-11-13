@@ -306,28 +306,34 @@ SYSTEMS = [  # display name, system id, gene, structure
 
 
 def table1_rows():
-    can = pd.read_csv(RO / "scored_61var_canonical.csv")
+    # v11: the benchmark is the 56 graded variants (scripts/benchmark_population.py).
+    # The five scored candidates for which no gradeable expectation exists are
+    # named in Methods and listed in S2 Table, so they no longer appear here.
+    # With every listed variant graded, the former Graded column would repeat
+    # Variants, so it now counts structural mechanisms (the rest are
+    # non-disruptive). Pathogenic counts the Franklin classification,
+    # pathogenic or likely pathogenic (scripts/apply_clinical_label_rule_v11.py);
+    # "–" marks a system with no clinical classification at all (BRCT).
+    import benchmark_population as bp
+    can = bp.benchmark(pd.read_csv(RO / "scored_61var_canonical.csv", low_memory=False))
     assert set(can.system) == {s[1] for s in SYSTEMS}, sorted(set(can.system) ^ {s[1] for s in SYSTEMS})
     rows, tot = [], [0, 0, 0]
     for name, sid, gene, struct in SYSTEMS:
         sub = can[can.system == sid]
-        n, graded = len(sub), int(sub.mech_consistency_t25.notna().sum())
+        n = len(sub)
+        mech = int((sub.expected_mech_class != "structurally_silent").sum())
         ph = sub.phenotype.astype(str).str.lower()
-        labelled = ph.str.startswith(("pathogenic", "benign", "likely"))
+        annotated = ph.isin(["pathogenic", "pathogenic_gof", "benign", "vus", "unclassified"])
         path = int(ph.str.startswith("pathogenic").sum())
-        rows.append([name, gene, n, graded, path if labelled.any() else "–", struct])
+        rows.append([name, gene, n, mech, path if annotated.any() else "–", struct])
         tot[0] += n
-        tot[1] += graded
+        tot[1] += mech
         tot[2] += path
-    # Derived from the canonical, not frozen: the graded count moved 57 -> 56
-    # in v8.0 when MSH2 G674R lost its only commitment, and a literal here can
-    # only be got past by bumping it.
-    _canon = pd.read_csv(RO / "scored_61var_canonical.csv", low_memory=False)
-    _graded = int(_canon.mech_consistency_t25.isin(
-        ["consistent", "partial", "inconsistent"]).sum())
-    assert tot[:2] == [len(_canon), _graded], (tot, len(_canon), _graded)
+    # Derived from independent records, not frozen literals.
+    dva = json.loads((RO / "COMAVI_detection_vs_attribution.json").read_text())
+    assert tot[:2] == [bp.N_BENCHMARK, dva["detection"]["n"]], (tot, bp.N_BENCHMARK, dva["detection"]["n"])
     rows.append(["Total", "", tot[0], tot[1], tot[2], ""])
-    return ["System", "Gene", "Variants", "Graded", "Pathogenic", "Structure"], rows
+    return ["System", "Gene", "Variants", "Mechanisms", "Pathogenic", "Structure"], rows
 
 
 THRESH_LABELS = ["1.0", "1.5", "2.0", "2.5", "Bound"]
@@ -348,7 +354,8 @@ def table2_rows():
     struct = g.expected_mech_class != "structurally_silent"
     me = json.loads((RO / "COMAVI_measured_effect_tables.json").read_text())["measured_effects_recovered"]
     pm = pd.read_csv(RO / "isds_v1" / "ISDS_v1_primary_metrics.csv").set_index("score")
-    n_axes = sw[0]["axis_monomer_n"] + sw[0]["axis_fold_n"] + sw[0]["axis_binding_n"]
+    n_axes = (sw[0]["axis_monomer_n"] + sw[0]["axis_fold_n"] + sw[0]["axis_binding_n"]
+              + sw[0]["axis_assembled_either_n"])
     rows = [
         ["Mechanism-pattern score", "%d graded variants" % len(g), "Mean whole-variant grade"],
         ["Structural arm", "%d structural-mechanism variants" % int(struct.sum()), "Mean grade of variants expected to carry a disruption"],

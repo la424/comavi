@@ -24,8 +24,15 @@ EXPECTED_V5 = {
         't25': 0.718, 'tSAP': 0.709,
     },
     'mech_consistency': {
-        't10': 0.602, 't15': 0.693, 't20': 0.716,
-        't25': 0.761, 'tSAP': 0.750,
+        # v11 re-pin: the grader now implements Table 3 as published (partial
+        # credit only when an expected effect is recovered; per-axis direction
+        # check for the mixed-direction labels; scripts/apply_rubric_table3_v11.py).
+        # Cross-checked independently: on all 220 graded cells of this 44-variant
+        # re-derivation, the v11 grader equals the pre-v11 grader with the two
+        # documented corrections applied by hand. Previous values:
+        # 0.602 / 0.693 / 0.716 / 0.761 / 0.750.
+        't10': 0.523, 't15': 0.614, 't20': 0.659,
+        't25': 0.693, 'tSAP': 0.670,
     },
     'threshold_stable': 28,
     'level1_TPR_t10_COMAVI_full': 0.913,
@@ -94,8 +101,14 @@ EXPECTED_CANONICAL = {
         # no threshold, so it adds +1 to n and +0 to k everywhere -- which is why
         # the ledger's all-row monomer axis is (19, 27) against the sweep's
         # graded (19, 26).
-        't10': (82, 124), 't15': (85, 124), 't20': (86, 124),
-        't25': (86, 124), 'tSAP': (84, 124),
+        # v11 evidence resolution: the six complex-amount expectations are scored
+        # jointly on either assembled axis ('assembled_either'), which adds two
+        # gradeable axes (D351H and I500V had no gated binding value) and moves
+        # agreement. Read from COMAVI_threshold_sweep.json structural_agreement_k/_n
+        # (graded: 84/125, 86/125, 88/125, 89/125, 87/125) plus the R1699Q axis.
+        # Previous values: 82/124, 85/124, 86/124, 86/124, 84/124.
+        't10': (84, 126), 't15': (86, 126), 't20': (88, 126),
+        't25': (89, 126), 'tSAP': (87, 126),
     },
     'mech_consistency': {
         # v8.0 moves every threshold, because the corrections changed cohort
@@ -103,19 +116,38 @@ EXPECTED_CANONICAL = {
         # commitment was withdrawn, which removes a variant from grading, and
         # the KRAS, MLH1 and SMAD4 corrections reclassify variants between the
         # mechanism and non-disruptive arms.
-        't10': 0.562, 't15': 0.616, 't20': 0.652,
-        't25': 0.661, 'tSAP': 0.652,
+        # v11: the grader now implements Table 3 as published, which moves every
+        # threshold (78 grade cells change across both pipelines; audit in
+        # docs/audit/COMAVI_v11_rubric_regrade.csv). Values read from
+        # COMAVI_threshold_sweep.json whole_variant, an independent generator.
+        # Previous values: 0.562 / 0.616 / 0.652 / 0.661 / 0.652.
+        # v11 evidence resolution (docs/audit/COMAVI_v11_evidence_resolution.csv):
+        # from 0.500 / 0.554 / 0.598 / 0.607 / 0.589, read from
+        # COMAVI_threshold_sweep.json whole_variant (30.0, 32.0, 35.5, 37.0, 36.0 of 56).
+        't10': 0.536, 't15': 0.571, 't20': 0.634,
+        't25': 0.661, 'tSAP': 0.643,
     },
     'mech_graded_n': 56,
     # Four-way decomposition of the t=2.5 headline (ledger §13).
     # v8.0: binding loses G674R (commitment withdrawn) and the tier arm follows
     # the prioritization population from 47 variants to 46.
+    # v11: the binding row keeps only binding-specific expectations (20/29 ->
+    # 19/25); the six complex-amount expectations form 'assembled_either' (4/6).
+    # Read from COMAVI_threshold_sweep.json axis_*_k/_n at t25 (all-row monomer
+    # adds the R1699Q axis). Closes on the headline: 19+17+19+4+30 = 89 and
+    # 27+22+25+6+46 = 126.
     'axis_decomposition_t25': {
         'monomer': (19, 27), 'fold': (17, 22),
-        'binding': (20, 29), 'tier': (30, 46),
+        'binding': (19, 25), 'assembled_either': (4, 6), 'tier': (30, 46),
     },
     # Tier pathogenicity gradient — carries no expected_mech_class term, so
     # neither the v7.1 correction nor v7.3 pooling may move it.
+    # v11: this is a regression check on the CURATED `role` column, which
+    # records the labels as originally entered, and it is deliberately left on
+    # that column. The gradient the paper and README report is computed on the
+    # clinical label (`phenotype`), which from v11 follows the Franklin rule
+    # (41 labelled variants: 9/9, 12/16, 7/10, 3/6); see
+    # COMAVI_numbers_ledger.json tier_gradient.
     'tier_gradient': [(14, 14), (13, 18), (7, 10), (3, 7)],
     'n_ppi_rows': 49,
     'n_brct_rows': 12,
@@ -312,12 +344,14 @@ def verify_canonical(canonical_csv, scripts_dir):
     spec = dict(ac.THRESHOLD_SPECS)['t25']
     triple = ((spec['monomer'], spec['fold'], spec['binding'])
               if isinstance(spec, dict) else (spec, spec, spec))
-    dec = {k: [0, 0] for k in ('monomer', 'fold', 'binding', 'tier')}
+    # v11: iterate the module's own row list, so a row added to the
+    # decomposition (here 'assembled_either') must also be pinned below.
+    dec = {k: [0, 0] for k in ac.AGREEMENT_ROWS}
     for _, r in df.iterrows():
         for k, (a, b) in ac.structural_agreement_by_axis(r, partners, *triple).items():
             dec[k][0] += a
             dec[k][1] += b
-    for k in ('monomer', 'fold', 'binding', 'tier'):
+    for k in ac.AGREEMENT_ROWS:
         got = tuple(dec[k])
         exp = tuple(EXPECTED_CANONICAL['axis_decomposition_t25'][k])
         ok = got == exp

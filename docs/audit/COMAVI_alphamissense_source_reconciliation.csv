@@ -1,0 +1,50 @@
+system,gene,variant,clinical_substitution,uniprot,release_key,numbering_rule,previous_value,release_value,previous_class,release_class,status
+brca1_bard1,BRCA1,V11G,p.Val11Gly,P38398,V11G,as named,0.705,0.7047,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+brca1_bard1,BRCA1,C61G,p.Cys61Gly,P38398,C61G,as named,0.99,0.9904,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+brca1_bard1,BRCA1,K45R,p.Lys45Arg,P38398,K45R,as named,0.081,0.0811,likely_benign,likely_benign,unchanged at three decimals
+brca1_bard1,BRCA1,E100Q,p.Glu100Gln,P38398,E100Q,as named,0.07,0.0696,likely_benign,likely_benign,unchanged at three decimals
+pi3k,PIK3CA,E542K,p.Glu542Lys,P42336,E542K,as named,0.941,0.9409,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+pi3k,PIK3CA,E545K,p.Glu545Lys,P42336,E545K,as named,0.988,0.9878,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+pi3k,PIK3CA,H1047R,p.His1047Arg,P42336,H1047R,as named,0.538,0.5381,ambiguous,ambiguous,unchanged at three decimals
+pi3k,PIK3R1,N564D,p.Asn564Asp,P27986,N564D,as named,0.999,0.9991,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+pi3k,PIK3R1,M326I,p.Met326Ile,P27986,M326I,as named,0.253,0.2528,likely_benign,likely_benign,unchanged at three decimals
+mlh1_pms2,MLH1,Q542L,p.Gln542Leu,P40692,Q542L,as named,0.918,0.9184,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+mlh1_pms2,MLH1,L749P,p.Leu749Pro,P40692,L749P,as named,0.999,0.999,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+mlh1_pms2,MLH1,R755W,p.Arg755Trp,P40692,R755W,as named,0.986,0.9859,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+mlh1_pms2,MLH1,V384D,p.Val384Asp,P40692,V384D,as named,0.988,0.9976,likely_pathogenic,likely_pathogenic,corrected
+mlh1_pms2,PMS2,G857A,p.Gly857Ala,P54278,G857A,as named,0.077,0.0772,likely_benign,likely_benign,unchanged at three decimals
+mlh1_pms2,MLH1,H718Y,p.His718Tyr,P40692,H718Y,as named,0.225,0.2246,likely_benign,likely_benign,unchanged at three decimals
+mlh1_pms2,MLH1,K618E,p.Lys618Glu,P40692,K618E,as named,0.649,0.6492,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+msh2_msh6,MSH2,G674R,p.Gly674Arg,P43246,G674R,as named,0.999,0.9989,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+msh2_msh6,MSH2,A636P,p.Ala636Pro,P43246,A636P,as named,0.896,0.8956,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+msh2_msh6,MSH2,C697F,p.Cys697Phe,P43246,C697F,as named,0.991,0.9912,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+msh2_msh6,MSH2,N127S,p.Asn127Ser,P43246,N127S,as named,0.348,0.3479,ambiguous,ambiguous,unchanged at three decimals
+msh2_msh6,MSH2,G322D,p.Gly322Asp,P43246,G322D,as named,0.323,0.3231,likely_benign,likely_benign,unchanged at three decimals
+vhl_elonginc,VHL,L158Q,p.Leu158Gln,P40337,L158Q,as named,0.996,0.9955,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+vhl_elonginc,VHL,W117R,p.Trp117Arg,P40337,W117R,as named,0.999,0.9994,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+vhl_elonginc,VHL,Y98H,p.Tyr98His,P40337,Y98H,as named,0.973,0.9734,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+kras_craf,KRAS,G12D,p.Gly12Asp,P01116,G12D,as named,0.998,0.9984,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+kras_craf,KRAS,G12V,p.Gly12Val,P01116,G12V,as named,0.995,0.9949,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+kras_craf,KRAS,Q61H,p.Gln61His,P01116,Q61H,as named,0.998,0.9977,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+hemoglobin_dimer,HBB,E6V,p.Glu7Val,P68871,E7V,globin numbering (+1 for the initiator Met),0.223,0.2229,likely_benign,likely_benign,unchanged at three decimals
+hemoglobin_tetramer,HBB,W37Y,p.Trp38Tyr,P68871,W38Y,globin numbering (+1 for the initiator Met),0.894,0.8944,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+hemoglobin_tetramer,HBB,W37A,p.Trp38Ala,P68871,W38A,globin numbering (+1 for the initiator Met),0.969,0.9689,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+hemoglobin_tetramer,HBB,W37G,p.Trp38Gly,P68871,W38G,globin numbering (+1 for the initiator Met),0.94,0.9403,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+hemoglobin_tetramer,HBB,W37E,p.Trp38Glu,P68871,W38E,globin numbering (+1 for the initiator Met),0.993,0.9933,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+hemoglobin_tetramer,HBB,N102T,p.Asn103Thr,P68871,N103T,globin numbering (+1 for the initiator Met),0.969,0.9687,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+troponin_ic,TNNI3,R145G,p.Arg145Gly,P19429,R145G,as named,0.971,0.971,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+troponin_ic,TNNI3,R145Q,p.Arg145Gln,P19429,R145Q,as named,0.687,0.6871,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+troponin_ic,TNNI3,R162W,p.Arg162Trp,P19429,R162W,as named,0.411,0.4114,ambiguous,ambiguous,unchanged at three decimals
+troponin_ic,TNNI3,P82S,p.Pro82Ser,P19429,P82S,as named,0.127,0.127,likely_benign,likely_benign,unchanged at three decimals
+cam_cav12,CALM1,D96V,p.Asp96Val,P0DP23,D96V,as named,0.984,0.984,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+cam_cav12,CALM1,N98S,p.Asn98Ser,P0DP23,N98S,as named,0.209,0.2092,likely_benign,likely_benign,unchanged at three decimals
+cam_cav12,CALM1,F142L,p.Phe142Leu,P0DP23,F142L,as named,0.998,0.9982,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+smad4_smad3,SMAD4,D351H,p.Asp351His,Q13485,D351H,as named,1.0,0.9999,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+smad4_smad3,SMAD4,R361C,p.Arg361Cys,Q13485,R361C,as named,0.998,0.9975,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+smad4_smad3,SMAD4,I500T,p.Ile500Thr,Q13485,I500T,as named,0.991,0.9911,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+smad4_smad3,SMAD4,I500V,p.Ile500Val,Q13485,I500V,as named,0.616,0.6162,likely_pathogenic,likely_pathogenic,unchanged at three decimals
+cfh_c3b,CFH,R78G,p.Arg78Gly,P08603,R78G,as named,0.398,0.398,ambiguous,ambiguous,unchanged at three decimals
+cfh_c3b,CFH,R53H,p.Arg53His,P08603,R53H,as named,0.2427,0.2427,likely_benign,likely_benign,unchanged at three decimals
+cfh_c3b,CFH,I62V,p.Val62Ile,P08603,V62I,reverse-named calculation,0.0589,0.0589,likely_benign,likely_benign,unchanged at three decimals
+vwf_gpiba,VWF,R1334Q,p.Arg1334Gln,P04275,R1334Q,as named,,0.091,unavailable,likely_benign,added
+vwf_gpiba,VWF,A1381T,p.Thr1381Ala,P04275,T1381A,reverse-named calculation,,0.07,unavailable,likely_benign,added

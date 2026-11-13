@@ -56,6 +56,15 @@ def main():
             # v7.9: the three reversed binding tokens moved the pooled and
             # interaction figures. BRCT is untouched, as expected -- the
             # correction is confined to the interaction cohort.
+            # v11: the grader implements Table 3 as published. The six t=2.5
+            # grade changes (docs/audit/COMAVI_v11_rubric_regrade.csv) are all
+            # partial -> inconsistent and all in complexes: interaction
+            # 30.0 - 3.0 = 27.0/46, BRCT unchanged at 7.0/10, all 37.0 - 3.0 =
+            # 34.0/56. Previous pins 0.6607 and 0.6522.
+            # v11 evidence resolution: V11G, L749P and D351H 0 -> 1 at t=2.5, all
+            # in complexes (docs/audit/COMAVI_v11_evidence_resolution.csv):
+            # interaction 27.0 + 3.0 = 30.0/46, all 34.0 + 3.0 = 37.0/56.
+            # Previous pins 0.6071 and 0.5870.
             ("all gradeable n=56", graded, 0.6607),
             ("interaction n=46", graded & ~brct, 0.6522),
             ("BRCT core/fold n=10", graded & brct, 0.7000)]:
@@ -82,20 +91,21 @@ def main():
     check("all-row structural agreement",
           (sum(v[0] for v in t_all.values()),
            sum(v[1] for v in t_all.values())),
-          (86, 124))
-    check("primary 57-variant structural agreement",
+          (89, 126))
+    check("primary 56-variant structural agreement",
           (sum(v[0] for v in t_primary.values()),
            sum(v[1] for v in t_primary.values())),
-          (86, 123))
+          (89, 125))
     check("interaction-only structural agreement",
           (sum(v[0] for v in t_int.values()),
            sum(v[1] for v in t_int.values())),
-          (79, 113))
+          (82, 115))   # v11 joint complex-amount row: 79/113 -> 82/115; BRCT 7/10 unchanged
 
     expected_primary_axes = {
         "monomer": (19, 26),
         "fold": (17, 22),
-        "binding": (20, 29),
+        "binding": (19, 25),
+        "assembled_either": (4, 6),
         "tier": (30, 46),
     }
 
@@ -162,7 +172,7 @@ def main():
           [regrades["R1699L"], regrades["R1699Q"]], ["consistent", "consistent"])
     pts = df.loc[graded, "mech_consistency_t25"].map(GMAP).sum() + 2.0
     check("MC if both included as structurally silent",
-          round(pts / 58, 4), 0.6724)
+          round(pts / 58, 4), 0.6724)   # v11 evidence resolution: (37.0 + 2.0) / 58; was 0.6207
     print("        -> the exclusion is a curation decision applied upstream of the")
     print("           rubric. It must be stated in Methods, not left implicit.")
 

@@ -33,9 +33,15 @@ from scipy.stats import fisher_exact, linregress, mannwhitneyu, spearmanr, t as 
 REPO = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "scripts"))
 import apply_concordance_v5 as ac  # noqa: E402
+import benchmark_population as bp  # noqa: E402
 
 GMAP = {"consistent": 1.0, "partial": 0.5, "inconsistent": 0.0}
-STRUCT = {"ppi_destab_mechanism", "mixed_structural", "fold_mechanism"}
+# v11: one source of truth (apply_concordance_v5.MECH_STRUCTURAL_CLASSES). The
+# local literal here was the sixth independent copy of this list and omitted
+# ppi_stab_mechanism, so SMAD4 I500V fell out of every population in this file
+# (55 committed variants, 28 structural, and a headline of 0.6727 instead of
+# 0.6607). Nothing caught it because these outputs were last regenerated at v8.2.
+STRUCT = set(ac.MECH_STRUCTURAL_CLASSES)
 REAL_DESTAB_KCAL = 1.0  # model-free definition of a real destabilizer
 T_CANON = 2.5  # canonical calling threshold, kcal/mol
 N_BOOT = 10000
@@ -47,10 +53,14 @@ def load():
     partners = [p for p in ac.discover_partners(df) if f"ddg_{p}_confident" in df.columns]
     tags = [t for t, _ in ac.THRESHOLD_SPECS]
     unobs = set(ac.unobservable_variants())
-    g = df[~df.variant.isin(unobs)].copy()
+    # v11: the 56-variant benchmark (benchmark_population). The old selection,
+    # every row except the two unobservable BRCT variants, also kept the three
+    # candidates with no committed expectation.
+    g = bp.benchmark(df).copy()
     for t in tags:
         g[f"g_{t}"] = g[f"mech_consistency_{t}"].map(GMAP)
     com = g[g.expected_mech_class.isin(STRUCT | {"structurally_silent"})].copy()
+    assert len(com) == len(g) == bp.N_BENCHMARK, (len(com), len(g))
     com["truth_struct"] = com.expected_mech_class.isin(STRUCT)
     com["max_abs_ddg"] = com.apply(lambda r: ac.compute_max_abs_ddg(r, partners), axis=1)
     return df, g, com, partners, tags, unobs
@@ -370,13 +380,14 @@ def main():
 
     summary = {
         "denominators": {
-            "n_rows": int(len(df)), "n_unobservable": int(len(df) - len(g)),
+            "n_rows": int(len(df)), "n_excluded_candidates": int(len(df) - len(g)),
             "n_graded": int(g[f"g_{tags[3]}"].notna().sum()),
             "n_committed": int(len(com)),
             "n_structural": int(com.truth_struct.sum()),
             "n_silent": int((~com.truth_struct).sum()),
-            "note": "graded == committed == 57; the 2 class-uncommitted variants carry no grade, "
-                    "so every headline denominator coincides.",
+            "note": ("the %d-variant benchmark (benchmark_population): every variant is graded and "
+                     "carries a committed class, so graded == committed == %d. The other %d scored "
+                     "candidates have no gradeable expectation." % (len(com), len(com), len(df) - len(g))),
         },
         "headline_MC_t25": round(float(com[f"g_{tags[3]}"].mean()), 4),
         "threshold_averaged_MC": round(float(pooled.mean()), 4),

@@ -2,27 +2,26 @@
  "ground_truth": "curated clinical annotation (phenotype); gain-of-function counted as pathogenic",
  "note": "Clinical ground truth, not the structural ground truth used for COMAVI's mechanism metrics. Unaffected by the v7.6 ledger correction, which changed structural labels only.",
  "population": {
-  "with_am_class": 49,
-  "clinically_pathogenic": 37,
-  "clinically_benign": 12,
+  "with_am_class": 39,
+  "clinically_pathogenic": 28,
+  "clinically_benign": 11,
   "am_class_counts": {
-   "likely_pathogenic": 32,
+   "likely_pathogenic": 25,
    "likely_benign": 11,
-   "ambiguous": 4,
-   "unavailable": 2
+   "ambiguous": 3
   }
  },
  "confident_calls": {
-  "n": 43,
-  "correct": 38,
-  "cell": "38/43",
-  "accuracy": 0.884,
+  "n": 36,
+  "correct": 31,
+  "cell": "31/36",
+  "accuracy": 0.861,
   "errors": [
    {
     "gene": "MLH1",
     "variant": "V384D",
     "am_class": "likely_pathogenic",
-    "am_pathogenicity": 0.988,
+    "am_pathogenicity": 0.998,
     "clinical_annotation": "benign"
    },
    {
@@ -56,10 +55,10 @@
   ]
  },
  "thresholded_all": {
-  "n": 49,
-  "correct": 40,
-  "cell": "40/49",
-  "accuracy": 0.816,
+  "n": 39,
+  "correct": 33,
+  "cell": "33/39",
+  "accuracy": 0.846,
   "threshold": 0.5,
   "ambiguous_resolved": [
    {
@@ -77,13 +76,6 @@
     "clinical_annotation": "benign"
    },
    {
-    "gene": "TNNI3",
-    "variant": "R162W",
-    "am_class": "ambiguous",
-    "am_pathogenicity": 0.411,
-    "clinical_annotation": "pathogenic"
-   },
-   {
     "gene": "CFH",
     "variant": "R78G",
     "am_class": "ambiguous",
@@ -92,21 +84,6 @@
    }
   ],
   "ambiguous_correct": 2,
-  "no_calls_counted_as_errors": [
-   {
-    "gene": "VWF",
-    "variant": "R1334Q",
-    "am_class": "unavailable",
-    "am_pathogenicity": null,
-    "clinical_annotation": "pathogenic"
-   },
-   {
-    "gene": "VWF",
-    "variant": "A1381T",
-    "am_class": "unavailable",
-    "am_pathogenicity": null,
-    "clinical_annotation": "benign"
-   }
-  ]
+  "no_calls_counted_as_errors": []
  }
 }

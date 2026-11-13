@@ -9,17 +9,17 @@
  "point_estimates": {
   "t10": {
    "threshold_kcal_mol": "1.0",
-   "recovery": 0.6724,
+   "recovery": 0.6207,
    "correct_rejection": 0.4444
   },
   "t15": {
    "threshold_kcal_mol": "1.5",
-   "recovery": 0.6379,
+   "recovery": 0.5517,
    "correct_rejection": 0.5926
   },
   "t20": {
    "threshold_kcal_mol": "2.0",
-   "recovery": 0.569,
+   "recovery": 0.5345,
    "correct_rejection": 0.7407
   },
   "t25": {
@@ -29,13 +29,13 @@
   },
   "tSAP": {
    "threshold_kcal_mol": "2.9/2.9/3.5",
-   "recovery": 0.4655,
+   "recovery": 0.4483,
    "correct_rejection": 0.8519
   }
  },
  "class_reweighting": {
-  "t25_optimal_for_structural_weight_below": 0.588,
-  "t25_optimal_for_structural_weight_above": 0.418,
+  "t25_optimal_for_structural_weight_below": 0.781,
+  "t25_optimal_for_structural_weight_above": 0.35,
   "benchmark_structural_fraction": 0.5179,
   "note": "The weight at which 2.5 stops being the pooled argmax, compared against the benchmark's own structural fraction. Both are computed here; neither is typed."
  },
@@ -45,38 +45,38 @@
   "unit": "protein system",
   "recovery": {
    "t10": {
-    "mean": 0.6668,
+    "mean": 0.6107,
     "ci95": [
-     0.5,
-     0.81
+     0.391,
+     0.762
     ]
    },
    "t15": {
-    "mean": 0.6364,
+    "mean": 0.5454,
     "ci95": [
-     0.482,
-     0.792
+     0.323,
+     0.722
     ]
    },
    "t20": {
-    "mean": 0.5646,
+    "mean": 0.5288,
     "ci95": [
-     0.389,
-     0.717
+     0.316,
+     0.695
     ]
    },
    "t25": {
-    "mean": 0.5086,
+    "mean": 0.5101,
     "ci95": [
-     0.321,
-     0.661
+     0.308,
+     0.66
     ]
    },
    "tSAP": {
-    "mean": 0.4588,
+    "mean": 0.4437,
     "ci95": [
-     0.295,
-     0.615
+     0.276,
+     0.574
     ]
    }
   },
@@ -117,7 +117,7 @@
     ]
    }
   },
-  "p_recovery_fell_t10_to_tSAP": 0.9998,
+  "p_recovery_fell_t10_to_tSAP": 0.9981,
   "p_rejection_rose_t10_to_tSAP": 1.0
  }
 }

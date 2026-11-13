@@ -264,11 +264,11 @@
  "stratum_mc": {
   "convergent_all": {
    "n": 17,
-   "mc": 0.5294
+   "mc": 0.5882
   },
   "convergent_structural_gt": {
    "n": 15,
-   "mc": 0.6
+   "mc": 0.6667
   },
   "convergent_silent_gt": {
    "n": 2,
@@ -280,7 +280,7 @@
   },
   "tier_only_structural_gt": {
    "n": 2,
-   "mc": 0.5,
+   "mc": 0.0,
    "variants": [
     "N102T",
     "Q542L"
@@ -288,19 +288,19 @@
   }
  },
  "classifier": {
-  "n": 49,
-  "n_pathogenic": 37,
-  "n_benign": 12,
-  "n_systems": 13,
-  "auc_energy": 0.8491,
-  "auc_tier": 0.7568,
-  "auc_combined": 0.8491,
-  "spearman_tier_vs_energy": -0.5789,
-  "spearman_p": 1.3184812719163951e-05,
-  "auc_delta_combined_minus_energy": 0.0,
+  "n": 42,
+  "n_pathogenic": 31,
+  "n_benign": 11,
+  "n_systems": 12,
+  "auc_energy": 0.824,
+  "auc_tier": 0.695,
+  "auc_combined": 0.8065,
+  "spearman_tier_vs_energy": -0.5249,
+  "spearman_p": 0.00035906065001702845,
+  "auc_delta_combined_minus_energy": -0.0175,
   "auc_delta_cluster_bootstrap_ci": [
-   -0.125,
-   0.103
+   -0.169,
+   0.094
   ],
   "auc_delta_bootstrap_n": 2000
  }

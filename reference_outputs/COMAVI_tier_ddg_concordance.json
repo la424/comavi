@@ -7,18 +7,18 @@
    "structural": 13,
    "silent": 2,
    "precision": 0.867,
-   "pathogenic": 15,
-   "pathogenic_frac": 1.0,
-   "mech_consistency": 0.6
+   "pathogenic": 10,
+   "pathogenic_frac": 0.667,
+   "mech_consistency": 0.667
   },
   "tier only (\u0394\u0394G silent)": {
    "n": 14,
    "structural": 4,
    "silent": 10,
    "precision": 0.286,
-   "pathogenic": 9,
-   "pathogenic_frac": 0.643,
-   "mech_consistency": 0.786
+   "pathogenic": 8,
+   "pathogenic_frac": 0.571,
+   "mech_consistency": 0.714
   },
   "\u0394\u0394G only (tier 3-4)": {
    "n": 3,
@@ -61,17 +61,17 @@
   },
   "1": {
    "n": 17,
-   "pathogenic": 12,
+   "pathogenic": 11,
    "structural": 4
   },
   "2": {
    "n": 15,
-   "pathogenic": 15,
+   "pathogenic": 10,
    "structural": 13
   }
  },
  "streams_vs_pathogenic": {
-  "spearman_rho": 0.4811,
-  "p": 0.00082
+  "spearman_rho": 0.1596,
+  "p": 0.29495
  }
 }

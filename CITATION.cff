@@ -5,8 +5,8 @@ abstract: >-
   A FoldX-based pipeline for interpreting missense variants in multimeric context. COMAVI
   evaluates three energetic outputs—isolated-subunit folding, assembly-context folding, and
   binding-interface disruption—and reports an energy-free structural-context tier. It separates
-  structural mechanism and context from pathogenicity and includes a frozen 61-variant benchmark
-  and reproducibility suite.
+  structural mechanism and context from pathogenicity and includes a literature-curated benchmark of
+  56 graded variants (61 scored) and a reproducibility suite.
 authors:
 - family-names: Arnce
   given-names: Luke

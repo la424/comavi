@@ -85,7 +85,52 @@ DEFAULT_SUMMARY = REPO / "reference_outputs" / "COMAVI_evidence_ledger_summary.j
 # missing. Verified byte-exact before re-pinning:
 #   old_bytes.replace(b"N/A", b"") == new_bytes  ->  True   (delta 288 = 96 x 3)
 # Previous pin: d3224c4146c2cfa565ea231a42b3b0c49e566258f0e8d18a3c20c88cbd6498ec
-CANONICAL_SHA256 = "77ba5c3b4722117ae98c06a3b1aa9e4e3e81a4a4923256519366e6798c8c27d2"
+# Re-pinned at v11. Three changes, each by its own committed script and each
+# verified column by column against the previous table (no other column moved):
+#   AlphaMissense  2 columns, 44 cells   scripts/apply_alphamissense_release.py
+#                  (every score from the checksummed release; adds VWF R1334Q
+#                  and A1381T; corrects MLH1 V384D, which held V384E's value)
+#   phenotype      1 column, 8 cells     scripts/apply_clinical_label_rule_v11.py
+#                  (clinical labels follow the Franklin classification)
+#   grades        14 columns, 98 cells   scripts/apply_rubric_table3_v11.py
+#                  (the grader implements Table 3 as published)
+#   axis_signature 1 column, 3 cells     scripts/apply_axis_signature_v77.py
+#                  (MLH1 H718Y, KRAS G12D and G12V had kept the signature they
+#                  carried before their v8.0 reclassification; pre-existing, found
+#                  when the v11 work wired this check into CI)
+# Previous pin: 77ba5c3b4722117ae98c06a3b1aa9e4e3e81a4a4923256519366e6798c8c27d2
+#
+# Re-pinned again at v11 for evidence resolution, by
+# scripts/apply_evidence_resolution_v11.py: one new column,
+# assembled_expectation_scope ("either_axis" for BRCA1 V11G, MLH1 L749P and
+# Q542L, SMAD4 D351H, R361C and I500V), and 56 grade-family cells in the
+# primary and neighbourhood pipelines, all on V11G, L749P, Q542L and D351H. No
+# other cell moved; the 22 grade changes are listed in
+# docs/audit/COMAVI_v11_evidence_resolution.csv. No commitment was added or
+# removed, so COMMITTED_AXIS_COUNT is unchanged.
+# Previous pin: ae31a4915df7d794ea0521bf0d9f964281bcd587c68811cfdcbae39edfac131d
+#
+# And once more for ClinVar expert-panel precedence in the clinical-label rule
+# (scripts/apply_clinical_label_rule_v11.py, records in
+# data/analysis_inputs/clinvar/COMAVI_clinvar_records.csv): one cell, PMS2
+# G857A phenotype vus -> benign (ClinVar expert panel, VCV000036691), restoring
+# its v10.1 label. No other cell moved.
+# Previous pin: ccbddd74114e30d28ed36e21d54e72f5fd01ca30437c70c94b6803a4c8352d27
+#
+# And for joint scoring of the six complex-amount expectations in direction
+# agreement (scripts/apply_evidence_resolution_v11.py, step 4): 67 cells in the
+# structural_agreement_* and directional_agreement_* families, on BRCA1 V11G,
+# MLH1 L749P and Q542L, SMAD4 D351H and I500V, listed in
+# docs/audit/COMAVI_v11_evidence_resolution_agreement.csv. No other cell moved.
+# Graded four-output agreement at 2.5 kcal/mol 86/123 -> 89/125.
+# Previous pin: 319a3cc9f5a73a8a208cc0c4663d76224138f4c4aab0592c6fe774eeb8953508
+#
+# Column order only: assembled_expectation_scope moved from the end of the
+# table to immediately after expected_topology, so the canonical updater (which
+# re-appends its ISDS columns at the end) reproduces the table byte for byte
+# (verification/test_update_canonical_isds_v1.py). Every value is unchanged.
+# Previous pin: 24d21ecedb767be263c944abb7abc3944accf238d5c16ff372bb1c5fb81866a4
+CANONICAL_SHA256 = "a6ca415c2d333f05beb618bd31248ca24588ae9f697b63688fa203a35be20da4"
 
 # Committed-axis count. v7.6 withdrew 11 commitments (expected token -> unknown),
 # taking the ledger and the canonical from 109 committed axes to 98.
@@ -114,6 +159,9 @@ REQUIRED_LEDGER_COLUMNS = {
     "evidence_directness",
     "evidence_basis",
     "evidence_citation",
+    # v11 evidence resolution: the assay, for binding expectations measured as an
+    # amount of complex (scripts/apply_evidence_resolution_v11.py).
+    "complex_amount_assay",
 }
 EXPECTED_A636P = {
     ("msh2_msh6", "A636P", "monomer"): {

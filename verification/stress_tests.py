@@ -19,11 +19,18 @@ TWO CONVENTIONS THAT MUST BE HONOURED (both cost real debugging time):
      partner chains. They must be filtered out or the structural-agreement
      denominator inflates.
 
-  2. The full 61-row canonical resource is loaded. The score() function applies
-     one primary continuity population to both metrics by excluding variants
-     returned by unobservable_variants(). This yields 57 whole-variant grades
-     and 132 applicable structural outputs. The separate all-row denominator
-     audit contains 133 outputs.
+  2. The full 61-row canonical resource is loaded and score() grades every row
+     whose ground truth is gradeable. v11: the reported metrics are computed on
+     the 56-variant benchmark (scripts/benchmark_population.py), 37.0/56 and
+     89/125 at 2.5 kcal/mol. Tests that move whole rows -- system leave-one-out
+     and the system-cluster bootstrap -- may use the full table, because the
+     five excluded candidates are never graded and drop out. The label
+     permutation and the variant bootstrap may not: permuting ground-truth
+     profiles across all 61 rows hands the benchmark's profiles to the calls of
+     excluded candidates, and resampling 61 rows makes the number of graded
+     variants vary. Both therefore run on the benchmark rows only. Found by
+     verification/rederive_headlines_v11.py, whose independent null on the 56
+     variants did not match the 61-row null (mean 0.364 against 0.379).
 
 
 The permutation null permutes the ground-truth block AS A UNIT. Shuffling each
@@ -165,7 +172,12 @@ def main():
 
     canon = pd.read_csv(args.canonical, low_memory=False)
     partners = clean_partners(canon, ac)
-    gt_cols = list(ac.GROUND_TRUTH_COLS)
+    # v11: optional annotations (assembled_expectation_scope) describe the
+    # evidence behind a ground-truth profile, so they move with it. One
+    # permutation is applied to all columns at once, so adding a column does not
+    # change the random stream.
+    gt_cols = list(ac.GROUND_TRUTH_COLS) + [
+        c for c in getattr(ac, "GROUND_TRUTH_ANNOTATION_COLS", []) if c in canon.columns]
     sub = interaction_rows(canon)
     pairs = sd_pairs(canon)
 
@@ -180,11 +192,20 @@ def main():
         f"scorer does not reproduce stored grades: {mc_obs} vs {stored_mc}")
     print(f"observed  MC {mc_obs:.4f} (n={mc_n})   SA {sa_num}/{sa_den} = {sa_obs:.4f}   [reproduces stored]")
 
+    # v11: the label permutation and the variant bootstrap are run on the
+    # benchmark rows only (module docstring, point 2).
+    import benchmark_population as bp
+    bkeys = set(zip(bp.benchmark(canon).system, bp.benchmark(canon).variant))
+    bsub = sub[[k in bkeys for k in zip(sub.system, sub.variant)]].reset_index(drop=True)
+    assert len(bsub) == bp.N_BENCHMARK
+    assert score(bsub, ac, partners) == (mc_obs, mc_n, sa_num, sa_den), \
+        "the benchmark rows do not reproduce the observed values"
+
     # --- A. permutation null -------------------------------------------------
     rng = np.random.default_rng(SEED_PERM)
     mc_null, sa_null = [], []
     for _ in range(args.n_perm):
-        m, _, n, d = score(permute_block(sub, gt_cols, rng), ac, partners)
+        m, _, n, d = score(permute_block(bsub, gt_cols, rng), ac, partners)
         mc_null.append(m)
         sa_null.append(n / d if d else np.nan)
     mc_null = np.asarray(mc_null)
@@ -248,10 +269,10 @@ def main():
 
     # --- D. variant bootstrap ----------------------------------------------
     rng = np.random.default_rng(SEED_BOOT)
-    idx = np.arange(len(sub))
+    idx = np.arange(len(bsub))
     bm, bs = [], []
     for _ in range(args.n_boot):
-        b = sub.iloc[rng.choice(idx, len(idx), replace=True)].reset_index(drop=True)
+        b = bsub.iloc[rng.choice(idx, len(idx), replace=True)].reset_index(drop=True)
         m, _, N, D = score(b, ac, partners)
         bm.append(m)
         bs.append(N / D if D else np.nan)

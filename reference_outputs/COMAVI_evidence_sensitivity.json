@@ -1,0 +1,377 @@
+{
+  "analysis": "evidence-restricted views of the mechanism-pattern score at 2.5 kcal/mol",
+  "files": {
+    "canonical_sha256": "a6ca415c2d333f05beb618bd31248ca24588ae9f697b63688fa203a35be20da4",
+    "ledger_sha256": "f2c576f69390a8fac4d9633b8ffe15aaca3b76fa7ccff05b62578743ec2fe861"
+  },
+  "constant_labels_graded": 31,
+  "draws": 2000,
+  "seed": 8,
+  "resampling_unit": "system",
+  "views": {
+    "full_benchmark": {
+      "n": 56,
+      "non_disruptive": 27,
+      "mechanisms": 29,
+      "systems": 14,
+      "comavi_score": 0.6607,
+      "comavi_score_ci95": [
+        0.5672,
+        0.7642
+      ],
+      "strongest_constant": 0.4821,
+      "strongest_constant_labels": [
+        "Interface variant (DDG neutral)",
+        "Structural variant — contact-driven (DDG neutral)",
+        "Structural variant — burial-driven (DDG neutral)",
+        "No structural effect detected"
+      ],
+      "margin": 0.1786,
+      "margin_ci95": [
+        -0.0568,
+        0.2642
+      ],
+      "margin_p_at_or_below_zero": 0.0745,
+      "comavi_balanced": 0.666,
+      "comavi_balanced_ci95": [
+        0.5332,
+        0.7856
+      ],
+      "best_constant_balanced": 0.5,
+      "arm_mechanism": 0.5172,
+      "arm_non_disruptive": 0.8148,
+      "removed": []
+    },
+    "without_population_only_negatives": {
+      "n": 53,
+      "non_disruptive": 24,
+      "mechanisms": 29,
+      "systems": 14,
+      "comavi_score": 0.6415,
+      "comavi_score_ci95": [
+        0.5222,
+        0.7604
+      ],
+      "strongest_constant": 0.4623,
+      "strongest_constant_labels": [
+        "Both fold + PPI destabilization"
+      ],
+      "margin": 0.1792,
+      "margin_ci95": [
+        -0.0625,
+        0.2593
+      ],
+      "margin_p_at_or_below_zero": 0.1,
+      "comavi_balanced": 0.6545,
+      "comavi_balanced_ci95": [
+        0.5069,
+        0.7845
+      ],
+      "best_constant_balanced": 0.5,
+      "arm_mechanism": 0.5172,
+      "arm_non_disruptive": 0.7917,
+      "removed": [
+        "PIK3R1 M326I",
+        "PMS2 G857A",
+        "TNNI3 P82S"
+      ]
+    },
+    "without_whole_variant_negatives": {
+      "n": 52,
+      "non_disruptive": 23,
+      "mechanisms": 29,
+      "systems": 13,
+      "comavi_score": 0.6346,
+      "comavi_score_ci95": [
+        0.5377,
+        0.7364
+      ],
+      "strongest_constant": 0.4712,
+      "strongest_constant_labels": [
+        "Both fold + PPI destabilization"
+      ],
+      "margin": 0.1635,
+      "margin_ci95": [
+        -0.0652,
+        0.2353
+      ],
+      "margin_p_at_or_below_zero": 0.099,
+      "comavi_balanced": 0.6499,
+      "comavi_balanced_ci95": [
+        0.5167,
+        0.7801
+      ],
+      "best_constant_balanced": 0.5,
+      "arm_mechanism": 0.5172,
+      "arm_non_disruptive": 0.7826,
+      "removed": [
+        "CALM1 D96V",
+        "CALM1 N98S",
+        "CALM1 F142L",
+        "SMAD4 I500T"
+      ]
+    },
+    "without_weak_evidence_negatives": {
+      "n": 49,
+      "non_disruptive": 20,
+      "mechanisms": 29,
+      "systems": 13,
+      "comavi_score": 0.6122,
+      "comavi_score_ci95": [
+        0.4861,
+        0.7326
+      ],
+      "strongest_constant": 0.5,
+      "strongest_constant_labels": [
+        "Both fold + PPI destabilization"
+      ],
+      "margin": 0.1122,
+      "margin_ci95": [
+        -0.0875,
+        0.2234
+      ],
+      "margin_p_at_or_below_zero": 0.179,
+      "comavi_balanced": 0.6336,
+      "comavi_balanced_ci95": [
+        0.4826,
+        0.7786
+      ],
+      "best_constant_balanced": 0.5,
+      "arm_mechanism": 0.5172,
+      "arm_non_disruptive": 0.75,
+      "removed": [
+        "PIK3R1 M326I",
+        "PMS2 G857A",
+        "TNNI3 P82S",
+        "CALM1 D96V",
+        "CALM1 N98S",
+        "CALM1 F142L",
+        "SMAD4 I500T"
+      ]
+    },
+    "every_expectation_E1_E3": {
+      "n": 36,
+      "non_disruptive": 12,
+      "mechanisms": 24,
+      "systems": 10,
+      "comavi_score": 0.6111,
+      "comavi_score_ci95": [
+        0.4697,
+        0.7125
+      ],
+      "strongest_constant": 0.6111,
+      "strongest_constant_labels": [
+        "Both fold + PPI destabilization"
+      ],
+      "margin": 0.0,
+      "margin_ci95": [
+        -0.1633,
+        0.1429
+      ],
+      "margin_p_at_or_below_zero": 0.61,
+      "comavi_balanced": 0.625,
+      "comavi_balanced_ci95": [
+        0.4625,
+        0.8104
+      ],
+      "best_constant_balanced": 0.5,
+      "arm_mechanism": 0.5833,
+      "arm_non_disruptive": 0.6667,
+      "removed": [
+        "BRCA1 K45R",
+        "BRCA1 E100Q",
+        "PIK3CA E542K",
+        "PIK3CA E545K",
+        "PIK3CA H1047R",
+        "PIK3R1 N564D",
+        "PIK3R1 M326I",
+        "MLH1 V384D",
+        "PMS2 G857A",
+        "MLH1 H718Y",
+        "TNNI3 P82S",
+        "CALM1 D96V",
+        "CALM1 N98S",
+        "CALM1 F142L",
+        "SMAD4 I500T",
+        "CFH R78G",
+        "CFH R53H",
+        "CFH I62V",
+        "VWF R1334Q",
+        "VWF A1381T"
+      ]
+    },
+    "every_expectation_E1_E2": {
+      "n": 24,
+      "non_disruptive": 4,
+      "mechanisms": 20,
+      "systems": 7,
+      "comavi_score": 0.5208,
+      "comavi_score_ci95": [
+        0.1426,
+        0.6771
+      ],
+      "strongest_constant": 0.7708,
+      "strongest_constant_labels": [
+        "Both fold + PPI destabilization"
+      ],
+      "margin": -0.25,
+      "margin_ci95": [
+        -0.6,
+        -0.1136
+      ],
+      "margin_p_at_or_below_zero": 1.0,
+      "comavi_balanced": 0.5125,
+      "comavi_balanced_ci95": [
+        0.1,
+        0.8158
+      ],
+      "best_constant_balanced": 0.5,
+      "arm_mechanism": 0.525,
+      "arm_non_disruptive": 0.5,
+      "removed": [
+        "BRCA1 C61G",
+        "BRCA1 K45R",
+        "BRCA1 E100Q",
+        "PIK3CA E542K",
+        "PIK3CA E545K",
+        "PIK3CA H1047R",
+        "PIK3R1 N564D",
+        "PIK3R1 M326I",
+        "MLH1 V384D",
+        "PMS2 G857A",
+        "MLH1 H718Y",
+        "MLH1 K618E",
+        "MSH2 A636P",
+        "MSH2 C697F",
+        "MSH2 N127S",
+        "MSH2 G322D",
+        "VHL L158Q",
+        "VHL Y98H",
+        "KRAS Q61H",
+        "HBB E6V",
+        "TNNI3 P82S",
+        "CALM1 D96V",
+        "CALM1 N98S",
+        "CALM1 F142L",
+        "SMAD4 D351H",
+        "SMAD4 R361C",
+        "SMAD4 I500T",
+        "CFH R78G",
+        "CFH R53H",
+        "CFH I62V",
+        "VWF R1334Q",
+        "VWF A1381T"
+      ]
+    }
+  },
+  "by_system": {
+    "msh2_msh6": {
+      "variants": 4,
+      "non_disruptive": 4,
+      "contribution_vs_calling_nothing": -2.0,
+      "margin_without_system": 0.2019,
+      "strongest_constant_without_system": "Both fold + PPI destabilization"
+    },
+    "troponin_ic": {
+      "variants": 3,
+      "non_disruptive": 3,
+      "contribution_vs_calling_nothing": -2.0,
+      "margin_without_system": 0.217,
+      "strongest_constant_without_system": "Both fold + PPI destabilization"
+    },
+    "pi3k": {
+      "variants": 5,
+      "non_disruptive": 3,
+      "contribution_vs_calling_nothing": -1.0,
+      "margin_without_system": 0.2157,
+      "strongest_constant_without_system": "Interface variant (DDG neutral)"
+    },
+    "kras_craf": {
+      "variants": 3,
+      "non_disruptive": 1,
+      "contribution_vs_calling_nothing": 0.0,
+      "margin_without_system": 0.1887,
+      "strongest_constant_without_system": "Interface variant (DDG neutral)"
+    },
+    "hemoglobin_dimer": {
+      "variants": 1,
+      "non_disruptive": 1,
+      "contribution_vs_calling_nothing": 0.0,
+      "margin_without_system": 0.1818,
+      "strongest_constant_without_system": "Interface variant (DDG neutral)"
+    },
+    "cam_cav12": {
+      "variants": 3,
+      "non_disruptive": 3,
+      "contribution_vs_calling_nothing": 0.0,
+      "margin_without_system": 0.1792,
+      "strongest_constant_without_system": "Both fold + PPI destabilization"
+    },
+    "cfh_c3b": {
+      "variants": 3,
+      "non_disruptive": 2,
+      "contribution_vs_calling_nothing": 0.5,
+      "margin_without_system": 0.1792,
+      "strongest_constant_without_system": "Interface variant (DDG neutral)"
+    },
+    "vwf_gpiba": {
+      "variants": 2,
+      "non_disruptive": 1,
+      "contribution_vs_calling_nothing": 0.5,
+      "margin_without_system": 0.1759,
+      "strongest_constant_without_system": "Interface variant (DDG neutral)"
+    },
+    "mlh1_pms2": {
+      "variants": 7,
+      "non_disruptive": 3,
+      "contribution_vs_calling_nothing": 1.0,
+      "margin_without_system": 0.1837,
+      "strongest_constant_without_system": "Interface variant (DDG neutral)"
+    },
+    "vhl_elonginc": {
+      "variants": 2,
+      "non_disruptive": 1,
+      "contribution_vs_calling_nothing": 1.0,
+      "margin_without_system": 0.1667,
+      "strongest_constant_without_system": "Interface variant (DDG neutral)"
+    },
+    "brca1_bard1": {
+      "variants": 4,
+      "non_disruptive": 2,
+      "contribution_vs_calling_nothing": 1.5,
+      "margin_without_system": 0.1635,
+      "strongest_constant_without_system": "Interface variant (DDG neutral)"
+    },
+    "smad4_smad3": {
+      "variants": 4,
+      "non_disruptive": 1,
+      "contribution_vs_calling_nothing": 2.0,
+      "margin_without_system": 0.1538,
+      "strongest_constant_without_system": "Interface variant (DDG neutral)"
+    },
+    "hemoglobin_tetramer": {
+      "variants": 5,
+      "non_disruptive": 0,
+      "contribution_vs_calling_nothing": 3.5,
+      "margin_without_system": 0.1275,
+      "strongest_constant_without_system": "Interface variant (DDG neutral)"
+    },
+    "brca1_brct": {
+      "variants": 10,
+      "non_disruptive": 2,
+      "contribution_vs_calling_nothing": 5.0,
+      "margin_without_system": 0.1087,
+      "strongest_constant_without_system": "Interface variant (DDG neutral)"
+    }
+  },
+  "cross_check": {
+    "stress_tests_system_cluster_ci95": [
+      0.5672,
+      0.7642
+    ],
+    "full_benchmark_score_ci95": [
+      0.5672,
+      0.7642
+    ]
+  }
+}

@@ -60,20 +60,50 @@ def main() -> int:
     st = json.loads(STRAT.read_text())
     nl = json.loads(LEDGER.read_text())
     tier = json.loads(TIER.read_text())["screen_full_tier"]
-    typ, dirn = led["by_evidence_type"], led["by_directness"]
+    # v11: the SI states the benchmark's 97 expectations, not the whole 99-row
+    # ledger (two rows belong to excluded BRCT candidates), so the evidence
+    # composition is counted on the benchmark subset of the committed ledger.
+    sys.path.insert(0, str(REPO / "scripts"))
+    import benchmark_population as bp
+    _can = pd.read_csv(REPO / "reference_outputs" / "scored_61var_canonical.csv", low_memory=False)
+    _bk = set(zip(bp.benchmark(_can).system, bp.benchmark(_can).variant))
+    _led = pd.read_csv(LEDGER_CSV)
+    _lb = _led[[k in _bk for k in zip(_led.system, _led.variant)]]
+    assert len(_lb) == json.loads(STRAT.read_text())["accounting"]["n_committed_axes"], len(_lb)
+    typ = _lb["evidence_type"].value_counts().to_dict()
+    dirn = _lb["evidence_directness"].value_counts().to_dict()
     acc, crude, strat = st["accounting"], st["crude"], st["stratified"]
     by_type = st["by_evidence_type"]
     comp = st["token_composition_by_grade"]
-    fold_inferred = led["type_by_axis"]["fold_complex"][E5]
-    fold_committed = sum(led["type_by_axis"]["fold_complex"].values())
+    _fcb = _lb[_lb["axis"] == "fold_complex"]
+    fold_inferred = int((_fcb["evidence_type"] == E5).sum())
+    fold_committed = int(len(_fcb))
     # Directness-inferred share of the complex-fold axis. Not in the summary
     # JSON, so it is read from the committed ledger. Note S2 states BOTH this
     # (14/25, directness) and fold_inferred (11, evidence type); they are
     # different quantities and conflating them is how that sentence read
     # ambiguously through v7.7.
-    _fc = pd.read_csv(LEDGER_CSV)
-    _fc = _fc[_fc["axis"] == "fold_complex"]
-    fold_inferred_directness = int((_fc["evidence_directness"] == "inferred").sum())
+    fold_inferred_directness = int((_fcb["evidence_directness"] == "inferred").sum())
+
+    _amc = pd.read_csv(REPO / "reference_outputs" / "isds_v1" /
+                       "ISDS_v1_alphamissense_pathogenicity_comparison.csv").set_index("descriptor")
+    am_auc = {k: "%.3f" % _amc.loc[k, "pathogenicity_auc"] for k in ("AM pathogenicity", "isds_v1")}
+    _p4 = "%.4f" % tier["within_system_permutation_p"]
+    assert _p4[-1] != "5", "stored permutation p ends in 5; three-place rounding would be ambiguous"
+    perm3 = "%.3f" % float(_p4)
+
+    def _mh(per_token):
+        num = den = 0.0
+        for k in ("destab", "neutral"):
+            s_ = per_token[k]
+            a, b = s_["quant_ok"], s_["quant_n"] - s_["quant_ok"]
+            c, d = s_["soft_ok"], s_["soft_n"] - s_["soft_ok"]
+            n_ = a + b + c + d
+            num += a * d / n_
+            den += b * c / n_
+        return num / den
+    mh_or = _mh(strat["per_token"])
+    assert abs(mh_or - strat["OR_mantel_haenszel"]) < 5e-4, (mh_or, strat["OR_mantel_haenszel"])
 
     checks = [
         # Needles are built from GENERATED values and asserted to appear in the
@@ -82,7 +112,10 @@ def main() -> int:
         # S2), which is why this gate reported nothing for several revisions.
         # Every needle below is verified present against the adjudicated draft.
         # ---- Note S2 ledger scope and composition
-        (f"contains {led['n_committed_axes']} committed energetic-axis expectations",
+        # v11: S1 Text states the benchmark's expectations (97 on the 56 graded
+        # variants), not the whole ledger's, so the count is read from the
+        # benchmark accounting of the stratified record.
+        (f"variants carry {acc['n_committed_axes']} committed energetic-axis expectations",
          "ledger scope"),
         (f"all {typ[E4]} E4 axes and all {typ[E5]} E5 axes are neutral",
          "E4/E5 neutrality"),
@@ -96,29 +129,32 @@ def main() -> int:
         (f"E2 quantitative functional\t{typ[E2]}\t", "Table S2 E2 axes"),
         (f"E3 qualitative experimental\t{typ[E3]}\t", "Table S2 E3 axes"),
         (f"E4 population frequency\t{typ[E4]}\t", "Table S2 E4 axes"),
-        (f"E5 inferred\t{typ[E5]}\t", "Table S2 E5 axes"),
+        (f"E5 inferred (no axis assay)\t{typ[E5]}\t", "Table S2 E5 axes"),
         # ---- Note S2 crude contrast
-        (f"all-row {acc['n_ddg_axes_gradeable']}-axis convention",
-         "gradeable energetic axes"),
+        (f"Of the {acc['n_committed_axes']} expectations, {acc['n_ddg_axes_gradeable']} can be "
+         f"compared with a prediction", "gradeable energetic axes"),
         (f"{crude['quant_ok']}/{crude['quant_n']} = {crude['quant_rate']:.3f} "
-         f"for E1-E2 evidence", "crude quant"),
+         f"for E1\u2013E2 evidence", "crude quant"),
         (f"{crude['soft_ok']}/{crude['soft_n']} = {crude['soft_rate']:.3f} "
-         f"for E3-E5 evidence", "crude soft"),
+         f"for E3\u2013E5 evidence", "crude soft"),
         (f"(Fisher p = {crude['p']:.3f})", "crude Fisher p"),
         # ---- Note S2 stratified contrast. The null result is the CLAIM here,
         # so both strata and the Mantel-Haenszel estimate must be gated: a
         # stale stratum that still reads null would pass an eyeball check.
         (f"agreement was {strat['per_token']['destab']['quant_ok']}/"
-         f"{strat['per_token']['destab']['quant_n']} for E1-E2 and "
+         f"{strat['per_token']['destab']['quant_n']} for E1\u2013E2 and "
          f"{strat['per_token']['destab']['soft_ok']}/"
-         f"{strat['per_token']['destab']['soft_n']} for E3-E5", "destab stratum"),
+         f"{strat['per_token']['destab']['soft_n']} for E3\u2013E5", "destab stratum"),
         (f"the corresponding rates were "
          f"{strat['per_token']['neutral']['quant_ok']}/"
          f"{strat['per_token']['neutral']['quant_n']} and "
          f"{strat['per_token']['neutral']['soft_ok']}/"
          f"{strat['per_token']['neutral']['soft_n']}", "neutral stratum"),
-        (f"odds ratio {strat['OR_mantel_haenszel']:.2f} "
-         f"(p = {strat['p']:.2f})", "Mantel-Haenszel"),
+        # The stored odds ratio is rounded to 3 places (0.795), and formatting
+        # that to 2 rounds twice (0.80); the exact estimate from the stratum
+        # counts is 0.7949, so the needle is built from the counts.
+        (f"odds ratio across expected-state strata was {mh_or:.2f} "
+         f"(continuity-corrected test p = {strat['p']:.2f})", "Mantel-Haenszel"),
         (f"Among {by_type[E1]['n']} gradeable E1 energetic axes, "
          f"{by_type[E1]['ok']} agreed ({by_type[E1]['rate']:.3f})",
          "E1 agreement"),
@@ -128,13 +164,19 @@ def main() -> int:
         # turns an honest comparison into an unfalsifiable claim of
         # complementarity. A v30-lineage draft did exactly that and passed every
         # check, because these two literals were gated only in the deck audit.
-        (f"{nl['AM_auc']}", "AlphaMissense AUC"),
-        (f"{nl['tier_auc_on_AM_set']}", "tier AUC on the AM set (the gap)"),
+        # v11: the comparison is on the 39 labelled prioritization variants
+        # (ISDS_v1_alphamissense_pathogenicity_comparison.csv), and the score
+        # set against AlphaMissense is the priority score. The legacy
+        # AM_auc / tier_auc_on_AM_set keys of the numbers ledger describe the
+        # retired 47-variant set and are no longer read.
+        (am_auc["AM pathogenicity"], "AlphaMissense AUC"),
+        (am_auc["isds_v1"], "priority-score AUC on the AlphaMissense set (the gap)"),
         # ---- §3.12 tier screen: the system-level conditioning is what makes the
         # perfect-recall screen more than a small-sample accident. Report the
         # EXACT enumerated permutation p from verify_tier_construction.py, never
         # the 20k Monte-Carlo estimate in analyze_tier_energy_gating.py.
-        (f"{tier['within_system_permutation_p']}", "exact within-system permutation p"),
+        # reported to three places in v11; the record stores four, so refuse a tie
+        (perm3, "exact within-system permutation p"),
         (f"{tier['sensitivity_ci'][0]}", "screen sensitivity CI lower bound"),
         (f"{tier['specificity_ci'][0]}", "screen specificity CI lower bound"),
     ]

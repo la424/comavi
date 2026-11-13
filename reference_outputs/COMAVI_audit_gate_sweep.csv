@@ -1,6 +1,6 @@
-threshold,firing_strong_structural,firing_strong_n,firing_weak_structural,firing_weak_n,firing_fisher_p,silent_strong_structural,silent_strong_n,silent_weak_structural,silent_weak_n,silent_fisher_p,weak_firing_n_variants,weak_firing_n_residues,weak_firing_n_systems
-t10,15,22,0,6,0.0046,2,7,3,10,1.0,6,5,4
-t15,14,18,0,4,0.0096,3,11,3,12,1.0,4,3,2
-t20,13,16,0,4,0.0072,4,13,3,12,1.0,4,3,2
-t25,13,15,0,3,0.0123,4,14,3,13,1.0,3,2,2
-tSAP,12,14,0,2,0.05,5,15,3,14,0.6817,2,2,2
+threshold,firing_strong_structural,firing_strong_n,firing_weak_structural,firing_weak_n,firing_fisher_p,silent_strong_structural,silent_strong_n,silent_weak_structural,silent_weak_n,silent_fisher_p,weak_firing_n_variants,weak_firing_n_residues,weak_firing_n_systems,firing_fisher_p_bh,silent_fisher_p_bh
+t10,15,22,0,6,0.0046,2,7,4,11,1.0,6,5,4,0.0308,1.0
+t15,14,18,0,4,0.0096,3,11,4,13,1.0,4,3,2,0.0308,1.0
+t20,13,16,0,4,0.0072,4,13,4,13,1.0,4,3,2,0.0308,1.0
+t25,13,15,0,3,0.0123,4,14,4,14,1.0,3,2,2,0.0308,1.0
+tSAP,12,14,0,2,0.05,5,15,4,15,1.0,2,2,2,0.1,1.0

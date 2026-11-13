@@ -1,0 +1,143 @@
+@title S2 Text. Sensitivity analyses, mechanism-class decomposition and operating-point diagnostics.
+
+@contents
+
+## Section 1. Structure-blind strategies and the permutation null
+
+%from: reference_outputs/COMAVI_rubric_baselines.json; reference_outputs/stress_tests
+A structure-blind strategy assigns the same label to every variant, without looking at any structure, and is graded with the same rubric as COMAVI (Table 3). Table A grades each of the 31 labels COMAVI can assign. Calling no variant disrupted scores 27.0 of 56 (0.482): it accepts all 27 non-disruptive variants and recovers none of the 29 mechanisms. The three labels that name a structural or interface site without an energy change are graded as no-effect calls and score the same. The strongest label that asserts disruption, a fold and binding destabilization on every variant, scores 24.5 (0.438). COMAVI scores 37.0 (0.661), 0.517 on the mechanisms and 0.815 on the non-disruptive variants. Because a constant label either accepts every non-disruptive variant and recovers no mechanism or does the reverse, no constant label exceeds 0.5 on the balanced score, the mean of the two arms; COMAVI's balanced score is 0.666.
+
+%from: verification/stress_tests.py; reference_outputs/stress_tests/comavi_stress_draws.npz
+The permutation null keeps every COMAVI call fixed and reassigns whole expectation profiles, the curated class with its per-axis expectations and their evidence annotations, among the 56 variants. Over 2,000 permutations the score had a mean of 0.362 (standard deviation 0.056), and none reached the observed 0.661, so p = 0.0005, the smallest value 2,000 permutations can give. The null mean lies below the strongest structure-blind strategy because a permutation keeps COMAVI's calls, which assert disruption for 25 variants, while a constant label can exploit the class balance of the benchmark. The margin over the strongest strategy (S1 Text) is therefore the stricter comparison.
+
+@tablecap Table A. Every structure-blind strategy on the 56 benchmark variants at 2.5 kcal/mol, ordered by score.
+@tabhead Label assigned to every variant | Score | Mechanism arm (29) | Non-disruptive arm (27) | Balanced score | Consistent / partial / inconsistent
+@tabrow Interface variant (DDG neutral) | 0.482 | 0.000 | 1.000 | 0.500 | 27 / 0 / 29
+@tabrow No structural effect detected | 0.482 | 0.000 | 1.000 | 0.500 | 27 / 0 / 29
+@tabrow Structural variant — burial-driven (DDG neutral) | 0.482 | 0.000 | 1.000 | 0.500 | 27 / 0 / 29
+@tabrow Structural variant — contact-driven (DDG neutral) | 0.482 | 0.000 | 1.000 | 0.500 | 27 / 0 / 29
+@tabrow Both fold + PPI destabilization | 0.438 | 0.845 | 0.000 | 0.422 | 21 / 7 / 28
+@tabrow Monomer fold + PPI destabilization | 0.366 | 0.707 | 0.000 | 0.353 | 15 / 11 / 30
+@tabrow Both fold destabilization | 0.330 | 0.638 | 0.000 | 0.319 | 15 / 7 / 34
+@tabrow Both fold destabilization at interface | 0.330 | 0.638 | 0.000 | 0.319 | 15 / 7 / 34
+@tabrow Multimer fold + PPI destabilization | 0.286 | 0.552 | 0.000 | 0.276 | 15 / 2 / 39
+@tabrow PPI conflicting (mixed partner signals) | 0.268 | 0.517 | 0.000 | 0.259 | 12 / 6 / 38
+@tabrow PPI destabilization | 0.250 | 0.483 | 0.000 | 0.241 | 11 / 6 / 39
+@tabrow Monomer fold stab. + PPI destabilization (conflicting) | 0.214 | 0.414 | 0.000 | 0.207 | 7 / 10 / 39
+@tabrow Both fold destab. + PPI stabilization (conflicting) | 0.188 | 0.362 | 0.000 | 0.181 | 9 / 3 / 44
+@tabrow Monomer fold destabilization | 0.179 | 0.345 | 0.000 | 0.172 | 9 / 2 / 45
+@tabrow Monomer fold destabilization at interface | 0.179 | 0.345 | 0.000 | 0.172 | 9 / 2 / 45
+@tabrow Multimer fold stab. + PPI destabilization (conflicting) | 0.179 | 0.345 | 0.000 | 0.172 | 9 / 2 / 45
+@tabrow Monomer fold destab. + PPI stabilization (conflicting) | 0.170 | 0.328 | 0.000 | 0.164 | 9 / 1 / 46
+@tabrow Both fold stab. + PPI destabilization (conflicting) | 0.161 | 0.310 | 0.000 | 0.155 | 7 / 4 / 45
+@tabrow Multimer fold destabilization | 0.161 | 0.310 | 0.000 | 0.155 | 5 / 8 / 43
+@tabrow Multimer fold destabilization at interface | 0.161 | 0.310 | 0.000 | 0.155 | 5 / 8 / 43
+@tabrow Both fold + PPI stabilization | 0.018 | 0.034 | 0.000 | 0.017 | 1 / 0 / 55
+@tabrow Both fold stabilization | 0.018 | 0.034 | 0.000 | 0.017 | 1 / 0 / 55
+@tabrow Both fold stabilization at interface | 0.018 | 0.034 | 0.000 | 0.017 | 1 / 0 / 55
+@tabrow Monomer fold + PPI stabilization | 0.018 | 0.034 | 0.000 | 0.017 | 1 / 0 / 55
+@tabrow Multimer fold + PPI stabilization | 0.018 | 0.034 | 0.000 | 0.017 | 1 / 0 / 55
+@tabrow Multimer fold destab. + PPI stabilization (conflicting) | 0.018 | 0.034 | 0.000 | 0.017 | 1 / 0 / 55
+@tabrow Multimer fold stabilization | 0.018 | 0.034 | 0.000 | 0.017 | 1 / 0 / 55
+@tabrow Multimer fold stabilization at interface | 0.018 | 0.034 | 0.000 | 0.017 | 1 / 0 / 55
+@tabrow PPI stabilization | 0.018 | 0.034 | 0.000 | 0.017 | 1 / 0 / 55
+@tabrow Monomer fold stabilization | 0.000 | 0.000 | 0.000 | 0.000 | 0 / 0 / 56
+@tabrow Monomer fold stabilization at interface | 0.000 | 0.000 | 0.000 | 0.000 | 0 / 0 / 56
+
+## Section 2. Grades by mechanism class
+
+%from: reference_outputs/COMAVI_detection_vs_attribution.json per_class
+Table B divides the grades by curated mechanism class. The non-disruptive class scores highest and the interface classes lowest. Among the 11 variants curated as interface destabilizers, the binding axis reached the threshold for 4 and the assembled-complex stability axis for 7, so these disruptions are more often detected than placed on the binding axis. Of the 6 fold mechanisms not graded consistent, 4 produce no call at all (BRCA1 L1664P, BRCA1 R1751Q, BRCA1 V1736A and MLH1 H718Y); their measured or reported effects are described in the main text and S3 Table (missed_mechanisms sheet).
+
+@tablecap Table B. Grades, detection and localization by curated mechanism class at 2.5 kcal/mol.
+@tabhead Class | Variants | Consistent / partial / inconsistent | Grade total (mean) | Detected | Localized | Correctly rejected
+@tabrow Fold | 11 | 5 / 1 / 5 | 5.5 (0.500) | 7 | 6 | –
+@tabrow Mixed fold and interface | 6 | 4 / 1 / 1 | 4.5 (0.750) | 5 | 5 | –
+@tabrow Interface destabilization | 11 | 4 / 2 / 5 | 5.0 (0.455) | 8 | 7 | –
+@tabrow Interface stabilization | 1 | 0 / 0 / 1 | 0.0 (0.000) | 0 | 0 | –
+@tabrow Non-disruptive | 27 | 22 / 0 / 5 | 22.0 (0.815) | – | – | 22
+
+## Section 3. Localization, axis design and the evidence-resolution rule
+
+%from: reference_outputs/COMAVI_detection_vs_attribution.json axis_designs, system_cluster
+A mechanism is detected when any axis reaches the threshold, and localized when an axis the literature implicates reaches it; whether the predicted change has the expected direction is assessed by the grade. At 2.5 kcal/mol COMAVI detected 20 of the 29 mechanisms and localized 18. The two detected but not localized are PIK3CA E542K, an interface destabilizer that reaches the threshold only on assembled-complex stability, and MLH1 R755W, a fold mechanism that reaches it only on binding, where it is called as strengthened binding. Table C repeats the analysis with axes removed. The isolated subunit alone detects 7 mechanisms; the three axes together detect 20, at a cost of 3 further false calls among the 27 non-disruptive variants. Five mechanisms are detected only through assembled-complex stability: BRCA1 C61G, BRCA1 V11G, HBB W37Y, MLH1 L749P and PIK3CA E542K. Resampling whole systems puts a 95% interval of 0.18–0.82 on the gain in detection rate, 0.05–0.71 on the gain net of the added false calls and 0.00–0.19 on the wrong-axis fraction.
+
+@tablecap Table C. Detection, localization and false calls by axis design at 2.5 kcal/mol.
+@tabhead Axes used | Mechanisms detected | Mechanisms localized | False calls on non-disruptive variants
+@tabrow Isolated subunit only | 7 of 29 | 5 of 29 | 2 of 27
+@tabrow Isolated subunit and binding | 15 of 29 | 9 of 29 | 3 of 27
+@tabrow Isolated subunit and assembled-complex stability | 18 of 29 | 15 of 29 | 5 of 27
+@tabrow All three axes (COMAVI) | 20 of 29 | 18 of 29 | 5 of 27
+
+%from: docs/audit/COMAVI_v11_evidence_resolution.csv; reference_outputs/COMAVI_evidence_ledger.csv complex_amount_assay
+Ten binding expectations rest on assays that measure how much complex forms rather than binding itself: immunoprecipitation, pull-down, two-hybrid, TR-FRET and multiplexed interaction assays (S1 Table). A change in the amount of complex can come from a change in binding or in the stability of the assembly, so the six of these that expect a change (BRCA1 V11G, MLH1 L749P, MLH1 Q542L, SMAD4 D351H, SMAD4 I500V and SMAD4 R361C) are met by a call in the measured direction on either assembled axis (Methods). The four that expect no change (BRCA1 E100Q, BRCA1 K45R, MLH1 R755W and MSH2 N127S) are scored as binding expectations only, because a normal amount of complex cannot show that the assembled complex is stable. The rule is fixed by the assay recorded for each expectation and applies equally to COMAVI and to every structure-blind strategy. At 2.5 kcal/mol it changes three grades from inconsistent to consistent, for BRCA1 V11G, MLH1 L749P and SMAD4 D351H, raising the grade total from 34.0 to 37.0 (0.607 to 0.661). At 1.0, 1.5, 2.0 kcal/mol and the prediction-interval limit it adds 2, 1, 2 and 3 grade points. Without the rule, 15 of the 29 mechanisms would be localized rather than 18, and COMAVI's margin over calling no variant disrupted, a strategy the rule cannot affect, would be 0.125 rather than 0.179. In direction agreement the six are scored as one joint row, and 4 of them are met.
+
+## Section 4. Half credit for calls on axes the literature never tested
+
+%from: reference_outputs/COMAVI_rubric_sensitivity.json
+The primary grading treats a call that recovers no expected effect as inconsistent even when every change it asserts lies on an axis the literature never tested. As a sensitivity analysis only, such a call was credited 0.5 if it contradicted nothing measured. One grade changes at 2.5 kcal/mol, PIK3CA E542K, and the score rises from 0.661 to 0.670 (95% interval 0.583–0.769). The margin over the strongest structure-blind strategy, re-selected under the same rule, becomes 0.188 (−0.041 to 0.268), and 6% of resamples give a margin of zero or less. PIK3CA E542K is credited at every operating point, and KRAS G12D also at 1.0, 1.5 and 2.0 kcal/mol.
+
+## Section 5. Operating-point diagnostics
+
+%from: reference_outputs/COMAVI_operating_point_diagnostics.json
+Table D gives, at each operating point, the mean grade on the mechanisms, the mean grade on the non-disruptive variants and the pooled score. Raising the threshold trades the first for the second. Over 10,000 paired resamples of whole systems, the mechanism arm fell between 1.0 kcal/mol and the prediction-interval limit in 99.8% of resamples, and the non-disruptive arm rose in every resample. The pooled score weights the two arms by their share of the benchmark, 29 mechanisms and 27 non-disruptive variants (a structural fraction of 0.518). Reweighting the arms, 2.5 kcal/mol remains the pooled optimum for any weight on the mechanism arm between 0.350 and 0.781, an interval that contains the benchmark's own fraction and the unweighted mean of the arms. Its place at the top is therefore not an artifact of the class balance, although the overlapping intervals of Fig 4A mean that the benchmark does not establish it as the best operating point.
+
+@tablecap Table D. Mechanism arm, non-disruptive arm and pooled score at each operating point, with 95% intervals from resampling whole systems.
+@tabhead Operating point | Mechanism arm (29) | Non-disruptive arm (27) | Pooled score
+@tabrow 1.0 kcal/mol | 0.621 (0.391–0.762) | 0.444 (0.273–0.640) | 30.0 (0.536)
+@tabrow 1.5 kcal/mol | 0.552 (0.323–0.722) | 0.593 (0.438–0.783) | 32.0 (0.571)
+@tabrow 2.0 kcal/mol | 0.534 (0.316–0.695) | 0.741 (0.536–1.000) | 35.5 (0.634)
+@tabrow 2.5 kcal/mol | 0.517 (0.308–0.660) | 0.815 (0.657–1.000) | 37.0 (0.661)
+@tabrow Prediction-interval limit (2.9 / 2.9 / 3.5) | 0.448 (0.276–0.574) | 0.852 (0.724–1.000) | 36.0 (0.643)
+
+## Section 6. Structural-context comparators and the interface bonus
+
+%from: reference_outputs/isds_v1/ISDS_v1_component_binary_baselines.csv; reference_outputs/COMAVI_tier_construction.json
+Interface occupancy enters the tier directly, through the interface bonus, so the tier was compared on the 46-variant prioritization population (21 mechanisms, 25 non-disruptive variants in 13 systems) with interface status alone and with the tier recalculated without its interface bonus (Table E; S3 Fig). The bonus reaches 15 of the 21 mechanisms, all six with mixed fold and interface expectations and 8 of 11 of the interface destabilizers; the six it does not reach are BRCA1 C61G, KRAS G12D, KRAS G12V, MLH1 H718Y, SMAD4 D351H and SMAD4 I500V. Removing it demotes four variants from Tier 2 to Tier 3, CALM1 D96V, HBB W37Y, PIK3CA E542K and PIK3CA E545K, of which only CALM1 D96V is non-disruptive. With the bonus, 11 of the 13 Tier 1 variants carry a structural mechanism, against 6 of 16 in Tier 2, 4 of 10 in Tier 3 and 0 of 7 in Tier 4. Within-system permutation p values are exact (S1 Text).
+
+@tablecap Table E. Structural-context screens on the 46-variant prioritization population.
+@tabhead Screen | Mechanisms recovered (sensitivity) | Non-disruptive variants rejected (specificity) | Fisher p | Within-system permutation p
+@tabrow Interface status alone | 15 of 21 (0.714) | 18 of 25 (0.720) | 0.007 | 0.017
+@tabrow Tier 1–2 without the interface bonus | 14 of 21 (0.667) | 14 of 25 (0.560) | 0.149 | 0.522
+@tabrow Tier 1–2 (full tier) | 17 of 21 (0.810) | 13 of 25 (0.520) | 0.032 | 0.165
+
+## Section 7. Evidence states
+
+%from: reference_outputs/isds_v1/ISDS_v1_evidence_state_tables.json; reference_outputs/COMAVI_tier_construction.json specificity_gain
+Crossing the energy calls with the tier (Tier 1–2 against Tier 3–4) gives four descriptive evidence states (Table F). At 2.5 kcal/mol, requiring the tier to agree with an energy call leaves sensitivity unchanged (15 of 21) and raises specificity from 0.800 (20 of 25) to 0.920 (23 of 25): the three non-disruptive variants called by energy alone, MSH2 A636P, TNNI3 R145G and TNNI3 R145Q, fall in Tier 3 or 4. Resampling whole systems puts a 95% interval of 0.00–0.28 on that gain, and 11% of resamples show no gain. The states are descriptive; none is used to grade a mechanism.
+
+@tablecap Table F. Evidence states on the 46-variant prioritization population (structural mechanisms / non-disruptive variants).
+@tabhead Operating point | Convergent | Energy only | Context only | Neither
+@tabrow 1.0 kcal/mol | 16 / 8 | 2 / 6 | 1 / 4 | 2 / 7
+@tabrow 1.5 kcal/mol | 15 / 5 | 1 / 5 | 2 / 7 | 3 / 8
+@tabrow 2.0 kcal/mol | 15 / 3 | 1 / 4 | 2 / 9 | 3 / 9
+@tabrow 2.5 kcal/mol | 15 / 2 | 0 / 3 | 2 / 10 | 4 / 10
+@tabrow Prediction-interval limit | 11 / 2 | 0 / 2 | 6 / 10 | 4 / 11
+
+## Section 8. Alternative priority-score formulas and score bands
+
+%from: reference_outputs/COMAVI_priority_sensitivity_summary.json; reference_outputs/isds_v1
+The reported priority score reaches an AUC of 0.834 (438 of the 525 mechanism–non-disruptive pairs ordered correctly; 95% interval 0.699–0.944 from resampling whole systems, 10,000 draws). Leaving one system out gives 0.802 to 0.877, and the score exceeds both of its components in every fold. Table G compares nine alternative formulas, all computed on the same population. Five order slightly more pairs than the reported score and one orders the same number; the largest excess is 5 pairs (hard cap, AUC 0.844), small against the width of the interval on the reported AUC. The alternatives that keep the graded context term rank the variants almost as the reported score does (Spearman ρ 0.938 to 0.999). One of them, the cohort-standardized combination, is not a per-variant score: it z-scores each term against the variants present, so a variant's value changes when others are added or removed, and it cannot be computed for a new variant without a reference cohort. It is retained only as a comparator. The reported score uses fixed constants and depends on no other variant, which is what makes it usable prospectively. Because the same benchmark informed the score's development, all of these are in-sample estimates.
+
+@tablecap Table G. Alternative priority-score formulas on the 46-variant prioritization population.
+@tabhead Formula | Graded context term | ROC AUC | Spearman ρ with the reported score
+@tabrow Tier without interface bonus | yes | 0.794 (417 of 525 pairs) | 0.938
+@tabrow Interface-only context | no | 0.815 (428 of 525 pairs) | 0.788
+@tabrow Energy weight 0.4 | yes | 0.830 (436 of 525 pairs) | 0.996
+@tabrow Cohort-standardized | yes | 0.834 (438 of 525 pairs) | 0.996
+@tabrow Exponential | yes | 0.836 (439 of 525 pairs) | 0.995
+@tabrow Common per-axis anchor | yes | 0.836 (439 of 525 pairs) | 0.999
+@tabrow Smooth normalization | yes | 0.838 (440 of 525 pairs) | 0.991
+@tabrow Energy weight 0.6 | yes | 0.838 (440 of 525 pairs) | 0.991
+@tabrow Hard cap | yes | 0.844 (443 of 525 pairs) | 0.968
+
+Partitioning the population into five equal score bands shows where the mechanisms sit (Table H): 8 of the 9 variants in the highest band carry a structural mechanism, against none of the 6 in the lowest.
+
+@tablecap Table H. Structural mechanisms by priority-score band.
+@tabhead Score band | Variants | Structural mechanisms | Fraction
+@tabrow 0.00–<0.20 | 6 | 0 | 0.000
+@tabrow 0.20–<0.40 | 10 | 4 | 0.400
+@tabrow 0.40–<0.60 | 14 | 3 | 0.214
+@tabrow 0.60–<0.80 | 7 | 6 | 0.857
+@tabrow 0.80–1.00 | 9 | 8 | 0.889
+

@@ -191,7 +191,7 @@ should normally use the Colab notebook or the
 share one engine; they differ only in input and in whether external tools are
 layered on.
 
-**1. Benchmark** (61-variant canonical set: 49 PPI across 13 complexes + 12 BRCA1-BRCT)
+**1. Benchmark** (61 scored variants: 49 in 13 complexes and 12 in the BRCA1 BRCT domain; the 56 with a committed expectation form the graded benchmark)
 ```bash
 export FOLDX_BINARY=/path/to/foldx
 python scripts/run_live.py          # -> results/comavi_v7_results.csv (PPI systems)
@@ -351,19 +351,27 @@ At the 2.5 kcal/mol reproducibility reference, whole-variant
 mechanism-pattern agreement was 0.66 (0.6607, graded n=56), with a weighted total of 37.0/56.
 
 Direction-aware agreement across energetic axes in the primary 56-variant
-population was 56/77 = 0.727:
+population was 59/79 = 0.747:
 
 - monomer-fold: 19/26;
 - complex-context: 17/22;
-- binding: 20/29.
+- binding: 19/25;
+- either assembled axis: 4/6.
+
+The last row holds the six expectations whose only evidence is an amount of
+complex (co-immunoprecipitation, pull-down or two-hybrid). Such a measurement
+cannot separate weaker binding from a less stable assembled complex, so these
+expectations are scored jointly on either assembled axis and are counted on
+neither axis's own row (`scripts/apply_evidence_resolution_v11.py`).
 
 The historical four-output `structural_agreement` aggregate is retained as a
 continuity and denominator audit rather than as the primary mechanism result.
-On the same 56-variant population it is 86/123 = 0.699. With all 61 resource
-rows retained, it is 86/124 = 0.694.
+On the same 56-variant population it is 89/125 = 0.712. With all 61 resource
+rows retained, it is 89/126 = 0.706.
 
 The all-row decomposition is tier 30/46, monomer-fold ΔΔG 19/27,
-complex-fold ΔΔG 17/22, and binding ΔΔG 20/29; denominators sum to 124.
+complex-fold ΔΔG 17/22, binding ΔΔG 19/25, and either assembled axis 4/6;
+denominators sum to 126.
 The one additional all-row axis is the monomer-fold axis of BRCA1 R1699Q,
 which is retained in the resource but excluded from whole-variant grading by
 its curated role.
@@ -391,10 +399,11 @@ external generalization or a validated decision cutoff.
 
 ### Structural-context tier
 
-The structural-context tier contains no ΔΔG term. In the 49 tier-carrying
-interaction variants, the observed pathogenic fractions were Tier 1 100%,
-Tier 2 72%, Tier 3 70%, and Tier 4 43% (Spearman ρ = −0.40,
-p = 0.0044).
+The structural-context tier contains no ΔΔG term. In the 42 tier-carrying
+interaction variants with a pathogenic or benign clinical classification (a
+ClinVar expert-panel classification where one exists, otherwise Franklin),
+the observed pathogenic fractions were Tier 1 100%, Tier 2 71%, Tier 3 70%,
+and Tier 4 50% (Spearman ρ = −0.31, p = 0.0444).
 
 The tier is reported with its components because interface membership
 materially contributes to its performance. ISDS-v1, the tier components, the
@@ -422,6 +431,27 @@ files under the selected structures directory, named as defined in the system
 config. Complexes may be experimental biological assemblies or predicted models.
 The Colab workflow can retrieve monomers and candidate experimental complexes,
 or accept AlphaFold Server and optional ColabFold models.
+
+**Benchmark annotations (v11).** Three committed inputs make the benchmark's
+external annotations traceable to public records:
+
+- `inputs/alphamissense/` holds the AlphaMissense rows for the benchmark proteins,
+  extracted from the checksummed public release (Zenodo record 8208688) by
+  `scripts/fetch_alphamissense_subset.py` and applied by
+  `scripts/apply_alphamissense_release.py`.
+- `data/analysis_inputs/clinvar/COMAVI_clinvar_records.csv` holds the dated ClinVar
+  records for the 46 benchmark variants in complexes, retrieved through NCBI
+  E-utilities by `scripts/fetch_clinvar_records.py`. Clinical labels follow one
+  rule (`scripts/apply_clinical_label_rule_v11.py`): a ClinVar classification
+  reviewed by an expert panel or given in a practice guideline where one exists,
+  otherwise the Franklin classification. Re-running the fetch is a deliberate
+  update, not part of CI.
+- The evidence ledger's `complex_amount_assay` column names the assay behind every
+  binding expectation measured as an amount of complex (co-immunoprecipitation,
+  pull-down or two-hybrid). `scripts/apply_evidence_resolution_v11.py` scores the
+  directional ones on either assembled axis, because such an assay cannot
+  separate weaker binding from a less stable assembled complex; every affected
+  grade is listed in `docs/audit/`.
 
 ## CHD data provenance & required acknowledgment
 

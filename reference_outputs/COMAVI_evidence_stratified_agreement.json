@@ -1,26 +1,26 @@
 {
  "threshold": 2.5,
  "accounting": {
-  "n_committed_axes": 99,
-  "n_ddg_axes_gradeable": 78,
-  "n_committed_but_gated_out": 21,
+  "n_committed_axes": 97,
+  "n_ddg_axes_gradeable": 79,
+  "n_committed_but_gated_out": 18,
   "n_tier_axes_gradeable": 46,
-  "n_total_gradeable": 124,
+  "n_total_gradeable": 125,
   "note": "Committed axes carry ground truth; a committed axis is gradeable only if the prediction also clears confidence and internal-CI gating. The difference is the cost of those gates, not missing curation."
  },
  "crude": {
-  "quant_ok": 20,
+  "quant_ok": 22,
   "quant_n": 34,
-  "quant_rate": 0.588,
-  "soft_ok": 36,
-  "soft_n": 44,
-  "soft_rate": 0.818,
-  "OR": 0.317,
-  "p": 0.0412
+  "quant_rate": 0.647,
+  "soft_ok": 37,
+  "soft_n": 45,
+  "soft_rate": 0.822,
+  "OR": 0.396,
+  "p": 0.1161
  },
  "token_composition_by_grade": {
   "soft": {
-   "destab": 6,
+   "destab": 7,
    "neutral": 38,
    "stab": 0
   },
@@ -33,14 +33,14 @@
  "stratified": {
   "per_token": {
    "destab": {
-    "quant_ok": 14,
+    "quant_ok": 16,
     "quant_n": 26,
-    "soft_ok": 4,
-    "soft_n": 6,
-    "quant_rate": 0.538,
-    "soft_rate": 0.667,
-    "OR": 0.583,
-    "p": 0.6722
+    "soft_ok": 5,
+    "soft_n": 7,
+    "quant_rate": 0.615,
+    "soft_rate": 0.714,
+    "OR": 0.64,
+    "p": 1.0
    },
    "neutral": {
     "quant_ok": 6,
@@ -58,25 +58,25 @@
     "n": 1
    }
   },
-  "OR_mantel_haenszel": 0.758,
+  "OR_mantel_haenszel": 0.795,
   "chi2": 0.001,
-  "p": 0.9798
+  "p": 0.9761
  },
  "by_evidence_type": {
   "E1_quantitative_energetic": {
    "ok": 18,
-   "n": 26,
-   "rate": 0.692
+   "n": 25,
+   "rate": 0.72
   },
   "E2_quantitative_functional": {
-   "ok": 2,
-   "n": 8,
-   "rate": 0.25
+   "ok": 4,
+   "n": 9,
+   "rate": 0.444
   },
   "E3_qualitative_experimental": {
-   "ok": 18,
-   "n": 23,
-   "rate": 0.783
+   "ok": 19,
+   "n": 24,
+   "rate": 0.792
   },
   "E4_population_frequency": {
    "ok": 6,
@@ -96,9 +96,9 @@
    "rate": 0.833
   },
   "direct": {
-   "ok": 33,
-   "n": 51,
-   "rate": 0.647
+   "ok": 36,
+   "n": 52,
+   "rate": 0.692
   },
   "inferred": {
    "ok": 18,

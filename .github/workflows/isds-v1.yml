@@ -47,6 +47,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          # verify_release_notes_values.py reads each release's records at its tag
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:
@@ -63,6 +66,10 @@ jobs:
       - name: Compile release code
         run: |
           python -m py_compile \
+            scripts/build_supplement.py \
+            scripts/write_si_text_sources_v11.py \
+            scripts/verify_si_derived_sheets.py \
+            verification/rederive_headlines_v11.py \
             scripts/comavi_v7/isds.py \
             scripts/comavi_v7/pipeline.py \
             scripts/add_isds_v1.py \
@@ -195,6 +202,18 @@ jobs:
           # checks (fonts, 8-12 pt) need Arial and run where the figures are built.
           python scripts/build_manuscript.py --check
           python scripts/verify_figure_specs.py
+          # v11: S1-S3 Text are built from sources in docs/manuscript/si/, and the
+          # sources are written from the records. The first check regenerates the
+          # sources and their values audit; the second rebuilds the .docx files.
+          python scripts/write_si_text_sources_v11.py --check
+          python scripts/build_si_texts.py --check
+          # S1-S3 Table and the package manifest are built from the records too.
+          python scripts/build_supplement.py --check
+          # Every check above compares a record with the generator that wrote it.
+          # This one re-derives the headline values from the published
+          # definitions and the canonical table, imports no generator, and looks
+          # for each value in the manuscript text (v11; it found three defects).
+          python verification/rederive_headlines_v11.py
           # The SI directory is assembled by hand, so nothing above sees it: in
           # v8.0 four of five supporting figures shipped under the wrong number
           # after the manuscript renumbered S3-S5, and every text gate still
@@ -229,7 +248,7 @@ jobs:
           # without its gate leaves the notes unchecked, which is the condition
           # that produced a public figures README quoting a cohort that no longer
           # existed.
-          python scripts/verify_release_notes_values.py
+          python scripts/verify_release_notes_values.py --require-history
           # CITATION.cff's version field had no reader and silently lagged the
           # published release. Checked against the release-notes set, which is
           # what ships in the archived tarball.
@@ -272,10 +291,39 @@ jobs:
         # all. Presence is not freshness; these two compare stored bytes to a
         # rebuild. The gating check is slow (~5 min, 20k seeded draws) and that
         # is the price of the class of defect it catches.
+        #
+        # v11: twenty generators and appliers had a --check mode that no
+        # workflow ran. One had been failing since v8.0 unnoticed
+        # (apply_axis_signature_v77: three reclassified variants kept their old
+        # signature). Every one that passes is now gated here, including the
+        # three v11 migrations, so the canonical cannot drift from the
+        # AlphaMissense release, the Franklin label rule or the Table 3 grader.
         run: |
           python scripts/build_threshold_sweep.py --check
           python scripts/build_threshold_sweep.py --check --extended
           python scripts/analyze_tier_energy_gating.py --check
+          python scripts/apply_alphamissense_release.py --check
+          python scripts/apply_clinical_label_rule_v11.py --check
+          python scripts/apply_rubric_table3_v11.py --check
+          python scripts/apply_evidence_resolution_v11.py --check
+          python scripts/build_rubric_sensitivity.py --check
+          python scripts/apply_axis_signature_v77.py --check
+          python scripts/apply_brct_provenance_v78.py --check
+          python scripts/apply_ledger_corrections_v80.py --check
+          python scripts/build_numbers_ledger.py --check
+          python scripts/build_stress_verified_statistics.py --check
+          python scripts/build_evidence_sensitivity.py --check
+          python scripts/build_rank_grade_overlap.py --check
+          python scripts/build_operating_point_diagnostics.py --check
+          python scripts/build_plddt_gating_comparison.py --check
+          python scripts/build_delta_calibration_stats.py --check
+          python scripts/build_measured_effect_tables.py --check
+          python scripts/build_evidence_state_tables.py --check
+          python scripts/build_skempi_validation.py --check
+          python scripts/build_tier_comparator_calls.py --check
+          python scripts/build_variant_tables.py --check
+          python scripts/build_variant_master_workbook.py --check
+          python scripts/extract_manuscript_text.py --check
 
       - name: Re-derive and verify the canonical benchmark
         run: |

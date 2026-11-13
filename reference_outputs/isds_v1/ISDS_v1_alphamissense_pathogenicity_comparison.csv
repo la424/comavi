@@ -1,5 +1,5 @@
 descriptor,n,n_pathogenic,pathogenicity_auc
-AM pathogenicity,47,36,0.9027777777777778
-isds_v1,47,36,0.851010101010101
-isds_energy_component,47,36,0.8358585858585859
-isds_context_component,47,36,0.7689393939393938
+AM pathogenicity,39,28,0.8733766233766234
+isds_v1,39,28,0.7954545454545454
+isds_energy_component,39,28,0.8181818181818182
+isds_context_component,39,28,0.6785714285714286

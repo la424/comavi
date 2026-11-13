@@ -200,10 +200,13 @@ def main():
                 continue
             axis_n[k] = axis_n.get(k, 0) + v[0]
             axis_d[k] = axis_d.get(k, 0) + v[1]
+    # v11 evidence resolution: the six complex-amount expectations leave the
+    # binding row (20/29 -> 19/25) and are scored jointly (4/6).
     for k, want in [("tier", (30, 46)), ("monomer", (19, 27)),
-                    ("fold", (17, 22)), ("binding", (20, 29))]:
+                    ("fold", (17, 22)), ("binding", (19, 25)),
+                    ("assembled_either", (4, 6))]:
         check(f"{k} axis", (axis_n[k], axis_d[k]), want)
-    check("all-rows four-output", (sum(axis_n.values()), sum(axis_d.values())), (86, 124))
+    check("all-rows four-output", (sum(axis_n.values()), sum(axis_d.values())), (89, 126))
 
     unobs = set(ac.unobservable_variants())
     graded = df[~df.variant.isin(unobs)]
@@ -212,10 +215,13 @@ def main():
         got = ac.compute_structural_agreement(r, partners, 2.5, 2.5, 2.5)
         if got:
             gn += got[0]; gd += got[1]
-    check("primary four-output (unobservable excluded)", (gn, gd), (86, 123))
+    check("primary four-output (unobservable excluded)", (gn, gd), (89, 125))
 
     gmap = {"consistent": 1.0, "partial": 0.5, "inconsistent": 0.0}
     mc = graded.mech_consistency_t25.map(lambda v: gmap.get(str(v).lower())).dropna()
+    # v11: 37.0 -> 34.0 (Table 3 grader; six partial -> inconsistent changes at
+    # t=2.5, docs/audit/COMAVI_v11_rubric_regrade.csv); then 34.0 -> 37.0
+    # under evidence resolution (docs/audit/COMAVI_v11_evidence_resolution.csv).
     check("mechanism consistency", (round(float(mc.sum()), 1), len(mc)), (37.0, 56))
 
     print("\n" + "=" * 62)

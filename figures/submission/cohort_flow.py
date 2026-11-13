@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""The benchmark cohort flow figure.
+"""The benchmark cohort flow figure (v10; superseded at v11 by
+fig2_benchmark_detection.py and no longer built).
 
 WHY THIS EXISTS
 ---------------

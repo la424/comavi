@@ -14,9 +14,9 @@
   "outside_top_k": 0.0
  },
  "grade_breakdown_in_top_k": {
-  "consistent": 5,
-  "partial": 10,
-  "inconsistent": 2
+  "consistent": 8,
+  "partial": 4,
+  "inconsistent": 5
  },
  "grade_breakdown_outside_top_k": {
   "consistent": 0,
@@ -35,11 +35,38 @@
    "grade_label": "inconsistent"
   },
   {
+   "system": "mlh1_pms2",
+   "gene": "mlh1",
+   "variant": "Q542L",
+   "rank": 13,
+   "isds_v1": 0.6351,
+   "expected_mech_class": "ppi_destab_mechanism",
+   "grade_label": "inconsistent"
+  },
+  {
    "system": "pi3k",
    "gene": "pik3ca",
    "variant": "E545K",
    "rank": 14,
    "isds_v1": 0.6182,
+   "expected_mech_class": "ppi_destab_mechanism",
+   "grade_label": "inconsistent"
+  },
+  {
+   "system": "hemoglobin_tetramer",
+   "gene": "hbb",
+   "variant": "N102T",
+   "rank": 16,
+   "isds_v1": 0.6048,
+   "expected_mech_class": "mixed_structural",
+   "grade_label": "inconsistent"
+  },
+  {
+   "system": "pi3k",
+   "gene": "pik3ca",
+   "variant": "E542K",
+   "rank": 18,
+   "isds_v1": 0.5938,
    "expected_mech_class": "ppi_destab_mechanism",
    "grade_label": "inconsistent"
   }
@@ -83,10 +110,10 @@
   }
  ],
  "association": {
-  "spearman_rho_score_vs_grade": 0.6347,
-  "spearman_p": 0.002,
-  "mannwhitney_u_grade_top_vs_rest": 64.0,
-  "mannwhitney_p_one_sided": 0.0022,
+  "spearman_rho_score_vs_grade": 0.6851,
+  "spearman_p": 0.0006,
+  "mannwhitney_u_grade_top_vs_rest": 58.0,
+  "mannwhitney_p_one_sided": 0.0117,
   "note": "n = 21 structural-truth variants with 4 outside the top 20; the descriptive contrast in mean grade carries the claim."
  }
 }

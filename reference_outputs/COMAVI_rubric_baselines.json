@@ -38,32 +38,33 @@
   "always_monomer_fold": {
    "mechanism_label": "Monomer fold destabilization",
    "n_graded": 56,
-   "score": 0.3036,
+   "score": 0.1786,
    "grade_counts": {
     "consistent": 9,
-    "inconsistent": 31,
-    "partial": 16
+    "inconsistent": 45,
+    "partial": 2
    },
    "note": "Calls every variant a monomer-fold destabilizer."
   },
   "always_multimer_fold": {
    "mechanism_label": "Multimer fold destabilization",
    "n_graded": 56,
-   "score": 0.2321,
+   "score": 0.1607,
    "grade_counts": {
-    "inconsistent": 30,
-    "partial": 26
+    "consistent": 5,
+    "inconsistent": 43,
+    "partial": 8
    },
    "note": "Calls every variant a complex-context fold destabilizer."
   },
   "always_ppi": {
    "mechanism_label": "PPI destabilization",
    "n_graded": 56,
-   "score": 0.3214,
+   "score": 0.25,
    "grade_counts": {
     "consistent": 11,
-    "inconsistent": 31,
-    "partial": 14
+    "inconsistent": 39,
+    "partial": 6
    },
    "note": "Calls every variant an interface destabilizer."
   }
@@ -72,5 +73,344 @@
   "key": "never_fire",
   "score": 0.4821,
   "margin_over_best_trivial": 0.1786
+ },
+ "every_constant_label": {
+  "n_labels_graded": 31,
+  "best_score": 0.4821,
+  "best_labels": [
+   "Interface variant (DDG neutral)",
+   "No structural effect detected",
+   "Structural variant \u2014 burial-driven (DDG neutral)",
+   "Structural variant \u2014 contact-driven (DDG neutral)"
+  ],
+  "margin_over_best_constant": 0.1786,
+  "best_balanced": 0.5,
+  "observed_balanced": 0.666,
+  "labels": {
+   "Monomer fold destabilization": {
+    "score": 0.1786,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.3448,
+    "balanced": 0.1724,
+    "grade_counts": {
+     "consistent": 9,
+     "inconsistent": 45,
+     "partial": 2
+    }
+   },
+   "Monomer fold destabilization at interface": {
+    "score": 0.1786,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.3448,
+    "balanced": 0.1724,
+    "grade_counts": {
+     "consistent": 9,
+     "inconsistent": 45,
+     "partial": 2
+    }
+   },
+   "Multimer fold destabilization": {
+    "score": 0.1607,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.3103,
+    "balanced": 0.1552,
+    "grade_counts": {
+     "consistent": 5,
+     "inconsistent": 43,
+     "partial": 8
+    }
+   },
+   "Multimer fold destabilization at interface": {
+    "score": 0.1607,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.3103,
+    "balanced": 0.1552,
+    "grade_counts": {
+     "consistent": 5,
+     "inconsistent": 43,
+     "partial": 8
+    }
+   },
+   "Both fold destabilization": {
+    "score": 0.3304,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.6379,
+    "balanced": 0.319,
+    "grade_counts": {
+     "consistent": 15,
+     "inconsistent": 34,
+     "partial": 7
+    }
+   },
+   "Both fold destabilization at interface": {
+    "score": 0.3304,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.6379,
+    "balanced": 0.319,
+    "grade_counts": {
+     "consistent": 15,
+     "inconsistent": 34,
+     "partial": 7
+    }
+   },
+   "Monomer fold stabilization": {
+    "score": 0.0,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.0,
+    "balanced": 0.0,
+    "grade_counts": {
+     "inconsistent": 56
+    }
+   },
+   "Monomer fold stabilization at interface": {
+    "score": 0.0,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.0,
+    "balanced": 0.0,
+    "grade_counts": {
+     "inconsistent": 56
+    }
+   },
+   "Multimer fold stabilization": {
+    "score": 0.0179,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.0345,
+    "balanced": 0.0172,
+    "grade_counts": {
+     "consistent": 1,
+     "inconsistent": 55
+    }
+   },
+   "Multimer fold stabilization at interface": {
+    "score": 0.0179,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.0345,
+    "balanced": 0.0172,
+    "grade_counts": {
+     "consistent": 1,
+     "inconsistent": 55
+    }
+   },
+   "Both fold stabilization": {
+    "score": 0.0179,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.0345,
+    "balanced": 0.0172,
+    "grade_counts": {
+     "consistent": 1,
+     "inconsistent": 55
+    }
+   },
+   "Both fold stabilization at interface": {
+    "score": 0.0179,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.0345,
+    "balanced": 0.0172,
+    "grade_counts": {
+     "consistent": 1,
+     "inconsistent": 55
+    }
+   },
+   "Monomer fold + PPI destabilization": {
+    "score": 0.3661,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.7069,
+    "balanced": 0.3534,
+    "grade_counts": {
+     "consistent": 15,
+     "inconsistent": 30,
+     "partial": 11
+    }
+   },
+   "Multimer fold + PPI destabilization": {
+    "score": 0.2857,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.5517,
+    "balanced": 0.2759,
+    "grade_counts": {
+     "consistent": 15,
+     "inconsistent": 39,
+     "partial": 2
+    }
+   },
+   "Both fold + PPI destabilization": {
+    "score": 0.4375,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.8448,
+    "balanced": 0.4224,
+    "grade_counts": {
+     "consistent": 21,
+     "inconsistent": 28,
+     "partial": 7
+    }
+   },
+   "Monomer fold + PPI stabilization": {
+    "score": 0.0179,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.0345,
+    "balanced": 0.0172,
+    "grade_counts": {
+     "consistent": 1,
+     "inconsistent": 55
+    }
+   },
+   "Multimer fold + PPI stabilization": {
+    "score": 0.0179,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.0345,
+    "balanced": 0.0172,
+    "grade_counts": {
+     "consistent": 1,
+     "inconsistent": 55
+    }
+   },
+   "Both fold + PPI stabilization": {
+    "score": 0.0179,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.0345,
+    "balanced": 0.0172,
+    "grade_counts": {
+     "consistent": 1,
+     "inconsistent": 55
+    }
+   },
+   "Monomer fold destab. + PPI stabilization (conflicting)": {
+    "score": 0.1696,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.3276,
+    "balanced": 0.1638,
+    "grade_counts": {
+     "consistent": 9,
+     "inconsistent": 46,
+     "partial": 1
+    }
+   },
+   "Multimer fold destab. + PPI stabilization (conflicting)": {
+    "score": 0.0179,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.0345,
+    "balanced": 0.0172,
+    "grade_counts": {
+     "consistent": 1,
+     "inconsistent": 55
+    }
+   },
+   "Both fold destab. + PPI stabilization (conflicting)": {
+    "score": 0.1875,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.3621,
+    "balanced": 0.181,
+    "grade_counts": {
+     "consistent": 9,
+     "inconsistent": 44,
+     "partial": 3
+    }
+   },
+   "Monomer fold stab. + PPI destabilization (conflicting)": {
+    "score": 0.2143,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.4138,
+    "balanced": 0.2069,
+    "grade_counts": {
+     "consistent": 7,
+     "inconsistent": 39,
+     "partial": 10
+    }
+   },
+   "Multimer fold stab. + PPI destabilization (conflicting)": {
+    "score": 0.1786,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.3448,
+    "balanced": 0.1724,
+    "grade_counts": {
+     "consistent": 9,
+     "inconsistent": 45,
+     "partial": 2
+    }
+   },
+   "Both fold stab. + PPI destabilization (conflicting)": {
+    "score": 0.1607,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.3103,
+    "balanced": 0.1552,
+    "grade_counts": {
+     "consistent": 7,
+     "inconsistent": 45,
+     "partial": 4
+    }
+   },
+   "PPI destabilization": {
+    "score": 0.25,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.4828,
+    "balanced": 0.2414,
+    "grade_counts": {
+     "consistent": 11,
+     "inconsistent": 39,
+     "partial": 6
+    }
+   },
+   "PPI stabilization": {
+    "score": 0.0179,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.0345,
+    "balanced": 0.0172,
+    "grade_counts": {
+     "consistent": 1,
+     "inconsistent": 55
+    }
+   },
+   "PPI conflicting (mixed partner signals)": {
+    "score": 0.2679,
+    "arm_curated_silent": 0.0,
+    "arm_committed_structural": 0.5172,
+    "balanced": 0.2586,
+    "grade_counts": {
+     "consistent": 12,
+     "inconsistent": 38,
+     "partial": 6
+    }
+   },
+   "Interface variant (DDG neutral)": {
+    "score": 0.4821,
+    "arm_curated_silent": 1.0,
+    "arm_committed_structural": 0.0,
+    "balanced": 0.5,
+    "grade_counts": {
+     "consistent": 27,
+     "inconsistent": 29
+    }
+   },
+   "Structural variant \u2014 contact-driven (DDG neutral)": {
+    "score": 0.4821,
+    "arm_curated_silent": 1.0,
+    "arm_committed_structural": 0.0,
+    "balanced": 0.5,
+    "grade_counts": {
+     "consistent": 27,
+     "inconsistent": 29
+    }
+   },
+   "Structural variant \u2014 burial-driven (DDG neutral)": {
+    "score": 0.4821,
+    "arm_curated_silent": 1.0,
+    "arm_committed_structural": 0.0,
+    "balanced": 0.5,
+    "grade_counts": {
+     "consistent": 27,
+     "inconsistent": 29
+    }
+   },
+   "No structural effect detected": {
+    "score": 0.4821,
+    "arm_curated_silent": 1.0,
+    "arm_committed_structural": 0.0,
+    "balanced": 0.5,
+    "grade_counts": {
+     "consistent": 27,
+     "inconsistent": 29
+    }
+   }
+  }
  }
 }

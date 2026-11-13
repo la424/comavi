@@ -28,30 +28,35 @@ At the 2.5 kcal/mol reproducibility reference:
 
 - weighted whole-variant mechanism-pattern agreement is
   **37.0/56 = 0.6607**;
-- direction-aware agreement across the three energetic axes is
-  **56/77 =
-  0.7273**;
+- direction-aware agreement across the energetic axes is
+  **59/79 =
+  0.7468**;
 - monomer-fold agreement is
   **19/26**;
 - complex-context agreement is
   **17/22**;
 - binding agreement is
-  **20/29**.
+  **19/25**;
+- either assembled axis, for the expectations measured only as an amount of
+  complex (co-IP, pull-down, two-hybrid) and scored jointly, is
+  **4/6**.
 
 The four-output continuity aggregate, which adds the structural-context tier,
 is:
 
-- **86/123 =
-  0.6992** on the primary 57-variant
-  population;
-- **86/124 =
-  0.6935** when all 61 resource rows are retained.
+- **89/125 =
+  0.7120** on the primary
+  56-variant population;
+- **89/126 =
+  0.7063** when all 61 resource rows are retained.
 
 The all-row decomposition is tier
 30/46, monomer fold
 19/27, complex context
-17/22, and binding
-20/29. The sole extra all-row
+17/22, binding
+19/25, and either assembled axis
+4/6 (the six
+expectations measured only as an amount of complex, scored jointly). The sole extra all-row
 output is the monomer-fold output of BRCA1 R1699Q, which is retained in the
 resource but excluded from whole-variant grading by its curated role.
 
@@ -62,23 +67,23 @@ The committed stress-test analysis uses 2,000 variant-bootstrap draws and
 systems with seed 8.
 
 - mechanism-consistency variant-bootstrap 95% CI:
-  **[0.546, 0.769]**;
+  **[0.545, 0.777]**;
 - mechanism-consistency system-cluster 95% CI:
-  **[0.573, 0.755]**;
+  **[0.567, 0.764]**;
 - structural-agreement variant-bootstrap 95% CI:
-  **[0.609, 0.779]**;
+  **[0.623, 0.795]**;
 - structural-agreement system-cluster 95% CI:
-  **[0.622, 0.778]**;
+  **[0.636, 0.791]**;
 - structural-agreement leave-one-system-out range:
-  **0.6810-0.7238**;
+  **0.6930-0.7290**;
 - structural-agreement permutation null:
-  observed **0.6992** versus
-  **0.5336 ±
-  0.0461**,
-  **p = 0.0005**;
+  observed **0.7120** versus
+  **0.5393 ±
+  0.0448**,
+  **p = 0.0010**;
 - replicate-noise structural agreement:
-  **0.6968 ±
-  0.0043**.
+  **0.7095 ±
+  0.0040**.
 
 The complete summary and raw seeded draws are stored under
 `reference_outputs/stress_tests/`.
@@ -111,19 +116,19 @@ Among the 49 tier-carrying interaction variants, the observed pathogenic
 fractions are:
 
 - Tier 1:
-  14/14
+  9/9
   (100%);
 - Tier 2:
-  13/18
-  (72%);
+  12/17
+  (71%);
 - Tier 3:
   7/10
   (70%);
 - Tier 4:
-  3/7
-  (43%).
+  3/6
+  (50%).
 
-The rank correlation is **ρ = -0.3997, p = 0.0044**. The tier contains
+The rank correlation is **ρ = -0.3118, p = 0.0444**. The tier contains
 no ΔΔG term and should be reported with its components because interface
 membership materially contributes to its performance.
 

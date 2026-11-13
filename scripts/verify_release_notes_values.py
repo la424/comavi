@@ -17,15 +17,28 @@ records -- those values are superseded by construction and are verified against
 what the previous tag actually published, which git holds and these notes
 document.
 
+v11: a release's notes describe that release. Until v11 every notes file was
+held to the working-tree records, which only worked while no value moved after
+a release: the first value-changing revision after v3.0-methods made the v3.0
+notes "fail" for stating exactly what v3.0 published. A notes file whose
+version is a git tag (RELEASE_NOTES_<tag>.md) is now held to the records AT
+THAT TAG, read with git show; a notes file without a tag is a release in
+preparation (as verify_citation_version.py already allows) and is held to the
+working tree. Values that moved since the newest tag are listed, so the notes
+for the next release know what they must restate. --require-history makes a
+missing tag a failure; CI passes it, with a full-history checkout.
+
 Usage:
-    python scripts/verify_release_notes_values.py
+    python scripts/verify_release_notes_values.py [--require-history]
     python scripts/verify_release_notes_values.py --notes RELEASE_NOTES_v3.0-methods.md
 """
 import argparse
 import glob
+import io
 import json
 import pathlib
 import re
+import subprocess
 import sys
 
 import pandas as pd
@@ -34,18 +47,37 @@ REPO = pathlib.Path(__file__).resolve().parents[1]
 RO = REPO / "reference_outputs"
 
 
-def expected_current():
+def reader(rev=None):
+    """Read a repository file from the working tree (rev None) or a git revision."""
+    if rev is None:
+        return lambda rel: (REPO / rel).read_text()
+
+    def read(rel):
+        out = subprocess.run(["git", "-C", str(REPO), "show", "%s:%s" % (rev, rel)],
+                             capture_output=True, text=True)
+        if out.returncode:
+            raise FileNotFoundError("%s:%s -- %s" % (rev, rel, out.stderr.strip()[:120]))
+        return out.stdout
+    return read
+
+
+def tag_exists(tag):
+    return subprocess.run(["git", "-C", str(REPO), "rev-parse", "-q", "--verify", "refs/tags/" + tag],
+                          capture_output=True).returncode == 0
+
+
+def expected_current(read=None):
     """[(label, needle)] -- every needle computed, none typed."""
+    read = read or reader()
     sweep = {r["threshold_tag"]: r for r in
-             json.loads((RO / "COMAVI_threshold_sweep.json").read_text())["rows"]}
+             json.loads(read("reference_outputs/COMAVI_threshold_sweep.json"))["rows"]}
     t25 = sweep["t25"]
-    strat = json.loads((RO / "COMAVI_evidence_stratified_agreement.json").read_text())
-    stress = json.loads((RO / "stress_tests" /
-                         "COMAVI_stress_verified_statistics.json").read_text())
-    led = pd.read_csv(RO / "COMAVI_evidence_ledger.csv")
-    pm = pd.read_csv(RO / "isds_v1" / "ISDS_v1_primary_metrics.csv").set_index("score")
-    pv = pd.read_csv(RO / "isds_v1" / "ISDS_v1_per_variant.csv")
-    can = pd.read_csv(RO / "scored_61var_canonical.csv", low_memory=False)
+    strat = json.loads(read("reference_outputs/COMAVI_evidence_stratified_agreement.json"))
+    stress = json.loads(read("reference_outputs/stress_tests/COMAVI_stress_verified_statistics.json"))
+    led = pd.read_csv(io.StringIO(read("reference_outputs/COMAVI_evidence_ledger.csv")))
+    pm = pd.read_csv(io.StringIO(read("reference_outputs/isds_v1/ISDS_v1_primary_metrics.csv"))).set_index("score")
+    pv = pd.read_csv(io.StringIO(read("reference_outputs/isds_v1/ISDS_v1_per_variant.csv")))
+    can = pd.read_csv(io.StringIO(read("reference_outputs/scored_61var_canonical.csv")), low_memory=False)
     ranked = (pv.sort_values("isds_v1", ascending=False)
                 ["structural_ground_truth"].astype(bool).values)
     npos = int(ranked.sum())
@@ -89,10 +121,17 @@ def expected_current():
     ]
 
 
+def notes_version(path):
+    m = re.match(r"RELEASE_NOTES_(.+)\.md$", path.name)
+    return m.group(1) if m else None
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--notes", default=None,
                     help="a single notes file; default is every RELEASE_NOTES_*.md")
+    ap.add_argument("--require-history", action="store_true",
+                    help="fail, rather than skip, when a released version's tag is not in the clone")
     args = ap.parse_args()
     files = ([REPO / args.notes] if args.notes
              else sorted(pathlib.Path(p) for p in glob.glob(str(REPO / "RELEASE_NOTES_*.md"))))
@@ -101,10 +140,23 @@ def main() -> int:
               "a zero-file glob must not report success")
         return 1
 
-    needles = expected_current()
-    bad = []
-    covered = set()
+    bad, covered, checked, skipped = [], set(), [], []
+    needles_by_rev = {}
     for path in files:
+        version = notes_version(path)
+        rev = version if version and tag_exists(version) else None
+        if rev is None and version and _older_than_citation(version):
+            # a released version whose tag is not in this clone (shallow checkout
+            # or an archive without history)
+            if args.require_history:
+                bad.append((path.name, "history", version, "tag not found; check out with full history"))
+            else:
+                skipped.append(path.name)
+            continue
+        if rev not in needles_by_rev:
+            needles_by_rev[rev] = expected_current(reader(rev))
+        needles = needles_by_rev[rev]
+        checked.append("%s (against %s)" % (path.name, rev or "the working tree"))
         text = path.read_text()
         for label, needle, *rest in needles:
             in_table = rest[0] if rest else True
@@ -139,17 +191,52 @@ def main() -> int:
                 bad.append((path.name, label, needle, why))
     for name, label, needle, why in bad:
         print("  MISSING [%s] %s: expected %r, %s" % (name, label, needle, why))
-    uncovered = [lab for lab, *_ in needles if lab not in covered]
+    labels = [lab for lab, *_ in expected_current()]
+    uncovered = [lab for lab in labels if lab not in covered] if not skipped else []
     for lab in uncovered:
         print("  UNCLAIMED [%s]: no release-notes file states this quantity, so "
               "nothing gates it" % lab)
+    for name in skipped:
+        print("  SKIP [%s]: its release tag is not in this clone, so the values it published cannot be "
+              "read; CI checks it with --require-history" % name)
+    # what the next release's notes will have to restate
+    tagged = [notes_version(p) for p in files if notes_version(p) and tag_exists(notes_version(p))]
+    if tagged:
+        newest = sorted(tagged, key=_version_key)[-1]
+        then = dict((lab, nd) for lab, nd, *_ in needles_by_rev.get(newest) or expected_current(reader(newest)))
+        now = dict((lab, nd) for lab, nd, *_ in expected_current())
+        moved = [lab for lab in now if then.get(lab) != now[lab]]
+        if moved:
+            print("  NOTE: %d tracked quantit%s moved since %s; the next release's notes must restate %s: %s"
+                  % (len(moved), "y has" if len(moved) == 1 else "ies have", newest,
+                     "it" if len(moved) == 1 else "them", "; ".join("%s %s -> %s" % (m, then.get(m), now[m]) for m in moved)))
     if bad or uncovered:
-        print("FAIL: %d value(s) disagree with the records, %d quantity(ies) "
+        print("FAIL: %d value(s) disagree with the records of their release, %d quantity(ies) "
               "unclaimed across %d notes file(s)" % (len(bad), len(uncovered), len(files)))
         return 1
-    print("PASS: %d release-notes file(s); every quantity claimed matches the records "
-          "and all %d are claimed somewhere" % (len(files), len(needles)))
+    print("PASS: %d release-notes file(s) checked, each against the records of its own release (%s); "
+          "every quantity is claimed" % (len(checked), "; ".join(checked)))
     return 0
+
+
+def _version_key(v):
+    """Numeric release order: v3.0-methods < v3.0.1-methods < v3.1-methods."""
+    return tuple(int(x) for x in re.findall(r"\d+", v))
+
+
+def _older_than_citation(version):
+    """True when a notes file without a tag in this clone names a release older
+    than the one CITATION.cff declares, so its values belong to a tag this clone
+    lacks. The notes for the declared version itself are checked against the
+    working tree, which is that release in its archive and the release in
+    preparation in the repository."""
+    cff = (REPO / "CITATION.cff").read_text() if (REPO / "CITATION.cff").exists() else ""
+    m = re.search(r'^version:\s*"?([^"\n]+)"?', cff, re.M)
+    if not m:
+        return False
+    declared = m.group(1).strip()
+    declared = declared if declared.startswith("v") else "v" + declared
+    return _version_key(version) < _version_key(declared)
 
 
 if __name__ == "__main__":

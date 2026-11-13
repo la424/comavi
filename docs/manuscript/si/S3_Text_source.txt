@@ -1,0 +1,61 @@
+@title S3 Text. Pathogenicity comparison, robustness and independent validation.
+
+@contents
+
+## Section 1. Silent results by clinical label
+
+%from: reference_outputs/COMAVI_directional_enrichment.json
+At the 2.5 kcal/mol reference, 25 of the 56 benchmark variants have at least one energy output that reaches the threshold and 31 are silent; an output counts when a confidence-passing axis reaches the threshold, and binding values indistinguishable from zero are excluded. Of the 39 variants with a pathogenic or benign classification (gain of function counted as pathogenic), all 15 with an output at the threshold are pathogenic, whereas the 24 silent variants include 13 pathogenic and 11 benign ones (Fisher exact p = 0.0024). The 13 pathogenic but silent variants span 8 of the 14 systems: CALM1 D96V, CALM1 F142L, CALM1 N98S, CFH R53H, HBB E6V, KRAS G12D, KRAS G12V, KRAS Q61H, MLH1 Q542L, PIK3CA H1047R, SMAD4 I500T, SMAD4 I500V and VHL Y98H. Six of them are curated as gain of function (KRAS G12D, KRAS G12V, KRAS Q61H, PIK3CA H1047R, SMAD4 I500T and SMAD4 I500V), whose pathogenic effect is a change in activity rather than a loss of structure. Because the benchmark was selected for mechanism evidence, these fractions are not clinical predictive values; they establish only that the two kinds of result differ. No benign variant here had an output at the threshold, whereas silence occurred in both classes, so a silent result constrains nothing about pathogenicity.
+
+## Section 2. Stress tests
+
+%from: verification/stress_tests.py; reference_outputs/stress_tests
+The main text reports the mechanism-pattern score with a 95% interval from resampling whole systems (0.567–0.764), because variants within a system share a structure and a curation pass. Resampling variants instead, which ignores that clustering, gives 0.545–0.777. Leaving one system out at a time gives values from 0.642 to 0.686 (Table A). Adding Gaussian noise at the standard error of each five-replicate FoldX mean, 500 times, gave a mean score of 0.662 (standard deviation 0.013); a draw changed 1.01 calls on average and at most 4. Of the 56 benchmark variants, 49 kept the same call in every draw; the others, with the fraction of draws in which their call changed, are TNNI3 R145Q (0.482), PIK3CA H1047R (0.288), CALM1 D96V (0.124), PIK3R1 N564D (0.050), SMAD4 R361C (0.030), MLH1 L749P (0.024) and TNNI3 R145G (0.004).
+
+@tablecap Table A. Mechanism-pattern score with each system left out, at 2.5 kcal/mol.
+@tabhead System left out | Variants removed | Score on the remaining variants
+@tabrow Calmodulin–CaV1.2 IQ domain | 3 | 0.642 (34.0 of 53)
+@tabrow BRCA1–BARD1 RING heterodimer | 4 | 0.644 (33.5 of 52)
+@tabrow VHL–elongin C | 2 | 0.648 (35.0 of 54)
+@tabrow Complement factor H–C3b | 3 | 0.651 (34.5 of 53)
+@tabrow BRCA1 BRCT tandem domain | 10 | 0.652 (30.0 of 46)
+@tabrow SMAD4–SMAD3 MH2 complex | 4 | 0.654 (34.0 of 52)
+@tabrow Hemoglobin α–β dimer | 1 | 0.655 (36.0 of 55)
+@tabrow Hemoglobin tetramer | 5 | 0.657 (33.5 of 51)
+@tabrow VWF A1–GPIbα | 2 | 0.657 (35.5 of 54)
+@tabrow MSH2–MSH6 heterodimer | 4 | 0.673 (35.0 of 52)
+@tabrow MLH1–PMS2 C-terminal heterodimer | 7 | 0.673 (33.0 of 49)
+@tabrow KRAS–RAF1 RAS-binding domain | 3 | 0.679 (36.0 of 53)
+@tabrow Troponin I–troponin C | 3 | 0.679 (36.0 of 53)
+@tabrow PI3K p110α–p85α | 5 | 0.686 (35.0 of 51)
+
+## Section 3. Independent binding-axis validation on SKEMPI 2.0
+
+%from: reference_outputs/COMAVI_skempi_validation.json; supplement/skempi
+The hemoglobin series is a high-quality within-system anchor but does not test unrelated interfaces. Two complexes from SKEMPI 2.0 [@jankauskaite2019] were therefore scored with the frozen workflow: barnase–barstar (24 substitutions) and TEM1–BLIP (24 substitutions on the BLIP side, where residue numbering maps unambiguously). Measured binding ΔΔG is RT ln(K_D,mut/K_D,wt). Table B gives the agreement for each complex. Seven barnase substitutions at Glu73 (measured 1.45 to 3.01 kcal/mol, all destabilizing) are all predicted to stabilize binding (−1.66 to −1.01 kcal/mol), a single-site sign inversion. They are kept in the primary statistics, and the fit without them, which was introduced with the analysis rather than prespecified, is reported as a sensitivity view.
+
+@tablecap Table B. FoldX binding ΔΔG against SKEMPI 2.0 measurements.
+@tabhead Complex | Substitutions | Pearson r (p) | Spearman ρ (p) | Sign correct on measured destabilizations
+@tabrow Barnase–barstar, all | 24 | 0.37 (0.074) | 0.30 (0.156) | 14 of 22
+@tabrow Barnase–barstar, without Glu73 | 17 | 0.51 (0.035) | 0.56 (0.019) | 14 of 15
+@tabrow TEM1–BLIP | 24 | 0.51 (0.010) | 0.50 (0.012) | 16 of 18
+@tabrow Both complexes | 48 | 0.31 (0.033) | 0.34 (0.019) | 30 of 40
+@tabrow Both complexes, without Glu73 | 41 | 0.48 (0.0016) | 0.55 (0.00021) | 30 of 33
+
+## Section 4. Do high-priority variants also have their mechanism graded correctly?
+
+%from: reference_outputs/isds_v1/ISDS_v1_rank_grade_overlap.json
+The priority score and the mechanism grade answer different questions, and a variant ranked highly but graded inconsistent would point a user at the right variant with the wrong mechanistic hypothesis. On the 46-variant prioritization population, 17 of the 21 structural mechanisms are ranked in the top 20: 8 are graded consistent, 4 partial and 5 inconsistent. Of the five inconsistent, two are placed on the wrong axis, MLH1 R755W (rank 11), a fold mechanism called as strengthened binding, and PIK3CA E542K (rank 18), an interface destabilizer called as instability of the assembly; one, PIK3CA E545K (rank 14), is called on the expected binding axis but in the opposite direction; and two, MLH1 Q542L (rank 13) and HBB N102T (rank 16), receive no energy call and are ranked by their structural context. For R755W the literature reports reduced abundance with binding preserved, while neither stability prediction reaches the threshold (0.97 kcal/mol for the isolated subunit and −0.94 in the complex). R755W and E542K would therefore send a user to the right protein with the wrong experiment. The four mechanisms outside the top 20, KRAS G12D (rank 32), MLH1 H718Y (rank 35), SMAD4 I500V (rank 36) and KRAS G12V (rank 38), are all graded inconsistent, so no fully resolved mechanism is ranked below the cut. Across the 21 mechanisms, the priority score and the grade are correlated (Spearman ρ = 0.685, p = 0.0006), and the mean grade is 0.588 inside the top 20 against 0.000 outside it (one-sided Mann–Whitney p = 0.012). With only four mechanisms outside the cut, the contrast is descriptive.
+
+## Section 5. Curation audit and correction history
+
+%from: scripts/verify_ledger_token_basis.py; scripts/apply_ledger_corrections_v79.py; scripts/apply_ledger_corrections_v80.py
+Every committed expectation carries a one-line evidence basis and a primary citation beside its expected direction (S1 Table). A gate run in continuous integration, scripts/verify_ledger_token_basis.py, reads each basis, keeps the clauses that use the vocabulary of the axis being committed, and fails if the direction asserts disruption where those clauses assert that the axis is intact, or the reverse.
+
+When the gate was introduced, three of the then 98 committed expectations failed it. All three were binding expectations that one earlier curation review had changed from neutral to destabilizing without changing the bases beside them: MSH2 C697F, whose basis read “ATPase catalytic defect, protein stable, interaction intact”, and KRAS G12D and G12V, whose bases recorded wild-type-like RAF1 binding with impaired GTP hydrolysis and noted that residue 12 lies 13.6 Å from the RAF1 interface. The three were returned to neutral, the direction their bases stated.
+
+The next revision read the cited sources directly and found that the KRAS bases themselves misread their source: Hunter et al. [@hunter2015] report RAF affinities of 270 nM for G12D and 411 nM for G12V against 56 nM for the wild type, a 4.8-fold and a 7.3-fold loss. Basis and direction were corrected together, and both are again destabilizing binding expectations. A proposal to make MSH2 C697F destabilizing was rejected: its source could not be read, and the neutral commitment is supported by a source that could, a co-immunoprecipitation study that found the interaction intact [@ollila2006]. The same revision withdrew the binding expectation of MSH2 G674R, whose basis cited a study that performs no co-immunoprecipitation (the variant now has no committed expectation and is not part of the benchmark), and committed two expectations from the sources' own measurements: isolated-subunit destabilization for MLH1 H718Y [@hinrichsen2013] and strengthened SMAD3 binding for SMAD4 I500V [@lindsay2025]. The ledger then held 99 expectations, of which the 97 belonging to benchmark variants are in S1 Table. Each change, with its reason, is recorded in the correction scripts of the repository.
+
+These corrections are reported rather than absorbed because their effects run in both directions. Withdrawing the G674R expectation removed from the benchmark a variant that had been curated as non-disruptive and on which COMAVI predicts fold destabilization (3.99 kcal/mol for the isolated subunit), so it removed a false call. The others lower the score. KRAS G12D and G12V are graded inconsistent, because COMAVI predicts no binding change at the reference and their measured losses (0.93 and 1.18 kcal/mol) are themselves below it. MLH1 H718Y and SMAD4 I500V, committed from their sources' measurements, are mechanisms that no axis detects. These four are the mechanisms ranked outside the top 20 (Section 4). MSH2 C697F remains a curated negative on which COMAVI predicts 13.3 kcal/mol of isolated-subunit destabilization at a buried-core residue, so it is a false call and the highest-ranked variant in the prioritization population; the rejected change would have raised the score. A gate of this kind cannot detect every curation error. It catches contradictions that are written down, but not a basis that misreads the source it names, is silent on the axis, cites the wrong article, or records a mistaken reading faithfully. A passing gate means that no committed direction contradicts its own recorded evidence, which is weaker than every direction being correct.
+
+@references

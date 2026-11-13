@@ -3,19 +3,19 @@
  "screening_default": 1.0,
  "axis_level": {
   "committed_axes_with_a_prediction": 96,
-  "below_screening_default": 56,
-  "below_and_committed_destabilizing": 12,
+  "below_screening_default": 54,
+  "below_and_committed_destabilizing": 10,
   "below_and_committed_neutral": 44,
-  "auc_full_range": 0.763,
-  "auc_within_band": 0.633,
+  "auc_full_range": 0.797,
+  "auc_within_band": 0.655,
   "auc_within_band_ci95": [
-   0.385,
-   0.813
+   0.396,
+   0.865
   ],
-  "p_auc_at_or_below_chance": 0.131,
-  "median_magnitude_destab": 0.479,
+  "p_auc_at_or_below_chance": 0.109,
+  "median_magnitude_destab": 0.575,
   "median_magnitude_neutral": 0.267,
-  "n_bootstrap_draws": 3983
+  "n_bootstrap_draws": 3945
  },
  "measured_level": {
   "n_comparisons": 63,

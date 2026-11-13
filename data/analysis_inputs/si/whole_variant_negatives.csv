@@ -1,0 +1,5 @@
+system,gene,variant,evidence_basis,evidence_citation,reference_keys
+cam_cav12,CALM1,D96V,Pathogenic through several-fold lower Ca2+ affinity at the EF-hand III Ca2+-chelating aspartate; the modeled fold and CaV1.2 IQ interface carry no committed expectation. Site pLDDT 69.45 in the complex model and 97.16 in the isolated-subunit model.,Crotti et al. 2013,crotti2013
+cam_cav12,CALM1,N98S,EF-hand III; the mutant protein has compromised Ca2+ binding (reported as p.Asn97Ser); no committed expectation on the modeled axes.,Nyegaard et al. 2012,nyegaard2012
+cam_cav12,CALM1,F142L,C-lobe residue; lowers Ca2+ affinity and alters the coupling of Ca2+ binding to the activating conformational change; no committed expectation on the modeled axes.,Crotti et al. 2013,crotti2013
+smad4_smad3,SMAD4,I500T,"Myhre syndrome; impaired SMAD4 monoubiquitination at the adjacent Lys519, a post-translational mechanism outside the modeled axes; no committed expectation on the modeled axes.",Le Goff et al. 2012,legoff2012

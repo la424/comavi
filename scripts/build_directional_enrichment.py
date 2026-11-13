@@ -64,7 +64,11 @@ def build(canon, threshold=REFERENCE_T):
         lambda r: ac.compute_max_abs_ddg(r, partners), axis=1)
     canon["fires"] = canon.max_abs_ddg >= threshold
 
-    lab = canon[canon.phenotype.notna()].copy()
+    # v11: a variant is clinically labelled only if it is pathogenic or benign.
+    # The Franklin rule (scripts/apply_clinical_label_rule_v11.py) introduced
+    # "vus" and "unclassified"; selecting on notna() and calling everything not
+    # pathogenic benign would have counted them as benign.
+    lab = canon[canon.phenotype.isin(["pathogenic", "pathogenic_gof", "benign"])].copy()
     lab["pathogenic"] = lab.phenotype.astype(str).str.startswith("pathogenic")
 
     fp = int((lab.fires & lab.pathogenic).sum())
@@ -112,7 +116,16 @@ def main():
     ap.add_argument("--check", action="store_true")
     args = ap.parse_args()
 
-    canon = pd.read_csv(CANON, low_memory=False)
+    # v11: the 56-variant benchmark, so this analysis nests inside the paper's
+    # populations (its labelled set is the 39-variant pathogenicity comparison).
+    # Before, it ran on all 61 scored rows, so its labelled set (42) included three
+    # candidates excluded from the benchmark -- TNNI3 R162W, VHL W117R and MSH2
+    # G674R -- and TNNI3 R162W was counted among the pathogenic silent variants.
+    # On the benchmark: 15 firing pathogenic, 0 firing benign, 13 silent
+    # pathogenic, 11 silent benign (Fisher p = 0.0024); the conclusion is unchanged.
+    import benchmark_population as bp
+    canon = bp.benchmark(pd.read_csv(CANON, low_memory=False)).reset_index(drop=True)
+    assert len(canon) == bp.N_BENCHMARK
     result = build(canon)
 
     t = result["table_2x2"]

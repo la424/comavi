@@ -57,7 +57,7 @@ from PIL import Image  # noqa: E402
 # NOT on the import path and a bare sibling import fails. Every other generator
 # in this repository inserts it explicitly; so does this one.
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from cohort_flow import fig_cohort as _fig_cohort  # noqa: E402
+from fig2_benchmark_detection import fig2 as _fig2  # noqa: E402
 
 REPO = pathlib.Path(__file__).resolve().parents[2]
 RO = REPO / "reference_outputs"
@@ -506,10 +506,12 @@ def fig_calibration():
 
 # ------------------------------------------------------------------ Fig 5
 
+# v11: TNNI3 R162W is no longer labelled. It is one of the five scored
+# candidates excluded from the benchmark (no gradeable expectation), so it is
+# not in the pathogenicity comparison set, and the text no longer discusses it.
 FIG5_LABELS = {
-    "isds_v1": {"E6V": (8, -5), "R78G": (8, 0), "H1047R": (8, 0), "R162W": (6, -9), "N127S": (-8, 6)},
-    "isds_energy_component": {"E6V": (8, 4), "R78G": (8, 0), "H1047R": (6, -10), "R162W": (7, -7),
-                              "N127S": (-8, 6)},
+    "isds_v1": {"E6V": (8, -5), "R78G": (8, 0), "H1047R": (8, 0), "N127S": (-8, 6)},
+    "isds_energy_component": {"E6V": (8, 4), "R78G": (8, 0), "H1047R": (6, -10), "N127S": (-8, 6)},
 }
 
 
@@ -723,11 +725,16 @@ def s5():
 
 # Numbered in the order the Results cite them: threshold, calibration, priority; and
 # for the supporting figures, call relationships, context comparators, transformation.
-def fig_cohort():
-    """Benchmark cohort flow. Geometry and counts live in cohort_flow.py; the
-    style constants are passed in from here so the figure cannot drift from the
-    rest of the submission set."""
-    fig, _ = _fig_cohort(style, FULL, INK, GREY, RULE, STRUCT, NOLES, BAND)
+def fig_benchmark():
+    """Fig 2, v11: the nested benchmark populations (A) and what scoring the
+    assembled complex adds (B-D). Geometry and counts live in
+    fig2_benchmark_detection.py; the style constants are passed in from here so
+    the figure cannot drift from the rest of the submission set. It replaces
+    the v10 cohort flow (cohort_flow.py, kept for the record), whose central
+    point -- that the pathogenicity set did not nest -- no longer holds."""
+    colours = dict(INK=INK, GREY=GREY, RULE=RULE, BAND=BAND, STRUCT=STRUCT, NOLES=NOLES,
+                   MONO=MONO, FOLD=FOLD, BIND=BIND)
+    fig, _ = _fig2(style, letter, FULL, colours, XLAB)
     return fig
 
 
@@ -742,7 +749,7 @@ def fig_cohort():
 #   Fig 4 (priority)   -> Fig 6        S4 Fig (comparators) -> S3 Fig
 #   Fig 5 (pathogenic) -> Fig 7        S5 Fig (transform)   -> S4 Fig
 #   S1 Fig (stress)    -> Fig 3
-FIGURES = {"Fig1": fig1, "Fig2": fig_cohort, "Fig3": s1, "Fig4": fig_threshold,
+FIGURES = {"Fig1": fig1, "Fig2": fig_benchmark, "Fig3": s1, "Fig4": fig_threshold,
            "Fig5": fig_calibration, "Fig6": fig_priority, "Fig7": fig5,
            "S1_Fig": s2, "S2_Fig": s5, "S3_Fig": s3, "S4_Fig": s4}
 

@@ -45,7 +45,8 @@ E2 = "E2_quantitative_functional"
 QUANT = (E1, E2)
 # structural_agreement_by_axis names the complex-fold axis "fold"; the
 # evidence ledger uses the ground-truth column name "fold_complex".
-AXIS_ALIAS = {"fold": "fold_complex"}
+# v11: the joint complex-amount row takes its evidence from the ledger's binding row.
+AXIS_ALIAS = {"fold": "fold_complex", "assembled_either": "binding"}
 
 
 def mantel_haenszel(strata):
@@ -74,8 +75,16 @@ def rate_table(frame, by):
 
 
 def main() -> int:
-    df = pd.read_csv(CANON)
+    # v11.0: the analysis runs on the 56-variant benchmark. Before, it iterated
+    # over all 61 scored rows, so its "all-row 78-axis convention" counted the
+    # gradeable isolated-subunit axis of BRCA1 R1699Q, a variant that is not
+    # graded, and its accounting counted the two R1699L/Q ledger rows as
+    # committed benchmark expectations (99 rather than 97).
+    import benchmark_population as bp
+    df = bp.benchmark(pd.read_csv(CANON))
     led = pd.read_csv(LEDGER)
+    keep = set(zip(df.system, df.variant))
+    led = led[[(s, v) in keep for s, v in zip(led.system, led.variant)]].copy()
     partners = ac.discover_partners(df)
 
     rows = []

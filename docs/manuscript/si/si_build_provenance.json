@@ -1,0 +1,198 @@
+{
+ "S1_Text": {
+  "numbers": {
+   "schymkowitz2005": 1,
+   "delgado2019": 2,
+   "grantham1974": 3,
+   "shrake1973": 4,
+   "cock2009": 5,
+   "tien2013": 6
+  },
+  "provenance": [
+   {
+    "text": "Each structure was repaired once with RepairPDB, and the repaired file was cached and reused for every variant scored on it. Variants were written in FoldX notation (wild-type residue, chain, residue number, substituted residue). BuildModel was run with five replicates on the isolated-subunit model and on the assembled complex. AnalyseComplex was run on the repaired wild-type complex and on each of the five mutant complexes, once for each pairing of the variant's chain with a partner chain. No FoldX option other than those shown was set, so every energy-function parameter is the FoldX 5.1 default [1,2].",
+    "from": "scripts/comavi_v7/foldx_runner.py"
+   },
+   {
+    "text": "Folding ΔΔG is the mutant minus wild-type BuildModel energy averaged over the five replicates, so positive values are destabilizing. The wild-type interaction energy with a partner was calculated once, on the repaired complex, and the mutant interaction energy on each replicate mutant complex; binding ΔΔG for that partner is the mean over replicates of mutant minus wild-type interaction energy. The replicate standard deviation is kept for every axis and partner.",
+    "from": "scripts/comavi_v7/foldx_runner.py"
+   },
+   {
+    "text": "The tier is calculated from the structure alone and contains no energy. Substitution severity is the Grantham distance [3] divided by 53.75 and capped at 4. The contact count of the variant residue is the number of residues of its own chain with any atom within 5 Å of any of its atoms, excluding the two sequence neighbours on either side, plus the largest number of residues within 5 Å in any one partner chain that passes the confidence gate. A partner passes the gate when the model confidence (pLDDT) at the variant site in that complex is at least 50; partners in experimental structures always pass. Burial uses the relative solvent accessibility of the residue, its Shrake–Rupley accessible surface area [4] calculated with Biopython [5] divided by the theoretical maximum for its residue type [6], and takes the most buried state across the isolated subunit and the complexes with confidence-passing partners. The best pLDDT at the site is the higher of its isolated-subunit and complex values. Table A gives the points and cut-offs.",
+    "from": "scripts/comavi_v7/mechanism.py compute_disruption_score; scripts/comavi_v7/constants.py; scripts/comavi_v7/structure_loading.py; scripts/verify_tier_construction.py"
+   },
+   {
+    "text": "Table A. Components and cut-offs of the structural-context tier.",
+    "from": "caption"
+   },
+   {
+    "text": "Proportions carry exact binomial 95% confidence intervals, and Fisher exact tests are two-sided. The within-system permutation tests of the tier screens are exact: each enumerates the convolution of the per-system hypergeometric distributions, so no seed is involved. Resampling intervals are percentile intervals. P(margin ≤ 0) is the fraction of resamples in which COMAVI's margin over the strongest structure-blind strategy is zero or negative, with that strategy re-selected among all 31 labels inside every resample. Values were computed at full precision and rounded once, half to even. Table B lists every resampling analysis with its unit, draw count and seed; scripts are in scripts/ except stress_tests.py, which is in verification/.",
+    "from": "scripts/build_evidence_sensitivity.py; verification/stress_tests.py; scripts/verify_tier_construction.py"
+   },
+   {
+    "text": "Table B. Resampling analyses, with unit, draw count and seed.",
+    "from": "caption"
+   },
+   {
+    "text": "The 56 benchmark variants carry 97 committed energetic-axis expectations (S1 Table): 30 on isolated-subunit stability, 25 on assembled-complex stability and 42 on binding, on 52 variants; the other four are graded only at the whole-variant level. By evidence class, 29 are E1 quantitative energetic, 11 E2 quantitative functional, 30 E3 qualitative experimental, 9 E4 population frequency and 18 E5 inferred. The ledger also holds the two expectations of BRCA1 R1699L and BRCA1 R1699Q, which were scored but excluded from the benchmark (S2 Table, excluded_variants sheet). E4 and E5 commitments are heavily enriched for neutral expectations: all 9 E4 axes and all 18 E5 axes are neutral. Assembled-complex stability is the least independently grounded axis: 14 of its 25 committed axes rest on inferred rather than direct or coupled evidence, and 11 are E5 inferred axis states.",
+    "from": "reference_outputs/COMAVI_evidence_ledger.csv"
+   },
+   {
+    "text": "Of the 97 expectations, 79 can be compared with a prediction: on every energy axis they clear the model-confidence gate and the check that the interval of the predicted energy, the replicate mean ± 1.96 replicate standard deviations, excludes zero. The other 18 are removed by the interval check; the confidence gate removes none, and none is removed by missing curation. On these 79 axes, direction agreement was 22/34 = 0.647 for E1–E2 evidence and 37/45 = 0.822 for E3–E5 evidence (Fisher p = 0.116). Evidence class was strongly associated with the expected axis state: direct measurements were preferentially available for destabilizers, whereas frequency-supported and inferred commitments were predominantly neutral. Within expected-destabilizing axes, agreement was 16/26 for E1–E2 and 5/7 for E3–E5; within expected-neutral axes, the corresponding rates were 6/7 and 32/38. The Mantel–Haenszel odds ratio across expected-state strata was 0.79 (continuity-corrected test p = 0.98), so evidence class does not explain direction agreement once the expected axis state is considered. Among 25 gradeable E1 energetic axes, 18 agreed (0.720).",
+    "from": "reference_outputs/COMAVI_evidence_stratified_agreement.json"
+   },
+   {
+    "text": "For the tier screen, requiring every committed axis to have E1–E3 support leaves 26 of the 46 prioritization variants, 16 structural and 10 non-disruptive (tier sensitivity 0.812, 95% CI 0.544–0.960; specificity 0.600, 0.262–0.878). Requiring every committed axis to be direct or coupled leaves the same 26 variants and the same values. Recovery here rests on 16 positives, of which 13 are recovered, so the interval is wide; on the whole population the screen recovers 17 of 21 (sensitivity 0.810).",
+    "from": "reference_outputs/COMAVI_tier_construction.json evidence_restricted_views"
+   },
+   {
+    "text": "Table C reports the mechanism-pattern score on evidence-restricted subsets of the benchmark. Removing variants changes the balance of classes, and a structure-blind strategy scores, by construction, the fraction of a subset that it matches, so each subset is compared with its own strongest strategy, re-selected among the 31 labels on that subset. The balanced score, the mean of the mechanism and non-disruptive arms, does not depend on that balance: no structure-blind strategy exceeds 0.5 on it, because a label that accepts every non-disruptive variant recovers no mechanism, and a label that asserts disruption rejects no non-disruptive variant. On the 24 variants whose expectations are all quantitative, only four of them non-disruptive, calling every variant destabilized on all three axes outscores COMAVI, while COMAVI's balanced score stays above 0.5.",
+    "from": "reference_outputs/COMAVI_evidence_sensitivity.json views"
+   },
+   {
+    "text": "Table C. Mechanism-pattern score on evidence-restricted subsets, each against its own strongest structure-blind strategy, at 2.5 kcal/mol.",
+    "from": "caption"
+   },
+   {
+    "text": "On the full benchmark the strongest structure-blind strategy is to call no variant disrupted, which scores 27.0 of 56 by accepting every non-disruptive variant. COMAVI scores 37.0, a margin of 10.0 grade points. Table D divides that margin among the systems: a system's contribution is the sum, over its variants, of COMAVI's grade minus the grade of calling nothing. The BRCT domain contributes 5.0 and the hemoglobin tetramer 3.5. Three systems reduce the margin, MSH2–MSH6 and troponin I–troponin C by 2.0 each and PI3K by 1.0, because COMAVI predicts disruption for five non-disruptive variants there (MSH2 A636P, MSH2 C697F, PIK3R1 N564D, TNNI3 R145G and TNNI3 R145Q) and earns no credit on the two PI3K mechanisms; three systems contribute nothing. Leaving one system out, against the strongest strategy on the remaining variants, the margin ranges from 0.109 without the BRCT domain to 0.217 without troponin I–troponin C.",
+    "from": "reference_outputs/COMAVI_evidence_sensitivity.json by_system"
+   },
+   {
+    "text": "Table D. Contribution of each system to COMAVI's margin over calling no variant disrupted, at 2.5 kcal/mol.",
+    "from": "caption"
+   }
+  ]
+ },
+ "S2_Text": {
+  "numbers": {},
+  "provenance": [
+   {
+    "text": "A structure-blind strategy assigns the same label to every variant, without looking at any structure, and is graded with the same rubric as COMAVI (Table 3). Table A grades each of the 31 labels COMAVI can assign. Calling no variant disrupted scores 27.0 of 56 (0.482): it accepts all 27 non-disruptive variants and recovers none of the 29 mechanisms. The three labels that name a structural or interface site without an energy change are graded as no-effect calls and score the same. The strongest label that asserts disruption, a fold and binding destabilization on every variant, scores 24.5 (0.438). COMAVI scores 37.0 (0.661), 0.517 on the mechanisms and 0.815 on the non-disruptive variants. Because a constant label either accepts every non-disruptive variant and recovers no mechanism or does the reverse, no constant label exceeds 0.5 on the balanced score, the mean of the two arms; COMAVI's balanced score is 0.666.",
+    "from": "reference_outputs/COMAVI_rubric_baselines.json; reference_outputs/stress_tests"
+   },
+   {
+    "text": "The permutation null keeps every COMAVI call fixed and reassigns whole expectation profiles, the curated class with its per-axis expectations and their evidence annotations, among the 56 variants. Over 2,000 permutations the score had a mean of 0.362 (standard deviation 0.056), and none reached the observed 0.661, so p = 0.0005, the smallest value 2,000 permutations can give. The null mean lies below the strongest structure-blind strategy because a permutation keeps COMAVI's calls, which assert disruption for 25 variants, while a constant label can exploit the class balance of the benchmark. The margin over the strongest strategy (S1 Text) is therefore the stricter comparison.",
+    "from": "verification/stress_tests.py; reference_outputs/stress_tests/comavi_stress_draws.npz"
+   },
+   {
+    "text": "Table A. Every structure-blind strategy on the 56 benchmark variants at 2.5 kcal/mol, ordered by score.",
+    "from": "caption"
+   },
+   {
+    "text": "Table B divides the grades by curated mechanism class. The non-disruptive class scores highest and the interface classes lowest. Among the 11 variants curated as interface destabilizers, the binding axis reached the threshold for 4 and the assembled-complex stability axis for 7, so these disruptions are more often detected than placed on the binding axis. Of the 6 fold mechanisms not graded consistent, 4 produce no call at all (BRCA1 L1664P, BRCA1 R1751Q, BRCA1 V1736A and MLH1 H718Y); their measured or reported effects are described in the main text and S3 Table (missed_mechanisms sheet).",
+    "from": "reference_outputs/COMAVI_detection_vs_attribution.json per_class"
+   },
+   {
+    "text": "Table B. Grades, detection and localization by curated mechanism class at 2.5 kcal/mol.",
+    "from": "caption"
+   },
+   {
+    "text": "A mechanism is detected when any axis reaches the threshold, and localized when an axis the literature implicates reaches it; whether the predicted change has the expected direction is assessed by the grade. At 2.5 kcal/mol COMAVI detected 20 of the 29 mechanisms and localized 18. The two detected but not localized are PIK3CA E542K, an interface destabilizer that reaches the threshold only on assembled-complex stability, and MLH1 R755W, a fold mechanism that reaches it only on binding, where it is called as strengthened binding. Table C repeats the analysis with axes removed. The isolated subunit alone detects 7 mechanisms; the three axes together detect 20, at a cost of 3 further false calls among the 27 non-disruptive variants. Five mechanisms are detected only through assembled-complex stability: BRCA1 C61G, BRCA1 V11G, HBB W37Y, MLH1 L749P and PIK3CA E542K. Resampling whole systems puts a 95% interval of 0.18–0.82 on the gain in detection rate, 0.05–0.71 on the gain net of the added false calls and 0.00–0.19 on the wrong-axis fraction.",
+    "from": "reference_outputs/COMAVI_detection_vs_attribution.json axis_designs, system_cluster"
+   },
+   {
+    "text": "Table C. Detection, localization and false calls by axis design at 2.5 kcal/mol.",
+    "from": "caption"
+   },
+   {
+    "text": "Ten binding expectations rest on assays that measure how much complex forms rather than binding itself: immunoprecipitation, pull-down, two-hybrid, TR-FRET and multiplexed interaction assays (S1 Table). A change in the amount of complex can come from a change in binding or in the stability of the assembly, so the six of these that expect a change (BRCA1 V11G, MLH1 L749P, MLH1 Q542L, SMAD4 D351H, SMAD4 I500V and SMAD4 R361C) are met by a call in the measured direction on either assembled axis (Methods). The four that expect no change (BRCA1 E100Q, BRCA1 K45R, MLH1 R755W and MSH2 N127S) are scored as binding expectations only, because a normal amount of complex cannot show that the assembled complex is stable. The rule is fixed by the assay recorded for each expectation and applies equally to COMAVI and to every structure-blind strategy. At 2.5 kcal/mol it changes three grades from inconsistent to consistent, for BRCA1 V11G, MLH1 L749P and SMAD4 D351H, raising the grade total from 34.0 to 37.0 (0.607 to 0.661). At 1.0, 1.5, 2.0 kcal/mol and the prediction-interval limit it adds 2, 1, 2 and 3 grade points. Without the rule, 15 of the 29 mechanisms would be localized rather than 18, and COMAVI's margin over calling no variant disrupted, a strategy the rule cannot affect, would be 0.125 rather than 0.179. In direction agreement the six are scored as one joint row, and 4 of them are met.",
+    "from": "docs/audit/COMAVI_v11_evidence_resolution.csv; reference_outputs/COMAVI_evidence_ledger.csv complex_amount_assay"
+   },
+   {
+    "text": "The primary grading treats a call that recovers no expected effect as inconsistent even when every change it asserts lies on an axis the literature never tested. As a sensitivity analysis only, such a call was credited 0.5 if it contradicted nothing measured. One grade changes at 2.5 kcal/mol, PIK3CA E542K, and the score rises from 0.661 to 0.670 (95% interval 0.583–0.769). The margin over the strongest structure-blind strategy, re-selected under the same rule, becomes 0.188 (−0.041 to 0.268), and 6% of resamples give a margin of zero or less. PIK3CA E542K is credited at every operating point, and KRAS G12D also at 1.0, 1.5 and 2.0 kcal/mol.",
+    "from": "reference_outputs/COMAVI_rubric_sensitivity.json"
+   },
+   {
+    "text": "Table D gives, at each operating point, the mean grade on the mechanisms, the mean grade on the non-disruptive variants and the pooled score. Raising the threshold trades the first for the second. Over 10,000 paired resamples of whole systems, the mechanism arm fell between 1.0 kcal/mol and the prediction-interval limit in 99.8% of resamples, and the non-disruptive arm rose in every resample. The pooled score weights the two arms by their share of the benchmark, 29 mechanisms and 27 non-disruptive variants (a structural fraction of 0.518). Reweighting the arms, 2.5 kcal/mol remains the pooled optimum for any weight on the mechanism arm between 0.350 and 0.781, an interval that contains the benchmark's own fraction and the unweighted mean of the arms. Its place at the top is therefore not an artifact of the class balance, although the overlapping intervals of Fig 4A mean that the benchmark does not establish it as the best operating point.",
+    "from": "reference_outputs/COMAVI_operating_point_diagnostics.json"
+   },
+   {
+    "text": "Table D. Mechanism arm, non-disruptive arm and pooled score at each operating point, with 95% intervals from resampling whole systems.",
+    "from": "caption"
+   },
+   {
+    "text": "Interface occupancy enters the tier directly, through the interface bonus, so the tier was compared on the 46-variant prioritization population (21 mechanisms, 25 non-disruptive variants in 13 systems) with interface status alone and with the tier recalculated without its interface bonus (Table E; S3 Fig). The bonus reaches 15 of the 21 mechanisms, all six with mixed fold and interface expectations and 8 of 11 of the interface destabilizers; the six it does not reach are BRCA1 C61G, KRAS G12D, KRAS G12V, MLH1 H718Y, SMAD4 D351H and SMAD4 I500V. Removing it demotes four variants from Tier 2 to Tier 3, CALM1 D96V, HBB W37Y, PIK3CA E542K and PIK3CA E545K, of which only CALM1 D96V is non-disruptive. With the bonus, 11 of the 13 Tier 1 variants carry a structural mechanism, against 6 of 16 in Tier 2, 4 of 10 in Tier 3 and 0 of 7 in Tier 4. Within-system permutation p values are exact (S1 Text).",
+    "from": "reference_outputs/isds_v1/ISDS_v1_component_binary_baselines.csv; reference_outputs/COMAVI_tier_construction.json"
+   },
+   {
+    "text": "Table E. Structural-context screens on the 46-variant prioritization population.",
+    "from": "caption"
+   },
+   {
+    "text": "Crossing the energy calls with the tier (Tier 1–2 against Tier 3–4) gives four descriptive evidence states (Table F). At 2.5 kcal/mol, requiring the tier to agree with an energy call leaves sensitivity unchanged (15 of 21) and raises specificity from 0.800 (20 of 25) to 0.920 (23 of 25): the three non-disruptive variants called by energy alone, MSH2 A636P, TNNI3 R145G and TNNI3 R145Q, fall in Tier 3 or 4. Resampling whole systems puts a 95% interval of 0.00–0.28 on that gain, and 11% of resamples show no gain. The states are descriptive; none is used to grade a mechanism.",
+    "from": "reference_outputs/isds_v1/ISDS_v1_evidence_state_tables.json; reference_outputs/COMAVI_tier_construction.json specificity_gain"
+   },
+   {
+    "text": "Table F. Evidence states on the 46-variant prioritization population (structural mechanisms / non-disruptive variants).",
+    "from": "caption"
+   },
+   {
+    "text": "The reported priority score reaches an AUC of 0.834 (438 of the 525 mechanism–non-disruptive pairs ordered correctly; 95% interval 0.699–0.944 from resampling whole systems, 10,000 draws). Leaving one system out gives 0.802 to 0.877, and the score exceeds both of its components in every fold. Table G compares nine alternative formulas, all computed on the same population. Five order slightly more pairs than the reported score and one orders the same number; the largest excess is 5 pairs (hard cap, AUC 0.844), small against the width of the interval on the reported AUC. The alternatives that keep the graded context term rank the variants almost as the reported score does (Spearman ρ 0.938 to 0.999). One of them, the cohort-standardized combination, is not a per-variant score: it z-scores each term against the variants present, so a variant's value changes when others are added or removed, and it cannot be computed for a new variant without a reference cohort. It is retained only as a comparator. The reported score uses fixed constants and depends on no other variant, which is what makes it usable prospectively. Because the same benchmark informed the score's development, all of these are in-sample estimates.",
+    "from": "reference_outputs/COMAVI_priority_sensitivity_summary.json; reference_outputs/isds_v1"
+   },
+   {
+    "text": "Table G. Alternative priority-score formulas on the 46-variant prioritization population.",
+    "from": "caption"
+   },
+   {
+    "text": "Partitioning the population into five equal score bands shows where the mechanisms sit (Table H): 8 of the 9 variants in the highest band carry a structural mechanism, against none of the 6 in the lowest.",
+    "from": null
+   },
+   {
+    "text": "Table H. Structural mechanisms by priority-score band.",
+    "from": "caption"
+   }
+  ]
+ },
+ "S3_Text": {
+  "numbers": {
+   "jankauskaite2019": 1,
+   "hunter2015": 2,
+   "ollila2006": 3,
+   "hinrichsen2013": 4,
+   "lindsay2025": 5
+  },
+  "provenance": [
+   {
+    "text": "At the 2.5 kcal/mol reference, 25 of the 56 benchmark variants have at least one energy output that reaches the threshold and 31 are silent; an output counts when a confidence-passing axis reaches the threshold, and binding values indistinguishable from zero are excluded. Of the 39 variants with a pathogenic or benign classification (gain of function counted as pathogenic), all 15 with an output at the threshold are pathogenic, whereas the 24 silent variants include 13 pathogenic and 11 benign ones (Fisher exact p = 0.0024). The 13 pathogenic but silent variants span 8 of the 14 systems: CALM1 D96V, CALM1 F142L, CALM1 N98S, CFH R53H, HBB E6V, KRAS G12D, KRAS G12V, KRAS Q61H, MLH1 Q542L, PIK3CA H1047R, SMAD4 I500T, SMAD4 I500V and VHL Y98H. Six of them are curated as gain of function (KRAS G12D, KRAS G12V, KRAS Q61H, PIK3CA H1047R, SMAD4 I500T and SMAD4 I500V), whose pathogenic effect is a change in activity rather than a loss of structure. Because the benchmark was selected for mechanism evidence, these fractions are not clinical predictive values; they establish only that the two kinds of result differ. No benign variant here had an output at the threshold, whereas silence occurred in both classes, so a silent result constrains nothing about pathogenicity.",
+    "from": "reference_outputs/COMAVI_directional_enrichment.json"
+   },
+   {
+    "text": "The main text reports the mechanism-pattern score with a 95% interval from resampling whole systems (0.567–0.764), because variants within a system share a structure and a curation pass. Resampling variants instead, which ignores that clustering, gives 0.545–0.777. Leaving one system out at a time gives values from 0.642 to 0.686 (Table A). Adding Gaussian noise at the standard error of each five-replicate FoldX mean, 500 times, gave a mean score of 0.662 (standard deviation 0.013); a draw changed 1.01 calls on average and at most 4. Of the 56 benchmark variants, 49 kept the same call in every draw; the others, with the fraction of draws in which their call changed, are TNNI3 R145Q (0.482), PIK3CA H1047R (0.288), CALM1 D96V (0.124), PIK3R1 N564D (0.050), SMAD4 R361C (0.030), MLH1 L749P (0.024) and TNNI3 R145G (0.004).",
+    "from": "verification/stress_tests.py; reference_outputs/stress_tests"
+   },
+   {
+    "text": "Table A. Mechanism-pattern score with each system left out, at 2.5 kcal/mol.",
+    "from": "caption"
+   },
+   {
+    "text": "The hemoglobin series is a high-quality within-system anchor but does not test unrelated interfaces. Two complexes from SKEMPI 2.0 [1] were therefore scored with the frozen workflow: barnase–barstar (24 substitutions) and TEM1–BLIP (24 substitutions on the BLIP side, where residue numbering maps unambiguously). Measured binding ΔΔG is RT ln(K_D,mut/K_D,wt). Table B gives the agreement for each complex. Seven barnase substitutions at Glu73 (measured 1.45 to 3.01 kcal/mol, all destabilizing) are all predicted to stabilize binding (−1.66 to −1.01 kcal/mol), a single-site sign inversion. They are kept in the primary statistics, and the fit without them, which was introduced with the analysis rather than prespecified, is reported as a sensitivity view.",
+    "from": "reference_outputs/COMAVI_skempi_validation.json; supplement/skempi"
+   },
+   {
+    "text": "Table B. FoldX binding ΔΔG against SKEMPI 2.0 measurements.",
+    "from": "caption"
+   },
+   {
+    "text": "The priority score and the mechanism grade answer different questions, and a variant ranked highly but graded inconsistent would point a user at the right variant with the wrong mechanistic hypothesis. On the 46-variant prioritization population, 17 of the 21 structural mechanisms are ranked in the top 20: 8 are graded consistent, 4 partial and 5 inconsistent. Of the five inconsistent, two are placed on the wrong axis, MLH1 R755W (rank 11), a fold mechanism called as strengthened binding, and PIK3CA E542K (rank 18), an interface destabilizer called as instability of the assembly; one, PIK3CA E545K (rank 14), is called on the expected binding axis but in the opposite direction; and two, MLH1 Q542L (rank 13) and HBB N102T (rank 16), receive no energy call and are ranked by their structural context. For R755W the literature reports reduced abundance with binding preserved, while neither stability prediction reaches the threshold (0.97 kcal/mol for the isolated subunit and −0.94 in the complex). R755W and E542K would therefore send a user to the right protein with the wrong experiment. The four mechanisms outside the top 20, KRAS G12D (rank 32), MLH1 H718Y (rank 35), SMAD4 I500V (rank 36) and KRAS G12V (rank 38), are all graded inconsistent, so no fully resolved mechanism is ranked below the cut. Across the 21 mechanisms, the priority score and the grade are correlated (Spearman ρ = 0.685, p = 0.0006), and the mean grade is 0.588 inside the top 20 against 0.000 outside it (one-sided Mann–Whitney p = 0.012). With only four mechanisms outside the cut, the contrast is descriptive.",
+    "from": "reference_outputs/isds_v1/ISDS_v1_rank_grade_overlap.json"
+   },
+   {
+    "text": "Every committed expectation carries a one-line evidence basis and a primary citation beside its expected direction (S1 Table). A gate run in continuous integration, scripts/verify_ledger_token_basis.py, reads each basis, keeps the clauses that use the vocabulary of the axis being committed, and fails if the direction asserts disruption where those clauses assert that the axis is intact, or the reverse.",
+    "from": "scripts/verify_ledger_token_basis.py; scripts/apply_ledger_corrections_v79.py; scripts/apply_ledger_corrections_v80.py"
+   },
+   {
+    "text": "When the gate was introduced, three of the then 98 committed expectations failed it. All three were binding expectations that one earlier curation review had changed from neutral to destabilizing without changing the bases beside them: MSH2 C697F, whose basis read “ATPase catalytic defect, protein stable, interaction intact”, and KRAS G12D and G12V, whose bases recorded wild-type-like RAF1 binding with impaired GTP hydrolysis and noted that residue 12 lies 13.6 Å from the RAF1 interface. The three were returned to neutral, the direction their bases stated.",
+    "from": null
+   },
+   {
+    "text": "The next revision read the cited sources directly and found that the KRAS bases themselves misread their source: Hunter et al. [2] report RAF affinities of 270 nM for G12D and 411 nM for G12V against 56 nM for the wild type, a 4.8-fold and a 7.3-fold loss. Basis and direction were corrected together, and both are again destabilizing binding expectations. A proposal to make MSH2 C697F destabilizing was rejected: its source could not be read, and the neutral commitment is supported by a source that could, a co-immunoprecipitation study that found the interaction intact [3]. The same revision withdrew the binding expectation of MSH2 G674R, whose basis cited a study that performs no co-immunoprecipitation (the variant now has no committed expectation and is not part of the benchmark), and committed two expectations from the sources' own measurements: isolated-subunit destabilization for MLH1 H718Y [4] and strengthened SMAD3 binding for SMAD4 I500V [5]. The ledger then held 99 expectations, of which the 97 belonging to benchmark variants are in S1 Table. Each change, with its reason, is recorded in the correction scripts of the repository.",
+    "from": null
+   },
+   {
+    "text": "These corrections are reported rather than absorbed because their effects run in both directions. Withdrawing the G674R expectation removed from the benchmark a variant that had been curated as non-disruptive and on which COMAVI predicts fold destabilization (3.99 kcal/mol for the isolated subunit), so it removed a false call. The others lower the score. KRAS G12D and G12V are graded inconsistent, because COMAVI predicts no binding change at the reference and their measured losses (0.93 and 1.18 kcal/mol) are themselves below it. MLH1 H718Y and SMAD4 I500V, committed from their sources' measurements, are mechanisms that no axis detects. These four are the mechanisms ranked outside the top 20 (Section 4). MSH2 C697F remains a curated negative on which COMAVI predicts 13.3 kcal/mol of isolated-subunit destabilization at a buried-core residue, so it is a false call and the highest-ranked variant in the prioritization population; the rejected change would have raised the score. A gate of this kind cannot detect every curation error. It catches contradictions that are written down, but not a basis that misreads the source it names, is silent on the axis, cites the wrong article, or records a mistaken reading faithfully. A passing gate means that no committed direction contradicts its own recorded evidence, which is weaker than every direction being correct.",
+    "from": null
+   }
+  ]
+ }
+}

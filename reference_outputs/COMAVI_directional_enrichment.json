@@ -3,29 +3,29 @@
  "firing_definition": "apply_concordance_v5.compute_max_abs_ddg >= threshold; confidence-passing axes only, indistinguishable binding values excluded",
  "clinical_ground_truth": "curated phenotype; gain-of-function counted as pathogenic",
  "cohort": {
-  "n": 61,
-  "firing": 27,
-  "silent": 34
+  "n": 56,
+  "firing": 25,
+  "silent": 31
  },
  "labelled": {
-  "n": 49,
-  "pathogenic": 37,
-  "benign": 12
+  "n": 39,
+  "pathogenic": 28,
+  "benign": 11
  },
  "table_2x2": {
-  "firing_pathogenic": 22,
+  "firing_pathogenic": 15,
   "firing_benign": 0,
-  "silent_pathogenic": 15,
-  "silent_benign": 12
+  "silent_pathogenic": 13,
+  "silent_benign": 11
  },
  "fisher": {
   "odds_ratio": null,
   "odds_ratio_is_infinite": true,
-  "p_value": 0.000195
+  "p_value": 0.00236
  },
  "pathogenic_but_silent": {
-  "n": 15,
-  "systems_spanned": 10,
+  "n": 13,
+  "systems_spanned": 8,
   "systems_total": 14,
   "variants": [
    "PIK3CA H1047R",
@@ -35,8 +35,6 @@
    "KRAS G12V",
    "KRAS Q61H",
    "HBB E6V",
-   "HBB N102T",
-   "TNNI3 R162W",
    "CALM1 D96V",
    "CALM1 N98S",
    "CALM1 F142L",

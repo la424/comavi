@@ -42,10 +42,10 @@
    },
    {
     "threshold": "tSAP",
-    "recovered": 11,
+    "recovered": 8,
     "n": 42,
-    "fraction": 0.262,
-    "cell": "11/42"
+    "fraction": 0.19,
+    "cell": "8/42"
    }
   ],
   "sensitivity_excluding_glu73": {
@@ -81,10 +81,10 @@
     },
     {
      "threshold": "tSAP",
-     "recovered": 11,
+     "recovered": 8,
      "n": 35,
-     "fraction": 0.314,
-     "cell": "11/35"
+     "fraction": 0.229,
+     "cell": "8/35"
     }
    ]
   }

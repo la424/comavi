@@ -478,6 +478,15 @@ def main() -> int:
               file=sys.stderr)
         return 1
 
+    # v11: the complex_amount_assay column is part of the committed ledger.
+    # It is set by the same function apply_evidence_resolution_v11.py checks
+    # against, so regenerating the ledger here reproduces it instead of
+    # silently dropping it (which the CI git-diff step after this script
+    # would report as a changed ledger).
+    if str(REPO / "scripts") not in sys.path:
+        sys.path.insert(0, str(REPO / "scripts"))
+    import apply_evidence_resolution_v11 as evidence_resolution
+    led = evidence_resolution.curated_ledger(led.astype(str))
     led.to_csv(OUT_CSV, index=False)
 
     by_type = led.evidence_type.value_counts().to_dict()

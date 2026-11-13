@@ -1,0 +1,162 @@
+{
+  "analysis": "sensitivity of the mechanism-pattern score to half credit for calls that assert an energy change only on axes the literature never tested",
+  "status": "sensitivity analysis only; the primary grading is Table 3 with evidence resolution",
+  "files": {
+    "canonical_sha256": "a6ca415c2d333f05beb618bd31248ca24588ae9f697b63688fa203a35be20da4",
+    "ledger_sha256": "f2c576f69390a8fac4d9633b8ffe15aaca3b76fa7ccff05b62578743ec2fe861"
+  },
+  "constant_labels_graded": 31,
+  "draws": 2000,
+  "seed": 8,
+  "resampling_unit": "system",
+  "by_threshold": {
+    "1.0": {
+      "primary_score": 0.5357,
+      "sensitivity_score": 0.5536,
+      "sensitivity_weighted_total": 31.0,
+      "margin_over_strongest_constant": 0.0714
+    },
+    "1.5": {
+      "primary_score": 0.5714,
+      "sensitivity_score": 0.5893,
+      "sensitivity_weighted_total": 33.0,
+      "margin_over_strongest_constant": 0.1071
+    },
+    "2.0": {
+      "primary_score": 0.6339,
+      "sensitivity_score": 0.6518,
+      "sensitivity_weighted_total": 36.5,
+      "margin_over_strongest_constant": 0.1696
+    },
+    "2.5": {
+      "primary_score": 0.6607,
+      "sensitivity_score": 0.6696,
+      "sensitivity_weighted_total": 37.5,
+      "margin_over_strongest_constant": 0.1875
+    },
+    "2.9/2.9/3.5": {
+      "primary_score": 0.6429,
+      "sensitivity_score": 0.6518,
+      "sensitivity_weighted_total": 36.5,
+      "margin_over_strongest_constant": 0.1696
+    }
+  },
+  "grade_changes": [
+    {
+      "threshold": "1.0",
+      "gene": "PIK3CA",
+      "variant": "E542K",
+      "expected_class": "ppi_destab_mechanism",
+      "call": "Multimer fold destabilization at interface",
+      "primary_grade": "inconsistent",
+      "sensitivity_grade": "partial"
+    },
+    {
+      "threshold": "1.0",
+      "gene": "KRAS",
+      "variant": "G12D",
+      "expected_class": "ppi_destab_mechanism",
+      "call": "Multimer fold stabilization",
+      "primary_grade": "inconsistent",
+      "sensitivity_grade": "partial"
+    },
+    {
+      "threshold": "1.5",
+      "gene": "PIK3CA",
+      "variant": "E542K",
+      "expected_class": "ppi_destab_mechanism",
+      "call": "Multimer fold destabilization at interface",
+      "primary_grade": "inconsistent",
+      "sensitivity_grade": "partial"
+    },
+    {
+      "threshold": "1.5",
+      "gene": "KRAS",
+      "variant": "G12D",
+      "expected_class": "ppi_destab_mechanism",
+      "call": "Multimer fold stabilization",
+      "primary_grade": "inconsistent",
+      "sensitivity_grade": "partial"
+    },
+    {
+      "threshold": "2.0",
+      "gene": "PIK3CA",
+      "variant": "E542K",
+      "expected_class": "ppi_destab_mechanism",
+      "call": "Multimer fold destabilization at interface",
+      "primary_grade": "inconsistent",
+      "sensitivity_grade": "partial"
+    },
+    {
+      "threshold": "2.0",
+      "gene": "KRAS",
+      "variant": "G12D",
+      "expected_class": "ppi_destab_mechanism",
+      "call": "Multimer fold stabilization",
+      "primary_grade": "inconsistent",
+      "sensitivity_grade": "partial"
+    },
+    {
+      "threshold": "2.5",
+      "gene": "PIK3CA",
+      "variant": "E542K",
+      "expected_class": "ppi_destab_mechanism",
+      "call": "Multimer fold destabilization at interface",
+      "primary_grade": "inconsistent",
+      "sensitivity_grade": "partial"
+    },
+    {
+      "threshold": "2.9/2.9/3.5",
+      "gene": "PIK3CA",
+      "variant": "E542K",
+      "expected_class": "ppi_destab_mechanism",
+      "call": "Multimer fold destabilization at interface",
+      "primary_grade": "inconsistent",
+      "sensitivity_grade": "partial"
+    }
+  ],
+  "reference_2_5": {
+    "score": 0.6696,
+    "score_ci95": [
+      0.5833,
+      0.7692
+    ],
+    "strongest_constant": 0.4821,
+    "strongest_constant_labels": [
+      "Interface variant (DDG neutral)",
+      "Structural variant — contact-driven (DDG neutral)",
+      "Structural variant — burial-driven (DDG neutral)",
+      "No structural effect detected"
+    ],
+    "margin": 0.1875,
+    "margin_ci95": [
+      -0.0409,
+      0.2679
+    ],
+    "margin_p_at_or_below_zero": 0.06
+  },
+  "constants": {
+    "strongest_primary": 0.4821,
+    "strongest_sensitivity": 0.4821,
+    "labels_whose_score_changes": [
+      "Monomer fold destabilization",
+      "Monomer fold destabilization at interface",
+      "Multimer fold destabilization",
+      "Multimer fold destabilization at interface",
+      "Both fold destabilization",
+      "Both fold destabilization at interface",
+      "Monomer fold stabilization",
+      "Monomer fold stabilization at interface",
+      "Multimer fold stabilization",
+      "Multimer fold stabilization at interface",
+      "Both fold stabilization",
+      "Both fold stabilization at interface",
+      "Multimer fold + PPI destabilization",
+      "Multimer fold destab. + PPI stabilization (conflicting)",
+      "Multimer fold stab. + PPI destabilization (conflicting)",
+      "PPI destabilization",
+      "PPI stabilization",
+      "PPI conflicting (mixed partner signals)"
+    ]
+  }
+}

@@ -10,7 +10,7 @@ that staleness and fails, which in turn prevented verify_audit_binding.py from
 instrumenting the README gate at all — so one hand-maintained file disabled two
 gates downstream of it.
 
-Only the keys derivable from the canonical are rewritten. Curated keys (labels,
+Only the keys derivable from the canonical are rewritten (from v11 this\nincludes the tier gradient). Curated keys (labels,
 scope_firing_by_class, scope_note, precision_fire_*) are preserved untouched:
 they encode decisions, not measurements, and this script has no authority over
 them.
@@ -37,8 +37,10 @@ STATS_RECORD = (REPO / "reference_outputs" / "stress_tests"
                 / "COMAVI_stress_verified_statistics.json")
 sys.path.insert(0, str(REPO / "scripts"))
 import apply_concordance_v5 as concordance  # noqa: E402
+import build_audit_corrections as audit_corrections  # noqa: E402
 
-AXES = ("monomer", "fold", "binding", "tier")
+# v11: every row of the decomposition, including the joint complex-amount row.
+AXES = concordance.AGREEMENT_ROWS
 GRADE_MAP = {"consistent": 1.0, "partial": 0.5, "inconsistent": 0.0}
 PARTNER_JUNK = ("_ci95_", "_distinguishable_")
 REFERENCE_T = 2.5
@@ -72,6 +74,33 @@ def derive(canonical: pd.DataFrame) -> dict:
         "N_variants": int(len(canonical)),
         "silent_n": int(silent.sum()),
         "canonical_sha256": hashlib.sha256(CANON.read_bytes()).hexdigest(),
+    }
+
+
+def derive_tier_gradient(canonical: pd.DataFrame) -> dict:
+    """Tier pathogenicity gradient, derived rather than preserved.
+
+    v11: these keys were curated copies, so when the clinical labels moved to
+    the Franklin rule (scripts/apply_clinical_label_rule_v11.py) the gradient
+    the README quotes kept the old labels while every other clinical comparison
+    used the new ones. It is now computed by the committed
+    build_audit_corrections.tier_gradient on the canonical's clinical labels:
+    tier-carrying variants with a pathogenic or benign classification.
+    """
+    summary, _loso = audit_corrections.tier_gradient(canonical)
+    grad = {"Tier %d" % g["tier"]: [g["pathogenic"], g["n"], g["frac"]]
+            for g in summary["gradient"]}
+    return {
+        "tier_gradient": grad,
+        "tier_spearman": [round(float(summary["spearman_rho"]), 4),
+                          round(float(summary["spearman_p"]), 4)],
+        "tier_gradient_note": (
+            "on the 61-variant canonical set restricted to variants with a tier "
+            "and a pathogenic or benign clinical label (v11 rule: ClinVar expert "
+            "panel where available, otherwise Franklin; "
+            "n=%d). Derived by build_audit_corrections.tier_gradient. "
+            "Before v11, on the curated labels: n=49, 14/14, 13/18, 7/10, 3/7, "
+            "rho -0.40, p 0.0044." % summary["n"]),
     }
 
 
@@ -123,6 +152,7 @@ def main() -> int:
 
     canonical = pd.read_csv(CANON, low_memory=False)
     fresh = derive(canonical)
+    fresh.update(derive_tier_gradient(canonical))
     fresh.update(derive_stress({**json.loads(LEDGER.read_text()), **fresh}))
     current = json.loads(LEDGER.read_text())
 

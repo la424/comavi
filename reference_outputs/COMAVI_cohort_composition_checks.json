@@ -34,8 +34,8 @@
   "difference_experimental_minus_af3": {
    "value": 0.1072,
    "ci95_system_resampling": [
-    -0.08,
-    0.257
+    -0.099,
+    0.2778
    ],
    "draws": 2000,
    "seed": 20260923
@@ -55,12 +55,12 @@
   "note": "Seven systems per source: model quality cannot be separated from system difficulty. Isolated-subunit stability uses single-chain AlphaFold 3 models in 11 systems whatever the complex source."
  },
  "clinical_label_by_curated_class": {
-  "population": "AlphaMissense comparison set (47 variants)",
+  "population": "AlphaMissense comparison set (39 variants)",
   "table": {
    "pathogenic": {
-    "structural": 19,
+    "structural": 14,
     "no_lesion": 14,
-    "ungraded": 3
+    "ungraded": 0
    },
    "benign": {
     "structural": 1,

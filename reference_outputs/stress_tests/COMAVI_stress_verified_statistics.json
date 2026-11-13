@@ -6,25 +6,25 @@
   "variant_bootstrap": 2000
  },
  "files": {
-  "canonical_sha256": "77ba5c3b4722117ae98c06a3b1aa9e4e3e81a4a4923256519366e6798c8c27d2",
-  "stress_draws_sha256": "6c8eff5a932289ece6b8ba1f0c026e82888f6d62c02393750b0961df0cb99732",
-  "stress_script_sha256": "bef39363f2102bce36d90ff7232e9be9c45b4c2ed5f39049bcc735a6ead9e7cc",
-  "stress_summary_sha256": "a0c48569786a5902a22f9e742f7a5422cb8fca51bb27992df8caf88d80c3816d"
+  "canonical_sha256": "a6ca415c2d333f05beb618bd31248ca24588ae9f697b63688fa203a35be20da4",
+  "stress_draws_sha256": "ae77e8e017dac4de613928c3ab256c577432a8bfa171039e240e517108191570",
+  "stress_script_sha256": "1d705bcb483e21d705b06a6f00ff6e96a4f89ad8197ece8b810047d69fdbb72d",
+  "stress_summary_sha256": "111507590afdb0cdf1bb04114e1e6b436a658a87deac0f34178e441ce4edab47"
  },
  "observed": {
   "mechanism_consistency": 0.6607142857142857,
-  "structural_agreement": 0.6991869918699187
+  "structural_agreement": 0.712
  },
  "population": {
   "all_row_structural_agreement": [
-   86,
-   124
+   89,
+   126
   ],
   "canonical_rows": 61,
   "mechanism_graded_variants": 56,
   "primary_structural_agreement": [
-   86,
-   123
+   89,
+   125
   ],
   "system_labels": [
    "brca1_bard1",
@@ -47,60 +47,60 @@
  "system_cluster_ci95": {
   "mc": {
    "full_precision": [
-    0.5731596452328159,
-    0.7551020408163265
+    0.5671517412935323,
+    0.7641509433962265
    ],
    "reportable_3": [
-    0.573,
-    0.755
+    0.567,
+    0.764
    ],
    "rounded_4": [
-    0.5732,
-    0.7551
+    0.5672,
+    0.7642
    ]
   },
   "sa": {
    "full_precision": [
-    0.6216052746294681,
-    0.7778005464480873
+    0.6356572723689398,
+    0.7910603233830844
    ],
    "reportable_3": [
-    0.622,
-    0.778
+    0.636,
+    0.791
    ],
    "rounded_4": [
-    0.6216,
-    0.7778
+    0.6357,
+    0.7911
    ]
   }
  },
  "variant_bootstrap_ci95": {
   "mc": {
    "full_precision": [
-    0.5462962962962963,
-    0.7685185185185185
+    0.5446428571428571,
+    0.7767857142857143
    ],
    "reportable_3": [
-    0.546,
-    0.769
+    0.545,
+    0.777
    ],
    "rounded_4": [
-    0.5463,
-    0.7685
+    0.5446,
+    0.7768
    ]
   },
   "sa": {
    "full_precision": [
-    0.6090143837855508,
-    0.7794386657101864
+    0.6229472246189244,
+    0.7952755905511811
    ],
    "reportable_3": [
-    0.609,
-    0.779
+    0.623,
+    0.795
    ],
    "rounded_4": [
-    0.609,
-    0.7794
+    0.6229,
+    0.7953
    ]
   }
  }

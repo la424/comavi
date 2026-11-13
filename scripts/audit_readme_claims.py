@@ -81,6 +81,7 @@ def main() -> int:
         "monomer",
         "fold",
         "binding",
+        "assembled_either",
     )
 
     def tally(mask):
@@ -183,10 +184,17 @@ def main() -> int:
             f"ledger={ledger_axes}, derived={axes}"
         )
 
-    if primary_total != [86, 123]:
+    # v11: compared with the threshold sweep at 2.5 kcal/mol, an independent
+    # generator, instead of the frozen [86, 123] that went stale when the
+    # complex-amount expectations began to be scored jointly.
+    sweep_t25 = [
+        row for row in json.loads(
+            (REPO / "reference_outputs" / "COMAVI_threshold_sweep.json").read_text())["rows"]
+        if row["threshold_tag"] == "t25"][0]
+    if primary_total != [sweep_t25["structural_agreement_k"], sweep_t25["structural_agreement_n"]]:
         raise SystemExit(
-            "Unexpected primary structural-agreement total: "
-            f"{primary_total}"
+            "Primary structural-agreement total "
+            f"{primary_total} differs from the threshold sweep at 2.5"
         )
 
     sa_ok, sa_all = derived_total
@@ -242,6 +250,8 @@ def main() -> int:
          "per-axis complex-fold"),
         (f"binding \u0394\u0394G {axes['binding'][0]}/{axes['binding'][1]}",
          "per-axis binding"),
+        (f"either assembled axis {axes['assembled_either'][0]}/{axes['assembled_either'][1]}",
+         "joint complex-amount row"),
         (f"denominators sum to {sa_all}", "per-axis denominators reconcile"),
 
         # --- fixed cohort-independent ISDS-v1 outputs ---

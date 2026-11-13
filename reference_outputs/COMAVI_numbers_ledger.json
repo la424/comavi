@@ -14,20 +14,25 @@
  "AM_set_n": 47,
  "MC": 0.6607,
  "MC_cluster_ci95": [
-  0.5732,
-  0.7551
+  0.5672,
+  0.7642
  ],
  "MC_delta": 0.0,
  "MC_n": 56,
  "MC_tier_ablated": 0.6607,
  "MC_tier_ablated_n": 57,
  "N_variants": 61,
- "SA": 0.6935,
+ "SA": 0.7063,
  "SA_by_axis": {
+  "assembled_either": [
+   4,
+   6,
+   0.6667
+  ],
   "binding": [
-   20,
-   29,
-   0.6897
+   19,
+   25,
+   0.76
   ],
   "fold": [
    17,
@@ -46,12 +51,12 @@
   ]
  },
  "SA_cluster_ci95": [
-  0.6216,
-  0.7778
+  0.6357,
+  0.7911
  ],
  "SA_total": [
-  86,
-  124
+  89,
+  126
  ],
  "annotated_disruptors": {
   "binding": 15,
@@ -68,7 +73,7 @@
  ],
  "bootstrap_n": 2000,
  "bootstrap_unit": "system (cluster)",
- "canonical_sha256": "77ba5c3b4722117ae98c06a3b1aa9e4e3e81a4a4923256519366e6798c8c27d2",
+ "canonical_sha256": "a6ca415c2d333f05beb618bd31248ca24588ae9f697b63688fa203a35be20da4",
  "canonical_source": "reference_outputs/scored_61var_canonical.csv",
  "disruptor_definitions": {
   "ANNOTATED": "literature annotation for that axis contains 'destab' (ground-truth side only)",
@@ -210,12 +215,12 @@
  },
  "stress_LOSO_MC_range": [
   0.6415,
-  0.6792
+  0.6863
  ],
  "stress_noise_label_identical_frac": 0.3,
- "stress_noise_sd": 0.0135,
+ "stress_noise_sd": 0.0134,
  "stress_permutation": {
-  "MC_null_mean": 0.464,
+  "MC_null_mean": 0.3624,
   "MC_observed": 0.6607,
   "p": 0.0005
  },
@@ -299,14 +304,14 @@
  },
  "tier_gradient": {
   "Tier 1": [
-   14,
-   14,
+   9,
+   9,
    1.0
   ],
   "Tier 2": [
-   13,
-   18,
-   0.722
+   12,
+   17,
+   0.706
   ],
   "Tier 3": [
    7,
@@ -315,14 +320,14 @@
   ],
   "Tier 4": [
    3,
-   7,
-   0.429
+   6,
+   0.5
   ]
  },
- "tier_gradient_note": "on the 61-variant canonical set restricted to pathogenic/benign with a tier assigned (n=49). The older 12/12, 13/16, 7/10, 2/6 gradient was the 44-variant PPI-only set and is SUPERSEDED.",
+ "tier_gradient_note": "on the 61-variant canonical set restricted to variants with a tier and a pathogenic or benign clinical label (v11 rule: ClinVar expert panel where available, otherwise Franklin; n=42). Derived by build_audit_corrections.tier_gradient. Before v11, on the curated labels: n=49, 14/14, 13/18, 7/10, 3/7, rho -0.40, p 0.0044.",
  "tier_spearman": [
-  -0.3997,
-  0.0044
+  -0.3118,
+  0.0444
  ],
  "true_misses": [
   "E545K",

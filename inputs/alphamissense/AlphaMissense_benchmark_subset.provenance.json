@@ -1,0 +1,31 @@
+{
+ "source": "Predictions for AlphaMissense, Zenodo record 8208688",
+ "doi": "10.5281/zenodo.8208688",
+ "citation": "Cheng J et al. (2023) Science 381:eadg7492",
+ "file": "AlphaMissense_aa_substitutions.tsv.gz",
+ "url": "https://zenodo.org/records/8208688/files/AlphaMissense_aa_substitutions.tsv.gz",
+ "bytes": 1207278510,
+ "md5": "b9ccb339e0de6cb0a8d1973ad2026576",
+ "md5_expected": "b9ccb339e0de6cb0a8d1973ad2026576",
+ "md5_verified": true,
+ "retrieved_utc": "2026-11-05T20:31:42+00:00",
+ "accessions": {
+  "BRCA1": "P38398",
+  "CALM1": "P0DP23",
+  "CFH": "P08603",
+  "HBB": "P68871",
+  "KRAS": "P01116",
+  "MLH1": "P40692",
+  "MSH2": "P43246",
+  "PIK3CA": "P42336",
+  "PIK3R1": "P27986",
+  "PMS2": "P54278",
+  "SMAD4": "Q13485",
+  "TNNI3": "P19429",
+  "VHL": "P40337",
+  "VWF": "P04275"
+ },
+ "header": "uniprot_id\tprotein_variant\tam_pathogenicity\tam_class",
+ "rows_kept": 222528,
+ "coordinates": "UniProt canonical positions from the initiator methionine"
+}

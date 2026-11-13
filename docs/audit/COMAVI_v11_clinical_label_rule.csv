@@ -1,0 +1,22 @@
+system,gene,variant,label_before_v11,franklin,label_source,label_v11
+brca1_bard1,brca1,V11G,pathogenic,likely_pathogenic,ClinVar expert panel (VCV000245973),pathogenic
+brca1_bard1,brca1,C61G,pathogenic,pathogenic,ClinVar expert panel (VCV000017661),pathogenic
+brca1_bard1,brca1,E100Q,benign,vus_mid,Franklin,vus
+pi3k,pik3ca,E542K,pathogenic_gof,pathogenic,ClinVar expert panel (VCV000031944),pathogenic_gof
+pi3k,pik3ca,H1047R,pathogenic_gof,pathogenic,ClinVar expert panel (VCV000013652),pathogenic_gof
+pi3k,pik3r1,M326I,benign,likely_benign,"Franklin; expert-panel records disagree across nucleotide changes (VCV000135039, VCV001624912); Franklin used",benign
+mlh1_pms2,mlh1,L749P,pathogenic,pathogenic,ClinVar expert panel (VCV000090097),pathogenic
+mlh1_pms2,mlh1,V384D,benign,benign,ClinVar expert panel (VCV000041632),benign
+mlh1_pms2,pms2,G857A,benign,vus_mid,ClinVar expert panel (VCV000036691),benign
+mlh1_pms2,mlh1,H718Y,benign,benign,ClinVar expert panel (VCV000036547),benign
+msh2_msh6,msh2,A636P,pathogenic,pathogenic,ClinVar expert panel (VCV000001764),pathogenic
+msh2_msh6,msh2,C697F,pathogenic,pathogenic,ClinVar expert panel (VCV000090883),pathogenic
+msh2_msh6,msh2,N127S,benign,benign,ClinVar expert panel (VCV000036577),benign
+msh2_msh6,msh2,G322D,benign,benign,ClinVar expert panel (VCV000001762),benign
+hemoglobin_tetramer,hbb,W37Y,pathogenic,,Franklin,unclassified
+hemoglobin_tetramer,hbb,W37A,pathogenic,,Franklin,unclassified
+hemoglobin_tetramer,hbb,W37G,pathogenic,,Franklin,unclassified
+hemoglobin_tetramer,hbb,W37E,pathogenic,,Franklin,unclassified
+hemoglobin_tetramer,hbb,N102T,pathogenic,vus_low,Franklin,vus
+vwf_gpiba,vwf,R1334Q,pathogenic,VUS,Franklin,vus
+vwf_gpiba,vwf,A1381T,benign,Benign,ClinVar expert panel (VCV000256678),benign

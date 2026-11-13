@@ -13,15 +13,21 @@ Emits:
   COMAVI_threshold_labile_variants.csv        variants whose grade moves
   COMAVI_threshold_operating_points.json      headline stats + severity ladder
 """
+import argparse
 import json
 import pathlib
 import sys
+import tempfile
 
 import pandas as pd
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "scripts"))
 import apply_concordance_v5 as ac  # noqa: E402
+import benchmark_population as bp  # noqa: E402
+
+OUTPUTS = ("COMAVI_threshold_operating_points.csv", "COMAVI_threshold_class_competency.csv",
+           "COMAVI_threshold_labile_variants.csv", "COMAVI_threshold_operating_points.json")
 
 TAGS = [tag for tag, _ in ac.THRESHOLD_SPECS]
 GMAP = {"consistent": 1.0, "partial": 0.5, "inconsistent": 0.0}
@@ -41,16 +47,22 @@ def measured_image(t, slope, intercept):
     return (t - intercept) / slope
 
 
-def main():
+def build(out_dir):
     out = REPO / "reference_outputs"
     df = pd.read_csv(out / "scored_61var_canonical.csv")
     partners = [p for p in ac.discover_partners(df) if f"ddg_{p}_confident" in df.columns]
 
-    # canonical graded set: exclude variants with no observable axis
-    g = df[~df.variant.isin(set(ac.unobservable_variants()))].copy()
+    # v11: the 56-variant benchmark (benchmark_population), not "every row except
+    # the two unobservable BRCT variants". The old selection kept the three
+    # candidates with no committed expectation, whose grades are missing, so they
+    # were counted as threshold-labile (a missing grade range never equals 0) and
+    # n_graded read 59. This file was also never regenerated after v8.2, and the
+    # Fig 4 cross-check is what caught it.
+    g = bp.benchmark(df).copy()
     for t in TAGS:
         g[f"g_{t}"] = g[f"mech_consistency_{t}"].map(GMAP)
     gcols = [f"g_{t}" for t in TAGS]
+    assert g[gcols].notna().all().all(), "every benchmark variant is graded at every threshold"
 
     # threshold-averaged mechanism consistency, per variant
     g["TA_MC"] = g[gcols].mean(axis=1)
@@ -59,6 +71,7 @@ def main():
 
     # committed classes only (drop the two non-committal ground truths)
     gs = g[g.expected_mech_class.isin(STRUCT | {"structurally_silent"})].copy()
+    assert len(gs) == len(g), "every benchmark variant carries a committed class"
     gs["truth_struct"] = gs.expected_mech_class.isin(STRUCT)
 
     # ---- operating points -------------------------------------------------
@@ -133,18 +146,38 @@ def main():
         ),
     )
 
-    ops.to_csv(out / "COMAVI_threshold_operating_points.csv", index=False)
-    cls.to_csv(out / "COMAVI_threshold_class_competency.csv")
-    lab.to_csv(out / "COMAVI_threshold_labile_variants.csv", index=False)
-    with open(out / "COMAVI_threshold_operating_points.json", "w") as fh:
+    ops.to_csv(out_dir / "COMAVI_threshold_operating_points.csv", index=False)
+    cls.to_csv(out_dir / "COMAVI_threshold_class_competency.csv")
+    lab.to_csv(out_dir / "COMAVI_threshold_labile_variants.csv", index=False)
+    with open(out_dir / "COMAVI_threshold_operating_points.json", "w") as fh:
         json.dump(stats, fh, indent=1)
+    return ops, cls, stats
 
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    ap.add_argument("--check", action="store_true",
+                    help="recompute into a temporary directory and fail if any committed output differs")
+    args = ap.parse_args()
+    out = REPO / "reference_outputs"
+    if args.check:
+        with tempfile.TemporaryDirectory() as td:
+            build(pathlib.Path(td))
+            stale = [f for f in OUTPUTS if not (out / f).exists()
+                     or (pathlib.Path(td) / f).read_bytes() != (out / f).read_bytes()]
+        if stale:
+            print("FAIL: operating-point outputs are stale: %s" % stale)
+            return 1
+        print("PASS: threshold operating points reproduce (%d files)" % len(OUTPUTS))
+        return 0
+    ops, cls, stats = build(out)
     print(ops.to_string(index=False))
     print()
     print(cls.to_string())
     print()
     print(json.dumps(stats, indent=1))
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

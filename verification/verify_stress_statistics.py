@@ -148,14 +148,17 @@ require(
 
 require(
     list(population["primary_structural_agreement"])
-    == [86, 123],
-    "primary structural-agreement count differs from 86/123",
+    # v11 evidence resolution: 86/123 -> 89/125, the six complex-amount
+    # expectations scored jointly on either assembled axis
+    # (docs/audit/COMAVI_v11_evidence_resolution_agreement.csv).
+    == [89, 125],
+    "primary structural-agreement count differs from 89/125",
 )
 
 require(
     list(population["all_row_structural_agreement"])
-    == [86, 124],
-    "all-row structural-agreement count differs from 86/124",
+    == [89, 126],
+    "all-row structural-agreement count differs from 89/126",
 )
 
 require(
@@ -166,6 +169,10 @@ require(
 require(
     close(
         observed["mechanism_consistency"],
+        # v11: 37.0 -> 34.0, the six partial -> inconsistent grade changes at
+        # t=2.5 in docs/audit/COMAVI_v11_rubric_regrade.csv (Table 3 grader);
+        # then 34.0 -> 37.0 under evidence resolution: V11G, L749P and D351H
+        # 0 -> 1 at t=2.5 (docs/audit/COMAVI_v11_evidence_resolution.csv).
         37.0 / 56,
     ),
     "mechanism-consistency point estimate differs from 37.0/56",
@@ -174,9 +181,9 @@ require(
 require(
     close(
         observed["structural_agreement"],
-        86 / 123,
+        89 / 125,
     ),
-    "structural-agreement point estimate differs from 86/123",
+    "structural-agreement point estimate differs from 89/125",
 )
 
 
@@ -288,10 +295,10 @@ require(
 )
 
 require(
-    (archive_sa_n, archive_sa_d) == (86, 123),
+    (archive_sa_n, archive_sa_d) == (89, 125),
     (
         "draw archive structural agreement is "
-        f"{archive_sa_n}/{archive_sa_d}, not 86/123"
+        f"{archive_sa_n}/{archive_sa_d}, not 89/125"
     ),
 )
 
@@ -301,8 +308,8 @@ require(
 )
 
 require(
-    close(archive_sa, 86 / 123),
-    "draw archive structural point estimate differs from 86/123",
+    close(archive_sa, 89 / 125),
+    "draw archive structural point estimate differs from 89/125",
 )
 
 require(
@@ -477,14 +484,14 @@ for name, (
 # ---------------------------------------------------------------------
 
 require(
-    ledger.get("SA_total") == [86, 124],
+    ledger.get("SA_total") == [89, 126],
     f"ledger SA_total is {ledger.get('SA_total')!r}",
 )
 
 require(
     close(
         ledger.get("SA"),
-        86 / 124,
+        89 / 126,
         tolerance=5e-5,
     ),
     f"ledger scalar SA is {ledger.get('SA')!r}",
@@ -504,8 +511,16 @@ require(
 
 require(
     ledger.get("SA_by_axis", {}).get("binding", [])[:3]
-    == [20, 29, 0.6897],
-    "ledger binding record differs from 20/29",
+    # v11 evidence resolution: the six complex-amount expectations leave the
+    # binding row and are scored jointly (next check). Was [20, 29, 0.6897].
+    == [19, 25, 0.76],
+    "ledger binding record differs from 19/25",
+)
+
+require(
+    ledger.get("SA_by_axis", {}).get("assembled_either", [])[:3]
+    == [4, 6, 0.6667],
+    "ledger either-assembled-axis record differs from 4/6",
 )
 
 require(
@@ -536,10 +551,12 @@ if "canonical_sha256" in ledger:
     )
 
 
-print("Canonical rows: 61")
-print("Mechanism population: 57")
-print("Primary structural agreement: 92/124")
-print("All-row structural agreement: 92/125")
+# v11: these lines printed v7 values (57, 92/124, 92/125) long after the checks
+# above moved on; they now print the verified record.
+print("Canonical rows: %d" % population["canonical_rows"])
+print("Mechanism population: %d" % population["mechanism_graded_variants"])
+print("Primary structural agreement: %d/%d" % tuple(population["primary_structural_agreement"]))
+print("All-row structural agreement: %d/%d" % tuple(population["all_row_structural_agreement"]))
 print(
     "Variant-bootstrap SA 95% CI:",
     statistics["variant_bootstrap_ci95"]["sa"]["reportable_3"],

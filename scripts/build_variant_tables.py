@@ -93,6 +93,8 @@ PHENO_LABEL = {
     "pathogenic_gof": "Pathogenic (gain of function)",
     "benign": "Benign",
     "vus": "Uncertain significance",
+    # v11: no Franklin classification (scripts/apply_clinical_label_rule_v11.py)
+    "unclassified": "Not classified",
 }
 
 

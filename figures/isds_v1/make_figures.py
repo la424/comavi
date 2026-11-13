@@ -173,13 +173,17 @@ save(fig,'figure2_population_map.png')
 summary=json.load(open(AN/'ISDS_v1_summary.json'))
 fig, axes=plt.subplots(1,2,figsize=(11.8,5.2),gridspec_kw={'width_ratios':[1.2,1]})
 ax=axes[0]
-labels=['Monomer fold','Complex context','Binding','All energetic axes',
-        'Structural-context tier']
+labels=['Monomer fold','Complex context','Binding','Either assembled axis\n(complex amount)',
+        'All energetic axes','Structural-context tier']
 # Read the Figure 2 anchors from the analysis summary, which computes them from
 # the canonical. They were duplicated literals here until v7.7, so a ledger
 # correction left this panel plotting a stale partition.
 #
-# PRIMARY convention (the 57 mechanism-gradeable variants) — the same population
+# v11: 'Either assembled axis' is the six expectations measured only as an
+# amount of complex (co-IP, pull-down, two-hybrid), scored jointly; the binding
+# bar keeps only binding-specific expectations, so each bar is one test.
+#
+# PRIMARY convention (the 56 mechanism-gradeable variants) — the same population
 # panel b plots and the manuscript caption quotes. The summary also carries the
 # all-row convention under 'all_row'; mixing the two is what desynchronised this
 # panel from its caption (19/26 plotted against 19/25 quoted).
@@ -190,11 +194,11 @@ def _nv(key):
     a,b=frac.split('/')
     return frac, float(a)/float(b)
 nums,vals=zip(*[_nv(k) for k in ('monomer_agreement','complex_context_agreement',
-                                 'binding_agreement','all_energetic_agreement',
-                                 'tier_agreement')])
+                                 'binding_agreement','assembled_either_agreement',
+                                 'all_energetic_agreement','tier_agreement')])
 nums,vals=list(nums),list(vals)
 y=np.arange(len(labels))
-bars=ax.barh(y,vals,color=[BLUE,TEAL,ORANGE,NAVY,PURPLE],height=.58)
+bars=ax.barh(y,vals,color=[BLUE,TEAL,ORANGE,GOLD,NAVY,PURPLE],height=.58)
 ax.set_yticks(y,labels); ax.invert_yaxis(); ax.set_xlim(0,1.03); ax.set_xlabel('Direction-aware agreement')
 ax.set_title('Physical axes remain separate',loc='left',fontweight='bold',color=NAVY)
 ax.grid(axis='x',alpha=.2)
@@ -318,7 +322,11 @@ ax=axes[1]
 states=['Convergent','Energy only','Context only','Neither']
 _fs=summary['four_state_agreement']
 assert _fs is not None, 'four_state_agreement missing from ISDS_v1_summary.json — re-run analyze_isds_v1.py'
-struct=np.array(_fs['structural']); neg=np.array(_fs['no_disruption']); x=np.arange(4)
+# v11: the record keeps "no_lesion" as its KEY (it ships in the v3.0.1 schema;
+# see analyze_isds_v1.py). The v10.0 terminology rename changed this read to
+# 'no_disruption', which no record writes, so this generator had failed at this
+# line since v10.0 and the committed figures could not be regenerated.
+struct=np.array(_fs['structural']); neg=np.array(_fs['no_lesion']); x=np.arange(4)
 ax.bar(x-.18,struct,.36,color=ORANGE,label='Structural mechanism')
 ax.bar(x+.18,neg,.36,color=BLUE,label='No modeled disruption')
 ax.set_xticks(x,['Convergent','Energy\nonly','Context\nonly','Neither']); ax.set_ylabel('Variants'); ax.set_ylim(0,18.2); ax.set_title('Discrete evidence states remain interpretable',loc='left',fontweight='bold',color=NAVY); ax.legend(frameon=False,fontsize=8.8); ax.grid(axis='y',alpha=.2)

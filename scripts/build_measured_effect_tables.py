@@ -35,8 +35,17 @@ import pandas as pd
 REPO = pathlib.Path(__file__).resolve().parent.parent
 CALIB = REPO / "reference_outputs" / "COMAVI_delta_calibration_points.csv"
 
-# Thresholds as the manuscript's operating-point tables report them.
-THRESHOLDS = [("1.0", 1.0), ("1.5", 1.5), ("2.0", 2.0), ("2.5", 2.5), ("tSAP", 2.9)]
+# Thresholds as the manuscript's operating-point tables report them. Each is a
+# per-axis triple (isolated subunit, assembled complex, binding): the
+# prediction-interval limit is 2.9 / 2.9 / 3.5 kcal/mol, the upper bounds of the
+# published FoldX 95% prediction intervals for the two stability axes and for
+# binding. v11: tSAP was a single 2.9 for every comparison until the
+# independent re-derivation (verification/rederive_headlines_v11.py) found
+# that it scored the binding comparisons at the stability bound, so the count
+# reported at the prediction-interval limit was 11 of 42 rather than 8.
+THRESHOLDS = [("1.0", (1.0, 1.0, 1.0)), ("1.5", (1.5, 1.5, 1.5)), ("2.0", (2.0, 2.0, 2.0)),
+              ("2.5", (2.5, 2.5, 2.5)), ("tSAP", (2.9, 2.9, 3.5))]
+AXIS_INDEX = {"Monomer fold": 0, "Multimer fold": 1, "Binding": 2}  # the axis column of the calibration points
 REFERENCE_T = 2.5          # the reference calling threshold
 BORDERLINE_WINDOW = 1.0    # "within 1.0 kcal/mol of the reference threshold"
 DESTABILIZER_MIN = 1.0     # |measured| floor defining the recovered population
@@ -72,10 +81,15 @@ def recovered(cal: pd.DataFrame) -> dict:
     inb = cal["in_benchmark"].astype(str).str.lower().isin(("true", "yes"))
     destab = cal["measured_kcal"] >= DESTABILIZER_MIN
 
+    axis_i = cal["axis"].map(AXIS_INDEX)
+    if axis_i.isna().any():
+        raise SystemExit("calibration points with an unknown axis: %s" % sorted(set(cal.loc[axis_i.isna(), "axis"])))
+
     def block(mask):
         n = int(mask.sum())
         rows = []
-        for label, t in THRESHOLDS:
+        for label, triple in THRESHOLDS:
+            t = axis_i.map(lambda i: triple[int(i)])
             k = int((mask & (cal["foldx_ddg"] >= t)).sum())
             rows.append({"threshold": label, "recovered": k, "n": n,
                          "fraction": round(k / n, 3), "cell": f"{k}/{n}"})

@@ -83,6 +83,7 @@ Writes: results/comavi_v7_concordance.csv
 """
 from __future__ import annotations
 import argparse
+import re
 import sys
 from pathlib import Path
 
@@ -155,6 +156,14 @@ GROUND_TRUTH_COLS = [
     "expected_ddg_binding",
     "expected_topology",
 ]
+# Optional ground-truth annotations: part of a variant's expectation, so any code
+# that moves ground-truth profiles between variants (the permutation null in
+# verification/stress_tests.py) must move these with them, but not required, so
+# an input without them still runs in Mode A. v11: assembled_expectation_scope
+# (see EITHER_ASSEMBLED_AXIS).
+GROUND_TRUTH_ANNOTATION_COLS = [
+    "assembled_expectation_scope",
+]
 
 # Axis-status classification per expected column value
 _POSITIVE_AXIS_TOKENS = {"destab", "mild_destab", "stab"}
@@ -213,6 +222,35 @@ MECH_LABEL_ASSERTIONS = {
     "Structure unevaluable":                                               (False, False, False, False, "unevaluable"),
     "Structure low-confidence at variant site":                            (False, False, False, False, "unevaluable"),
 }
+
+_CONFLICTING_LABEL = re.compile(
+    r"^(Monomer|Multimer|Both) fold (destab|stab)\. \+ PPI "
+    r"(stabilization|destabilization) \(conflicting\)$")
+
+
+def _conflicting_axis_directions(mech_call):
+    """Per-axis directions named by a mixed-direction fold/PPI label.
+
+    "Multimer fold destab. + PPI stabilization (conflicting)" ->
+    {"fold_complex": "destab", "binding": "stab"}. Returns None for every
+    other label, including "PPI conflicting (mixed partner signals)", which
+    names no single binding direction. Added in v11 so that the direction check
+    in grade_mechanism_consistency covers these labels axis by axis.
+    """
+    m = _CONFLICTING_LABEL.match(str(mech_call or ""))
+    if not m:
+        return None
+    fold_m, fold_c, bind, _iface, _direction = MECH_LABEL_ASSERTIONS[mech_call]
+    fold_dir = m.group(2)
+    bind_dir = "destab" if m.group(3) == "destabilization" else "stab"
+    out = {}
+    if fold_m:
+        out["fold_monomer"] = fold_dir
+    if fold_c:
+        out["fold_complex"] = fold_dir
+    if bind:
+        out["binding"] = bind_dir
+    return out
 
 
 # ============================================================================
@@ -889,10 +927,12 @@ def derive_expected_mech_class(row):
         # predicting exactly 0.000 against a measurement that two orthogonal
         # assays call a significant increase is a failure to detect a real
         # interface effect. Demoting it would raise the mechanism-pattern score
-        # from 0.6607 to 0.6786 and leave the margin over the strongest trivial
-        # strategy unchanged at +0.1786 (verified, not estimated), so there is no
-        # reading of the headline that the choice improves -- which is the reason
-        # it is safe to leave on the strict side.
+        # from 0.6071 to 0.6250 and leave the margin over the strongest constant
+        # strategy unchanged at +0.1250 (recomputed under the v11 Table 3
+        # grader against every gradeable constant label; under the pre-v11
+        # grader the same comparison read 0.6607 -> 0.6786, margin +0.1786), so
+        # there is no reading of the headline that the choice improves -- which
+        # is the reason it is safe to leave on the strict side.
         fold_dir = _axis_direction(row)
         fold_axes = [a for a in ("fold_monomer", "fold_complex")
                      if axes[a] == "positive"]
@@ -1095,7 +1135,108 @@ def unobservable_variants(roles=None):
 # ============================================================================
 # NEW in v4: mechanism-consistency grading per rubric v2
 # ============================================================================
-def grade_mechanism_consistency(row, mech_call, expected_class, axes):
+# v11 evidence resolution.
+# A co-immunoprecipitation, pull-down or two-hybrid assay reports how much
+# complex forms. A reduced signal can come from weaker binding or from a less
+# stable assembled complex, and COMAVI computes these two separately (the
+# AnalyseComplex interaction energy and the BuildModel stability of the assembled
+# complex). Where the only evidence for an assembled-complex effect is such an
+# assay, a binding-specific expectation is more specific than the measurement.
+# The canonical marks those variants assembled_expectation_scope = "either_axis"
+# (set from the evidence ledger's complex_amount_assay column by
+# scripts/apply_evidence_resolution_v11.py), and a call in the measured
+# direction on either assembled axis satisfies the expectation. The rule is
+# defined by the evidence, not by any call, and it applies to every graded
+# strategy, the constant baselines included. It only relaxes over-specific
+# expectations: a normal complex amount rules out a binding loss but cannot
+# establish that the assembled complex is stable, so no commitment is added on
+# the non-disruptive side.
+EITHER_ASSEMBLED_AXIS = "either_axis"
+_GRADE_ORDER = {"inconsistent": 0, "partial": 1, "consistent": 2}
+# Rows of the direction-agreement decomposition (structural_agreement_by_axis).
+# ENERGETIC_ROWS are the energy-based rows; with the tier they make up the
+# four-output total. Consumers iterate these constants rather than spelling the
+# keys out, so a new row cannot be dropped silently from a total.
+ENERGETIC_ROWS = ("monomer", "fold", "binding", "assembled_either")
+AGREEMENT_ROWS = ("tier",) + ENERGETIC_ROWS
+
+
+def assembled_scope(row):
+    """The variant's assembled_expectation_scope, normalised ("" when blank)."""
+    value = row.get("assembled_expectation_scope") if hasattr(row, "get") else None
+    return value.strip().lower() if isinstance(value, str) else ""
+
+
+def _either_axis_direction(row):
+    """The measured direction behind an either_axis expectation."""
+    tokens = {str(row.get(col, "")).strip().lower()
+              for col in ("expected_ddg_binding", "expected_ddg_fold_complex")}
+    committed = tokens & {"destab", "stab"}
+    if len(committed) != 1:
+        raise ValueError(
+            "either_axis scope needs exactly one committed assembled direction: "
+            "%s %s -> %s" % (row.get("system"), row.get("variant"), sorted(tokens)))
+    return committed.pop()
+
+
+def _asserted_assembled_directions(mech_call):
+    """Direction a label asserts on each assembled axis (None if it names none)."""
+    info = MECH_LABEL_ASSERTIONS.get(mech_call)
+    if info is None:
+        return {}
+    _fold_m, fold_c, bind, _iface, direction = info
+    per_axis = _conflicting_axis_directions(mech_call)
+    out = {}
+    for axis, asserted in (("fold_complex", fold_c), ("binding", bind)):
+        if asserted:
+            if per_axis is not None:
+                out[axis] = per_axis.get(axis)
+            else:
+                out[axis] = direction if direction in ("destab", "stab") else None
+    return out
+
+
+def grade_mechanism_consistency(row, mech_call, expected_class, axes,
+                                untested_axis_credit=False):
+    """
+    Grade one call against the literature expectation (Table 3, rubric v2).
+
+    Returns (grade, false_positive_axes, missed_positive_axes); see _grade_core.
+
+    Variants marked assembled_expectation_scope == "either_axis" are graded under
+    both placements of the measured assembled-complex effect, on the binding axis
+    and on the assembled-complex stability axis, and receive the better grade.
+    A call that predicts the opposite change on an assembled axis earns nothing
+    from the alternative placement.
+
+    untested_axis_credit : bool -- sensitivity analysis only (S2 Text). When
+        True, a call that misses every expected effect but asserts an energy
+        change, all of it on axes the literature never tested, and contradicts
+        nothing measured, is graded partial instead of inconsistent. The primary
+        grading never sets it.
+    """
+    base = _grade_core(row, mech_call, expected_class, axes, untested_axis_credit)
+    if (assembled_scope(row) != EITHER_ASSEMBLED_AXIS
+            or expected_class == "structurally_silent"
+            or base[0] not in _GRADE_ORDER):
+        return base
+    measured = _either_axis_direction(row)
+    for direction in _asserted_assembled_directions(mech_call).values():
+        if direction is not None and direction != measured:
+            return base
+    best = base
+    for binding, fold_complex in ((measured, "unknown"), ("unknown", measured)):
+        alt = row.copy()
+        alt["expected_ddg_binding"] = binding
+        alt["expected_ddg_fold_complex"] = fold_complex
+        graded = _grade_core(alt, mech_call, expected_class,
+                             classify_axis_status(alt), untested_axis_credit)
+        if _GRADE_ORDER.get(graded[0], -1) > _GRADE_ORDER[best[0]]:
+            best = graded
+    return best
+
+
+def _grade_core(row, mech_call, expected_class, axes, untested_axis_credit=False):
     """
     Apply the rubric v2 decision tree.
 
@@ -1203,6 +1344,20 @@ def grade_mechanism_consistency(row, mech_call, expected_class, axes):
         if ((exp_bind_dir == "destab" and direction == "stab") or
             (exp_bind_dir == "stab" and direction == "destab")):
             dflip.append("binding")
+    # v11: per-axis direction for the mixed-direction labels. Table 3 grades a
+    # predicted change opposite in direction to the expected effect as
+    # inconsistent, but the two checks above skip any label whose direction is
+    # "conflicting", because one direction cannot be compared with two axes.
+    # The six fold/PPI conflicting labels each name a direction PER AXIS, so
+    # the check is made axis by axis. Before v11 it was skipped entirely, and
+    # PI3K E545K, a curated binding destabilizer, was graded consistent at 1.0
+    # and 1.5 kcal/mol for a call of binding STABILIZATION.
+    # "PPI conflicting (mixed partner signals)" names no single binding
+    # direction and is left as before.
+    for ax, called_dir in (_conflicting_axis_directions(mech_call) or {}).items():
+        if (axes.get(ax) == "positive" and dirs.get(ax) in ("destab", "stab")
+                and dirs.get(ax) != called_dir and ax not in dflip):
+            dflip.append(ax)
 
     # Topology false-fire only if COMAVI asserts interface AND ground truth is
     # explicitly away, AND COMAVI isn't already fully asserting via fold/bind.
@@ -1239,14 +1394,30 @@ def grade_mechanism_consistency(row, mech_call, expected_class, axes):
             return "consistent", empty, empty
         return "partial", fp, empty
 
-    # Step 7: primary positive axis missed
+    # Step 7: an expected effect was missed
     if fp:
         # Missed-and-wrong → inconsistent
         return "inconsistent", fp, mp
-    # Magnitude miss case: topology positive, COMAVI gives DNG-only
-    if comavi_dng and iface_pos:
-        return "partial", empty, mp
-    # Axis miss without false-fire → partial
+    # v11: partial credit requires that at least one expected effect WAS
+    # recovered. Table 3 of the manuscript, the published rubric, grades "one of
+    # several expected effects missed, without an unsupported effect" as
+    # partial and an "expected effect missed entirely" as inconsistent. Before
+    # v11 every miss without a false call on a tested axis fell through to
+    # partial, including calls asserting no energetic effect at all (the three
+    # "DDG neutral" labels, via the former "magnitude miss" branch) and calls
+    # made only on axes the literature never committed. A constant
+    # "Structural variant — contact-driven (DDG neutral)" label therefore scored
+    # 0.741 on the 56-variant benchmark, above COMAVI's own 0.661, and six of
+    # COMAVI's grades at 2.5 kcal/mol earned 0.5 for recovering nothing.
+    recovered = ((fold_m_pos and fold_m_a) or (fold_c_pos and fold_c_a)
+                 or (bind_pos and bind_a))
+    if not recovered:
+        # Sensitivity analysis only (S2 Text). Reaching this point with no
+        # false call means every axis the label asserts is one the literature
+        # never tested; such a call is credited 0.5 when the flag is set.
+        if untested_axis_credit and (fold_m_a or fold_c_a or bind_a):
+            return "partial", empty, mp
+        return "inconsistent", empty, mp
     return "partial", empty, mp
 
 
@@ -1327,12 +1498,13 @@ def structural_agreement_by_axis(row, partners, mono_thr, fold_thr, bind_thr):
     """
     Per-variant structural_agreement, decomposed by axis.
 
-    Returns {'tier': (n, d), 'monomer': (n, d), 'fold': (n, d), 'binding': (n, d)}.
-    `compute_structural_agreement` is the sum of these, so the four-way axis
+    Returns {key: (n, d)} for every key in AGREEMENT_ROWS: 'tier', 'monomer',
+    'fold', 'binding' and, from v11, 'assembled_either' (see below).
+    `compute_structural_agreement` is the sum of these, so the axis
     decomposition reported in the ledger and asserted by `verify_stage6.py`
     cannot drift from the headline it decomposes.
     """
-    out = {k: (0, 0) for k in ('tier', 'monomer', 'fold', 'binding')}
+    out = {k: (0, 0) for k in AGREEMENT_ROWS}
 
     # Tier (Approach 3: conditioned on expected_mech_class)
     #
@@ -1358,6 +1530,31 @@ def structural_agreement_by_axis(row, partners, mono_thr, fold_thr, bind_thr):
             in_d, ok = _axis_check(v, abs(v) >= mono_thr, row.get('expected_ddg_monomer'))
             if in_d:
                 out['monomer'] = (int(bool(ok)), 1)
+
+    # v11 evidence resolution. When the only evidence for an assembled-complex
+    # effect is a measurement of how much complex forms (co-IP, pull-down,
+    # two-hybrid; assembled_expectation_scope == "either_axis"), the measurement
+    # cannot say whether binding or assembled-complex stability changed. Such an
+    # expectation is scored once, jointly, in its own row ('assembled_either'),
+    # and neither axis's own row counts it: it is in the denominator when either
+    # assembled axis passes the confidence gate, and agrees when an assembled
+    # axis reaches the threshold in the measured direction and none reaches it in
+    # the opposite direction (the guard the mechanism grader applies). Every
+    # other expectation is scored on its own axis as before.
+    if assembled_scope(row) == EITHER_ASSEMBLED_AXIS:
+        sign = 1.0 if _either_axis_direction(row) == 'destab' else -1.0
+        scored = same = opposite = False
+        for axis, thr in (('fold', fold_thr), ('binding', bind_thr)):
+            v, _p = _operative_axis(row, partners, axis)
+            if v is None:
+                continue
+            scored = True
+            if abs(v) >= thr:
+                same = same or v * sign > 0
+                opposite = opposite or v * sign < 0
+        if scored:
+            out['assembled_either'] = (int(same and not opposite), 1)
+        return out
 
     # Fold and binding ΔΔG (operative partner — selects the partner with the
     # largest CI-distinguishable signal, which is what should be graded against
@@ -1451,6 +1648,29 @@ def compute_directional_agreement(row, partners, mono_thr, fold_thr, bind_thr):
                 d += 1
                 if full: n_full += 1
                 elif half: n_half += 1
+
+    # v11 evidence resolution: a complex-amount expectation is scored once,
+    # jointly, on whichever assembled axis carries the measured direction, with
+    # the same opposite-direction guard as structural_agreement_by_axis. Full
+    # credit when an assembled axis reaches its threshold in the measured
+    # direction and none reaches it in the opposite direction; half credit when
+    # no assembled axis reaches a threshold but one is detectable in the
+    # measured direction.
+    if assembled_scope(row) == EITHER_ASSEMBLED_AXIS:
+        sign = 1.0 if _either_axis_direction(row) == 'destab' else -1.0
+        vals = [(v, thr) for v, thr in ((_operative_axis(row, partners, 'fold')[0], fold_thr),
+                                        (_operative_axis(row, partners, 'binding')[0], bind_thr))
+                if v is not None]
+        if vals:
+            d += 1
+            same = any(abs(v) >= thr and v * sign > 0 for v, thr in vals)
+            opposite = any(abs(v) >= thr and v * sign < 0 for v, thr in vals)
+            fires = any(abs(v) >= thr for v, thr in vals)
+            if same and not opposite:
+                n_full += 1
+            elif not fires and any(abs(v) >= DDG_MIN_DETECTABLE and v * sign > 0 for v, _t in vals):
+                n_half += 1
+        return n_full, n_half, d
 
     # Fold (operative partner)
     fv, fp = _operative_axis(row, partners, 'fold')

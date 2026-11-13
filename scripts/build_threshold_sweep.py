@@ -124,7 +124,7 @@ def sweep_row(canon, partners, tag, spec, ac, dva):
         wv_k, wv_n = float("nan"), 0
 
     # --- per-axis directional agreement -----------------------------------
-    per = {k: [0, 0] for k in ("tier", "monomer", "fold", "binding")}
+    per = {k: [0, 0] for k in ac.AGREEMENT_ROWS}
     for _, row in graded.iterrows():
         d = ac.structural_agreement_by_axis(row, partners, mono, fold, bind)
         for k, (n, dd) in d.items():
@@ -159,6 +159,10 @@ def sweep_row(canon, partners, tag, spec, ac, dva):
         "detection_complex_n": built["isolated_subunit_only"]["structural_in_complexes"]["n"],
         "detection_complex_k": built["isolated_subunit_only"]["structural_in_complexes"]["detection_all_axes"],
         "detection_complex_isolated_k": built["isolated_subunit_only"]["structural_in_complexes"]["detection_isolated_subunit"],
+        # v11: which axis fires first (isolated subunit, then assembled-complex
+        # stability, then binding), partitioning detections and false calls.
+        "detection_first_axis": built["first_firing_axis"]["mechanisms"],
+        "false_calls_first_axis": built["first_firing_axis"]["non_disruptive"],
         "whole_variant_k": round(wv_k, 1),
         "whole_variant_n": wv_n,
         "whole_variant": round(wv_k / wv_n, 4) if wv_n else float("nan"),
@@ -168,6 +172,12 @@ def sweep_row(canon, partners, tag, spec, ac, dva):
         "axis_fold": round(per["fold"][0] / per["fold"][1], 4) if per["fold"][1] else float("nan"),
         "axis_binding_k": per["binding"][0], "axis_binding_n": per["binding"][1],
         "axis_binding": round(per["binding"][0] / per["binding"][1], 4) if per["binding"][1] else float("nan"),
+        # v11: the six complex-amount expectations, scored jointly on either
+        # assembled axis (apply_concordance_v5.structural_agreement_by_axis).
+        "axis_assembled_either_k": per["assembled_either"][0],
+        "axis_assembled_either_n": per["assembled_either"][1],
+        "axis_assembled_either": (round(per["assembled_either"][0] / per["assembled_either"][1], 4)
+                                  if per["assembled_either"][1] else float("nan")),
         "axis_tier_k": per["tier"][0], "axis_tier_n": per["tier"][1],
         "axis_tier": round(per["tier"][0] / per["tier"][1], 4) if per["tier"][1] else float("nan"),
         "structural_agreement_k": sum(v[0] for v in per.values()),

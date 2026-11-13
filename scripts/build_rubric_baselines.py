@@ -25,8 +25,9 @@ METHOD
 Each trivial strategy emits one fixed mechanism label for every variant, and
 that label is graded by the SHIPPED rubric -- apply_concordance_v5
 .grade_mechanism_consistency, with axis status from classify_axis_status -- on
-the same 57 graded variants and the same expected classes COMAVI is scored
-against. Nothing is reimplemented, so a rubric change moves the baselines and
+the same graded variants and the same expected classes COMAVI is scored
+against. From v11 every gradeable label is graded, not only the five named
+strategies (see every_constant_label in the record). Nothing is reimplemented, so a rubric change moves the baselines and
 the observed score together.
 
 The strongest trivial strategy is "never fire", which scores every curated
@@ -99,6 +100,35 @@ def build(canon):
     arm_struct = float(graded[~silent].mech_consistency_t25.map(GRADE_MAP).mean())
     best_key = max(baselines, key=lambda k: baselines[k]["score"])
 
+    # v11: every gradeable label the classifier can emit, not five of them.
+    # The five named strategies above were the whole baseline set before v11,
+    # and they hid that a constant "DDG neutral" label scored 0.741 against
+    # COMAVI's 0.661 under the grader as it then stood (see
+    # scripts/apply_rubric_table3_v11.py). A constant label is a trivial
+    # strategy whichever label it is, so all of them are graded, and the
+    # strongest is the floor the paper quotes. The balanced score (mean of the
+    # two arms) is reported beside it: no constant label can exceed 0.5 on it,
+    # because a label either fires on every curated silent variant or on none.
+    silent_idx = set(graded.index[silent])
+    every_label = {}
+    for label, assertion in ac.MECH_LABEL_ASSERTIONS.items():
+        if assertion[4] == "unevaluable":
+            continue
+        vals, grades = score_fixed_label(label)
+        g_by_idx = dict(zip(graded.index, grades))
+        s_arm = [GRADE_MAP[g_by_idx[i]] for i in graded.index if i in silent_idx]
+        m_arm = [GRADE_MAP[g_by_idx[i]] for i in graded.index if i not in silent_idx]
+        every_label[label] = {
+            "score": round(sum(vals) / len(vals), 4),
+            "arm_curated_silent": round(sum(s_arm) / len(s_arm), 4),
+            "arm_committed_structural": round(sum(m_arm) / len(m_arm), 4),
+            "balanced": round((sum(s_arm) / len(s_arm) + sum(m_arm) / len(m_arm)) / 2, 4),
+            "grade_counts": {g: grades.count(g) for g in sorted(set(grades))},
+        }
+    best_score = max(v["score"] for v in every_label.values())
+    best_labels = sorted(l for l, v in every_label.items() if v["score"] == best_score)
+    best_balanced = max(v["balanced"] for v in every_label.values())
+
     return {
         "population": {"n_graded": int(len(graded)),
                        "curated_silent": int(silent.sum()),
@@ -126,6 +156,15 @@ def build(canon):
             "key": best_key,
             "score": baselines[best_key]["score"],
             "margin_over_best_trivial": round(observed - baselines[best_key]["score"], 4),
+        },
+        "every_constant_label": {
+            "n_labels_graded": len(every_label),
+            "best_score": best_score,
+            "best_labels": best_labels,
+            "margin_over_best_constant": round(observed - best_score, 4),
+            "best_balanced": best_balanced,
+            "observed_balanced": round((arm_silent + arm_struct) / 2, 4),
+            "labels": every_label,
         },
     }
 
@@ -158,6 +197,14 @@ def main():
         "restated, not re-tolerated" % observed_gap)
     # the claim the manuscript will make
     assert result["best_trivial_strategy"]["key"] == "never_fire", result["best_trivial_strategy"]
+    # The paper's claim, checked rather than assumed: no constant label, of all
+    # the labels the classifier can emit, reaches COMAVI's observed score.
+    ev = result["every_constant_label"]
+    assert ev["margin_over_best_constant"] > 0, (
+        "a constant label (%s) scores %.4f, at or above COMAVI's %.4f"
+        % (ev["best_labels"], ev["best_score"], result["observed"]["score"]))
+    assert ev["best_score"] == result["best_trivial_strategy"]["score"], (
+        "a label outside the five named strategies is the strongest: %s" % ev["best_labels"])
     assert result["best_trivial_strategy"]["margin_over_best_trivial"] > 0
 
     if args.check:

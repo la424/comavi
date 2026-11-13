@@ -72,11 +72,24 @@ def strongest_signed(row, kind, partners):
 
 
 def axis_table(canon):
+    """One row per committed expectation with a prediction.
+
+    v11 evidence resolution: an expectation measured only as an amount of
+    complex (assembled_expectation_scope == "either_axis") is one row on the
+    joint assembled axis, valued by the larger assembled-axis prediction in the
+    measured direction, exactly as grading, attribution and direction agreement
+    treat it. Before v11 its binding-axis energy alone was used, which counted
+    MLH1 Q542L and SMAD4 D351H as destabilizing expectations below 1.0 kcal/mol
+    although their assembled-complex predictions are 1.07 and 10.69.
+    """
     partners = ac.discover_partners(canon)
     graded = canon[canon.mech_consistency_t25.isin(GRADE_MAP)]
     rows = []
     for _, r in graded.iterrows():
+        joint = ac.assembled_scope(r) == ac.EITHER_ASSEMBLED_AXIS
         for axis, (kind, col) in AXES.items():
+            if joint and axis in ("fold_complex", "binding"):
+                continue
             token = str(r.get(col, "")).strip().lower()
             if token not in ("destab", "stab", "neutral"):
                 continue
@@ -85,6 +98,14 @@ def axis_table(canon):
                 continue
             rows.append({"system": r.system, "variant": r.variant, "axis": axis,
                          "token": token, "predicted": v, "magnitude": abs(v)})
+        if joint:
+            direction = ac._either_axis_direction(r)
+            vals = [float(r["ddg_%s_%s" % (k, p)]) for k in ("fold", "binding") for p in partners
+                    if pd.notna(r.get("ddg_%s_%s" % (k, p)))]
+            if vals:
+                v = max(vals) if direction == "destab" else min(vals)
+                rows.append({"system": r.system, "variant": r.variant, "axis": "assembled_either",
+                             "token": direction, "predicted": v, "magnitude": abs(v)})
     return pd.DataFrame(rows)
 
 
@@ -98,7 +119,11 @@ def auc(df):
                  / (len(pos) * len(neg)))
 
 
-def build():
+def build(digits=3):
+    """The sub-threshold record, rounded to `digits` decimals; digits=None gives
+    full precision for consumers that re-round (the manuscript quotes two
+    decimals, and re-rounding a 3-decimal value ending in 5 can move the second)."""
+    R = (lambda x: float(x)) if digits is None else (lambda x: round(float(x), digits))
     canon = pd.read_csv(CANON, low_memory=False)
     ax = axis_table(canon)
     binary = ax[ax.token.isin(("destab", "neutral"))]
@@ -139,15 +164,13 @@ def build():
             "below_screening_default": int(len(band)),
             "below_and_committed_destabilizing": int((band.token == "destab").sum()),
             "below_and_committed_neutral": int((band.token == "neutral").sum()),
-            "auc_full_range": round(auc(binary), 3),
-            "auc_within_band": round(auc(band), 3),
-            "auc_within_band_ci95": [round(float(np.percentile(draws, 2.5)), 3),
-                                     round(float(np.percentile(draws, 97.5)), 3)],
-            "p_auc_at_or_below_chance": round(float((draws <= 0.5).mean()), 3),
-            "median_magnitude_destab": round(float(band.loc[band.token == "destab",
-                                                            "magnitude"].median()), 3),
-            "median_magnitude_neutral": round(float(band.loc[band.token == "neutral",
-                                                             "magnitude"].median()), 3),
+            "auc_full_range": R(auc(binary)),
+            "auc_within_band": R(auc(band)),
+            "auc_within_band_ci95": [R(np.percentile(draws, 2.5)),
+                                     R(np.percentile(draws, 97.5))],
+            "p_auc_at_or_below_chance": R((draws <= 0.5).mean()),
+            "median_magnitude_destab": R(band.loc[band.token == "destab", "magnitude"].median()),
+            "median_magnitude_neutral": R(band.loc[band.token == "neutral", "magnitude"].median()),
             "n_bootstrap_draws": int(len(draws)),
         },
         "measured_level": {

@@ -601,7 +601,7 @@ def mechanism_localization_values(canonical: pd.DataFrame) -> dict:
         thr = (specs, specs, specs)
 
     def tally(frame):
-        acc = {k: [0, 0] for k in ('monomer', 'fold', 'binding', 'tier')}
+        acc = {k: [0, 0] for k in _ac.AGREEMENT_ROWS}
         for _, row in frame.iterrows():
             for axis, (a, b) in _ac.structural_agreement_by_axis(
                     row, partners, *thr).items():
@@ -611,15 +611,17 @@ def mechanism_localization_values(canonical: pd.DataFrame) -> dict:
 
     # TWO CONVENTIONS, both correct for their population, reported separately so
     # a caption can never silently mix them (Figure 2 did, through v7.7):
-    #   primary — the 57 mechanism-gradeable variants, which is what panel b plots
-    #             and what the manuscript quotes (monomer 19/25, energetic 56/77).
-    #   all_row — all 61 rows (monomer 19/26, energetic 56/78).
+    #   primary — the 56 mechanism-gradeable variants, which is what panel b plots
+    #             and what the manuscript quotes (monomer 19/26, energetic 59/79).
+    #   all_row — all 61 rows (monomer 19/27, energetic 59/80).
+    # v11: energetic totals include the 'assembled_either' row, the six
+    # complex-amount expectations scored jointly (apply_concordance_v5).
     acc = tally(graded)
     acc_all = tally(canonical)
 
     def roll(a):
-        en = sum(a[k][0] for k in ('monomer', 'fold', 'binding'))
-        ed = sum(a[k][1] for k in ('monomer', 'fold', 'binding'))
+        en = sum(a[k][0] for k in _ac.ENERGETIC_ROWS)
+        ed = sum(a[k][1] for k in _ac.ENERGETIC_ROWS)
         return en, ed, en + a['tier'][0], ed + a['tier'][1]
 
     energetic_n, energetic_d, total_n, total_d = roll(acc)
@@ -636,10 +638,11 @@ def mechanism_localization_values(canonical: pd.DataFrame) -> dict:
             inter['mech_consistency_t25'].map(_MC_WEIGHTS).sum(), len(inter)),
         'brct_subset_score': _frac(
             brct_rows['mech_consistency_t25'].map(_MC_WEIGHTS).sum(), len(brct_rows)),
-        'convention': 'primary (57 mechanism-gradeable variants)',
+        'convention': 'primary (56 mechanism-gradeable variants)',
         'monomer_agreement': _frac(*acc['monomer']),
         'complex_context_agreement': _frac(*acc['fold']),
         'binding_agreement': _frac(*acc['binding']),
+        'assembled_either_agreement': _frac(*acc['assembled_either']),
         'tier_agreement': _frac(*acc['tier']),
         'all_energetic_agreement': _frac(energetic_n, energetic_d),
         'historical_four_output': _frac(total_n, total_d),
@@ -648,6 +651,7 @@ def mechanism_localization_values(canonical: pd.DataFrame) -> dict:
             'monomer_agreement': _frac(*acc_all['monomer']),
             'complex_context_agreement': _frac(*acc_all['fold']),
             'binding_agreement': _frac(*acc_all['binding']),
+            'assembled_either_agreement': _frac(*acc_all['assembled_either']),
             'tier_agreement': _frac(*acc_all['tier']),
             'all_energetic_agreement': _frac(all_en, all_ed),
             'historical_four_output': _frac(all_tn, all_td),
@@ -981,11 +985,34 @@ def main() -> None:
     full_isds_path.write_bytes(
         canonical_path.read_bytes()
     )
+    # v11.0: the pathogenicity comparison runs on benchmark variants only, with
+    # clinical labels from the Franklin classification
+    # (scripts/apply_clinical_label_rule_v11.py). Before, it took every
+    # clinically labelled row with a score, which kept three ungraded candidates
+    # (TNNI3 R162W, VHL W117R, MSH2 G674R), lost the two VWF variants for want
+    # of a score, and counted eight variants whose labels neither Franklin nor
+    # ClinVar supports, so the set nested in neither the graded nor the
+    # prioritization population. It is now the prioritization variants that
+    # carry a pathogenic or benign classification, and the checks keep it so.
+    import sys as _sys
+    _sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import benchmark_population as _bp
+    _labelled = full_isds['phenotype'].isin(['pathogenic', 'pathogenic_gof', 'benign'])
     clinical = full_isds[
-        full_isds['phenotype'].isin(['pathogenic', 'pathogenic_gof', 'benign'])
+        _labelled
         & full_isds['AM pathogenicity'].notna()
         & full_isds['isds_available'].astype(bool)
+        & _bp.benchmark_mask(full_isds)
     ].copy()
+    _prio = set(zip(df['system'], df['variant']))
+    _clin = set(zip(clinical['system'], clinical['variant']))
+    _prio_labelled = {(s, v) for s, v, lab in zip(full_isds['system'], full_isds['variant'], _labelled)
+                      if lab and (s, v) in _prio}
+    if not _clin <= _prio or _clin != _prio_labelled:
+        raise RuntimeError(
+            'pathogenicity comparison set (%d) is not the labelled part of the '
+            'prioritization population (%d labelled of %d)'
+            % (len(_clin), len(_prio_labelled), len(_prio)))
     clinical['clinical_y'] = clinical['phenotype'].isin(['pathogenic', 'pathogenic_gof']).astype(int)
     clinical_rows = []
     for col in ['AM pathogenicity', 'isds_v1', 'isds_energy_component', 'isds_context_component']:

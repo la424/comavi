@@ -1,11 +1,11 @@
 test,observed,null_mean,null_sd,p_value
-permutation null (MC),0.6607,0.464,0.0514,0.0005
-permutation null (SA),0.6992,0.5336,0.0461,0.0005
-leave-one-system-out (MC range),0.6607,0.6415-0.6792,,
-leave-one-system-out (SA range),0.6992,0.6810-0.7238,,
-replicate noise (MC),0.6607,0.6622,0.0135,
-replicate noise (SA),0.6992,0.6968,0.0043,
-bootstrap 95% CI (MC),0.6607,"[0.546, 0.769]",,
-bootstrap 95% CI (SA),0.6992,"[0.609, 0.779]",,
-cluster bootstrap 95% CI (MC),0.6607,"[0.573, 0.755]",,
-cluster bootstrap 95% CI (SA),0.6992,"[0.622, 0.778]",,
+permutation null (MC),0.6607,0.3624,0.0555,0.0005
+permutation null (SA),0.712,0.5393,0.0448,0.001
+leave-one-system-out (MC range),0.6607,0.6415-0.6863,,
+leave-one-system-out (SA range),0.712,0.6930-0.7290,,
+replicate noise (MC),0.6607,0.6619,0.0134,
+replicate noise (SA),0.712,0.7095,0.004,
+bootstrap 95% CI (MC),0.6607,"[0.545, 0.777]",,
+bootstrap 95% CI (SA),0.712,"[0.623, 0.795]",,
+cluster bootstrap 95% CI (MC),0.6607,"[0.567, 0.764]",,
+cluster bootstrap 95% CI (SA),0.712,"[0.636, 0.791]",,
